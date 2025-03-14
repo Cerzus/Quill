@@ -1,0 +1,87 @@
+.quill {
+    background-color: var(--quill-background-color);
+    font-family: var(--quill-proportional-font);
+}
+
+.quill,
+.quill :not(script) {
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    display: flex;
+    box-sizing: border-box;
+    color: var(--quill-text-color);
+}
+
+.quill .quill-content {
+    position: relative;
+    flex-grow: 1;
+}
+
+.quill .quill-panel {
+    position: absolute;
+    flex-direction: column;
+    border-radius: var(--quill-panel-border-radius-size);
+    overflow: hidden;
+    box-shadow: 0 0 8px black;
+}
+
+.quill .quill-panel-title-bar {
+    background-color: var(--quill-panel-title-bar-color);
+    font-weight: bold;
+    cursor: move;
+    padding: var(--quill-panel-padding-size);
+}
+
+.quill .quill-panel-content {
+    background-color: var(--quill-panel-content-color);
+    padding: var(--quill-panel-padding-size);
+    flex-grow: 1;
+}
+
+.quill table.quill-panel-resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+}
+.quill table.quill-panel-resizer > tbody {
+    width: 100%;
+    flex-direction: column;
+}
+.quill table.quill-panel-resizer tr:nth-child(1),
+.quill table.quill-panel-resizer tr:nth-child(3) {
+    height: var(--quill-panel-resizer-size);
+}
+.quill table.quill-panel-resizer td:nth-child(1),
+.quill table.quill-panel-resizer td:nth-child(3) {
+    width: var(--quill-panel-resizer-size);
+}
+.quill table.quill-panel-resizer tr:nth-child(2),
+.quill table.quill-panel-resizer td:nth-child(2) {
+    flex-grow: 1;
+}
+.quill table.quill-panel-resizer tr:nth-child(1) > td:nth-child(2),
+.quill table.quill-panel-resizer tr:nth-child(3) > td:nth-child(2) {
+    cursor: ns-resize;
+}
+.quill table.quill-panel-resizer tr:nth-child(2) > td:nth-child(1),
+.quill table.quill-panel-resizer tr:nth-child(2) > td:nth-child(3) {
+    cursor: ew-resize;
+}
+.quill .quill-panel-resizer tr:nth-child(1) > td:nth-child(1),
+.quill .quill-panel-resizer tr:nth-child(3) > td:nth-child(3) {
+    cursor: nwse-resize;
+}
+.quill .quill-panel-resizer tr:nth-child(3) > td:nth-child(1),
+.quill .quill-panel-resizer tr:nth-child(1) > td:nth-child(3) {
+    cursor: nesw-resize;
+}
+.quill .quill-panel-resizer td {
+    pointer-events: all;
+}
+.quill .quill-panel-resizer tr:nth-child(2) > td:nth-child(2) {
+    pointer-events: none;
+}
