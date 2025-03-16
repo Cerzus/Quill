@@ -1,4 +1,3 @@
-- Panel: No close button when not_closable
 - Panel: Optionally start closed
 - MenuItem: Align content (use <table>?)
 - MenuBar: Improve show/hide logic, with VSCode's UI as an example

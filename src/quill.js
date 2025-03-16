@@ -89,10 +89,7 @@
         constructor(name, ...args) {
             super(
                 `<div class="quill-panel">
-                    <div class="quill-panel-title-bar">
-                        <div>${name}</div>
-                        <div class="quill-close-button"></div>
-                    </div>
+                    <div class="quill-panel-title-bar"><div>${name}</div></div>
                     <div class="quill-panel-menu-bar-container"></div>
                     <div class="quill-panel-content"></div>
                     <table class="quill-panel-resizer">
@@ -119,12 +116,17 @@
             element.querySelector(".quill-panel-resizer").addEventListener("mousedown", (e) => {
                 if (e.button === 0) start_resizing_panel(this, e);
             });
-            element.querySelector(".quill-panel-title-bar .quill-close-button").addEventListener("click", (e) => {
-                if (e.button === 0) {
-                    this.close();
-                    this.#on_close_callback?.();
-                }
-            });
+
+            if (this.#closable) {
+                const close_button = Util.element_from_html(`<div class="quill-close-button"></div>`);
+                close_button.addEventListener("click", (e) => {
+                    if (e.button === 0) {
+                        this.close();
+                        this.#on_close_callback?.();
+                    }
+                });
+                element.querySelector(".quill-panel-title-bar").append(close_button);
+            }
 
             const stored_index = quill_panels_order.indexOf(this.#id);
             if (stored_index < 0) {
