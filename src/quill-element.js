@@ -23,9 +23,11 @@ class QuillElement {
             return this.add([children]);
         }
         for (const child of children) {
-            this.#children.push(child);
-            child.#parent = this;
-            this.add_child(child);
+            if (child instanceof QuillElement) {
+                this.#children.push(child);
+                child.#parent = this;
+                this.add_child(child);
+            }
         }
     }
 }

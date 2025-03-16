@@ -81,11 +81,30 @@
 
     class Panel extends QuillPanel {
         #id;
+        #name;
+        #closable;
+        #closed;
+        #on_close_callback;
 
-        constructor(title, children) {
-            super(title, children);
+        constructor(name) {
+            const handle_arguments = (args) => {
+                if (args[1] instanceof QuillElement || args[1] instanceof Array || args[1] instanceof Function) {
+                    return [args[1], false];
+                } else if (args[1] instanceof Object) {
+                    const config = args[1];
+                    return [args[2], !!config.not_closable];
+                }
+                return [null, false];
+            };
 
-            this.#create_id(title);
+            const [children, not_closable] = handle_arguments(arguments);
+
+            super(name, children);
+
+            this.#closable = !not_closable;
+
+            this.#create_id(name);
+            this.#name = name;
 
             const element = this.get_element();
 
@@ -97,6 +116,12 @@
             });
             element.querySelector(".quill-panel-resizer").addEventListener("mousedown", (e) => {
                 if (e.button === 0) start_resizing_panel(this, e);
+            });
+            element.querySelector(".quill-panel-title-bar .quill-close-button").addEventListener("click", (e) => {
+                if (e.button === 0) {
+                    this.close();
+                    this.#on_close_callback?.();
+                }
             });
 
             const id = this.#id;
@@ -112,22 +137,50 @@
                 this.set_position({ top: config.y, left: config.x });
                 this.set_size({ width: config.w, height: config.h });
                 this.set_z_index(stored_index);
+                if (!config.o) this.#close();
             }
 
             quill_config.content_element.append(element);
         }
 
-        get_id = () => this.#id;
+        // Public methods
 
+        get_id = () => this.#id;
+        get_name = () => this.#name;
+        is_closable = () => this.#closable;
+        is_open = () => !this.#closed;
+        open() {
+            this.#open();
+            store_panels_config();
+        }
+        close() {
+            this.#close();
+            store_panels_config();
+        }
+        on_close = (callback) => (this.#on_close_callback = callback);
+
+        // Private methods
+
+        #open() {
+            if (this.#closable) {
+                this.#closed = false;
+                this.get_element().style.display = "";
+                show_panel_on_top(this);
+            }
+        }
+        #close() {
+            if (this.#closable) {
+                this.#closed = true;
+                this.get_element().style.display = "none";
+            }
+        }
         #create_id(string = "") {
             for (let i = 0; ; i++) {
                 const id = string
                     .split("")
                     .reduce((hash, char) => (hash << 5) - hash + char.charCodeAt(0), i)
                     .toString(16);
-                if (!quill_panels[id]) {
-                    return (quill_panels[(this.#id = id)] = this);
-                }
+                if (!quill_panels[id]) return (quill_panels[(this.#id = id)] = this);
             }
         }
     }
@@ -140,7 +193,6 @@
 
         constructor(title, children) {
             super(`<div>${title}</div><div class="quill-arrow-right"></div>`);
-            // will be added to DOM in extended class
             this.#menu_element = Util.element_from_html(`<div class="quill-menu"></div>`);
             for (const element of [this.get_element(), this.#menu_element]) {
                 element.addEventListener("mouseenter", this.#on_mouseenter.bind(this));
@@ -150,21 +202,23 @@
             quill_config.content_element.append(this.#menu_element);
         }
 
+        // Public methods
+
         add_child(child) {
             this.#menu_element.append(child.get_element());
         }
+
+        // Private methods
 
         #on_mouseenter() {
             this.#hover_count++;
             if (this.get_parent() instanceof Menu) this.get_parent().#on_mouseenter?.();
             this.#show();
         }
-
         #on_mouseleave() {
             if (this.get_parent() instanceof Menu) this.get_parent().#on_mouseleave?.();
             if (!--this.#hover_count) this.#hide();
         }
-
         #show() {
             this.get_element().classList.add("active");
             this.#menu_element.classList.add("active");
@@ -176,7 +230,6 @@
                 this.#set_position((position) => (position.left += this.get_element().offsetWidth));
             }
         }
-
         #hide() {
             this.get_element().classList.remove("active");
             this.#menu_element.classList.remove("active");
@@ -184,7 +237,6 @@
                 child.#hide();
             }
         }
-
         #set_position(callback) {
             const content_element_rect = quill_config.content_element.getBoundingClientRect();
             const element_rect = this.get_element().getBoundingClientRect();
@@ -196,6 +248,12 @@
             this.#menu_element.style.top = `${position.top}px`;
             this.#menu_element.style.left = `${position.left}px`;
         }
+    }
+
+    // Public methods
+
+    function get_panels() {
+        return quill_panels;
     }
 
     // Helper functions
@@ -258,9 +316,11 @@
         const panels_config = quill_panels_order
             .filter((id) => quill_panels[id])
             .map((id) => {
-                const position = quill_panels[id].get_position();
-                const size = quill_panels[id].get_size();
-                return { id, x: position.left, y: position.top, w: size.width, h: size.height };
+                const panel = quill_panels[id];
+                const position = panel.get_position();
+                const size = panel.get_size();
+                const open = panel.is_open();
+                return { id, x: position.left, y: position.top, w: size.width, h: size.height, o: open };
             });
         localStorage.setItem("quill_panels", JSON.stringify(panels_config));
     }
@@ -282,4 +342,6 @@
     Quill.MenuBar = QuillMenuBar;
     Quill.Menu = Menu;
     Quill.MenuItem = QuillMenuItem;
+
+    Quill.get_panels = get_panels;
 })((window.Quill = window.Quill || {}));

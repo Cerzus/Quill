@@ -1,11 +1,12 @@
 "use strict";
 
 class QuillPanel extends QuillElement {
-    constructor(title, children) {
+    constructor(name, children) {
         super(
             `<div class="quill-panel">
                 <div class="quill-panel-title-bar">
-                    ${title}
+                    <div>${name}</div>
+                    <div class="quill-close-button"></div>
                 </div>
                 <div class="quill-panel-menu-bar-container"></div>
                 <div class="quill-panel-content"></div>
@@ -29,14 +30,22 @@ class QuillPanel extends QuillElement {
         }
     }
 
-    get_position = () => ({
-        top: this.get_element().offsetTop,
-        left: this.get_element().offsetLeft,
-    });
-    get_size = () => ({
-        width: this.get_element().offsetWidth,
-        height: this.get_element().offsetHeight,
-    });
+    get_position() {
+        // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
+        const display = this.get_element().style.display;
+        this.get_element().style.display = "";
+        const position = { top: this.get_element().offsetTop, left: this.get_element().offsetLeft };
+        this.get_element().style.display = display;
+        return position;
+    }
+    get_size() {
+        // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
+        const display = this.get_element().style.display;
+        this.get_element().style.display = "";
+        const size = { width: this.get_element().offsetWidth, height: this.get_element().offsetHeight };
+        this.get_element().style.display = display;
+        return size;
+    }
     set_position(position) {
         this.get_element().style.top = `${position.top}px`;
         this.get_element().style.left = `${position.left}px`;

@@ -1,0 +1,5 @@
+- Panel: No close button when not_closable
+- Panel: Start closed
+- Element: save arg_config, arg_callback, and arg_array
+- MenuItem: Align content (use <table>?)
+- MenuBar: Improve show/hide logic, with VSCode's UI as an example

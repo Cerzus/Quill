@@ -33,6 +33,33 @@
     font-size: var(--quill-panel-title-bar-font-size);
     font-weight: bold;
     cursor: move;
+    justify-content: space-between;
+}
+.quill .quill-close-button {
+    width: var(--quill-panel-title-bar-font-size);
+    height: var(--quill-panel-title-bar-font-size);
+    position: relative;
+    opacity: 0.5;
+    cursor: initial;
+}
+.quill .quill-close-button:before,
+.quill .quill-close-button:after {
+    content: "";
+    transform: rotate(45deg);
+    position: absolute;
+    background-color: white;
+}
+.quill .quill-close-button:before {
+    left: 50%;
+    width: 15%;
+    margin-left: -7.5%;
+    height: 100%;
+}
+.quill .quill-close-button:after {
+    top: 50%;
+    height: 15%;
+    margin-top: -7.5%;
+    width: 100%;
 }
 
 .quill .quill-panel-content {
@@ -92,6 +119,7 @@
 .quill .quill-menu-bar {
     background-color: var(--quill-menu-color);
     flex-direction: row;
+    flex-grow: 1;
 }
 .quill .quill-menu-item {
     padding: var(--quill-menu-item-padding-size);

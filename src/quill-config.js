@@ -10,7 +10,7 @@ const QuillConfig = {
         background: new QuillColor(40, 40, 40),
         panel_title_bar: new QuillColor(20, 20, 20),
         panel_content: new QuillColor(30, 30, 30),
-        menu: new QuillColor(40, 40, 40),
+        menu: new QuillColor(50, 50, 50),
         menu_item_hover: new QuillColor(255, 255, 255, 0.1),
         separator: new QuillColor(255, 255, 255, 0.2),
         text: new QuillColor(255, 255, 255, 0.5),
