@@ -1,23 +1,30 @@
 "use strict";
 
-const Config = {
+const QuillConfig = {
     element: null,
     fonts: {
         proportional: "Arial, Helvetica, sans-serif",
         monospace: "Consolas, 'Courier New', Courier, monospace",
     },
     colors: {
-        background: new Color(40, 40, 40),
-        panel_title_bar: new Color(20, 20, 20),
-        panel_content: new Color(30, 30, 30),
-        text: new Color(255, 255, 255, 0.5),
+        background: new QuillColor(40, 40, 40),
+        panel_title_bar: new QuillColor(20, 20, 20),
+        panel_content: new QuillColor(30, 30, 30),
+        menu: new QuillColor(40, 40, 40),
+        menu_item_hover: new QuillColor(255, 255, 255, 0.1),
+        separator: new QuillColor(255, 255, 255, 0.2),
+        text: new QuillColor(255, 255, 255, 0.5),
     },
     sizes: {
         panel_padding: 5,
         panel_resizer: 5,
         panel_border_radius: 5,
+        menu_border_radius: 5,
+        menu_padding: 2,
+        menu_item_border_radius: 3,
+        menu_item_padding: 2,
     },
     font_sizes: {
-        panel_title: 1,
+        panel_title_bar: 1.1,
     },
 };

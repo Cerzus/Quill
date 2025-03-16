@@ -2,34 +2,33 @@
 
 (function (Quill) {
     Quill.init = (root_element) => {
-        if (!ASSERT(root_element instanceof Element)) {
+        if (!Util.assert(root_element instanceof Element)) {
             return;
         }
 
-        const content_element = element_from_html(`<div class="quill-content"></div>`);
+        const content_element = Util.element_from_html(`<div class="quill-content"></div>`);
 
         root_element.classList.add("quill");
-        root_element.appendChild(content_element);
+        root_element.append(content_element);
 
         quill_config.root_element = root_element;
         quill_config.content_element = content_element;
 
         const style = document.createElement("style");
+        const config_to_css_var = (x, bar) =>
+            `${Object.entries(x)
+                .map(([name, value]) => `--quill-${name.replaceAll("_", "-")}-${bar(value)};`)
+                .join("\n")}`;
         style.innerHTML = `
             :root {
-                ${Object.entries(quill_config.fonts)
-                    .map(([name, font]) => `--quill-${name.replaceAll("_", "-")}-font:${font};`)
-                    .join("\n")}
-                ${Object.entries(quill_config.colors)
-                    .map(([name, color]) => `--quill-${name.replaceAll("_", "-")}-color:${color.to_css()};`)
-                    .join("\n")}
-                ${Object.entries(quill_config.sizes)
-                    .map(([name, size]) => `--quill-${name.replaceAll("_", "-")}-size:${size}px;`)
-                    .join("\n")}
+                ${config_to_css_var(quill_config.fonts, (font) => `font:${font}`)}
+                ${config_to_css_var(quill_config.colors, (color) => `color:${color.to_css()}`)}
+                ${config_to_css_var(quill_config.sizes, (size) => `size:${size}px`)}
+                ${config_to_css_var(quill_config.font_sizes, (font_size) => `font-size:${font_size}em`)}
             }
         `;
 
-        document.head.appendChild(style);
+        document.head.append(style);
 
         window.addEventListener("mousemove", (e) => {
             if (moving !== null) {
@@ -80,28 +79,15 @@
 
     /* Quill.Panel */
 
-    class Panel {
+    class Panel extends QuillPanel {
         #id;
-        #element;
 
-        constructor(title, config = {}) {
+        constructor(title, children) {
+            super(title, children);
+
             this.#create_id(title);
 
-            const element = element_from_html(
-                `<div class="quill-panel">
-                    <div class="quill-panel-title-bar">
-                        ${title}
-                    </div>
-                    <div class="quill-panel-content">
-                        Hello, world!
-                    </div>
-                    <table class="quill-panel-resizer">
-                        <tr><td></td><td></td><td></td></tr>
-                        <tr><td></td><td></td><td></td></tr>
-                        <tr><td></td><td></td><td></td></tr>
-                    </table>
-                </div>`
-            );
+            const element = this.get_element();
 
             element.addEventListener("mousedown", (e) => {
                 if (e.button === 0) show_panel_on_top(this);
@@ -113,15 +99,14 @@
                 if (e.button === 0) start_resizing_panel(this, e);
             });
 
-            this.#element = element;
-
-            const stored_index = quill_panels_order.indexOf(this.#id);
+            const id = this.#id;
+            const stored_index = quill_panels_order.indexOf(id);
             if (stored_index < 0) {
                 const new_index = quill_panels_order.length;
-                this.set_position({ top: config.top ?? new_index * 25, left: config.left ?? new_index * 25 });
-                this.set_size({ width: config.width ?? 300, height: config.height ?? 200 });
+                this.set_position({ top: new_index * 25, left: new_index * 25 });
+                this.set_size({ width: 300, height: 200 });
                 this.set_z_index(new_index);
-                quill_panels_order.push(this.#id);
+                quill_panels_order.push(id);
             } else {
                 const config = stored_panels_config_at_init[stored_index];
                 this.set_position({ top: config.y, left: config.x });
@@ -129,29 +114,10 @@
                 this.set_z_index(stored_index);
             }
 
-            quill_config.content_element.appendChild(element);
+            quill_config.content_element.append(element);
         }
 
         get_id = () => this.#id;
-        get_position = () => ({
-            top: this.#element.offsetTop,
-            left: this.#element.offsetLeft,
-        });
-        get_size = () => ({
-            width: this.#element.offsetWidth,
-            height: this.#element.offsetHeight,
-        });
-        set_position(position) {
-            this.#element.style.top = `${position.top}px`;
-            this.#element.style.left = `${position.left}px`;
-        }
-        set_size(size) {
-            this.#element.style.width = `${size.width}px`;
-            this.#element.style.height = `${size.height}px`;
-        }
-        set_z_index(z_index) {
-            this.#element.style.zIndex = z_index;
-        }
 
         #create_id(string = "") {
             for (let i = 0; ; i++) {
@@ -163,6 +129,72 @@
                     return (quill_panels[(this.#id = id)] = this);
                 }
             }
+        }
+    }
+
+    /* Quill.Menu */
+
+    class Menu extends QuillMenuItem {
+        #menu_element;
+        #hover_count = 0;
+
+        constructor(title, children) {
+            super(`<div>${title}</div><div class="quill-arrow-right"></div>`);
+            // will be added to DOM in extended class
+            this.#menu_element = Util.element_from_html(`<div class="quill-menu"></div>`);
+            for (const element of [this.get_element(), this.#menu_element]) {
+                element.addEventListener("mouseenter", this.#on_mouseenter.bind(this));
+                element.addEventListener("mouseleave", this.#on_mouseleave.bind(this));
+            }
+            this.add(children);
+            quill_config.content_element.append(this.#menu_element);
+        }
+
+        add_child(child) {
+            this.#menu_element.append(child.get_element());
+        }
+
+        #on_mouseenter() {
+            this.#hover_count++;
+            if (this.get_parent() instanceof Menu) this.get_parent().#on_mouseenter?.();
+            this.#show();
+        }
+
+        #on_mouseleave() {
+            if (this.get_parent() instanceof Menu) this.get_parent().#on_mouseleave?.();
+            if (!--this.#hover_count) this.#hide();
+        }
+
+        #show() {
+            this.get_element().classList.add("active");
+            this.#menu_element.classList.add("active");
+            if (this.get_parent() instanceof QuillMenuBar) {
+                this.#set_position((position) => (position.top += this.get_element().offsetHeight));
+            } else {
+                this.#menu_element.style.zIndex = +getComputedStyle(this.get_parent().#menu_element).zIndex + 1;
+                this.get_parent().#show?.();
+                this.#set_position((position) => (position.left += this.get_element().offsetWidth));
+            }
+        }
+
+        #hide() {
+            this.get_element().classList.remove("active");
+            this.#menu_element.classList.remove("active");
+            for (const child of this.get_children().filter((child) => child instanceof Menu)) {
+                child.#hide();
+            }
+        }
+
+        #set_position(callback) {
+            const content_element_rect = quill_config.content_element.getBoundingClientRect();
+            const element_rect = this.get_element().getBoundingClientRect();
+            const position = {
+                left: element_rect.left - content_element_rect.left,
+                top: element_rect.top - content_element_rect.top,
+            };
+            callback(position);
+            this.#menu_element.style.top = `${position.top}px`;
+            this.#menu_element.style.left = `${position.left}px`;
         }
     }
 
@@ -237,24 +269,17 @@
         return JSON.parse(localStorage.getItem("quill_panels") ?? "[]");
     }
 
-    function element_from_html(html) {
-        const div = document.createElement("div");
-        div.innerHTML = html.trim();
-        return div.firstChild;
-    }
-
-    function ASSERT(condition, message = "Assertion failed") {
-        if (!condition) throw message;
-        return condition;
-    }
-
     const stored_panels_config_at_init = load_panels_config();
-    const quill_config = Config;
+    const quill_config = QuillConfig;
     const quill_panels_order = stored_panels_config_at_init.map((panel) => panel.id);
     const quill_panels = {};
     let moving = null;
     let resizing = null;
 
-    Quill.Color = Color;
+    Quill.Color = QuillColor;
+    Quill.Separator = QuillSeparator;
     Quill.Panel = Panel;
+    Quill.MenuBar = QuillMenuBar;
+    Quill.Menu = Menu;
+    Quill.MenuItem = QuillMenuItem;
 })((window.Quill = window.Quill || {}));

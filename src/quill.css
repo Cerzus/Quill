@@ -1,16 +1,17 @@
 .quill {
     background-color: var(--quill-background-color);
     font-family: var(--quill-proportional-font);
+    font-size: 14px;
 }
 
 .quill,
 .quill :not(script) {
+    color: var(--quill-text-color);
     padding: 0;
     margin: 0;
     white-space: nowrap;
     display: flex;
     box-sizing: border-box;
-    color: var(--quill-text-color);
 }
 
 .quill .quill-content {
@@ -19,24 +20,26 @@
 }
 
 .quill .quill-panel {
+    border-radius: var(--quill-panel-border-radius-size);
     position: absolute;
     flex-direction: column;
-    border-radius: var(--quill-panel-border-radius-size);
-    overflow: hidden;
     box-shadow: 0 0 8px black;
+    overflow: hidden;
 }
 
 .quill .quill-panel-title-bar {
     background-color: var(--quill-panel-title-bar-color);
+    padding: var(--quill-panel-padding-size);
+    font-size: var(--quill-panel-title-bar-font-size);
     font-weight: bold;
     cursor: move;
-    padding: var(--quill-panel-padding-size);
 }
 
 .quill .quill-panel-content {
     background-color: var(--quill-panel-content-color);
     padding: var(--quill-panel-padding-size);
     flex-grow: 1;
+    flex-direction: column;
 }
 
 .quill table.quill-panel-resizer {
@@ -84,4 +87,59 @@
 }
 .quill .quill-panel-resizer tr:nth-child(2) > td:nth-child(2) {
     pointer-events: none;
+}
+
+.quill .quill-menu-bar {
+    background-color: var(--quill-menu-color);
+    flex-direction: row;
+}
+.quill .quill-menu-item {
+    padding: var(--quill-menu-item-padding-size);
+    border-radius: var(--quill-menu-item-border-radius-size);
+    position: relative;
+    gap: 10px;
+    align-items: center;
+}
+.quill .quill-menu-bar,
+.quill .quill-menu {
+    gap: var(--quill-menu-padding-size);
+    padding: var(--quill-menu-padding-size);
+    user-select: none;
+}
+.quill .quill-menu-bar > .quill-menu-item > .quill-arrow-right {
+    display: none; /* hack */
+}
+.quill .quill-menu-item:hover,
+.quill .quill-menu-item.active {
+    background-color: var(--quill-menu-item-hover-color);
+}
+.quill .quill-menu {
+    background-color: var(--quill-menu-color);
+    border-radius: var(--quill-menu-border-radius-size);
+    flex-direction: column;
+    box-shadow: 0 0 8px black;
+    position: absolute;
+    z-index: 9999;
+    display: none;
+}
+.quill .quill-menu.active {
+    display: flex;
+}
+
+.quill .quill-separator {
+    border: 0 solid var(--quill-separator-color);
+    margin: 0 calc(-1 * var(--quill-menu-padding-size));
+    border-top-width: 1px;
+}
+
+.quill .quill-arrow-right {
+    border: solid var(--quill-text-color);
+    border-width: 0 0.2em 0.2em 0;
+    width: 0.5em;
+    height: 0.5em;
+    margin: 0.1rem;
+}
+.quill .quill-arrow-right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
 }
