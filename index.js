@@ -14,19 +14,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     new Quill.MenuItem("3. .yup"),
                 ]),
                 new Quill.Separator(),
-                new Quill.MenuItem("Quit", { toggleable: true, toggled: true }, (element) => {
+                new Quill.MenuItem({ toggleable: true, toggled: true }, "Quit", (element) => {
                     console.log("Quit", element.is_toggled());
                 }),
             ])
         )
     );
-    new Quill.Panel("Panel 2", { foo: true });
-    new Quill.Panel("Panel 3");
+    new Quill.Panel("Panel 2", [], { closed: true, not_closeable: true });
+    new Quill.Panel("Panel 3", { closed: true }, []);
 
-    let tools = null;
     let panels = null;
 
-    new Quill.Panel("Menu test", { not_closable: true }, [
+    new Quill.Panel("Menu test", { not_closeable: true }, [
         new Quill.MenuBar([
             new Quill.Menu("File", [
                 new Quill.MenuItem("Load...", () => console.log("Load")),
@@ -40,7 +39,42 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.log("Quit", element.is_toggled());
                 }),
             ]),
-            (tools = new Quill.Menu("Tools")),
+            new Quill.Menu("Tools", {}, () => {}, [
+                new Quill.Menu("File", [
+                    new Quill.MenuItem("Load..."),
+                    new Quill.Menu("Recent", [
+                        new Quill.MenuItem("1. some_file.txt"),
+                        new Quill.MenuItem("2. Another file.txt"),
+                        new Quill.MenuItem("3. .yup"),
+                    ]),
+                    new Quill.Separator(),
+                    new Quill.MenuItem("Quit"),
+                ]),
+                new Quill.MenuItem("Load..."),
+                new Quill.Menu("Recent", [
+                    new Quill.MenuItem("1. some_file.txt"),
+                    new Quill.MenuItem("2. Another file.txt"),
+                    new Quill.MenuItem("3. .yup"),
+                    new Quill.Separator(),
+                    new Quill.Menu("Recent", [
+                        new Quill.MenuItem("1. some_file.txt"),
+                        new Quill.MenuItem("2. Another file.txt"),
+                        new Quill.MenuItem("3. .yup"),
+                        new Quill.MenuItem("Load..."),
+                        new Quill.Menu("Recent", [
+                            new Quill.MenuItem("1. some_file.txt"),
+                            new Quill.MenuItem("2. Another file.txt"),
+                            new Quill.MenuItem("3. .yup"),
+                        ]),
+                        new Quill.Separator(),
+                        new Quill.MenuItem("Quit"),
+                    ]),
+                    new Quill.Separator(),
+                    new Quill.MenuItem("Quit"),
+                ]),
+                new Quill.Separator(),
+                new Quill.MenuItem("Quit"),
+            ]),
             (panels = new Quill.Menu(
                 "Panels",
                 new Quill.Menu("File", [
@@ -57,46 +91,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ]),
     ]);
 
-    tools.add([
-        new Quill.Menu("File", [
-            new Quill.MenuItem("Load..."),
-            new Quill.Menu("Recent", [
-                new Quill.MenuItem("1. some_file.txt"),
-                new Quill.MenuItem("2. Another file.txt"),
-                new Quill.MenuItem("3. .yup"),
-            ]),
-            new Quill.Separator(),
-            new Quill.MenuItem("Quit"),
-        ]),
-        new Quill.MenuItem("Load..."),
-        new Quill.Menu("Recent", [
-            new Quill.MenuItem("1. some_file.txt"),
-            new Quill.MenuItem("2. Another file.txt"),
-            new Quill.MenuItem("3. .yup"),
-            new Quill.Separator(),
-            new Quill.Menu("Recent", [
-                new Quill.MenuItem("1. some_file.txt"),
-                new Quill.MenuItem("2. Another file.txt"),
-                new Quill.MenuItem("3. .yup"),
-                new Quill.MenuItem("Load..."),
-                new Quill.Menu("Recent", [
-                    new Quill.MenuItem("1. some_file.txt"),
-                    new Quill.MenuItem("2. Another file.txt"),
-                    new Quill.MenuItem("3. .yup"),
-                ]),
-                new Quill.Separator(),
-                new Quill.MenuItem("Quit"),
-            ]),
-            new Quill.Separator(),
-            new Quill.MenuItem("Quit"),
-        ]),
-        new Quill.Separator(),
-        new Quill.MenuItem("Quit"),
-    ]);
-
     panels.add(
         Object.values(Quill.get_panels())
-            .filter((panel) => panel.is_closable())
+            .filter((panel) => panel.is_closeable())
             .map((panel) => {
                 const name = panel.get_name();
                 const config = { toggleable: true, toggled: panel.is_open() };

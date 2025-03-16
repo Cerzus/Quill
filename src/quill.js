@@ -82,7 +82,7 @@
     class Panel extends QuillElement {
         #id;
         #name;
-        #closable;
+        #closeable;
         #closed;
         #on_close_callback;
 
@@ -104,7 +104,8 @@
 
             this.#create_id(name);
             this.#name = name;
-            this.#closable = !this.get_arg_config().not_closable;
+            this.#closeable = !this.get_arg_config().not_closeable;
+            this.#closed = !!this.get_arg_config().closed;
 
             const element = this.get_element();
             element.addEventListener("mousedown", (e) => {
@@ -117,7 +118,7 @@
                 if (e.button === 0) start_resizing_panel(this, e);
             });
 
-            if (this.#closable) {
+            if (this.#closeable) {
                 const close_button = Util.element_from_html(`<div class="quill-close-button"></div>`);
                 close_button.addEventListener("click", (e) => {
                     if (e.button === 0) {
@@ -140,8 +141,10 @@
                 this.set_position({ top: config.y, left: config.x });
                 this.set_size({ width: config.w, height: config.h });
                 this.set_z_index(stored_index);
-                if (!config.o) this.#close();
+                this.#closed = !config.o;
             }
+
+            if (this.#closed) this.#close();
 
             quill_config.content_element.append(this.get_element());
         }
@@ -150,7 +153,7 @@
 
         get_id = () => this.#id;
         get_name = () => this.#name;
-        is_closable = () => this.#closable;
+        is_closeable = () => this.#closeable;
         is_open = () => !this.#closed;
         on_close = (callback) => (this.#on_close_callback = callback);
         open() {
@@ -201,14 +204,14 @@
             }
         }
         #open() {
-            if (this.#closable) {
+            if (this.#closeable) {
                 this.#closed = false;
                 this.get_element().style.display = "";
                 show_panel_on_top(this);
             }
         }
         #close() {
-            if (this.#closable) {
+            if (this.#closeable) {
                 this.#closed = true;
                 this.get_element().style.display = "none";
             }
