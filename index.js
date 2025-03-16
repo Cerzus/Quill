@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     new Quill.MenuItem("3. .yup"),
                 ]),
                 new Quill.Separator(),
-                new Quill.MenuItem("Quit", { toggleable: true, toggled: false }, (element) => {
+                new Quill.MenuItem("Quit", { toggleable: true, toggled: true }, (element) => {
                     console.log("Quit", element.is_toggled());
                 }),
             ])

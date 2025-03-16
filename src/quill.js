@@ -79,35 +79,37 @@
 
     /* Quill.Panel */
 
-    class Panel extends QuillPanel {
+    class Panel extends QuillElement {
         #id;
         #name;
         #closable;
         #closed;
         #on_close_callback;
 
-        constructor(name) {
-            const handle_arguments = (args) => {
-                if (args[1] instanceof QuillElement || args[1] instanceof Array || args[1] instanceof Function) {
-                    return [args[1], false];
-                } else if (args[1] instanceof Object) {
-                    const config = args[1];
-                    return [args[2], !!config.not_closable];
-                }
-                return [null, false];
-            };
-
-            const [children, not_closable] = handle_arguments(arguments);
-
-            super(name, children);
-
-            this.#closable = !not_closable;
+        constructor(name, ...args) {
+            super(
+                `<div class="quill-panel">
+                    <div class="quill-panel-title-bar">
+                        <div>${name}</div>
+                        <div class="quill-close-button"></div>
+                    </div>
+                    <div class="quill-panel-menu-bar-container"></div>
+                    <div class="quill-panel-content"></div>
+                    <table class="quill-panel-resizer">
+                        <tr><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td></tr>
+                        <tr><td></td><td></td><td></td></tr>
+                    </table>
+                </div>`,
+                ...args
+            );
+            this.add(this.get_arg_children());
 
             this.#create_id(name);
             this.#name = name;
+            this.#closable = !this.get_arg_config().not_closable;
 
             const element = this.get_element();
-
             element.addEventListener("mousedown", (e) => {
                 if (e.button === 0) show_panel_on_top(this);
             });
@@ -124,14 +126,13 @@
                 }
             });
 
-            const id = this.#id;
-            const stored_index = quill_panels_order.indexOf(id);
+            const stored_index = quill_panels_order.indexOf(this.#id);
             if (stored_index < 0) {
                 const new_index = quill_panels_order.length;
                 this.set_position({ top: new_index * 25, left: new_index * 25 });
                 this.set_size({ width: 300, height: 200 });
                 this.set_z_index(new_index);
-                quill_panels_order.push(id);
+                quill_panels_order.push(this.#id);
             } else {
                 const config = stored_panels_config_at_init[stored_index];
                 this.set_position({ top: config.y, left: config.x });
@@ -140,7 +141,7 @@
                 if (!config.o) this.#close();
             }
 
-            quill_config.content_element.append(element);
+            quill_config.content_element.append(this.get_element());
         }
 
         // Public methods
@@ -149,6 +150,7 @@
         get_name = () => this.#name;
         is_closable = () => this.#closable;
         is_open = () => !this.#closed;
+        on_close = (callback) => (this.#on_close_callback = callback);
         open() {
             this.#open();
             store_panels_config();
@@ -157,10 +159,45 @@
             this.#close();
             store_panels_config();
         }
-        on_close = (callback) => (this.#on_close_callback = callback);
+        get_position() {
+            // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
+            const display = this.get_element().style.display;
+            this.get_element().style.display = "";
+            const position = { top: this.get_element().offsetTop, left: this.get_element().offsetLeft };
+            this.get_element().style.display = display;
+            return position;
+        }
+        get_size() {
+            // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
+            const display = this.get_element().style.display;
+            this.get_element().style.display = "";
+            const size = { width: this.get_element().offsetWidth, height: this.get_element().offsetHeight };
+            this.get_element().style.display = display;
+            return size;
+        }
+        set_position(position) {
+            this.get_element().style.top = `${position.top}px`;
+            this.get_element().style.left = `${position.left}px`;
+        }
+        set_size(size) {
+            this.get_element().style.width = `${size.width}px`;
+            this.get_element().style.height = `${size.height}px`;
+        }
+        set_z_index(z_index) {
+            this.get_element().style.zIndex = z_index;
+        }
 
         // Private methods
 
+        _add_child(child) {
+            const menu_bar_container_element = this.get_element().querySelector(".quill-panel-menu-bar-container");
+            const content_element = this.get_element().querySelector(".quill-panel-content");
+            if (child instanceof QuillMenuBar) {
+                menu_bar_container_element.append(child.get_element());
+            } else {
+                content_element.append(child.get_element());
+            }
+        }
         #open() {
             if (this.#closable) {
                 this.#closed = false;
@@ -191,25 +228,22 @@
         #menu_element;
         #hover_count = 0;
 
-        constructor(title, children) {
-            super(`<div>${title}</div><div class="quill-arrow-right"></div>`);
+        constructor(title, ...args) {
+            super(`<div>${title}</div><div class="quill-arrow-right"></div>`, ...args);
             this.#menu_element = Util.element_from_html(`<div class="quill-menu"></div>`);
             for (const element of [this.get_element(), this.#menu_element]) {
                 element.addEventListener("mouseenter", this.#on_mouseenter.bind(this));
                 element.addEventListener("mouseleave", this.#on_mouseleave.bind(this));
             }
-            this.add(children);
+            this.add(this.get_arg_children());
             quill_config.content_element.append(this.#menu_element);
-        }
-
-        // Public methods
-
-        add_child(child) {
-            this.#menu_element.append(child.get_element());
         }
 
         // Private methods
 
+        _add_child(child) {
+            this.#menu_element.append(child.get_element());
+        }
         #on_mouseenter() {
             this.#hover_count++;
             if (this.get_parent() instanceof Menu) this.get_parent().#on_mouseenter?.();

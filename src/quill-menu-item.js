@@ -4,35 +4,27 @@ class QuillMenuItem extends QuillElement {
     #toggleable = false;
     #toggled = false;
 
-    constructor(title) {
-        super(`<label class="quill-menu-item">${title}</label>`);
-
-        const add_mouse_up_event_listener = (callback) => {
-            this.get_element().addEventListener("mouseup", (e) => {
-                if (e.button === 0) {
-                    if (this.#toggleable) this.#set_toggled(!this.#toggled);
-                    callback(this, e);
-                    e.preventDefault();
-                    return false;
-                }
-            });
-        };
-
-        if (arguments[1] instanceof Function) {
-            add_mouse_up_event_listener(arguments[1]);
-        } else if (arguments[1] instanceof Object) {
-            const config = arguments[1];
-            this.#set_toggleable(config.toggleable);
-            this.#set_toggled_init(config.toggled);
-            if (arguments[2] instanceof Function) {
-                add_mouse_up_event_listener(arguments[2]);
+    constructor(title, ...args) {
+        super(`<label class="quill-menu-item">${title}</label>`, ...args);
+        this.#set_toggleable(this.get_arg_config().toggleable);
+        this.#set_toggled_init(this.get_arg_config().toggled);
+        this.get_element().addEventListener("mouseup", (e) => {
+            if (e.button === 0) {
+                if (this.#toggleable) this.#set_toggled(!this.#toggled);
+                this.get_arg_callback()(this, e);
+                e.preventDefault();
+                return false;
             }
-        }
+        });
     }
+
+    // Public methods
 
     is_toggleable = () => this.#toggleable;
     is_toggled = () => this.#toggled;
     set_toggle = (toggle) => this.#set_toggled_init(toggle);
+
+    // Private methods
 
     #set_toggleable(toggleable) {
         this.#toggleable = !!toggleable;
