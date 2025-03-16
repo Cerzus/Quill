@@ -234,7 +234,7 @@
         #hover_count = 0;
 
         constructor(title, ...args) {
-            super(`<div>${title}</div><div class="quill-arrow-right"></div>`, ...args);
+            super(title, ...args);
             this.#menu_element = Util.element_from_html(`<div class="quill-menu"></div>`);
             for (const element of [this.get_element(), this.#menu_element]) {
                 element.addEventListener("mouseenter", this.#on_mouseenter.bind(this));
@@ -242,6 +242,9 @@
             }
             this.add(this.get_arg_children());
             quill_config.content_element.append(this.#menu_element);
+            this.get_element()
+                .querySelector(":nth-child(3)")
+                .append(Util.element_from_html(`<div class="quill-arrow-right"></div>`));
         }
 
         // Private methods

@@ -2,9 +2,9 @@
 
 class Util {
     static element_from_html(html) {
-        const div = document.createElement("div");
-        div.innerHTML = html.trim();
-        return div.firstChild;
+        const template = document.createElement("template");
+        template.innerHTML = html;
+        return template.content.firstChild;
     }
 
     static assert(condition, message = "Assertion failed") {

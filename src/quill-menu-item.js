@@ -5,7 +5,8 @@ class QuillMenuItem extends QuillElement {
     #toggled = false;
 
     constructor(title, ...args) {
-        super(`<label class="quill-menu-item">${title}</label>`, ...args);
+        super(`<label class="quill-menu-item"><div></div><div>${title}</div><div></div></label>`, ...args);
+
         this.#set_toggleable(this.get_arg_config().toggleable);
         this.#set_toggled_init(this.get_arg_config().toggled);
         this.get_element().addEventListener("mouseup", (e) => {
@@ -28,7 +29,11 @@ class QuillMenuItem extends QuillElement {
 
     #set_toggleable(toggleable) {
         this.#toggleable = !!toggleable;
-        if (this.#toggleable) this.get_element().prepend(new QuillElement(`<input type="checkbox" />`).get_element());
+        if (this.#toggleable) {
+            this.get_element()
+                .querySelector(":nth-child(1)")
+                .append(new QuillElement(`<input type="checkbox" />`).get_element());
+        }
     }
     #set_toggled_init(toggled) {
         this.#set_toggled(toggled);
