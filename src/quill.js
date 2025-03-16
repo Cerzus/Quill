@@ -123,7 +123,7 @@
                 close_button.addEventListener("click", (e) => {
                     if (e.button === 0) {
                         this.close();
-                        this.#on_close_callback?.();
+                        this.#on_close_callback?.(e);
                     }
                 });
                 element.querySelector(".quill-panel-title-bar").append(close_button);
@@ -297,6 +297,17 @@
     function get_panels() {
         return quill_panels;
     }
+    function open_file_dialog(...args) {
+        const { config, callback } = Util.config_and_callback_from_arguments(...args);
+        const input = document.createElement("input");
+        input.type = "file";
+        if (config.accept) input.accept = config.accept.join();
+        if (config.multiple) input.multiple = true;
+        input.addEventListener("change", (e) => {
+            callback(input.multiple ? input.files : input.files[0], e);
+        });
+        input.click();
+    }
 
     // Helper functions
 
@@ -307,7 +318,6 @@
         }
         store_panels_config();
     }
-
     function start_moving_panel(panel, e) {
         if (moving === null && resizing === null) {
             const position = panel.get_position();
@@ -315,7 +325,6 @@
             e.preventDefault();
         }
     }
-
     function finish_moving_panel(e) {
         if (moving !== null) {
             moving = null;
@@ -323,7 +332,6 @@
             e.preventDefault();
         }
     }
-
     function finish_resizing_panel(e) {
         if (resizing !== null) {
             resizing = null;
@@ -331,7 +339,6 @@
             e.preventDefault();
         }
     }
-
     function start_resizing_panel(panel, e) {
         if (resizing === null && moving === null) {
             const position = panel.get_position();
@@ -353,7 +360,6 @@
             e.preventDefault();
         }
     }
-
     function store_panels_config() {
         const panels_config = quill_panels_order
             .filter((id) => quill_panels[id])
@@ -366,7 +372,6 @@
             });
         localStorage.setItem("quill_panels", JSON.stringify(panels_config));
     }
-
     function load_panels_config() {
         return JSON.parse(localStorage.getItem("quill_panels") ?? "[]");
     }
@@ -386,4 +391,5 @@
     Quill.MenuItem = QuillMenuItem;
 
     Quill.get_panels = get_panels;
+    Quill.open_file_dialog = open_file_dialog;
 })((window.Quill = window.Quill || {}));

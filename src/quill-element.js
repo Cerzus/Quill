@@ -4,23 +4,17 @@ class QuillElement {
     #element;
     #parent = null;
     #children = [];
-    #arg_config = Object.freeze({});
-    #arg_children = [];
-    #arg_callback = () => {};
+    #arg_config;
+    #arg_callback;
+    #arg_children;
 
     constructor(html, ...args) {
         this.#element = Util.element_from_html(html);
 
-        for (let i = 0; i < Math.min(args.length, 3); i++) {
-            const arg = args[i];
-            if (arg instanceof QuillElement || arg instanceof Array) {
-                this.#arg_children = arg;
-            } else if (arg instanceof Function) {
-                this.#arg_callback = arg;
-            } else if (arg instanceof Object) {
-                this.#arg_config = Object.freeze(arg);
-            }
-        }
+        const named_args = Util.config_callback_and_children_from_arguments(...args);
+        this.#arg_config = named_args.config;
+        this.#arg_callback = named_args.callback;
+        this.#arg_children = named_args.children;
     }
 
     // Public methods
@@ -30,8 +24,8 @@ class QuillElement {
     get_children = () => this.#children;
 
     get_arg_config = () => this.#arg_config;
-    get_arg_children = () => this.#arg_children;
     get_arg_callback = () => this.#arg_callback;
+    get_arg_children = () => this.#arg_children;
 
     add(children) {
         if (!children) return;

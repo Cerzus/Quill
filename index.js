@@ -3,32 +3,39 @@
 document.addEventListener("DOMContentLoaded", () => {
     Quill.init(document.body);
 
-    new Quill.Panel(
-        "Panel",
-        new Quill.MenuBar(
+    new Quill.Panel("Game Boy", { not_closeable: true }, [
+        new Quill.MenuBar([
             new Quill.Menu("File", [
-                new Quill.MenuItem("Load...", () => console.log("Load")),
-                new Quill.Menu("Recent", [
-                    new Quill.MenuItem("1. some_file.txt"),
-                    new Quill.MenuItem("2. Another file.txt"),
-                    new Quill.MenuItem("3. .yup"),
+                new Quill.MenuItem("Open ROM file...", () => {
+                    Quill.open_file_dialog({ accept: [".gb", ".gbc"] }, (file) => console.log("Open ROM file", file));
+                }),
+                new Quill.Menu("Open recent ROM", [
+                    new Quill.MenuItem("zelda.gb"),
+                    new Quill.MenuItem("pokemon.gb"),
+                    new Quill.MenuItem("mario.gb"),
                 ]),
                 new Quill.Separator(),
-                new Quill.MenuItem("Quit", { toggleable: true, toggled: true }, (element) => {
-                    console.log("Quit", element.is_toggled());
-                }),
-            ])
-        )
-    );
-    new Quill.Panel("Panel 2", [], { closed: true, not_closeable: true });
+                new Quill.MenuItem("Boot ROMs...", () => {}),
+            ]),
+            new Quill.Menu("Tools", [
+                new Quill.MenuItem("CPU viewer", { toggleable: true }),
+                new Quill.MenuItem("PPU viewer", { toggleable: true }),
+                new Quill.MenuItem("APU viewer", { toggleable: true }),
+            ]),
+        ]),
+    ]);
+
+    new Quill.Panel("Panel 2", []);
     new Quill.Panel("Panel 3", { closed: true }, []);
 
     let panels = null;
 
-    new Quill.Panel("Menu test", { not_closeable: true }, [
+    new Quill.Panel("Menu test", { not_closeable: true, closed: true }, [
         new Quill.MenuBar([
             new Quill.Menu("File", [
-                new Quill.MenuItem("Load...", () => console.log("Load")),
+                new Quill.MenuItem("Load...", () =>
+                    Quill.open_file_dialog((file) => console.log("Load", file), { multiple: true })
+                ),
                 new Quill.Menu("Recent", [
                     new Quill.MenuItem("1. some_file.txt"),
                     new Quill.MenuItem("2. Another file.txt"),

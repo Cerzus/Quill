@@ -1,1 +1,5 @@
 - MenuBar: Improve show/hide logic, with VSCode's UI as an example
+- Panel: Use non-overlapping shapes for the close button and use config text color
+- Menu: Key shortcuts
+- Panel: highlight topmost ("active") panel
+- Element: remove children
