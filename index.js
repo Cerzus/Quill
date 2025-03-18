@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new Quill.Panel("Game Boy", { not_closeable: true }, [
         new Quill.MenuBar([
             new Quill.Menu("File", [
-                new Quill.MenuItem("Open ROM file...", () => {
+                new Quill.MenuItem("Open ROM file...", { ctrl_key: "O" }, () => {
                     Quill.open_file_dialog({ accept: [".gb", ".gbc"] }, (file) => console.log("Open ROM file", file));
                 }),
                 new Quill.Menu("Open recent ROM", [
@@ -33,9 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new Quill.Panel("Menu test", { not_closeable: true, closed: true }, [
         new Quill.MenuBar([
             new Quill.Menu("File", [
-                new Quill.MenuItem("Load...", () =>
-                    Quill.open_file_dialog((files) => console.log("Load", files), { multiple: true })
-                ),
+                new Quill.MenuItem("Load..."),
                 new Quill.Menu("Recent", [
                     new Quill.MenuItem("1. some_file.txt"),
                     new Quill.MenuItem("2. Another file.txt"),
@@ -54,7 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         new Quill.MenuItem("3. .yup"),
                     ]),
                 ]),
-                new Quill.MenuItem("Load..."),
+                new Quill.MenuItem("Load...", { ctrl_key: "L" }, () =>
+                    Quill.open_file_dialog((files) => console.log("Load", files), { multiple: true })
+                ),
                 new Quill.Menu("Recent", [
                     new Quill.MenuItem("1. some_file.txt"),
                     new Quill.MenuItem("2. Another file.txt"),
@@ -77,8 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     new Quill.MenuItem("Quit"),
                 ]),
                 new Quill.Separator(),
-                new Quill.MenuItem("Quit", { toggleable: true, toggled: true }, (element) => {
-                    console.log("Quit", element.is_toggled());
+                new Quill.MenuItem("Quit", { toggleable: true, toggled: true, ctrl_key: "q" }, (element, e) => {
+                    console.log("Quit", element.is_toggled(), e);
                 }),
             ]),
             (panels = new Quill.Menu(

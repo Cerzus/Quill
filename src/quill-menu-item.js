@@ -1,22 +1,47 @@
 "use strict";
 
 class QuillMenuItem extends QuillElement {
+    static #ctrl_keys = {};
     #toggleable = false;
     #toggled = false;
 
-    constructor(title, ...args) {
-        super(`<label class="quill-menu-item"><div></div><div>${title}</div><div></div></label>`, ...args);
+    static init() {
+        window.addEventListener("keydown", (e) => {
+            if (e.ctrlKey && QuillMenuItem.#ctrl_keys[e.key]) {
+                QuillMenuItem.#ctrl_keys[e.key](e);
+                e.preventDefault();
+            }
+        });
+    }
 
-        this.#set_toggleable(this.get_arg_config().toggleable);
-        this.#set_toggled_init(this.get_arg_config().toggled);
+    constructor(title, ...args) {
+        super(
+            `<label class="quill-menu-item">
+                <div></div>
+                <div>${title}</div>
+                <div></div>
+                <div></div>
+            </label>`,
+            ...args
+        );
+
+        const config = this.get_arg_config();
+        this.#set_toggleable(config.toggleable);
+        this.#set_toggled_init(config.toggled);
         this.get_element().addEventListener("mouseup", (e) => {
             if (e.button === 0) {
                 if (this.#toggleable) this.#set_toggled(!this.#toggled);
                 this.get_arg_callback()(this, e);
                 e.preventDefault();
-                return false;
             }
         });
+        if (config.ctrl_key) {
+            QuillMenuItem.#ctrl_keys[config.ctrl_key.toLowerCase()] = (e) => {
+                if (this.#toggleable) this.#set_toggled_init(!this.#toggled);
+                this.get_arg_callback()(this, e);
+            };
+            this.get_element().querySelector(":nth-child(3)").innerHTML = `Ctrl+${config.ctrl_key.toUpperCase()}`;
+        }
     }
 
     // Public methods

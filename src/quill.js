@@ -75,6 +75,8 @@
             finish_moving_panel(e);
             finish_resizing_panel(e);
         });
+
+        QuillMenuItem.init();
     };
 
     /* Quill.Panel */
@@ -243,7 +245,7 @@
             this.add(this.get_arg_children());
             quill_config.content_element.append(this.#menu_element);
             this.get_element()
-                .querySelector(":nth-child(3)")
+                .querySelector(":nth-child(4)")
                 .append(Util.element_from_html(`<div class="quill-arrow-right"></div>`));
         }
 
