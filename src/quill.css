@@ -34,32 +34,13 @@
     font-weight: bold;
     cursor: move;
     justify-content: space-between;
+    align-items: center;
 }
 .quill .quill-close-button {
-    width: var(--quill-panel-title-bar-font-size);
-    height: var(--quill-panel-title-bar-font-size);
-    position: relative;
-    opacity: 0.5;
+    font-size: 1.5em;
+    line-height: 0.5em;
     cursor: initial;
-}
-.quill .quill-close-button:before,
-.quill .quill-close-button:after {
-    content: "";
-    transform: rotate(45deg);
-    position: absolute;
-    background-color: white;
-}
-.quill .quill-close-button:before {
-    left: 50%;
-    width: 15%;
-    margin-left: -7.5%;
-    height: 100%;
-}
-.quill .quill-close-button:after {
-    top: 50%;
-    height: 15%;
-    margin-top: -7.5%;
-    width: 100%;
+    user-select: none;
 }
 
 .quill .quill-panel-content {
@@ -182,9 +163,7 @@
     border-width: 0 0.2em 0.2em 0;
     width: 0.5em;
     height: 0.5em;
-    margin: 0.1rem;
-}
-.quill .quill-arrow-right {
+    margin: 0.1em;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 }

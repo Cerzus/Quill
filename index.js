@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         new Quill.MenuBar([
             new Quill.Menu("File", [
                 new Quill.MenuItem("Load...", () =>
-                    Quill.open_file_dialog((file) => console.log("Load", file), { multiple: true })
+                    Quill.open_file_dialog((files) => console.log("Load", files), { multiple: true })
                 ),
                 new Quill.Menu("Recent", [
                     new Quill.MenuItem("1. some_file.txt"),

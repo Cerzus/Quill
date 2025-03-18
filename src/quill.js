@@ -119,7 +119,7 @@
             });
 
             if (this.#closeable) {
-                const close_button = Util.element_from_html(`<div class="quill-close-button"></div>`);
+                const close_button = Util.element_from_html(`<div class="quill-close-button">&times;</div>`);
                 close_button.addEventListener("click", (e) => {
                     if (e.button === 0) {
                         this.close();
