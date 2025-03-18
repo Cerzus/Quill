@@ -100,7 +100,7 @@
                 </div>`,
                 ...args
             );
-            this.add(this.get_arg_children());
+            this.add_children(this.get_arg_children());
 
             this.#create_id(name);
             this.#name = name;
@@ -240,7 +240,7 @@
                 element.addEventListener("mouseenter", this.#on_mouseenter.bind(this));
                 element.addEventListener("mouseleave", this.#on_mouseleave.bind(this));
             }
-            this.add(this.get_arg_children());
+            this.add_children(this.get_arg_children());
             quill_config.content_element.append(this.#menu_element);
             this.get_element()
                 .querySelector(":nth-child(4)")
@@ -251,6 +251,9 @@
 
         _add_child(child) {
             this.#menu_element.append(child.get_element());
+        }
+        _remove() {
+            this.#menu_element.remove();
         }
         #on_mouseenter() {
             this.#hover_count++;

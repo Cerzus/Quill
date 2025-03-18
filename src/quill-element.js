@@ -27,8 +27,8 @@ class QuillElement {
     get_arg_callback = () => this.#arg_callback;
     get_arg_children = () => this.#arg_children;
 
-    add(...children) {
-        if (children[0] instanceof Array) return this.add(...children[0]);
+    add_children(...children) {
+        if (children[0] instanceof Array) return this.add_children(...children[0]);
         for (const child of children) {
             const msg = `Object to add '${child}' must be of type Quill.${this.constructor.name}`;
             if (!Util.warning(child instanceof QuillElement, msg)) return;
@@ -37,16 +37,19 @@ class QuillElement {
             this._add_child(child);
         }
     }
-    remove(...children) {
-        if (children[0] instanceof Array) return this.remove(...children[0]);
-        for (const child of children) {
-            const msg = `Object to remove '${child}' must be of type Quill.${this.constructor.name}`;
-            if (!Util.warning(child instanceof QuillElement, msg)) return;
-            const index = this.#children.indexOf(child);
-            const msg2 = `Object to remove '${child}' is not a child of this Quill.${this.constructor.name}`;
-            if (!Util.warning(index >= 0, msg2)) return;
-            child.get_element().remove();
-            this.#children.splice(index, 1);
+    remove() {
+        this.#element.remove();
+        this._remove();
+        for (const child of this.#children.slice()) {
+            child.remove();
         }
+        this.#parent.#children.splice(this.#parent.#children.indexOf(this), 1);
     }
+
+    // Private methods
+
+    _add_child() {
+        Util.assert(false, `TODO: Implement '_add_child(child)' in ${this.constructor.name}`);
+    }
+    _remove() {} // Implement in extending classes that create extra DOM elements outside #element.
 }

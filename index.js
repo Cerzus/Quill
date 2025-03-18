@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let panels = null;
     let recent = null;
 
-    new Quill.Panel("Menu test", { not_closeable: true, closed: true }, [
+    const foo = new Quill.Panel("Menu test", { not_closeable: true, closed: true }, [
         new Quill.MenuBar([
             new Quill.Menu("File", [
                 new Quill.MenuItem("Load..."),
@@ -53,8 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     Quill.open_file_dialog(
                         (files) => {
                             console.log("Load", files);
-                            recent.remove(recent.get_children());
-                            recent.add([...files].map((file) => new Quill.MenuItem(file.name)));
+                            recent.get_children().forEach((child) => child.remove());
+                            recent.add_children([...files].map((file) => new Quill.MenuItem(file.name)));
                         },
                         { multiple: true }
                     )
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ]),
     ]);
 
-    panels.add(
+    panels.add_children(
         Object.values(Quill.get_panels())
             .filter((panel) => panel.is_closeable())
             .map((panel) => {

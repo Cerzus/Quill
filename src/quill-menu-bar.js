@@ -3,7 +3,7 @@
 class QuillMenuBar extends QuillElement {
     constructor(...args) {
         super(`<div class="quill-menu-bar"></div>`, ...args);
-        this.add(this.get_arg_children());
+        this.add_children(this.get_arg_children());
     }
 
     // Private methods
