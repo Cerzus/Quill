@@ -48,6 +48,7 @@
     padding: var(--quill-panel-padding-size);
     flex-grow: 1;
     flex-direction: column;
+    overflow: auto;
 }
 
 .quill table.quill-panel-resizer {
@@ -169,4 +170,13 @@
     margin: 0.1em;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
+}
+
+.quill .quill-fixed-canvas {
+    flex-grow: 1;
+    justify-content: center;
+}
+.quill .quill-fixed-canvas > canvas {
+    object-fit: contain;
+    height: 100%;
 }

@@ -17,12 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 new Quill.Separator(),
                 new Quill.MenuItem("Boot ROMs...", () => {}),
             ]),
+            new Quill.Menu("Emulation", [
+                new Quill.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console")),
+            ]),
             new Quill.Menu("Tools", [
                 new Quill.MenuItem("CPU viewer", { toggleable: true }),
                 new Quill.MenuItem("PPU viewer", { toggleable: true }),
                 new Quill.MenuItem("APU viewer", { toggleable: true }),
             ]),
         ]),
+        new Quill.FixedCanvas({ width: 160, height: 144, min_scale: 1 }),
     ]);
 
     new Quill.Panel("Panel 2", []);
@@ -31,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let panels = null;
     let recent = null;
 
-    const foo = new Quill.Panel("Menu test", { not_closeable: true, closed: true }, [
+    new Quill.Panel("Test panel", { not_closeable: true, closed: true }, [
+        new Quill.FixedCanvas({ min_scale: 1.5, max_scale: 2 }),
         new Quill.MenuBar([
             new Quill.Menu("File", [
                 new Quill.MenuItem("Load..."),

@@ -1,3 +1,6 @@
 - MenuBar: Improve show/hide logic, with VSCode's UI as an example
 - Panel: highlight topmost ("active") panel
 - MenuBar: Disable/enable MenuItems
+- Add tests
+- Element: Limit types of children possible to add
+- Style scrollbars

@@ -3,7 +3,7 @@
 class Util {
     static element_from_html(html) {
         const template = document.createElement("template");
-        template.innerHTML = html;
+        template.innerHTML = html.trim();
         return template.content.firstChild;
     }
 

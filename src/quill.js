@@ -134,13 +134,13 @@
                 const new_index = quill_panels_order.length;
                 this.set_position({ top: new_index * 25, left: new_index * 25 });
                 this.set_size({ width: 300, height: 200 });
-                this.set_z_index(new_index);
+                set_panel_z_index(this, new_index);
                 quill_panels_order.push(this.#id);
             } else {
                 const config = stored_panels_config_at_init[stored_index];
                 this.set_position({ top: config.y, left: config.x });
                 this.set_size({ width: config.w, height: config.h });
-                this.set_z_index(stored_index);
+                set_panel_z_index(this, stored_index);
                 this.#closed = !config.o;
             }
 
@@ -155,6 +155,7 @@
         get_name = () => this.#name;
         is_closeable = () => this.#closeable;
         is_open = () => !this.#closed;
+        is_closed = () => this.#closed;
         on_close = (callback) => (this.#on_close_callback = callback);
         open() {
             this.#open();
@@ -187,9 +188,6 @@
         set_size(size) {
             this.get_element().style.width = `${size.width}px`;
             this.get_element().style.height = `${size.height}px`;
-        }
-        set_z_index(z_index) {
-            this.get_element().style.zIndex = z_index;
         }
 
         // Private methods
@@ -317,9 +315,12 @@
     function show_panel_on_top(panel) {
         quill_panels_order.push(quill_panels_order.splice(quill_panels_order.indexOf(panel.get_id()), 1)[0]);
         for (let i = 0; i < quill_panels_order.length; i++) {
-            quill_panels[quill_panels_order[i]]?.set_z_index(i);
+            set_panel_z_index(quill_panels[quill_panels_order[i]], i);
         }
         store_panels_config();
+    }
+    function set_panel_z_index(panel, z_index) {
+        panel.get_element().style.zIndex = z_index;
     }
     function start_moving_panel(panel, e) {
         if (moving === null && resizing === null) {
@@ -392,6 +393,7 @@
     Quill.MenuBar = QuillMenuBar;
     Quill.Menu = Menu;
     Quill.MenuItem = QuillMenuItem;
+    Quill.FixedCanvas = QuillFixedCanvas;
 
     Quill.get_panels = get_panels;
     Quill.open_file_dialog = open_file_dialog;
