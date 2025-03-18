@@ -12,6 +12,16 @@ class Util {
         return condition;
     }
 
+    static warning(condition, message = "Warning") {
+        if (!condition) console.warn(message);
+        return condition;
+    }
+
+    static error(condition, message = "Error") {
+        if (!condition) throw message;
+        return condition;
+    }
+
     static config_and_callback_from_arguments(...args) {
         const result = { config: Object.freeze({}), callback: () => {} };
         for (let i = 0; i < Math.min(args.length, 2); i++) {

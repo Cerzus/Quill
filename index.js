@@ -29,16 +29,13 @@ document.addEventListener("DOMContentLoaded", () => {
     new Quill.Panel("Panel 3", { closed: true }, []);
 
     let panels = null;
+    let recent = null;
 
     new Quill.Panel("Menu test", { not_closeable: true, closed: true }, [
         new Quill.MenuBar([
             new Quill.Menu("File", [
                 new Quill.MenuItem("Load..."),
-                new Quill.Menu("Recent", [
-                    new Quill.MenuItem("1. some_file.txt"),
-                    new Quill.MenuItem("2. Another file.txt"),
-                    new Quill.MenuItem("3. .yup"),
-                ]),
+                (recent = new Quill.Menu("Recent")),
                 new Quill.Separator(),
                 new Quill.MenuItem("Quit"),
             ]),
@@ -52,8 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
                         new Quill.MenuItem("3. .yup"),
                     ]),
                 ]),
-                new Quill.MenuItem("Load...", { ctrl_key: "L" }, () =>
-                    Quill.open_file_dialog((files) => console.log("Load", files), { multiple: true })
+                new Quill.MenuItem("Load...", { ctrl_key: "L" }, (element) =>
+                    Quill.open_file_dialog(
+                        (files) => {
+                            console.log("Load", files);
+                            recent.remove(recent.get_children());
+                            recent.add([...files].map((file) => new Quill.MenuItem(file.name)));
+                        },
+                        { multiple: true }
+                    )
                 ),
                 new Quill.Menu("Recent", [
                     new Quill.MenuItem("1. some_file.txt"),

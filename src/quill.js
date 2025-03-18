@@ -2,9 +2,7 @@
 
 (function (Quill) {
     Quill.init = (root_element) => {
-        if (!Util.assert(root_element instanceof Element)) {
-            return;
-        }
+        if (!Util.error(root_element instanceof Element)) return;
 
         const content_element = Util.element_from_html(`<div class="quill-content"></div>`);
 
@@ -297,7 +295,7 @@
     // Public methods
 
     function get_panels() {
-        return quill_panels;
+        return { ...quill_panels };
     }
     function open_file_dialog(...args) {
         const { config, callback } = Util.config_and_callback_from_arguments(...args);

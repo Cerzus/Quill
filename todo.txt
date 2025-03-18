@@ -1,4 +1,3 @@
 - MenuBar: Improve show/hide logic, with VSCode's UI as an example
-- Menu: Key shortcuts
 - Panel: highlight topmost ("active") panel
-- Element: remove children
+- MenuBar: Disable/enable MenuItems
