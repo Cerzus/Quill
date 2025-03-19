@@ -30,6 +30,8 @@ class QuillElement {
     get_arg_callback = () => this.#arg_callback;
     get_arg_children = () => this.#arg_children;
 
+    get_panel = () => (this instanceof QuillPanel ? this : this.get_parent().get_panel());
+
     add_children(...children) {
         if (children[0] instanceof Array) return this.add_children(...children[0]);
         const msg = `No children allowed for ${this.constructor.name}`;

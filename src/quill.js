@@ -86,7 +86,7 @@
 
     /* Quill.Panel */
 
-    class QuillPanel extends QuillElement {
+    class Panel extends QuillPanel {
         #id;
         #name;
         #closeable;
@@ -275,6 +275,7 @@
             const element = this.get_element();
             if (config.ctrl_key) {
                 MenuItem.#ctrl_keys[config.ctrl_key.toLowerCase()] = (e) => {
+                    if (!this.get_panel().is_open()) return;
                     if (this.#toggleable) this.#set_toggled_init(!this.#toggled);
                     this.get_arg_callback()(this, e);
                 };
@@ -551,7 +552,7 @@
     Quill.Element = QuillElement; // TODO: Keep public or not?
     Quill.Separator = (...args) => new QuillSeparator(...args);
     Quill.Text = (...args) => new QuillText(...args);
-    Quill.Panel = (...args) => new QuillPanel(...args);
+    Quill.Panel = (...args) => new Panel(...args);
     Quill.MenuBar = (...args) => new QuillMenuBar(...args);
     Quill.Menu = (...args) => new Menu(...args);
     Quill.MenuItem = (...args) => new MenuItem(...args);

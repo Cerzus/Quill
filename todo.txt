@@ -1,4 +1,3 @@
-- MenuItem: Disable keyboard shortcuts for closed panels
 - Panel: highlight topmost ("active") panel
 - MenuBar: Disable/enable MenuItems
 - Add tests

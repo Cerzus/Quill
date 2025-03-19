@@ -25,7 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ]);
 
     Q.Panel("Panel 2", []);
-    Q.Panel("Panel 3", { closed: true }, []);
+
+    Q.Panel("Panel 3", { closed: true }, [
+        Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
+    ]);
 
     let panels = null;
     let recent = null;
