@@ -37,6 +37,10 @@
     cursor: move;
     justify-content: space-between;
     align-items: center;
+    gap: var(--quill-panel-padding-size);
+}
+.quill .quill-panel-title-bar > :nth-child(1) {
+    overflow: hidden;
 }
 .quill .quill-close-button {
     font-size: 1.5em;

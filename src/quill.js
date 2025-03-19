@@ -82,6 +82,23 @@
         });
 
         MenuItem.init();
+
+        Quill.Color = (...args) => new QuillColor(...args);
+        Quill.Element = QuillElement; // TODO: Keep public or not?
+        Quill.Separator = (...args) => new QuillSeparator(...args);
+        Quill.Text = (...args) => new QuillText(...args);
+        Quill.Panel = (...args) => new Panel(...args);
+        Quill.MenuBar = (...args) => new QuillMenuBar(...args);
+        Quill.Menu = (...args) => new Menu(...args);
+        Quill.MenuItem = (...args) => new MenuItem(...args);
+        Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
+        Quill.ColumnLayout = (...args) => new QuillColumnLayout(...args);
+        Quill.RowLayout = (...args) => new QuillRowLayout(...args);
+
+        Quill.get_panels = get_panels;
+        Quill.open_file_dialog = open_file_dialog;
+
+        Object.freeze(Quill);
     };
 
     /* Quill.Panel */
@@ -131,7 +148,7 @@
                 close_button.addEventListener("click", (e) => {
                     if (e.button === 0) {
                         this.close();
-                        this.#on_close_callback?.(e);
+                        this.#on_close_callback?.(this, e);
                     }
                 });
                 element.querySelector(".quill-panel-title-bar").append(close_button);
@@ -473,6 +490,10 @@
     }
     function show_panel_on_top(panel) {
         quill_panels_order.push(quill_panels_order.splice(quill_panels_order.indexOf(panel.get_id()), 1)[0]);
+        // Remove any id's of Panels not currently known (Panels created dynamically after page load)
+        for (let i = quill_panels_order.length - 1; i >= 0; i--) {
+            if (!quill_panels[quill_panels_order[i]]) quill_panels_order.splice(i, 1);
+        }
         for (let i = 0; i < quill_panels_order.length; i++) {
             set_panel_z_index(quill_panels[quill_panels_order[i]], i);
         }
@@ -547,21 +568,4 @@
     let prevent_menu_from_being_hidden = false;
 
     // Add all public-facing properties
-
-    Quill.Color = (...args) => new QuillColor(...args);
-    Quill.Element = QuillElement; // TODO: Keep public or not?
-    Quill.Separator = (...args) => new QuillSeparator(...args);
-    Quill.Text = (...args) => new QuillText(...args);
-    Quill.Panel = (...args) => new Panel(...args);
-    Quill.MenuBar = (...args) => new QuillMenuBar(...args);
-    Quill.Menu = (...args) => new Menu(...args);
-    Quill.MenuItem = (...args) => new MenuItem(...args);
-    Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
-    Quill.ColumnLayout = (...args) => new QuillColumnLayout(...args);
-    Quill.RowLayout = (...args) => new QuillRowLayout(...args);
-
-    Quill.get_panels = get_panels;
-    Quill.open_file_dialog = open_file_dialog;
-
-    Object.freeze(Quill);
 })((window.Quill = window.Quill || {}));

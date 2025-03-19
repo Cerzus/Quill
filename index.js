@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }),
                 Q.Menu("Open recent ROM", [Q.MenuItem("zelda.gb"), Q.MenuItem("pokemon.gb"), Q.MenuItem("mario.gb")]),
                 Q.Separator(),
-                Q.MenuItem("Boot ROMs...", () => {}),
+                Q.MenuItem("Boot ROMs...", () => {
+                    Q.Panel("Boot ROMS configuration").on_close((panel) => panel.remove());
+                }),
             ]),
             Q.Menu("Emulation", [Q.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console"))]),
             Q.Menu("Tools", [
