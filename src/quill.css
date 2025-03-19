@@ -141,7 +141,7 @@
     display: none;
 }
 .quill :not(.quill-menu-bar) > .quill-menu-item > :nth-child(2) {
-    padding: 0 0.5em;
+    padding: var(--quill-menu-item-padding-size) calc(0.5em + var(--quill-menu-item-padding-size));
 }
 
 .quill .quill-menu-item:hover,
