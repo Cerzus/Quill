@@ -1,4 +1,5 @@
-- MenuBar: Improve show/hide logic, with VSCode's UI as an example
+- MenuItem: Disable keyboard shortcuts for closed panels
 - Panel: highlight topmost ("active") panel
 - MenuBar: Disable/enable MenuItems
 - Add tests
+- Address TODO's

@@ -70,11 +70,18 @@
         });
 
         window.addEventListener("mouseup", (e) => {
-            finish_moving_panel(e);
-            finish_resizing_panel(e);
+            if (e.button === 0) {
+                finish_moving_panel(e);
+                finish_resizing_panel(e);
+                prevent_menu_from_being_hidden = false;
+            }
         });
 
-        QuillMenuItem.init();
+        content_element.addEventListener("mousedown", (e) => {
+            if (e.button === 0 && !prevent_menu_from_being_hidden) hide_active_menu_bar();
+        });
+
+        MenuItem.init();
     };
 
     /* Quill.Panel */
@@ -167,28 +174,32 @@
             store_panels_config();
         }
         get_position() {
+            const element = this.get_element();
+            const display = element.style.display;
             // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
-            const display = this.get_element().style.display;
-            this.get_element().style.display = "";
-            const position = { top: this.get_element().offsetTop, left: this.get_element().offsetLeft };
-            this.get_element().style.display = display;
+            element.style.display = "";
+            const position = { top: element.offsetTop, left: element.offsetLeft };
+            element.style.display = display;
             return position;
         }
         get_size() {
+            const element = this.get_element();
+            const display = element.style.display;
             // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
-            const display = this.get_element().style.display;
-            this.get_element().style.display = "";
-            const size = { width: this.get_element().offsetWidth, height: this.get_element().offsetHeight };
-            this.get_element().style.display = display;
+            element.style.display = "";
+            const size = { width: element.offsetWidth, height: element.offsetHeight };
+            element.style.display = display;
             return size;
         }
         set_position(position) {
-            this.get_element().style.top = `${position.top}px`;
-            this.get_element().style.left = `${position.left}px`;
+            const element = this.get_element();
+            element.style.top = `${position.top}px`;
+            element.style.left = `${position.left}px`;
         }
         set_size(size) {
-            this.get_element().style.width = `${size.width}px`;
-            this.get_element().style.height = `${size.height}px`;
+            const element = this.get_element();
+            element.style.width = `${size.width}px`;
+            element.style.height = `${size.height}px`;
         }
 
         // Private methods
@@ -226,11 +237,110 @@
         }
     }
 
+    /* Quill.MenuItem */
+
+    class MenuItem extends QuillMenuItem {
+        static #ctrl_keys = {};
+        static #initialized = false;
+        #toggleable = false;
+        #toggled = false;
+
+        // TODO: Make private somehow
+        static init() {
+            if (MenuItem.#initialized) return;
+            window.addEventListener("keydown", (e) => {
+                if (e.ctrlKey && MenuItem.#ctrl_keys[e.key]) {
+                    MenuItem.#ctrl_keys[e.key](e);
+                    e.preventDefault();
+                }
+            });
+        }
+
+        constructor(title, ...args) {
+            super(
+                `<label class="quill-menu-item">
+                    <div></div>
+                    <div>${title}</div>
+                    <div></div>
+                    <div></div>
+                </label>`,
+                [],
+                ...args
+            );
+
+            const config = this.get_arg_config();
+            this.#set_toggleable(config.toggleable);
+            this.#set_toggled_init(config.toggled);
+
+            const element = this.get_element();
+            if (config.ctrl_key) {
+                MenuItem.#ctrl_keys[config.ctrl_key.toLowerCase()] = (e) => {
+                    if (this.#toggleable) this.#set_toggled_init(!this.#toggled);
+                    this.get_arg_callback()(this, e);
+                };
+                element.querySelector(":nth-child(3)").innerHTML = `Ctrl+${config.ctrl_key.toUpperCase()}`;
+            }
+            if (this.#toggleable) {
+                element
+                    .querySelector(`input[type="checkbox"]`)
+                    .addEventListener("change", (e) => this.#set_toggled_state_and_notify_user(e));
+            } else {
+                element.addEventListener("mouseup", (e) => {
+                    if (e.button === 0) this.#notify_user(e);
+                });
+            }
+            element.addEventListener("mouseenter", () => this.#show_parent_menu_if_menu_bar_active());
+        }
+
+        // Public methods
+
+        is_toggleable = () => this.#toggleable;
+        is_toggled = () => this.#toggled;
+        set_toggle = (toggle) => this.#set_toggled_init(toggle);
+
+        // Private methods
+
+        #set_toggled_state_and_notify_user(e) {
+            if (this.#toggleable) this.#set_toggled(!this.#toggled);
+            this.#notify_user(e);
+        }
+        #notify_user(e) {
+            this.get_arg_callback()(this, e);
+            hide_active_menu_bar();
+        }
+        #show_parent_menu_if_menu_bar_active() {
+            if (active_menu_bar !== get_top_most_menu(this).get_parent()) return;
+            hide_active_menu();
+            const parent = this.get_parent();
+            if (parent instanceof Menu) {
+                parent.show();
+                active_menu = parent;
+            }
+        }
+        #set_toggleable(toggleable) {
+            this.#toggleable = !!toggleable;
+            if (this.#toggleable) {
+                this.get_element()
+                    .querySelector(":nth-child(1)")
+                    .append(new QuillElement(`<input type="checkbox" />`).get_element());
+            }
+        }
+        #set_toggled_init(toggled) {
+            this.#set_toggled(toggled);
+            if (this.#toggleable) {
+                const checkbox = this.get_element().querySelector('input[type="checkbox"]');
+                checkbox.checked = this.#toggled;
+            }
+        }
+        #set_toggled(toggled) {
+            this.#toggled = !!toggled;
+        }
+    }
+
     /* Quill.Menu */
 
     class Menu extends QuillMenu {
         #menu_element;
-        #hover_count = 0;
 
         constructor(title, ...args) {
             super(
@@ -243,17 +353,29 @@
                 [QuillMenu, QuillMenuItem, QuillSeparator],
                 ...args
             );
+
             this.#menu_element = Util.element_from_html(`<div class="quill-menu"></div>`);
-            for (const element of [this.get_element(), this.#menu_element]) {
-                element.addEventListener("mouseenter", this.#on_mouseenter.bind(this));
-                element.addEventListener("mouseleave", this.#on_mouseleave.bind(this));
-            }
+
+            const element = this.get_element();
+            element.addEventListener("mousedown", (e) => {
+                if (e.button === 0) this.#toggle_parent_menu_bar_active_state();
+            });
+            this.#menu_element.addEventListener("mousedown", (e) => {
+                if (e.button === 0) this.#prevent_from_being_hidden();
+            });
+            element.addEventListener("mouseenter", (e) => {
+                if (e.button === 0) this.#show_if_menu_bar_active();
+            });
+
             this.add_children(this.get_arg_children());
             quill_config.content_element.append(this.#menu_element);
-            this.get_element()
+            element
                 .querySelector(":nth-child(4)")
                 .append(Util.element_from_html(`<div class="quill-arrow-right"></div>`));
         }
+
+        show = () => this.#show();
+        hide = () => this.#hide();
 
         // Private methods
 
@@ -263,24 +385,38 @@
         _remove() {
             this.#menu_element.remove();
         }
-        #on_mouseenter() {
-            this.#hover_count++;
-            if (this.get_parent() instanceof Menu) this.get_parent().#on_mouseenter?.();
-            this.#show();
+        #toggle_parent_menu_bar_active_state() {
+            this.#prevent_from_being_hidden();
+            const parent = this.get_parent();
+            if (!(parent instanceof QuillMenuBar)) return;
+            if (active_menu_bar === parent) {
+                active_menu_bar = null;
+                prevent_menu_from_being_hidden = false;
+            } else {
+                active_menu_bar = parent;
+                this.#show_if_menu_bar_active();
+            }
         }
-        #on_mouseleave() {
-            if (this.get_parent() instanceof Menu) this.get_parent().#on_mouseleave?.();
-            if (!--this.#hover_count) this.#hide();
+        #show_if_menu_bar_active() {
+            if (active_menu_bar !== get_top_most_menu(this).get_parent()) return;
+            hide_active_menu();
+            this.#show();
+            active_menu = this;
+        }
+        #prevent_from_being_hidden() {
+            prevent_menu_from_being_hidden = true;
         }
         #show() {
-            this.get_element().classList.add("active");
+            const element = this.get_element();
+            const parent = this.get_parent();
+            element.classList.add("active");
             this.#menu_element.classList.add("active");
-            if (this.get_parent() instanceof QuillMenuBar) {
-                this.#set_position((position) => (position.top += this.get_element().offsetHeight));
+            if (parent instanceof QuillMenuBar) {
+                this.#set_position((position) => (position.top += element.offsetHeight));
             } else {
-                this.#menu_element.style.zIndex = +getComputedStyle(this.get_parent().#menu_element).zIndex + 1;
-                this.get_parent().#show?.();
-                this.#set_position((position) => (position.left += this.get_element().offsetWidth));
+                this.#menu_element.style.zIndex = +getComputedStyle(parent.#menu_element).zIndex + 1;
+                parent.#show?.();
+                this.#set_position((position) => (position.left += element.offsetWidth));
             }
         }
         #hide() {
@@ -314,14 +450,26 @@
         input.type = "file";
         if (config.accept) input.accept = config.accept.join();
         if (config.multiple) input.multiple = true;
-        input.addEventListener("change", (e) => {
-            callback(input.multiple ? input.files : input.files[0], e);
-        });
+        input.addEventListener("change", (e) => callback(input.multiple ? input.files : input.files[0], e));
         input.click();
     }
 
     // Helper functions
 
+    function hide_active_menu_bar() {
+        hide_active_menu();
+        active_menu_bar = null;
+    }
+    function hide_active_menu() {
+        if (active_menu !== null) get_top_most_menu(active_menu).hide();
+        active_menu = null;
+    }
+    function get_top_most_menu(quill_element) {
+        // TODO: get rid of "let"
+        let top_most_menu = quill_element;
+        while (top_most_menu.get_parent() instanceof QuillMenu) top_most_menu = top_most_menu.get_parent();
+        return top_most_menu;
+    }
     function show_panel_on_top(panel) {
         quill_panels_order.push(quill_panels_order.splice(quill_panels_order.indexOf(panel.get_id()), 1)[0]);
         for (let i = 0; i < quill_panels_order.length; i++) {
@@ -336,21 +484,18 @@
         if (moving === null && resizing === null) {
             const position = panel.get_position();
             moving = { panel, top: position.top - e.screenY, left: position.left - e.screenX };
-            e.preventDefault();
         }
     }
     function finish_moving_panel(e) {
         if (moving !== null) {
             moving = null;
             store_panels_config();
-            e.preventDefault();
         }
     }
     function finish_resizing_panel(e) {
         if (resizing !== null) {
             resizing = null;
             store_panels_config();
-            e.preventDefault();
         }
     }
     function start_resizing_panel(panel, e) {
@@ -396,8 +541,11 @@
     const quill_panels = {};
     let moving = null;
     let resizing = null;
+    let active_menu_bar = null;
+    let active_menu = null;
+    let prevent_menu_from_being_hidden = false;
 
-    // Adding all public-facing properties
+    // Add all public-facing properties
 
     Quill.Color = (...args) => new QuillColor(...args);
     Quill.Element = QuillElement; // TODO: Keep public or not?
@@ -406,7 +554,7 @@
     Quill.Panel = (...args) => new QuillPanel(...args);
     Quill.MenuBar = (...args) => new QuillMenuBar(...args);
     Quill.Menu = (...args) => new Menu(...args);
-    Quill.MenuItem = (...args) => new QuillMenuItem(...args);
+    Quill.MenuItem = (...args) => new MenuItem(...args);
     Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
     Quill.ColumnLayout = (...args) => new QuillColumnLayout(...args);
     Quill.RowLayout = (...args) => new QuillRowLayout(...args);
