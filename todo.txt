@@ -2,5 +2,3 @@
 - Panel: highlight topmost ("active") panel
 - MenuBar: Disable/enable MenuItems
 - Add tests
-- Element: Limit types of children possible to add
-- Style scrollbars

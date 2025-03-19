@@ -5,7 +5,7 @@ class QuillFixedCanvas extends QuillElement {
     #context;
 
     constructor(...args) {
-        super(`<div class="quill-fixed-canvas"></div>`, ...args);
+        super(`<div class="quill-fixed-canvas"></div>`, [], ...args);
 
         const canvas = document.createElement("canvas");
         const config = this.get_arg_config();

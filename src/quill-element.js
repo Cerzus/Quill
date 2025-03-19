@@ -2,14 +2,17 @@
 
 class QuillElement {
     #element;
+    #children_allowed = [];
     #parent = null;
     #children = [];
     #arg_config;
     #arg_callback;
     #arg_children;
 
-    constructor(html, ...args) {
+    constructor(html, children_allowed, ...args) {
         this.#element = Util.element_from_html(html);
+
+        if (children_allowed instanceof Array) this.#children_allowed = children_allowed;
 
         const named_args = Util.config_callback_and_children_from_arguments(...args);
         this.#arg_config = named_args.config;
@@ -29,9 +32,15 @@ class QuillElement {
 
     add_children(...children) {
         if (children[0] instanceof Array) return this.add_children(...children[0]);
+        const msg = `No children allowed for ${this.constructor.name}`;
+        if (!Util.warning(this.#children_allowed.length > 0, msg)) return;
         for (const child of children) {
-            const msg = `Object to add '${child}' must be of type Quill.Element`;
-            if (!Util.warning(child instanceof QuillElement, msg)) return;
+            const child_is_allowed = this.#children_allowed.reduce((acc, cur) => acc || child instanceof cur, false);
+            if (!child_is_allowed) {
+                const children_allowed = this.#children_allowed.map((type) => type.name).join(", ");
+                Util.warning(false, `Child to add to ${this.constructor.name} must be one of [${children_allowed}]`);
+                return;
+            }
             this.#children.push(child);
             child.#parent = this;
             this._add_child(child);

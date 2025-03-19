@@ -9,6 +9,7 @@ class QuillSeparator extends QuillElement {
                 <div></div>
                 <div></div>
             </div>`,
+            [],
             ...args
         );
     }

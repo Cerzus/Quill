@@ -22,6 +22,7 @@ class QuillMenuItem extends QuillElement {
                 <div></div>
                 <div></div>
             </label>`,
+            [],
             ...args
         );
 

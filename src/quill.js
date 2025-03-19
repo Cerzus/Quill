@@ -98,6 +98,7 @@
                         <tr><td></td><td></td><td></td></tr>
                     </table>
                 </div>`,
+                [QuillMenuBar, QuillFixedCanvas, QuillText],
                 ...args
             );
             this.add_children(this.get_arg_children());
@@ -227,12 +228,21 @@
 
     /* Quill.Menu */
 
-    class Menu extends QuillMenuItem {
+    class Menu extends QuillMenu {
         #menu_element;
         #hover_count = 0;
 
         constructor(title, ...args) {
-            super(title, ...args);
+            super(
+                `<label class="quill-menu-item">
+                    <div></div>
+                    <div>${title}</div>
+                    <div></div>
+                    <div></div>
+                </label>`,
+                [QuillMenu, QuillMenuItem, QuillSeparator],
+                ...args
+            );
             this.#menu_element = Util.element_from_html(`<div class="quill-menu"></div>`);
             for (const element of [this.get_element(), this.#menu_element]) {
                 element.addEventListener("mouseenter", this.#on_mouseenter.bind(this));
@@ -390,6 +400,7 @@
     Quill.Color = QuillColor;
     Quill.Element = QuillElement; // TODO: Keep public or not?
     Quill.Separator = QuillSeparator;
+    Quill.Text = QuillText;
     Quill.Panel = Panel;
     Quill.MenuBar = QuillMenuBar;
     Quill.Menu = Menu;
