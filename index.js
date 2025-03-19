@@ -1,15 +1,14 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-    Quill.init(document.body);
-
     const Q = Quill;
+    Q.init(document.body);
 
     Q.Panel("Game Boy", { not_closeable: true }, [
         Q.MenuBar([
             Q.Menu("File", [
                 Q.MenuItem("Open ROM file...", { ctrl_key: "O" }, () => {
-                    Quill.open_file_dialog({ accept: [".gb", ".gbc"] }, (file) => console.log("Open ROM file", file));
+                    Q.open_file_dialog({ accept: [".gb", ".gbc"] }, (file) => console.log("Open ROM file", file));
                 }),
                 Q.Menu("Open recent ROM", [Q.MenuItem("zelda.gb"), Q.MenuItem("pokemon.gb"), Q.MenuItem("mario.gb")]),
                 Q.Separator(),
@@ -46,8 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         Q.MenuItem("3. .yup"),
                     ]),
                 ]),
-                Q.MenuItem("Load...", { ctrl_key: "L" }, (element) =>
-                    Quill.open_file_dialog(
+                Q.MenuItem("Load...", { ctrl_key: "L" }, () =>
+                    Q.open_file_dialog(
                         (files) => {
                             console.log("Load", files);
                             recent.get_children().forEach((child) => child.remove());
@@ -82,6 +81,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.log("Quit", element.is_toggled(), e);
                 }),
             ]),
+            Q.MenuItem("Cool"),
+            Q.MenuItem("Beans", { toggleable: true }),
             (panels = Q.Menu(
                 "Panels",
                 Q.Menu("File", [
@@ -99,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ]);
 
     panels.add_children(
-        Object.values(Quill.get_panels())
+        Object.values(Q.get_panels())
             .filter((panel) => panel.is_closeable())
             .map((panel) => {
                 const name = panel.get_name();
