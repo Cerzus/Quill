@@ -98,7 +98,7 @@
                         <tr><td></td><td></td><td></td></tr>
                     </table>
                 </div>`,
-                [QuillMenuBar, QuillFixedCanvas, QuillText],
+                [QuillMenuBar, QuillColumnLayout, QuillRowLayout, QuillFixedCanvas, QuillText],
                 ...args
             );
             this.add_children(this.get_arg_children());
@@ -406,6 +406,8 @@
     Quill.Menu = Menu;
     Quill.MenuItem = QuillMenuItem;
     Quill.FixedCanvas = QuillFixedCanvas;
+    Quill.ColumnLayout = QuillColumnLayout;
+    Quill.RowLayout = QuillRowLayout;
 
     Quill.get_panels = get_panels;
     Quill.open_file_dialog = open_file_dialog;
