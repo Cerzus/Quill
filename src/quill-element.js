@@ -30,7 +30,7 @@ class QuillElement {
     add_children(...children) {
         if (children[0] instanceof Array) return this.add_children(...children[0]);
         for (const child of children) {
-            const msg = `Object to add '${child}' must be of type Quill.${this.constructor.name}`;
+            const msg = `Object to add '${child}' must be of type Quill.Element`;
             if (!Util.warning(child instanceof QuillElement, msg)) return;
             this.#children.push(child);
             child.#parent = this;

@@ -12,6 +12,8 @@
     white-space: nowrap;
     display: flex;
     box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--quill-scrollbar-thumb-color) var(--quill-scrollbar-track-color);
 }
 
 .quill .quill-content {
@@ -49,6 +51,7 @@
     flex-grow: 1;
     flex-direction: column;
     overflow: auto;
+    gap: var(--quill-panel-padding-size);
 }
 
 .quill table.quill-panel-resizer {

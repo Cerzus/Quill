@@ -11,7 +11,6 @@ class QuillFixedCanvas extends QuillElement {
         const config = this.get_arg_config();
         if (+config.width) canvas.width = +config.width;
         if (+config.height) canvas.height = +config.height;
-        console.log(canvas.width);
         canvas.style.minWidth = `${(+config.min_scale || 0) * canvas.width}px`;
         const max_scale = +config.max_scale;
         if (max_scale) canvas.style.maxWidth = `${max_scale * canvas.width}px`;

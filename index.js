@@ -36,7 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let recent = null;
 
     new Quill.Panel("Test panel", { not_closeable: true, closed: true }, [
-        new Quill.FixedCanvas({ min_scale: 1.5, max_scale: 2 }),
+        new Quill.Element("Text"),
+        new Quill.FixedCanvas({ min_scale: 1, max_scale: 1.5 }),
+        new Quill.Element("More text"),
         new Quill.MenuBar([
             new Quill.Menu("File", [
                 new Quill.MenuItem("Load..."),

@@ -388,6 +388,7 @@
     let resizing = null;
 
     Quill.Color = QuillColor;
+    Quill.Element = QuillElement; // TODO: Keep public or not?
     Quill.Separator = QuillSeparator;
     Quill.Panel = Panel;
     Quill.MenuBar = QuillMenuBar;

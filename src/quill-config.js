@@ -14,6 +14,8 @@ const QuillConfig = {
         menu_item_hover: new QuillColor(255, 255, 255, 0.1),
         separator: new QuillColor(255, 255, 255, 0.2),
         text: new QuillColor(255, 255, 255, 0.5),
+        scrollbar_thumb: new QuillColor(30, 30, 30),
+        scrollbar_track: new QuillColor(50, 50, 50),
     },
     sizes: {
         panel_padding: 5,
