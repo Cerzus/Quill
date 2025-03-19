@@ -3,108 +3,96 @@
 document.addEventListener("DOMContentLoaded", () => {
     Quill.init(document.body);
 
-    new Quill.Panel("Game Boy", { not_closeable: true }, [
-        new Quill.MenuBar([
-            new Quill.Menu("File", [
-                new Quill.MenuItem("Open ROM file...", { ctrl_key: "O" }, () => {
+    const Q = Quill;
+
+    Q.Panel("Game Boy", { not_closeable: true }, [
+        Q.MenuBar([
+            Q.Menu("File", [
+                Q.MenuItem("Open ROM file...", { ctrl_key: "O" }, () => {
                     Quill.open_file_dialog({ accept: [".gb", ".gbc"] }, (file) => console.log("Open ROM file", file));
                 }),
-                new Quill.Menu("Open recent ROM", [
-                    new Quill.MenuItem("zelda.gb"),
-                    new Quill.MenuItem("pokemon.gb"),
-                    new Quill.MenuItem("mario.gb"),
-                ]),
-                new Quill.Separator(),
-                new Quill.MenuItem("Boot ROMs...", () => {}),
+                Q.Menu("Open recent ROM", [Q.MenuItem("zelda.gb"), Q.MenuItem("pokemon.gb"), Q.MenuItem("mario.gb")]),
+                Q.Separator(),
+                Q.MenuItem("Boot ROMs...", () => {}),
             ]),
-            new Quill.Menu("Emulation", [
-                new Quill.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console")),
-            ]),
-            new Quill.Menu("Tools", [
-                new Quill.MenuItem("CPU viewer", { toggleable: true }),
-                new Quill.MenuItem("PPU viewer", { toggleable: true }),
-                new Quill.MenuItem("APU viewer", { toggleable: true }),
+            Q.Menu("Emulation", [Q.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console"))]),
+            Q.Menu("Tools", [
+                Q.MenuItem("CPU viewer", { toggleable: true }),
+                Q.MenuItem("PPU viewer", { toggleable: true }),
+                Q.MenuItem("APU viewer", { toggleable: true }),
             ]),
         ]),
-        new Quill.FixedCanvas({ width: 160, height: 144, min_scale: 1 }),
+        Q.FixedCanvas({ width: 160, height: 144, min_scale: 1 }),
     ]);
 
-    new Quill.Panel("Panel 2", []);
-    new Quill.Panel("Panel 3", { closed: true }, []);
+    Q.Panel("Panel 2", []);
+    Q.Panel("Panel 3", { closed: true }, []);
 
     let panels = null;
     let recent = null;
 
-    new Quill.Panel("Test panel", { not_closeable: true, closed: true }, [
-        new QuillRowLayout([
-            new Quill.Text("This is some text."),
-            new Quill.Text("This is some more text than just now."),
-        ]),
-        new Quill.FixedCanvas({ min_scale: 1, max_scale: 1.5 }),
-        new Quill.MenuBar([
-            new Quill.Menu("File", [
-                new Quill.MenuItem("Load..."),
-                (recent = new Quill.Menu("Recent")),
-                new Quill.Separator(),
-                new Quill.MenuItem("Quit"),
-            ]),
-            new Quill.Menu("Tools", {}, () => {}, [
-                new Quill.Menu("File", [
-                    new Quill.MenuItem("Load..."),
-                    new Quill.Separator(),
-                    new Quill.Menu("Recent", [
-                        new Quill.MenuItem("1. some_file.txt"),
-                        new Quill.MenuItem("2. Another file.txt"),
-                        new Quill.MenuItem("3. .yup"),
+    Q.Panel("Test panel", { not_closeable: true, closed: true }, [
+        Q.RowLayout([Q.Text("This is some text."), Q.Text("This is some more text than just now.")]),
+        Q.FixedCanvas({ min_scale: 1, max_scale: 1.5 }),
+        Q.MenuBar([
+            Q.Menu("File", [Q.MenuItem("Load..."), (recent = Q.Menu("Recent")), Q.Separator(), Q.MenuItem("Quit")]),
+            Q.Menu("Tools", {}, () => {}, [
+                Q.Menu("File", [
+                    Q.MenuItem("Load..."),
+                    Q.Separator(),
+                    Q.Menu("Recent", [
+                        Q.MenuItem("1. some_file.txt"),
+                        Q.MenuItem("2. Another file.txt"),
+                        Q.MenuItem("3. .yup"),
                     ]),
                 ]),
-                new Quill.MenuItem("Load...", { ctrl_key: "L" }, (element) =>
+                Q.MenuItem("Load...", { ctrl_key: "L" }, (element) =>
                     Quill.open_file_dialog(
                         (files) => {
                             console.log("Load", files);
                             recent.get_children().forEach((child) => child.remove());
-                            recent.add_children([...files].map((file) => new Quill.MenuItem(file.name)));
+                            recent.add_children([...files].map((file) => Q.MenuItem(file.name)));
                         },
                         { multiple: true }
                     )
                 ),
-                new Quill.Menu("Recent", [
-                    new Quill.MenuItem("1. some_file.txt"),
-                    new Quill.MenuItem("2. Another file.txt"),
-                    new Quill.MenuItem("3. .yup"),
-                    new Quill.Separator(),
-                    new Quill.Menu("Recent", [
-                        new Quill.MenuItem("1. some_file.txt"),
-                        new Quill.MenuItem("2. Another file.txt"),
-                        new Quill.MenuItem("3. .yup"),
-                        new Quill.MenuItem("Load..."),
-                        new Quill.Menu("Recent", [
-                            new Quill.MenuItem("1. some_file.txt"),
-                            new Quill.MenuItem("2. Another file.txt"),
-                            new Quill.MenuItem("3. .yup"),
+                Q.Menu("Recent", [
+                    Q.MenuItem("1. some_file.txt"),
+                    Q.MenuItem("2. Another file.txt"),
+                    Q.MenuItem("3. .yup"),
+                    Q.Separator(),
+                    Q.Menu("Recent", [
+                        Q.MenuItem("1. some_file.txt"),
+                        Q.MenuItem("2. Another file.txt"),
+                        Q.MenuItem("3. .yup"),
+                        Q.MenuItem("Load..."),
+                        Q.Menu("Recent", [
+                            Q.MenuItem("1. some_file.txt"),
+                            Q.MenuItem("2. Another file.txt"),
+                            Q.MenuItem("3. .yup"),
                         ]),
-                        new Quill.Separator(),
-                        new Quill.MenuItem("Quit"),
+                        Q.Separator(),
+                        Q.MenuItem("Quit"),
                     ]),
-                    new Quill.Separator(),
-                    new Quill.MenuItem("Quit"),
+                    Q.Separator(),
+                    Q.MenuItem("Quit"),
                 ]),
-                new Quill.Separator(),
-                new Quill.MenuItem("Quit", { toggleable: true, toggled: true, ctrl_key: "q" }, (element, e) => {
+                Q.Separator(),
+                Q.MenuItem("Quit", { toggleable: true, toggled: true, ctrl_key: "q" }, (element, e) => {
                     console.log("Quit", element.is_toggled(), e);
                 }),
             ]),
-            (panels = new Quill.Menu(
+            (panels = Q.Menu(
                 "Panels",
-                new Quill.Menu("File", [
-                    new Quill.MenuItem("Load..."),
-                    new Quill.Menu("Recent", [
-                        new Quill.MenuItem("1. some_file.txt"),
-                        new Quill.MenuItem("2. Another file.txt"),
-                        new Quill.MenuItem("3. .yup"),
+                Q.Menu("File", [
+                    Q.MenuItem("Load..."),
+                    Q.Menu("Recent", [
+                        Q.MenuItem("1. some_file.txt"),
+                        Q.MenuItem("2. Another file.txt"),
+                        Q.MenuItem("3. .yup"),
                     ]),
-                    new Quill.Separator(),
-                    new Quill.MenuItem("Quit"),
+                    Q.Separator(),
+                    Q.MenuItem("Quit"),
                 ])
             )),
         ]),
@@ -116,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .map((panel) => {
                 const name = panel.get_name();
                 const config = { toggleable: true, toggled: panel.is_open() };
-                const menu_item = new Quill.MenuItem(name, config, (element) => {
+                const menu_item = Q.MenuItem(name, config, (element) => {
                     element.is_toggled() ? panel.open() : panel.close();
                 });
                 panel.on_close(() => menu_item.set_toggle(false));

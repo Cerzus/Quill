@@ -79,7 +79,7 @@
 
     /* Quill.Panel */
 
-    class Panel extends QuillElement {
+    class QuillPanel extends QuillElement {
         #id;
         #name;
         #closeable;
@@ -397,18 +397,22 @@
     let moving = null;
     let resizing = null;
 
-    Quill.Color = QuillColor;
+    // Adding all public-facing properties
+
+    Quill.Color = (...args) => new QuillColor(...args);
     Quill.Element = QuillElement; // TODO: Keep public or not?
-    Quill.Separator = QuillSeparator;
-    Quill.Text = QuillText;
-    Quill.Panel = Panel;
-    Quill.MenuBar = QuillMenuBar;
-    Quill.Menu = Menu;
-    Quill.MenuItem = QuillMenuItem;
-    Quill.FixedCanvas = QuillFixedCanvas;
-    Quill.ColumnLayout = QuillColumnLayout;
-    Quill.RowLayout = QuillRowLayout;
+    Quill.Separator = (...args) => new QuillSeparator(...args);
+    Quill.Text = (...args) => new QuillText(...args);
+    Quill.Panel = (...args) => new QuillPanel(...args);
+    Quill.MenuBar = (...args) => new QuillMenuBar(...args);
+    Quill.Menu = (...args) => new Menu(...args);
+    Quill.MenuItem = (...args) => new QuillMenuItem(...args);
+    Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
+    Quill.ColumnLayout = (...args) => new QuillColumnLayout(...args);
+    Quill.RowLayout = (...args) => new QuillRowLayout(...args);
 
     Quill.get_panels = get_panels;
     Quill.open_file_dialog = open_file_dialog;
+
+    Object.freeze(Quill);
 })((window.Quill = window.Quill || {}));
