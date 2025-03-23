@@ -10,21 +10,21 @@ function quill_show_demo() {
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
     ]);
 
-    Q.Panel("Test panel", { not_closeable: true, closed: true }, [
+    Q.Panel("Quill Demo", { not_closeable: true, closed: true }, [
         Q.CollapsingHeader("Tables", [
             Q.Tree("Basic", [
-                Q.InfoTooltip("This table is created with nested Quill.create_array calls."),
+                Q.InfoTooltip("This table is created with nested Quill.create_array() calls."),
                 Q.Table(
                     Q.create_array(4, (r) => Q.TableRow(Q.create_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))
                 ),
-                Q.InfoTooltip("This table is created with Quill.create_array for the rows."),
+                Q.InfoTooltip("This table is created with Quill.create_array(0) for the rows."),
                 Q.Table(
                     Q.create_array(4, (r) =>
                         Q.TableRow([Q.TableColumn(`R:${r}`), Q.TableColumn(`Some contents`), Q.TableColumn(123.456)])
                     )
                 ),
                 Q.InfoTooltip(
-                    "This table is created entirely out of manually calling Quill.TableRow and Quill.TableColumn"
+                    "This table is created entirely by manually calling Quill.TableRow() and Quill.TableColumn()."
                 ),
                 Q.Table([
                     Q.TableRow([Q.TableColumn(0), Q.TableColumn(1), Q.TableColumn(2)]),

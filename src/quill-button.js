@@ -6,9 +6,5 @@ class QuillButton extends QuillElement {
         this.get_element().addEventListener("click", (e) => {
             if (e.button === 0) this.get_arg_callback()(this, e);
         });
-        // This is to prevent moving of panels when over the close button
-        this.get_element().addEventListener("mousedown", (e) => {
-            if (e.button === 0) e.stopPropagation();
-        });
     }
 }

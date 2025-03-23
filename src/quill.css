@@ -58,7 +58,7 @@
     flex-grow: 1;
     flex-direction: column;
     overflow: auto;
-    /* gap: var(--quill-panel-padding-size); */
+    gap: var(--quill-panel-padding-size);
 }
 
 .quill .quill-panel-resizer {
@@ -167,16 +167,6 @@
     display: table;
 }
 
-.quill .quill-column-layout {
-    flex-direction: column;
-    gap: var(--quill-panel-padding-size);
-}
-
-.quill .quill-row-layout {
-    flex-direction: row;
-    gap: var(--quill-panel-padding-size);
-}
-
 .quill .quill-fixed-canvas {
     flex-grow: 1;
     justify-content: center;
@@ -186,13 +176,19 @@
     height: 100%;
 }
 
-.quill .quill-separator {
+.quill .quill-menu > .quill-separator {
     display: table-row;
 }
 .quill .quill-separator > * {
     border: 0 solid var(--quill-separator-color);
     border-top-width: 1px;
     display: table-cell;
+    flex-grow: 1;
+}
+
+.quill .quill-row {
+    flex-direction: row;
+    gap: var(--quill-panel-padding-size);
 }
 
 .quill .quill-arrow-right {
@@ -209,9 +205,6 @@
 .quill .quill-collapsing-header,
 .quill .quill-tree {
     flex-direction: column;
-}
-.quill .quill-collapsing-header {
-    margin-bottom: var(--quill-panel-padding-size);
 }
 .quill .quill-collapsing-header > :nth-child(1) {
     background: var(--quill-item-background-color);
@@ -236,9 +229,7 @@
 .quill .quill-collapsing-header > :nth-child(2),
 .quill .quill-tree > :nth-child(2) {
     flex-direction: column;
-    margin-top: var(--quill-panel-padding-size);
-}
-.quill .quill-collapsing-header > :nth-child(2) {
+    gap: var(--quill-panel-padding-size);
     margin-top: var(--quill-panel-padding-size);
 }
 .quill .quill-tree > :nth-child(2) {
@@ -261,7 +252,7 @@
     border: 1px solid transparent;
     background-color: transparent;
 }
-.quill-table-row:nth-child(even) {
+.quill .quill-table-row:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.2);
 }
 .quill .quill-table .quill-table-column {
@@ -269,7 +260,7 @@
 }
 
 .quill .quill-button {
-    display: inline-block;
+    align-self: flex-start;
     background: rgba(50, 50, 50);
     padding: var(--quill-item-padding-size) calc(0.1em + var(--quill-item-padding-size));
     border-radius: var(--quill-item-border-radius-size);
@@ -284,4 +275,8 @@
     opacity: 0.5;
     font-size: 1.2em;
     line-height: 1em;
+}
+
+.quill .quill-text {
+    white-space: normal;
 }

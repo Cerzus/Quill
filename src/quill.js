@@ -99,6 +99,7 @@
         Quill.CollapsingHeader = (...args) => new QuillCollapsingHeader(...args);
         Quill.Tree = (...args) => new QuillTree(...args);
         Quill.Button = (...args) => new QuillButton(...args);
+        Quill.Row = (...args) => new QuillRow(...args);
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
@@ -508,6 +509,7 @@
         panel.get_element().style.zIndex = z_index;
     }
     function start_moving_panel(panel, e) {
+        if (e.target.classList.contains("quill-button")) return;
         if (moving === null && resizing === null) {
             const position = panel.get_position();
             moving = { panel, top: position.top - e.screenY, left: position.left - e.screenX };
