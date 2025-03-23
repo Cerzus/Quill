@@ -95,6 +95,7 @@
         Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
         Quill.ColumnLayout = (...args) => new QuillColumnLayout(...args);
         Quill.RowLayout = (...args) => new QuillRowLayout(...args);
+        Quill.Tree = (...args) => new QuillTree(...args);
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
