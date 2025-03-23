@@ -93,13 +93,15 @@
         Quill.Menu = (...args) => new Menu(...args);
         Quill.MenuItem = (...args) => new MenuItem(...args);
         Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
-        Quill.ColumnLayout = (...args) => new QuillColumnLayout(...args);
-        Quill.RowLayout = (...args) => new QuillRowLayout(...args);
+        Quill.Table = (...args) => new QuillTable(...args);
+        Quill.TableRow = (...args) => new QuillTableRow(...args);
+        Quill.TableColumn = (...args) => new QuillTableColumn(...args);
         Quill.Tree = (...args) => new QuillTree(...args);
         Quill.Button = (...args) => new QuillButton(...args);
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
+        Quill.create_array = create_array;
 
         Object.freeze(Quill);
     };
@@ -125,7 +127,7 @@
                         <tr><td></td><td></td><td></td></tr>
                     </table>
                 </div>`,
-                [QuillMenuBar, QuillColumnLayout, QuillRowLayout, QuillFixedCanvas, QuillText],
+                [QuillMenuBar, QuillFixedCanvas, QuillText, QuillTable, QuillTree],
                 ...args
             );
             this.add_children(this.get_arg_children());
@@ -470,6 +472,9 @@
         if (config.multiple) input.multiple = true;
         input.addEventListener("change", (e) => callback(input.multiple ? input.files : input.files[0], e));
         input.click();
+    }
+    function create_array(length, callback) {
+        return new Array(length).fill().map((_, i) => callback(i));
     }
 
     // Helper functions

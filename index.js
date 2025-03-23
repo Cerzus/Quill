@@ -26,17 +26,36 @@ document.addEventListener("DOMContentLoaded", () => {
         Q.FixedCanvas({ width: 160, height: 144, min_scale: 1 }),
     ]);
 
-    Q.Panel("Panel 2", []);
+    let panels = null;
+    let recent = null;
+
+    Q.Panel("Table Panel", [
+        Q.Tree("Basic", [
+            Q.InfoTooltip("This table is created with nested Quill.create_array calls."),
+            Q.Table(Q.create_array(4, (r) => Q.TableRow(Q.create_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))),
+            Q.InfoTooltip("This table is created with Quill.create_array for the rows."),
+            Q.Table(
+                Q.create_array(4, (r) =>
+                    Q.TableRow([Q.TableColumn(`R:${r}`), Q.TableColumn(`Some contents`), Q.TableColumn(123.456)])
+                )
+            ),
+            Q.InfoTooltip(
+                "This table is created entirely out of manually calling Quill.TableRow and Quill.TableColumn"
+            ),
+            Q.Table([
+                Q.TableRow([Q.TableColumn(0), Q.TableColumn(1), Q.TableColumn(2)]),
+                Q.TableRow([Q.TableColumn(3), Q.TableColumn(4), Q.TableColumn(5)]),
+                Q.TableRow([Q.TableColumn(6), Q.TableColumn(7), Q.TableColumn(8)]),
+                Q.TableRow([Q.TableColumn(9), Q.TableColumn(10)]),
+            ]),
+        ]),
+    ]);
 
     Q.Panel("Panel 3", { closed: true }, [
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
     ]);
 
-    let panels = null;
-    let recent = null;
-
     Q.Panel("Test panel", { not_closeable: true, closed: true }, [
-        Q.RowLayout([Q.Text("This is some text."), Q.Text("This is some more text than just now.")]),
         Q.FixedCanvas({ min_scale: 1, max_scale: 1.5 }),
         Q.MenuBar([
             Q.Menu("File", [Q.MenuItem("Load..."), (recent = Q.Menu("Recent")), Q.Separator(), Q.MenuItem("Quit")]),

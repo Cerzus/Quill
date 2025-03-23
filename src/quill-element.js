@@ -37,14 +37,20 @@ class QuillElement {
         const msg = `No children allowed for ${this.constructor.name}`;
         if (!Util.warning(this.#children_allowed.length > 0, msg)) return;
         for (const child of children) {
-            const child_is_allowed = this.#children_allowed.reduce((acc, cur) => acc || child instanceof cur, false);
+            const actual_child = typeof child === "string" || typeof child === "number" ? new String(child) : child;
+            const child_is_allowed = this.#children_allowed.reduce(
+                (acc, cur) => acc || actual_child instanceof cur,
+                false
+            );
             if (!child_is_allowed) {
                 const children_allowed = this.#children_allowed.map((type) => type.name).join(", ");
                 Util.warning(false, `Child to add to ${this.constructor.name} must be one of [${children_allowed}]`);
                 return;
             }
-            this.#children.push(child);
-            child.#parent = this;
+            if (child instanceof QuillElement) {
+                this.#children.push(child);
+                child.#parent = this;
+            }
             this._add_child(child);
         }
     }
@@ -54,7 +60,7 @@ class QuillElement {
         for (const child of this.#children.slice()) {
             child.remove();
         }
-        this.#parent.#children.splice(this.#parent.#children.indexOf(this), 1);
+        if (this.#parent) this.#parent.#children.splice(this.#parent.#children.indexOf(this), 1);
     }
 
     // Private methods

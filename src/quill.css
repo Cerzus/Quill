@@ -231,6 +231,18 @@
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }
+
+.quill .quill-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+.quill-table-row:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.quill .quill-table .quill-table-column {
+    border: 1px solid transparent;
 }
 
 .quill .quill-button {
