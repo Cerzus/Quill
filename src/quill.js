@@ -83,6 +83,8 @@
 
         MenuItem.init();
 
+        // Add all public-facing properties
+
         Quill.Color = (...args) => new QuillColor(...args);
         Quill.Separator = (...args) => new QuillSeparator(...args);
         Quill.InfoTooltip = (...args) => new QuillInfoTooltip(...args);
@@ -622,6 +624,4 @@
     let active_menu_bar = null;
     let active_menu = null;
     let prevent_menu_from_being_hidden = false;
-
-    // Add all public-facing properties
 })((window.Quill = window.Quill || {}));

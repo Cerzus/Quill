@@ -1,4 +1,6 @@
 - Panel: highlight topmost ("active") panel
+- Panel: Improve size and position functionality
+- Move more settings into config
 - MenuBar: Disable/enable MenuItems
 - Add tests
 - Address TODO's
