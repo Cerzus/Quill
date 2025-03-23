@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use strict";
 
 class QuillElement {
@@ -44,7 +45,11 @@ class QuillElement {
             );
             if (!child_is_allowed) {
                 const children_allowed = this.#children_allowed.map((type) => type.name).join(", ");
-                Util.warning(false, `Child to add to ${this.constructor.name} must be one of [${children_allowed}]`);
+                Util.warning(
+                    false,
+                    `Child to add to ${this.constructor.name} must be one of [${children_allowed}]. Found:`,
+                    actual_child
+                );
                 return;
             }
             if (child instanceof QuillElement) {

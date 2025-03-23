@@ -12,7 +12,7 @@ class QuillTree extends QuillElement {
                 </div>
                 <div></div>
             </div>`,
-            [QuillTree, QuillTable, QuillElement],
+            [QuillTree, QuillTable, QuillInfoTooltip, QuillFixedCanvas],
             ...args
         );
         this.add_children(this.get_arg_children());

@@ -12,8 +12,8 @@ class Util {
         return condition;
     }
 
-    static warning(condition, message = "Warning") {
-        if (!condition) console.warn(message);
+    static warning(condition, message = "Warning", ...args) {
+        if (!condition) console.warn(message, ...args);
         return condition;
     }
 

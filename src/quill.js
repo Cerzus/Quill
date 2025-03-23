@@ -96,12 +96,14 @@
         Quill.Table = (...args) => new QuillTable(...args);
         Quill.TableRow = (...args) => new QuillTableRow(...args);
         Quill.TableColumn = (...args) => new QuillTableColumn(...args);
+        Quill.CollapsingHeader = (...args) => new QuillCollapsingHeader(...args);
         Quill.Tree = (...args) => new QuillTree(...args);
         Quill.Button = (...args) => new QuillButton(...args);
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
         Quill.create_array = create_array;
+        Quill.show_demo = quill_show_demo;
 
         Object.freeze(Quill);
     };
