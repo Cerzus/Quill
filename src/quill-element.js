@@ -16,9 +16,9 @@ class QuillElement {
         if (children_allowed instanceof Array) this.#children_allowed = children_allowed;
 
         const named_args = Util.config_callback_and_children_from_arguments(...args);
-        this.#arg_config = named_args.config;
-        this.#arg_callback = named_args.callback;
-        this.#arg_children = named_args.children;
+        this.#arg_config = Object.freeze(named_args.config);
+        this.#arg_callback = Object.freeze(named_args.callback);
+        this.#arg_children = Object.freeze(named_args.children);
     }
 
     // Public methods

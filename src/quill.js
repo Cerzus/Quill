@@ -84,12 +84,11 @@
         MenuItem.init();
 
         Quill.Color = (...args) => new QuillColor(...args);
-        Quill.Element = QuillElement; // TODO: Keep public or not?
         Quill.Separator = (...args) => new QuillSeparator(...args);
         Quill.InfoTooltip = (...args) => new QuillInfoTooltip(...args);
         Quill.Text = (...args) => new QuillText(...args);
-        Quill.Modal = (...args) => new Modal(...args);
-        Quill.Panel = (...args) => new Panel(...args);
+        Quill.Modal = (...args) => new QuillModal(...args);
+        Quill.Panel = (...args) => new QuillPanel(...args);
         Quill.MenuBar = (...args) => new QuillMenuBar(...args);
         Quill.Menu = (...args) => new Menu(...args);
         Quill.MenuItem = (...args) => new MenuItem(...args);
@@ -110,18 +109,22 @@
         Object.freeze(Quill);
     };
 
-    /* Quill.Modal */
+    /* Quill.Panel */
 
-    class Modal extends QuillElement {
-        // #id;
-        // #name;
-        #closeable;
-        // #closed;
+    class QuillPanel extends QuillElement {
+        #id;
+        #name;
+        #closeable = true;
+        #closed = true;
         #on_close_callback;
+        #modal = false;
+        #panel_element;
 
         constructor(name, ...args) {
-            super(
-                `<div class="quill-modal-overlay">
+            const { config } = Util.config_callback_and_children_from_arguments(...args);
+            const modal = !!config.modal;
+            const html = `
+                ${modal ? `<div class="quill-modal-overlay">` : ``}
                     <div class="quill-panel">
                         <div class="quill-panel-title-bar"><div>${name}</div></div>
                         <div class="quill-panel-menu-bar-container"></div>
@@ -132,7 +135,10 @@
                             <div><div></div><div></div><div></div></div>
                         </div>
                     </div>
-                </div>`,
+                ${modal ? `</div>` : ``}`;
+
+            super(
+                html,
                 [
                     QuillMenuBar,
                     QuillFixedCanvas,
@@ -145,176 +151,22 @@
                 ],
                 ...args
             );
-            this.add_children(this.get_arg_children());
-
-            // this.#create_id(name);
-            // this.#name = name;
-            // this.#closeable = !this.get_arg_config().not_closeable;
-            // this.#closed = !!this.get_arg_config().closed;
-            this.#closeable = true;
 
             const element = this.get_element();
-            // element.addEventListener("mousedown", (e) => {
-            //     if (e.button === 0) show_panel_on_top(this);
-            // });
-            element.querySelector(".quill-panel-title-bar").addEventListener("mousedown", (e) => {
-                if (e.button === 0) start_moving_panel(this, e);
-            });
-            element.querySelector(".quill-panel-resizer").addEventListener("mousedown", (e) => {
-                if (e.button === 0) start_resizing_panel(this, e);
-            });
 
-            if (this.#closeable) {
-                const close_button = new QuillButton("&times;", (button, e) => {
-                    // this.close();
-                    this.remove();
-                    this.#on_close_callback?.(button, e);
-                });
-                element.querySelector(".quill-panel-title-bar").append(close_button.get_element());
-            }
-
-            // const stored_index = quill_panels_order.indexOf(this.#id);
-            // if (stored_index < 0) {
-            //     const new_index = quill_panels_order.length;
-            //     this.set_position({ top: new_index * 25, left: new_index * 25 });
-            //     this.set_size({ width: 300, height: 200 });
-            //     set_panel_z_index(this, new_index);
-            //     quill_panels_order.push(this.#id);
-            // } else {
-            //     const config = stored_panels_config_at_init[stored_index];
-            //     this.set_position({ top: config.y, left: config.x });
-            //     this.set_size({ width: config.w, height: config.h });
-            //     set_panel_z_index(this, stored_index);
-            //     this.#closed = !config.o;
-            // }
-            const width = 300;
-            const height = 200;
-            this.set_size({ width, height });
-            this.set_position({
-                top: (quill_config.content_element.offsetHeight - height) / 2,
-                left: (quill_config.content_element.offsetWidth - width) / 2,
-            });
-            this.get_element().style.zIndex = 1000;
-
-            // if (this.#closed) this.#close();
-
-            quill_config.content_element.append(this.get_element());
-        }
-
-        // Public methods
-
-        // get_id = () => this.#id;
-        // get_name = () => this.#name;
-        // is_closeable = () => this.#closeable;
-        // is_open = () => !this.#closed;
-        // is_closed = () => this.#closed;
-        on_close = (callback) => (this.#on_close_callback = callback);
-        // open() {
-        //     this.#open();
-        //     store_panels_config();
-        // }
-        close() {
-            this.remove();
-            //     this.#close();
-            //     store_panels_config();
-        }
-        get_position() {
-            const element = this.get_element().querySelector("div");
-            const display = element.style.display;
-            // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
-            element.style.display = "";
-            const position = { top: element.offsetTop, left: element.offsetLeft };
-            element.style.display = display;
-            return position;
-        }
-        get_size() {
-            const element = this.get_element().querySelector("div");
-            const display = element.style.display;
-            // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
-            element.style.display = "";
-            const size = { width: element.offsetWidth, height: element.offsetHeight };
-            element.style.display = display;
-            return size;
-        }
-        set_position(position) {
-            const element = this.get_element().querySelector("div");
-            element.style.top = `${position.top}px`;
-            element.style.left = `${position.left}px`;
-        }
-        set_size(size) {
-            const element = this.get_element().querySelector("div");
-            element.style.width = `${size.width}px`;
-            element.style.height = `${size.height}px`;
-        }
-
-        // Private methods
-
-        _add_child(child) {
-            if (child instanceof QuillMenuBar) {
-                this.get_element().querySelector(".quill-panel-menu-bar-container").append(child.get_element());
-            } else {
-                this.get_element().querySelector(".quill-panel-content").append(child.get_element());
-            }
-        }
-        // #open() {
-        //     if (this.#closeable) {
-        //         this.#closed = false;
-        //         this.get_element().style.display = "";
-        //         show_panel_on_top(this);
-        //     }
-        // }
-        // #close() {
-        //     if (this.#closeable) {
-        //         this.#closed = true;
-        //         this.get_element().style.display = "none";
-        //     }
-        // }
-        // #create_id(string = "") {
-        //     for (let i = 0; ; i++) {
-        //         const id = string
-        //             .split("")
-        //             .reduce((hash, char) => (hash << 5) - hash + char.charCodeAt(0), i)
-        //             .toString(16);
-        //         if (!quill_panels[id]) return (quill_panels[(this.#id = id)] = this);
-        //     }
-        // }
-    }
-
-    /* Quill.Panel */
-
-    class Panel extends QuillPanel {
-        #id;
-        #name;
-        #closeable;
-        #closed;
-        #on_close_callback;
-
-        constructor(name, ...args) {
-            super(
-                `<div class="quill-panel">
-                    <div class="quill-panel-title-bar"><div>${name}</div></div>
-                    <div class="quill-panel-menu-bar-container"></div>
-                    <div class="quill-panel-content"></div>
-                    <div class="quill-panel-resizer">
-                        <div><div></div><div></div><div></div></div>
-                        <div><div></div><div></div><div></div></div>
-                        <div><div></div><div></div><div></div></div>
-                    </div>
-                </div>`,
-                [QuillMenuBar, QuillFixedCanvas, QuillText, QuillTable, QuillTree],
-                ...args
-            );
-            this.add_children(this.get_arg_children());
-
-            this.#create_id(name);
+            this.#modal = modal;
             this.#name = name;
             this.#closeable = !this.get_arg_config().not_closeable;
-            this.#closed = !!this.get_arg_config().closed;
+            this.#panel_element = modal ? element.querySelector("div") : element;
 
-            const element = this.get_element();
-            element.addEventListener("mousedown", (e) => {
-                if (e.button === 0) show_panel_on_top(this);
-            });
+            if (!this.#modal) {
+                this.#create_id(name);
+                this.#closed = !!this.get_arg_config().closed;
+
+                element.addEventListener("mousedown", (e) => {
+                    if (e.button === 0) show_panel_on_top(this);
+                });
+            }
             element.querySelector(".quill-panel-title-bar").addEventListener("mousedown", (e) => {
                 if (e.button === 0) start_moving_panel(this, e);
             });
@@ -330,69 +182,85 @@
                 element.querySelector(".quill-panel-title-bar").append(close_button.get_element());
             }
 
-            const stored_index = quill_panels_order.indexOf(this.#id);
-            if (stored_index < 0) {
-                const new_index = quill_panels_order.length;
-                this.set_position({ top: new_index * 25, left: new_index * 25 });
-                this.set_size({ width: 300, height: 200 });
-                set_panel_z_index(this, new_index);
-                quill_panels_order.push(this.#id);
+            if (this.#modal) {
+                const width = 300;
+                const height = 200;
+                this.set_size({ width, height });
+                this.set_position({
+                    top: (quill_config.content_element.offsetHeight - height) / 2,
+                    left: (quill_config.content_element.offsetWidth - width) / 2,
+                });
+                element.style.zIndex = 1000;
             } else {
-                const config = stored_panels_config_at_init[stored_index];
-                this.set_position({ top: config.y, left: config.x });
-                this.set_size({ width: config.w, height: config.h });
-                set_panel_z_index(this, stored_index);
-                this.#closed = !config.o;
+                const stored_index = quill_panels_order.indexOf(this.#id);
+                if (stored_index < 0) {
+                    const new_index = quill_panels_order.length;
+                    this.set_position({ top: new_index * 25, left: new_index * 25 });
+                    this.set_size({ width: 300, height: 200 });
+                    set_panel_z_index(this, new_index);
+                    quill_panels_order.push(this.#id);
+                } else {
+                    const config = stored_panels_config_at_init[stored_index];
+                    this.set_position({ top: config.y, left: config.x });
+                    this.set_size({ width: config.w, height: config.h });
+                    set_panel_z_index(this, stored_index);
+                    this.#closed = !config.o;
+                }
+                if (this.#closed) this.#close();
             }
 
-            if (this.#closed) this.#close();
+            this.add_children(this.get_arg_children());
 
-            quill_config.content_element.append(this.get_element());
+            quill_config.content_element.append(element);
         }
 
         // Public methods
 
-        get_id = () => this.#id;
         get_name = () => this.#name;
-        is_closeable = () => this.#closeable;
-        is_open = () => !this.#closed;
-        is_closed = () => this.#closed;
+        get_id = () => this.#id; // TODO: what if modal?
+        is_closeable = () => this.#closeable; // TODO: what if modal?
+        is_open = () => !this.#closed; // TODO: what if modal?
+        is_closed = () => this.#closed; // TODO: what if modal?
         on_close = (callback) => (this.#on_close_callback = callback);
         open() {
-            this.#open();
-            store_panels_config();
+            if (!this.#modal) {
+                this.#open();
+                store_panels_config();
+            } else {
+                // TODO: what?
+            }
         }
         close() {
-            this.#close();
-            store_panels_config();
+            if (this.#modal) {
+                this.remove();
+            } else {
+                this.#close();
+                store_panels_config();
+            }
         }
         get_position() {
-            const element = this.get_element();
-            const display = element.style.display;
+            const display = this.#panel_element.style.display;
             // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
-            element.style.display = "";
-            const position = { top: element.offsetTop, left: element.offsetLeft };
-            element.style.display = display;
+            this.#panel_element.style.display = "";
+            const position = { top: this.#panel_element.offsetTop, left: this.#panel_element.offsetLeft };
+            this.#panel_element.style.display = display;
             return position;
         }
         get_size() {
-            const element = this.get_element();
-            const display = element.style.display;
+            const display = this.#panel_element.style.display;
             // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
-            element.style.display = "";
-            const size = { width: element.offsetWidth, height: element.offsetHeight };
-            element.style.display = display;
+            this.#panel_element.style.display = "";
+            const size = { width: this.#panel_element.offsetWidth, height: this.#panel_element.offsetHeight };
+            this.#panel_element.style.display = display;
             return size;
         }
         set_position(position) {
-            const element = this.get_element();
-            element.style.top = `${position.top}px`;
-            element.style.left = `${position.left}px`;
+            this.#panel_element.style.top = `${position.top}px`;
+            this.#panel_element.style.left = `${position.left}px`;
         }
         set_size(size) {
-            const element = this.get_element();
-            element.style.width = `${size.width}px`;
-            element.style.height = `${size.height}px`;
+            this.#panel_element.style.width = `${size.width}px`;
+            this.#panel_element.style.height = `${size.height}px`;
         }
 
         // Private methods
@@ -425,6 +293,16 @@
                     .toString(16);
                 if (!quill_panels[id]) return (quill_panels[(this.#id = id)] = this);
             }
+        }
+    }
+
+    /* Quill.Modal */
+
+    class QuillModal extends QuillPanel {
+        constructor(name, ...args) {
+            const { config, callback, children } = Util.config_callback_and_children_from_arguments(...args);
+            config.modal = true;
+            super(name, config, callback, children, ...args.slice(3));
         }
     }
 

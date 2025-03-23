@@ -23,20 +23,20 @@ class Util {
     }
 
     static config_and_callback_from_arguments(...args) {
-        const result = { config: Object.freeze({}), callback: () => {} };
+        const result = { config: {}, callback: () => {} };
         for (let i = 0; i < Math.min(args.length, 2); i++) {
             const arg = args[i];
             if (arg instanceof Function) {
                 result.callback = arg;
             } else if (arg instanceof Object) {
-                result.config = Object.freeze(arg);
+                result.config = arg;
             }
         }
         return result;
     }
 
     static config_callback_and_children_from_arguments(...args) {
-        const result = { config: Object.freeze({}), callback: () => {}, children: Object.freeze([]) };
+        const result = { config: {}, callback: () => {}, children: [] };
         for (let i = 0; i < Math.min(args.length, 3); i++) {
             const arg = args[i];
             if (arg instanceof QuillElement || arg instanceof Array) {
@@ -44,7 +44,7 @@ class Util {
             } else if (arg instanceof Function) {
                 result.callback = arg;
             } else if (arg instanceof Object) {
-                result.config = Object.freeze(arg);
+                result.config = arg;
             }
         }
         return result;

@@ -38,14 +38,14 @@ function quill_show_demo() {
             Q.Tree("Modals", [
                 Q.Text("Modals are like Panels but the user cannot interact outside of them before closing them."),
                 Q.Button("Delete...", () => {
-                    const modal = Q.Modal("Delete?", [
+                    const modal = Q.Modal("Delete?", { not_closeable: true }, [
                         Q.Text("All those beautiful files will be deleted.\nThis operation cannot be undone!"),
                         Q.Separator(),
                         Q.Row([Q.Button("OK", () => modal.close()), Q.Button("Cancel", () => modal.close())]),
                     ]);
                 }),
                 Q.Button("Stacked modals...", () => {
-                    const modal = Q.Modal("Stacked 1", [
+                    const modal = Q.Modal("Stacked 1", { not_closeable: true }, [
                         Q.MenuBar(Q.Menu("File", Q.MenuItem("Some menu item"))),
                         Q.Text("Hello from Stacked The First"),
                         Q.Button("Add another modal...", () => {
