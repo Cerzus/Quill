@@ -10,7 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 Q.MenuItem("Open ROM file...", { ctrl_key: "O" }, () => {
                     Q.open_file_dialog({ accept: [".gb", ".gbc"] }, (file) => console.log("Open ROM file", file));
                 }),
-                Q.Menu("Open recent ROM", [Q.MenuItem("zelda.gb"), Q.MenuItem("pokemon.gb"), Q.MenuItem("mario.gb")]),
+                Q.Menu(
+                    "Open recent ROM",
+                    ["zelda.gb", "pokemon.gb", "mario.gb"].map((rom) =>
+                        Q.MenuItem(rom, () => console.log("Open recent ROM:", `"${rom}"`))
+                    )
+                ),
                 Q.Separator(),
                 Q.MenuItem("Boot ROMs...", () => {
                     Q.Panel("Boot ROMS configuration").on_close((panel) => panel.remove());

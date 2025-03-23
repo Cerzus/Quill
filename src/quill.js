@@ -121,11 +121,11 @@
                     <div class="quill-panel-title-bar"><div>${name}</div></div>
                     <div class="quill-panel-menu-bar-container"></div>
                     <div class="quill-panel-content"></div>
-                    <table class="quill-panel-resizer">
-                        <tr><td></td><td></td><td></td></tr>
-                        <tr><td></td><td></td><td></td></tr>
-                        <tr><td></td><td></td><td></td></tr>
-                    </table>
+                    <div class="quill-panel-resizer">
+                        <div><div></div><div></div><div></div></div>
+                        <div><div></div><div></div><div></div></div>
+                        <div><div></div><div></div><div></div></div>
+                    </div>
                 </div>`,
                 [QuillMenuBar, QuillFixedCanvas, QuillText, QuillTable, QuillTree],
                 ...args
@@ -224,12 +224,10 @@
         // Private methods
 
         _add_child(child) {
-            const menu_bar_container_element = this.get_element().querySelector(".quill-panel-menu-bar-container");
-            const content_element = this.get_element().querySelector(".quill-panel-content");
             if (child instanceof QuillMenuBar) {
-                menu_bar_container_element.append(child.get_element());
+                this.get_element().querySelector(".quill-panel-menu-bar-container").append(child.get_element());
             } else {
-                content_element.append(child.get_element());
+                this.get_element().querySelector(".quill-panel-content").append(child.get_element());
             }
         }
         #open() {
