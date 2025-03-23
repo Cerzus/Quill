@@ -15,7 +15,23 @@ function create_game_boy_ui() {
                 ),
                 Q.Separator(),
                 Q.MenuItem("Boot ROMs...", () => {
-                    Q.Panel("Boot ROMS configuration").on_close((panel) => panel.remove());
+                    Q.Modal("Boot ROMs", [
+                        Q.Table(
+                            ["DMG0", "DMG", "MGB", "SGB", "SGB2", "CGB0", "CGB"].map((type) =>
+                                Q.TableRow([
+                                    Q.TableColumn(type),
+                                    Q.TableColumn(
+                                        Q.Button("Open file...", () => {
+                                            Q.open_file_dialog({ accept: [".bin"] }, (file) =>
+                                                console.log(`Open BOOT rom file for ${type}`, file)
+                                            );
+                                        })
+                                    ),
+                                    Q.TableColumn("boot.bin"),
+                                ])
+                            )
+                        ),
+                    ]);
                 }),
             ]),
             Q.Menu("Emulation", [Q.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console"))]),
