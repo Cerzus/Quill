@@ -86,6 +86,7 @@
         Quill.Color = (...args) => new QuillColor(...args);
         Quill.Element = QuillElement; // TODO: Keep public or not?
         Quill.Separator = (...args) => new QuillSeparator(...args);
+        Quill.InfoTooltip = (...args) => new QuillInfoTooltip(...args);
         Quill.Text = (...args) => new QuillText(...args);
         Quill.Panel = (...args) => new Panel(...args);
         Quill.MenuBar = (...args) => new QuillMenuBar(...args);

@@ -204,3 +204,11 @@
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 }
+
+.quill .quill-info-tooltip:before {
+    content: "🛈";
+    user-select: none;
+    opacity: 0.5;
+    font-size: 1.2em;
+    line-height: 1em;
+}
