@@ -42,9 +42,9 @@
 .quill .quill-panel-title-bar > :nth-child(1) {
     overflow: hidden;
 }
-.quill .quill-close-button {
+.quill .quill-panel-title-bar > .quill-button {
     font-size: 1.5em;
-    line-height: 0.5em;
+    line-height: 0.75em;
     cursor: initial;
     user-select: none;
 }
@@ -231,6 +231,16 @@
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }
+}
+
+.quill .quill-button {
+    display: inline-block;
+    background: rgba(50, 50, 50);
+    padding: var(--quill-item-padding-size) calc(0.1em + var(--quill-item-padding-size));
+    border-radius: var(--quill-item-border-radius-size);
+}
+.quill .quill-button:hover {
+    background-color: var(--quill-item-hover-color);
 }
 
 .quill .quill-info-tooltip:before {

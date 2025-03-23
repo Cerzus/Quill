@@ -96,6 +96,7 @@
         Quill.ColumnLayout = (...args) => new QuillColumnLayout(...args);
         Quill.RowLayout = (...args) => new QuillRowLayout(...args);
         Quill.Tree = (...args) => new QuillTree(...args);
+        Quill.Button = (...args) => new QuillButton(...args);
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
@@ -146,14 +147,11 @@
             });
 
             if (this.#closeable) {
-                const close_button = Util.element_from_html(`<div class="quill-close-button">&times;</div>`);
-                close_button.addEventListener("click", (e) => {
-                    if (e.button === 0) {
-                        this.close();
-                        this.#on_close_callback?.(this, e);
-                    }
+                const close_button = new QuillButton("&times;", (button, e) => {
+                    this.close();
+                    this.#on_close_callback?.(button, e);
                 });
-                element.querySelector(".quill-panel-title-bar").append(close_button);
+                element.querySelector(".quill-panel-title-bar").append(close_button.get_element());
             }
 
             const stored_index = quill_panels_order.indexOf(this.#id);
