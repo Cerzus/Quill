@@ -2,7 +2,7 @@
 
 class QuillRow extends QuillElement {
     constructor(...args) {
-        super(`<div class="quill-row"></div>`, [QuillButton], ...args);
+        super(`<div class="quill-row"></div>`, [QuillButton, QuillFieldset], ...args);
         this.add_children(this.get_arg_children());
     }
 

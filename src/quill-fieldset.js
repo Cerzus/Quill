@@ -1,0 +1,16 @@
+"use strict";
+
+class QuillFieldset extends QuillElement {
+    constructor(legend, ...args) {
+        super(
+            `<fieldset class="quill-fieldset"><legend>${legend}</fieldset></fieldset>`,
+            [QuillTable, QuillSeparator],
+            ...args
+        );
+        this.add_children(this.get_arg_children());
+    }
+
+    _add_child(child) {
+        this.get_element().append(child.get_element());
+    }
+}

@@ -1,6 +1,35 @@
 function create_game_boy_ui() {
     const Q = Quill;
 
+    const cpu_panel = Q.Panel(
+        "CPU",
+        { closed: true },
+        Q.Row([
+            new QuillFieldset("Registers", [
+                Q.Table(
+                    ["A", "F", "B", "C", "D", "E", "H", "L", "SP", "PC", "IR"].map((register) =>
+                        Q.TableRow(Q.TableColumn(register))
+                    )
+                ),
+            ]),
+            new QuillFieldset("Flags", [
+                Q.Table(["Zero", "Subtract", "Carry", "Half-carry"].map((flag) => Q.TableRow(Q.TableColumn(flag)))),
+            ]),
+            new QuillFieldset("Interrupts", [
+                Q.Table(["Halted", "IME"].map((flag) => Q.TableRow(Q.TableColumn(flag)))),
+                Q.Separator(),
+                Q.Table([
+                    Q.TableRow([Q.TableColumn(), Q.TableColumn("IE"), Q.TableColumn("IF")]),
+                    ...["V-blank", "Stat", "Timer", "Serial", "Joypad"].map((source) =>
+                        Q.TableRow([Q.TableColumn(source), Q.TableColumn("[X]"), Q.TableColumn("[X]")])
+                    ),
+                ]),
+            ]),
+        ])
+    );
+    const ppu_panel = Q.Panel("PPU", { closed: true });
+    const apu_panel = Q.Panel("APU", { closed: true });
+
     Q.Panel("Game Boy", { not_closeable: true }, [
         Q.MenuBar([
             Q.Menu("File", [
@@ -35,11 +64,17 @@ function create_game_boy_ui() {
                 }),
             ]),
             Q.Menu("Emulation", [Q.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console"))]),
-            Q.Menu("Tools", [
-                Q.MenuItem("CPU viewer", { toggleable: true }),
-                Q.MenuItem("PPU viewer", { toggleable: true }),
-                Q.MenuItem("APU viewer", { toggleable: true }),
-            ]),
+            Q.Menu(
+                "Tools",
+                [cpu_panel, ppu_panel, apu_panel].map((panel) => {
+                    const config = { toggleable: true, toggled: panel.is_open() };
+                    const menu_item = Q.MenuItem(panel.get_name(), config, (element) => {
+                        element.is_toggled() ? panel.open() : panel.close();
+                    });
+                    panel.on_close(() => menu_item.set_toggle(false));
+                    return menu_item;
+                })
+            ),
         ]),
         Q.FixedCanvas({ width: 160, height: 144, min_scale: 1 }),
     ]);

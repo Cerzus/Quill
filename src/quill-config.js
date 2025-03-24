@@ -13,7 +13,8 @@ const QuillConfig = {
         menu: new QuillColor(50, 50, 50),
         item_background: new QuillColor(50, 50, 50),
         item_hover: new QuillColor(70, 70, 70),
-        separator: new QuillColor(255, 255, 255, 0.2),
+        line_heavy: new QuillColor(255, 255, 255, 0.1),
+        line_light: new QuillColor(255, 255, 255, 0.1),
         text: new QuillColor(255, 255, 255, 0.5),
         scrollbar_thumb: new QuillColor(30, 30, 30),
         scrollbar_track: new QuillColor(50, 50, 50),
@@ -26,6 +27,8 @@ const QuillConfig = {
         menu_padding: 2,
         item_border_radius: 3,
         item_padding: 1,
+        line_heavy: 2,
+        line_light: 1,
     },
     font_sizes: {
         panel_title_bar: 1.1,
