@@ -81,7 +81,7 @@
             if (e.button === 0 && !prevent_menu_from_being_hidden) hide_active_menu_bar();
         });
 
-        MenuItem.init();
+        QuillMenuItem.init();
 
         // Add all public-facing properties
 
@@ -92,8 +92,8 @@
         Quill.Modal = (...args) => new QuillModal(...args);
         Quill.Panel = (...args) => new QuillPanel(...args);
         Quill.MenuBar = (...args) => new QuillMenuBar(...args);
-        Quill.Menu = (...args) => new Menu(...args);
-        Quill.MenuItem = (...args) => new MenuItem(...args);
+        Quill.Menu = (...args) => new QuillMenu(...args);
+        Quill.MenuItem = (...args) => new QuillMenuItem(...args);
         Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
         Quill.Table = (...args) => new QuillTable(...args);
         Quill.TableRow = (...args) => new QuillTableRow(...args);
@@ -103,6 +103,7 @@
         Quill.Button = (...args) => new QuillButton(...args);
         Quill.Row = (...args) => new QuillRow(...args);
         Quill.Fieldset = (...args) => new QuillFieldset(...args);
+        Quill.Checkbox = (...args) => new QuillCheckbox(...args);
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
@@ -127,21 +128,18 @@
             const { config } = Util.config_callback_and_children_from_arguments(...args);
             const modal = !!config.modal;
             const html = `
-                ${modal ? `<div class="quill-modal-overlay">` : ``}
-                    <div class="quill-panel">
-                        <div class="quill-panel-title-bar"><div>${name}</div></div>
-                        <div class="quill-panel-menu-bar-container"></div>
-                        <div class="quill-panel-content"></div>
-                        <div class="quill-panel-resizer">
-                            <div><div></div><div></div><div></div></div>
-                            <div><div></div><div></div><div></div></div>
-                            <div><div></div><div></div><div></div></div>
-                        </div>
+                <div class="quill-panel">
+                    <div class="quill-panel-title-bar"><div>${name}</div></div>
+                    <div class="quill-panel-menu-bar-container"></div>
+                    <div class="quill-panel-content"></div>
+                    <div class="quill-panel-resizer">
+                        <div><div></div><div></div><div></div></div>
+                        <div><div></div><div></div><div></div></div>
+                        <div><div></div><div></div><div></div></div>
                     </div>
-                ${modal ? `</div>` : ``}`;
-
+                </div>`;
             super(
-                html,
+                modal ? `<div class="quill-modal-overlay">${html}</div>` : html,
                 [
                     QuillMenuBar,
                     QuillFixedCanvas,
@@ -151,6 +149,7 @@
                     QuillSeparator,
                     QuillButton,
                     QuillRow,
+                    QuillCheckbox,
                 ],
                 ...args
             );
@@ -309,20 +308,36 @@
         }
     }
 
+    /* Quill.MenuBar */
+
+    class QuillMenuBar extends QuillElement {
+        constructor(...args) {
+            super(`<div class="quill-menu-bar"></div>`, [QuillMenu, QuillMenuItem], ...args);
+            this.add_children(this.get_arg_children());
+        }
+
+        // Private methods
+
+        _add_child(child) {
+            this.get_element().append(child.get_element());
+        }
+    }
+
     /* Quill.MenuItem */
 
-    class MenuItem extends QuillMenuItem {
+    class QuillMenuItem extends QuillElement {
         static #ctrl_keys = {};
         static #initialized = false;
         #toggleable = false;
         #toggled = false;
+        #checkbox = null;
 
         // TODO: Make private somehow
         static init() {
-            if (MenuItem.#initialized) return;
+            if (QuillMenuItem.#initialized) return;
             window.addEventListener("keydown", (e) => {
-                if (e.ctrlKey && MenuItem.#ctrl_keys[e.key]) {
-                    MenuItem.#ctrl_keys[e.key](e);
+                if (e.ctrlKey && QuillMenuItem.#ctrl_keys[e.key]) {
+                    QuillMenuItem.#ctrl_keys[e.key](e);
                     e.preventDefault();
                 }
             });
@@ -346,18 +361,14 @@
 
             const element = this.get_element();
             if (config.ctrl_key) {
-                MenuItem.#ctrl_keys[config.ctrl_key.toLowerCase()] = (e) => {
+                QuillMenuItem.#ctrl_keys[config.ctrl_key.toLowerCase()] = (e) => {
                     if (!this.get_panel().is_open()) return;
                     if (this.#toggleable) this.#set_toggled_init(!this.#toggled);
                     this.get_arg_callback()(this, e);
                 };
                 element.querySelector(":nth-child(3)").innerHTML = `Ctrl+${config.ctrl_key.toUpperCase()}`;
             }
-            if (this.#toggleable) {
-                element
-                    .querySelector(`input[type="checkbox"]`)
-                    .addEventListener("change", (e) => this.#set_toggled_state_and_notify_user(e));
-            } else {
+            if (!this.#toggleable) {
                 element.addEventListener("mouseup", (e) => {
                     if (e.button === 0) this.#notify_user(e);
                 });
@@ -385,7 +396,7 @@
             if (active_menu_bar !== get_top_most_menu(this).get_parent()) return;
             hide_active_menu();
             const parent = this.get_parent();
-            if (parent instanceof Menu) {
+            if (parent instanceof QuillMenu) {
                 parent.show();
                 active_menu = parent;
             }
@@ -393,17 +404,13 @@
         #set_toggleable(toggleable) {
             this.#toggleable = !!toggleable;
             if (this.#toggleable) {
-                this.get_element()
-                    .querySelector(":nth-child(1)")
-                    .append(new QuillElement(`<input type="checkbox" />`).get_element());
+                this.#checkbox = new QuillCheckbox(null, (_, e) => this.#set_toggled_state_and_notify_user(e));
+                this.get_element().querySelector(":nth-child(1)").append(this.#checkbox.get_element());
             }
         }
         #set_toggled_init(toggled) {
             this.#set_toggled(toggled);
-            if (this.#toggleable) {
-                const checkbox = this.get_element().querySelector('input[type="checkbox"]');
-                checkbox.checked = this.#toggled;
-            }
+            if (this.#toggleable) this.#checkbox.set_checked(this.#toggled);
         }
         #set_toggled(toggled) {
             this.#toggled = !!toggled;
@@ -412,7 +419,7 @@
 
     /* Quill.Menu */
 
-    class Menu extends QuillMenu {
+    class QuillMenu extends QuillElement {
         #menu_element;
 
         constructor(title, ...args) {
@@ -495,7 +502,7 @@
         #hide() {
             this.get_element().classList.remove("active");
             this.#menu_element.classList.remove("active");
-            for (const child of this.get_children().filter((child) => child instanceof Menu)) {
+            for (const child of this.get_children().filter((child) => child instanceof QuillMenu)) {
                 child.#hide();
             }
         }

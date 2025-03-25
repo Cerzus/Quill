@@ -13,15 +13,19 @@ function create_game_boy_ui() {
                 ),
             ]),
             new QuillFieldset("Flags", [
-                Q.Table(["Zero", "Subtract", "Carry", "Half-carry"].map((flag) => Q.TableRow(Q.TableColumn(flag)))),
+                Q.Table(
+                    ["Zero", "Subtract", "Carry", "Half-carry"].map((flag) =>
+                        Q.TableRow(Q.TableColumn(Q.Checkbox(flag)))
+                    )
+                ),
             ]),
             new QuillFieldset("Interrupts", [
-                Q.Table(["Halted", "IME"].map((flag) => Q.TableRow(Q.TableColumn(flag)))),
+                Q.Table(["Halted", "IME"].map((flag) => Q.TableRow(Q.TableColumn(Q.Checkbox(flag))))),
                 Q.Separator(),
                 Q.Table([
                     Q.TableRow([Q.TableColumn(), Q.TableColumn("IE"), Q.TableColumn("IF")]),
                     ...["V-blank", "Stat", "Timer", "Serial", "Joypad"].map((source) =>
-                        Q.TableRow([Q.TableColumn(source), Q.TableColumn("[X]"), Q.TableColumn("[X]")])
+                        Q.TableRow([Q.TableColumn(source), Q.TableColumn(Q.Checkbox()), Q.TableColumn(Q.Checkbox())])
                     ),
                 ]),
             ]),

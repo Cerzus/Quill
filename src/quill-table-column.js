@@ -2,7 +2,7 @@
 
 class QuillTableColumn extends QuillElement {
     constructor(child, ...args) {
-        super(`<td class="quill-table-column"></td>`, [QuillButton, String, Number], ...args);
+        super(`<td class="quill-table-column"></td>`, [QuillButton, QuillCheckbox, String, Number], ...args);
         if (typeof child !== "undefined") this.add_children(child);
     }
 

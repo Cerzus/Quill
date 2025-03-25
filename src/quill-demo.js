@@ -41,6 +41,7 @@ function quill_show_demo() {
                     const modal = Q.Modal("Delete?", { not_closeable: true }, [
                         Q.Text("All those beautiful files will be deleted.\nThis operation cannot be undone!"),
                         Q.Separator(),
+                        Q.Checkbox("Don't ask me next time"),
                         Q.Row([Q.Button("OK", () => modal.close()), Q.Button("Cancel", () => modal.close())]),
                     ]);
                 }),

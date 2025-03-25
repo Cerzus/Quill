@@ -4,3 +4,5 @@
 - MenuBar: Disable/enable MenuItems
 - Add tests
 - Address TODO's
+- Stop using "<table>" and "display: table" for styling
+- MenuItem: Remove #toggled and use the "checked" attribute of the checkbox itself
