@@ -90,7 +90,7 @@
         Quill.InfoTooltip = (...args) => new QuillInfoTooltip(...args);
         Quill.Text = (...args) => new QuillText(...args);
         Quill.Modal = (...args) => new QuillModal(...args);
-        Quill.Panel = (...args) => new QuillPanel(...args);
+        Quill.Panel = (...args) => new Panel(...args);
         Quill.MenuBar = (...args) => new QuillMenuBar(...args);
         Quill.Menu = (...args) => new QuillMenu(...args);
         Quill.MenuItem = (...args) => new QuillMenuItem(...args);
@@ -115,7 +115,7 @@
 
     /* Quill.Panel */
 
-    class QuillPanel extends QuillElement {
+    class Panel extends QuillPanel {
         #id;
         #name;
         #closeable = true;
@@ -221,7 +221,7 @@
         get_name = () => this.#name;
         get_id = () => this.#id; // TODO: what if modal?
         is_closeable = () => this.#closeable; // TODO: what if modal?
-        is_open = () => !this.#closed; // TODO: what if modal?
+        is_open = () => !(this.#closeable && this.#closed); // TODO: what if modal?
         is_closed = () => this.#closed; // TODO: what if modal?
         on_close = (callback) => (this.#on_close_callback = callback);
         open() {
@@ -300,7 +300,7 @@
 
     /* Quill.Modal */
 
-    class QuillModal extends QuillPanel {
+    class QuillModal extends Panel {
         constructor(name, ...args) {
             const { config, callback, children } = Util.config_callback_and_children_from_arguments(...args);
             config.modal = true;

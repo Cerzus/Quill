@@ -242,7 +242,7 @@
     background-color: transparent;
 }
 .quill .quill-table-row {
-    line-height: 0;
+    line-height: 1em;
     height: 1.2em;
 }
 .quill .quill-table-row:nth-child(even) {
