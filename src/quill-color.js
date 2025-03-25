@@ -11,5 +11,5 @@ class QuillColor {
 
     // Public methods
 
-    to_css = () => `rgba(${this.#rgb[0]},${this.#rgb[1]},${this.#rgb[2]},${this.#a})`;
+    to_css = () => `rgb(${this.#rgb[0]} ${this.#rgb[1]} ${this.#rgb[2]}${this.#a < 1 ? ` / ${this.#a}` : ``})`;
 }
