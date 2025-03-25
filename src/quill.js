@@ -133,9 +133,9 @@
                     <div class="quill-panel-menu-bar-container"></div>
                     <div class="quill-panel-content"></div>
                     <div class="quill-panel-resizer">
-                        <div><div></div><div></div><div></div></div>
-                        <div><div></div><div></div><div></div></div>
-                        <div><div></div><div></div><div></div></div>
+                        <div></div><div></div><div></div>
+                        <div></div><div></div><div></div>
+                        <div></div><div></div><div></div>
                     </div>
                 </div>`;
             super(
@@ -590,11 +590,9 @@
         if (resizing === null && moving === null) {
             const position = panel.get_position();
             const size = panel.get_size();
-            const td = e.target;
-            const tr = td.parentNode;
-            const tbody = tr.parentNode;
-            const resizer_x = Array.from(tr.children).indexOf(td);
-            const resizer_y = Array.from(tbody.children).indexOf(tr);
+            const index = Array.from(e.target.parentNode.children).indexOf(e.target);
+            const resizer_x = index % 3;
+            const resizer_y = ~~(index / 3);
             resizing = {
                 panel,
                 top: position.top - e.screenY,
