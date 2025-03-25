@@ -49,4 +49,16 @@ class Util {
         }
         return result;
     }
+
+    static add_mouse_down_event_listener(element, callback) {
+        element.addEventListener("mousedown", (e) => e.button === 0 && callback(e));
+    }
+
+    static add_mouse_up_event_listener(element, callback) {
+        element.addEventListener("mouseup", (e) => e.button === 0 && callback(e));
+    }
+
+    static add_click_event_listener(element, callback) {
+        element.addEventListener("click", (e) => e.button === 0 && callback(e));
+    }
 }

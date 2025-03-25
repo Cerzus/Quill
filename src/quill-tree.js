@@ -16,11 +16,9 @@ class QuillTree extends QuillElement {
             ...args
         );
         this.add_children(this.get_arg_children());
-        this.get_element()
-            .querySelector(":nth-child(1)")
-            .addEventListener("mousedown", (e) => {
-                if (e.button === 0) this.#set_opened(!this.#opened);
-            });
+        Util.add_mouse_down_event_listener(this.get_element().querySelector(":nth-child(1)"), (e) =>
+            this.#set_opened(!this.#opened)
+        );
     }
 
     // Public methods

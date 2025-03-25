@@ -3,8 +3,6 @@
 class QuillButton extends QuillElement {
     constructor(text, ...args) {
         super(`<div class="quill-button">${text}</div>`, [], ...args);
-        this.get_element().addEventListener("click", (e) => {
-            if (e.button === 0) this.get_arg_callback()(this, e);
-        });
+        Util.add_click_event_listener(this.get_element(), (e) => this.get_arg_callback()(this, e));
     }
 }

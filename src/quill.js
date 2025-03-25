@@ -69,17 +69,16 @@
             }
         });
 
-        window.addEventListener("mouseup", (e) => {
-            if (e.button === 0) {
-                finish_moving_panel(e);
-                finish_resizing_panel(e);
-                prevent_menu_from_being_hidden = false;
-            }
+        Util.add_mouse_up_event_listener(window, (e) => {
+            finish_moving_panel(e);
+            finish_resizing_panel(e);
+            prevent_menu_from_being_hidden = false;
         });
 
-        content_element.addEventListener("mousedown", (e) => {
-            if (e.button === 0 && !prevent_menu_from_being_hidden) hide_active_menu_bar();
-        });
+        Util.add_mouse_down_event_listener(
+            content_element,
+            () => !prevent_menu_from_being_hidden && hide_active_menu_bar()
+        );
 
         QuillMenuItem.init();
 
@@ -164,17 +163,14 @@
             if (!this.#modal) {
                 this.#create_id(name);
                 this.#closed = !!this.get_arg_config().closed;
-
-                element.addEventListener("mousedown", (e) => {
-                    if (e.button === 0) show_panel_on_top(this);
-                });
+                Util.add_mouse_down_event_listener(element, () => show_panel_on_top(this));
             }
-            element.querySelector(".quill-panel-title-bar").addEventListener("mousedown", (e) => {
-                if (e.button === 0) start_moving_panel(this, e);
-            });
-            element.querySelector(".quill-panel-resizer").addEventListener("mousedown", (e) => {
-                if (e.button === 0) start_resizing_panel(this, e);
-            });
+            Util.add_mouse_down_event_listener(element.querySelector(".quill-panel-title-bar"), (e) =>
+                start_moving_panel(this, e)
+            );
+            Util.add_mouse_down_event_listener(element.querySelector(".quill-panel-resizer"), (e) =>
+                start_resizing_panel(this, e)
+            );
 
             if (this.#closeable) {
                 const close_button = new QuillButton("&times;", (button, e) => {
@@ -366,11 +362,8 @@
                 };
                 element.querySelector(":nth-child(3)").innerHTML = `Ctrl+${config.ctrl_key.toUpperCase()}`;
             }
-            if (this.is_checkable()) {
-                element.addEventListener("mouseup", (e) => {
-                    if (e.button === 0) this.#notify_user(e);
-                });
-            }
+            if (!this.is_checkable()) Util.add_mouse_up_event_listener(element, (e) => this.#notify_user(e));
+
             element.addEventListener("mouseenter", () => this.#show_parent_menu_if_menu_bar_active());
         }
 
@@ -423,15 +416,9 @@
             this.#menu_element = Util.element_from_html(`<div class="quill-menu"></div>`);
 
             const element = this.get_element();
-            element.addEventListener("mousedown", (e) => {
-                if (e.button === 0) this.#toggle_parent_menu_bar_active_state();
-            });
-            this.#menu_element.addEventListener("mousedown", (e) => {
-                if (e.button === 0) this.#prevent_from_being_hidden();
-            });
-            element.addEventListener("mouseenter", (e) => {
-                if (e.button === 0) this.#show_if_menu_bar_active();
-            });
+            Util.add_mouse_down_event_listener(element, () => this.#toggle_parent_menu_bar_active_state());
+            Util.add_mouse_down_event_listener(this.#menu_element, () => this.#prevent_from_being_hidden());
+            element.addEventListener("mouseenter", () => this.#show_if_menu_bar_active());
 
             this.add_children(this.get_arg_children());
             quill_config.content_element.append(this.#menu_element);
@@ -534,10 +521,8 @@
         active_menu = null;
     }
     function get_top_most_menu(quill_element) {
-        // TODO: get rid of "let"
-        let top_most_menu = quill_element;
-        while (top_most_menu.get_parent() instanceof QuillMenu) top_most_menu = top_most_menu.get_parent();
-        return top_most_menu;
+        const parent = quill_element.get_parent();
+        return parent instanceof QuillMenu ? get_top_most_menu(parent) : quill_element;
     }
     function show_panel_on_top(panel) {
         quill_panels_order.push(quill_panels_order.splice(quill_panels_order.indexOf(panel.get_id()), 1)[0]);
@@ -560,17 +545,13 @@
             moving = { panel, top: position.top - e.screenY, left: position.left - e.screenX };
         }
     }
-    function finish_moving_panel(e) {
-        if (moving !== null) {
-            moving = null;
-            store_panels_config();
-        }
+    function finish_moving_panel() {
+        if (moving !== null) store_panels_config();
+        moving = null;
     }
-    function finish_resizing_panel(e) {
-        if (resizing !== null) {
-            resizing = null;
-            store_panels_config();
-        }
+    function finish_resizing_panel() {
+        if (resizing !== null) store_panels_config();
+        resizing = null;
     }
     function start_resizing_panel(panel, e) {
         if (resizing === null && moving === null) {

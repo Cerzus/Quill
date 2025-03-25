@@ -83,7 +83,7 @@ function create_game_boy_ui() {
                     const menu_item = Q.MenuItem(panel.get_name(), config, (element) => {
                         element.is_checked() ? panel.open() : panel.close();
                     });
-                    panel.on_close(() => menu_item.set_checke(false));
+                    panel.on_close(() => menu_item.set_checked(false));
                     return menu_item;
                 })
             ),
