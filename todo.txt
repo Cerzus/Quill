@@ -4,4 +4,3 @@
 - MenuBar: Disable/enable MenuItems
 - Add tests
 - Address TODO's
-- MenuItem: Remove #toggled and use the "checked" attribute of the checkbox itself

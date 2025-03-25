@@ -105,12 +105,12 @@ function quill_show_demo() {
                     Q.MenuItem("Quit"),
                 ]),
                 Q.Separator(),
-                Q.MenuItem("Quit", { toggleable: true, toggled: true, ctrl_key: "q" }, (element, e) => {
-                    console.log("Quit", element.is_toggled(), e);
+                Q.MenuItem("Quit", { checkable: true, checked: true, ctrl_key: "q" }, (element, e) => {
+                    console.log("Quit", element.is_checked(), e);
                 }),
             ]),
             Q.MenuItem("Cool"),
-            Q.MenuItem("Beans", { toggleable: true }),
+            Q.MenuItem("Beans", { checkable: true }),
             (panels = Q.Menu(
                 "Panels",
                 Q.Menu("File", [
@@ -132,11 +132,11 @@ function quill_show_demo() {
             .filter((panel) => panel.is_closeable())
             .map((panel) => {
                 const name = panel.get_name();
-                const config = { toggleable: true, toggled: panel.is_open() };
+                const config = { checkable: true, checked: panel.is_open() };
                 const menu_item = Q.MenuItem(name, config, (element) => {
-                    element.is_toggled() ? panel.open() : panel.close();
+                    element.is_checked() ? panel.open() : panel.close();
                 });
-                panel.on_close(() => menu_item.set_toggle(false));
+                panel.on_close(() => menu_item.set_checked(false));
                 return menu_item;
             })
     );

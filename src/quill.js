@@ -328,8 +328,6 @@
     class QuillMenuItem extends QuillElement {
         static #ctrl_keys = {};
         static #initialized = false;
-        #toggleable = false;
-        #toggled = false;
         #checkbox = null;
 
         // TODO: Make private somehow
@@ -356,19 +354,19 @@
             );
 
             const config = this.get_arg_config();
-            this.#set_toggleable(config.toggleable);
-            this.#set_toggled_init(config.toggled);
+            this.#set_checkable(config.checkable);
+            this.set_checked(config.checked);
 
             const element = this.get_element();
             if (config.ctrl_key) {
                 QuillMenuItem.#ctrl_keys[config.ctrl_key.toLowerCase()] = (e) => {
                     if (!this.get_panel().is_open()) return;
-                    if (this.#toggleable) this.#set_toggled_init(!this.#toggled);
+                    this.set_checked(!this.is_checked());
                     this.get_arg_callback()(this, e);
                 };
                 element.querySelector(":nth-child(3)").innerHTML = `Ctrl+${config.ctrl_key.toUpperCase()}`;
             }
-            if (!this.#toggleable) {
+            if (this.is_checkable()) {
                 element.addEventListener("mouseup", (e) => {
                     if (e.button === 0) this.#notify_user(e);
                 });
@@ -378,19 +376,17 @@
 
         // Public methods
 
-        is_toggleable = () => this.#toggleable;
-        is_toggled = () => this.#toggled;
-        set_toggle = (toggle) => this.#set_toggled_init(toggle);
+        is_checkable = () => this.#checkbox !== null;
+        is_checked = () => this.is_checkable() && this.#checkbox.is_checked();
+        set_checked = (checked) => this.#checkbox?.set_checked(checked);
 
         // Private methods
 
-        #set_toggled_state_and_notify_user(e) {
-            if (this.#toggleable) this.#set_toggled(!this.#toggled);
-            this.#notify_user(e);
-        }
-        #notify_user(e) {
-            this.get_arg_callback()(this, e);
-            hide_active_menu_bar();
+        #set_checkable(checkable) {
+            if (!!checkable) {
+                this.#checkbox = new QuillCheckbox(null, (_, e) => this.#notify_user(e));
+                this.get_element().querySelector(":nth-child(1)").append(this.#checkbox.get_element());
+            }
         }
         #show_parent_menu_if_menu_bar_active() {
             if (active_menu_bar !== get_top_most_menu(this).get_parent()) return;
@@ -401,19 +397,9 @@
                 active_menu = parent;
             }
         }
-        #set_toggleable(toggleable) {
-            this.#toggleable = !!toggleable;
-            if (this.#toggleable) {
-                this.#checkbox = new QuillCheckbox(null, (_, e) => this.#set_toggled_state_and_notify_user(e));
-                this.get_element().querySelector(":nth-child(1)").append(this.#checkbox.get_element());
-            }
-        }
-        #set_toggled_init(toggled) {
-            this.#set_toggled(toggled);
-            if (this.#toggleable) this.#checkbox.set_checked(this.#toggled);
-        }
-        #set_toggled(toggled) {
-            this.#toggled = !!toggled;
+        #notify_user(e) {
+            this.get_arg_callback()(this, e);
+            hide_active_menu_bar();
         }
     }
 

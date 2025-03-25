@@ -15,17 +15,25 @@ function create_game_boy_ui() {
             new QuillFieldset("Flags", [
                 Q.Table(
                     ["Zero", "Subtract", "Carry", "Half-carry"].map((flag) =>
-                        Q.TableRow(Q.TableColumn(Q.Checkbox(flag)))
+                        Q.TableRow(Q.TableColumn(Q.Checkbox(flag, (item) => console.log(flag, item.is_checked()))))
                     )
                 ),
             ]),
             new QuillFieldset("Interrupts", [
-                Q.Table(["Halted", "IME"].map((flag) => Q.TableRow(Q.TableColumn(Q.Checkbox(flag))))),
+                Q.Table(
+                    ["HALT", "IME"].map((flag) =>
+                        Q.TableRow(Q.TableColumn(Q.Checkbox(flag, (item) => console.log(flag, item.is_checked()))))
+                    )
+                ),
                 Q.Separator(),
                 Q.Table([
                     Q.TableRow([Q.TableColumn(), Q.TableColumn("IE"), Q.TableColumn("IF")]),
                     ...["V-blank", "Stat", "Timer", "Serial", "Joypad"].map((source) =>
-                        Q.TableRow([Q.TableColumn(source), Q.TableColumn(Q.Checkbox()), Q.TableColumn(Q.Checkbox())])
+                        Q.TableRow([
+                            Q.TableColumn(source),
+                            Q.TableColumn(Q.Checkbox(null, (item) => console.log("IE", source, item.is_checked()))),
+                            Q.TableColumn(Q.Checkbox(null, (item) => console.log("IF", source, item.is_checked()))),
+                        ])
                     ),
                 ]),
             ]),
@@ -71,11 +79,11 @@ function create_game_boy_ui() {
             Q.Menu(
                 "Tools",
                 [cpu_panel, ppu_panel, apu_panel].map((panel) => {
-                    const config = { toggleable: true, toggled: panel.is_open() };
+                    const config = { checkable: true, checked: panel.is_open() };
                     const menu_item = Q.MenuItem(panel.get_name(), config, (element) => {
-                        element.is_toggled() ? panel.open() : panel.close();
+                        element.is_checked() ? panel.open() : panel.close();
                     });
-                    panel.on_close(() => menu_item.set_toggle(false));
+                    panel.on_close(() => menu_item.set_checke(false));
                     return menu_item;
                 })
             ),
