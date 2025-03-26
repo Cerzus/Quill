@@ -1,3 +1,8 @@
+/* 
+    This demo deliberately does not use strict mode, to keep variables local for clarity of the examples.
+    It is recommended to use strict mode in your application and define your variables before using them in the UI.
+*/
+
 function quill_show_demo() {
     const Q = Quill;
 
@@ -17,8 +22,14 @@ function quill_show_demo() {
                     Q.Button("Button", () => (text.is_visible() ? text.hide() : text.show())),
                     (text = Q.Text("Thanks for clicking me!")).hide(),
                 ]),
-                Q.Checkbox("checkbox"),
+                Q.Checkbox("Checkbox").set_checked(true),
                 Q.Separator(),
+                Q.Row([
+                    Q.Dropdown("Dropdown", Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF"])),
+                    Q.InfoTooltip(
+                        `Refer to the "Dropdowns" section below for an explanation of how to use the Dropdown API.`
+                    ),
+                ]),
             ]),
             Q.Tree("Trees", [
                 Q.Tree(
@@ -43,22 +54,46 @@ function quill_show_demo() {
                 )).on_close(() => checkbox.set_checked(false)),
             ]),
             Q.Tree("Text", [
-                Q.Tree("Colorful Text", [
+                Q.Tree("Colorful text", [
                     Q.Text("Pink", { color: Q.Color(255, 0, 255) }),
                     Q.Text("Yellow", { color: Q.Color(255, 255, 0) }),
-                    Q.Row([
-                        Q.Text("Disabled", { disabled: true }),
-                        Q.InfoTooltip("The TextDisabled color is stored in ImGui.Style."),
-                    ]),
+                    Q.Text("Disabled", { disabled: true }),
                 ]),
-                Q.Tree("Word Wrapping", [
+                Q.Tree("Text wrapping", [
                     Q.Text(
                         "This text should automatically wrap on the edge of the window. The current implementation " +
                             "for text wrapping follows simple rules suitable for English and possibly other languages.",
                         { wrapped: true }
                     ),
                 ]),
-                Q.Tree("UTF-8 Text", [Q.Text("Hiragana: かきくけこ (kakikukeko)"), Q.Text("Kanjis: 日本語 (nihongo)")]),
+                Q.Tree("UTF-8 text", [
+                    Q.InfoTooltip(
+                        `If this text does not render correctly, you may need to add a <meta charset="utf-8"> tag to the page.`
+                    ),
+                    Q.Text("Hiragana: かきくけこ (kakikukeko)"),
+                    Q.Text("Kanjis: 日本語 (nihongo)"),
+                ]),
+            ]),
+            Q.Tree("Dropdowns", [
+                Q.Row([
+                    Q.Dropdown(null, (value) => console.log(value), [
+                        Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH"]),
+                    ]),
+                    Q.InfoTooltip("Dropdown without a label"),
+                ]),
+                Q.Dropdown("Dropdown with values", { value: "Option 3" }, (value) => console.log(value), [
+                    Q.DropdownOptions([...Q.create_array(5, (i) => `Option ${i + 1}`)]),
+                ]),
+                Q.Dropdown("Dropdown with keys and values", (value) => console.log(value), [
+                    Q.DropdownOptions({ alice: "aaa", 123: "bbb", cool: "ccc" }),
+                ]).set_value("cool"),
+                Q.Dropdown("Dropdown with option groups", (value) => console.log(value), [
+                    Q.DropdownOptions("Group 1", { alice: "aaa", 123: "bbb", cool: "ccc" }),
+                    Q.DropdownOptions(
+                        "Group 2",
+                        Q.create_array(5, (i) => `Option ${i}`)
+                    ),
+                ]),
             ]),
         ]),
         Q.CollapsingHeader("Modals", [

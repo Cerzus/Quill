@@ -103,6 +103,8 @@
         Quill.Row = (...args) => new QuillRow(...args);
         Quill.Fieldset = (...args) => new QuillFieldset(...args);
         Quill.Checkbox = (...args) => new QuillCheckbox(...args);
+        Quill.Dropdown = (...args) => new QuillDropdown(...args);
+        Quill.DropdownOptions = (...args) => new QuillDropdownOptions(...args);
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;

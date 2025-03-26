@@ -271,6 +271,7 @@
     opacity: 0.5;
     font-size: 1.2em;
     line-height: 1em;
+    align-self: center;
 }
 
 .quill .quill-text.wrapped {
@@ -300,4 +301,34 @@
 
 .quill .quill-checkbox {
     background-color: transparent;
+}
+
+.quill select.quill-select {
+    background: var(--quill-item-background-color);
+    font-family: var(--quill-proportional-font);
+    outline: none;
+    border: none;
+    /* appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none; */
+    padding: var(--quill-item-padding-size);
+    border-radius: var(--quill-item-border-radius-size);
+}
+.quill select.quill-select option {
+    background: var(--quill-item-background-color);
+}
+.quill select.quill-select optgroup {
+    background: var(--quill-item-background-color);
+}
+.quill select.quill-select:hover {
+    background-color: var(--quill-item-hover-color);
+}
+.quill select.quill-select::-webkit-scrollbar {
+    width: 10px;
+}
+.quill select.quill-select::-webkit-scrollbar-track {
+    background-color: var(--quill-scrollbar-track-color);
+}
+.quill select.quill-select::-webkit-scrollbar-thumb {
+    background-color: var(--quill-scrollbar-thumb-color);
 }
