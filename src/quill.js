@@ -173,9 +173,9 @@
             );
 
             if (this.#closeable) {
-                const close_button = new QuillButton("&times;", (button, e) => {
+                const close_button = new QuillButton("&times;", { class: "quill-close-button" }, (_, e) => {
                     this.close();
-                    this.#on_close_callback?.(button, e);
+                    this.#on_close_callback?.(this, e);
                 });
                 element.querySelector(".quill-panel-title-bar").append(close_button.get_element());
             }
@@ -219,7 +219,10 @@
         is_closeable = () => this.#closeable; // TODO: what if modal?
         is_open = () => !(this.#closeable && this.#closed); // TODO: what if modal?
         is_closed = () => this.#closed; // TODO: what if modal?
-        on_close = (callback) => (this.#on_close_callback = callback);
+        on_close(callback) {
+            this.#on_close_callback = callback;
+            return this;
+        }
         open() {
             if (!this.#modal) {
                 this.#open();
@@ -227,6 +230,7 @@
             } else {
                 // TODO: what?
             }
+            return this;
         }
         close() {
             if (this.#modal) {
@@ -235,6 +239,7 @@
                 this.#close();
                 store_panels_config();
             }
+            return this;
         }
         get_position() {
             const display = this.#panel_element.style.display;
@@ -350,8 +355,10 @@
             );
 
             const config = this.get_arg_config();
-            this.#set_checkable(config.checkable);
-            this.set_checked(config.checked);
+            if (!!config.checkable) {
+                this.#checkbox = new QuillCheckbox(null, { checked: !!config.checked }, (_, e) => this.#notify_user(e));
+                this.get_element().querySelector(":nth-child(1)").append(this.#checkbox.get_element());
+            }
 
             const element = this.get_element();
             if (config.ctrl_key) {
@@ -371,15 +378,16 @@
 
         is_checkable = () => this.#checkbox !== null;
         is_checked = () => this.is_checkable() && this.#checkbox.is_checked();
-        set_checked = (checked) => this.#checkbox?.set_checked(checked);
+        set_checked(checked) {
+            this.#checkbox?.set_checked(checked);
+            return this;
+        }
 
         // Private methods
 
-        #set_checkable(checkable) {
-            if (!!checkable) {
-                this.#checkbox = new QuillCheckbox(null, (_, e) => this.#notify_user(e));
-                this.get_element().querySelector(":nth-child(1)").append(this.#checkbox.get_element());
-            }
+        #notify_user(e) {
+            this.get_arg_callback()(this, e);
+            hide_active_menu_bar();
         }
         #show_parent_menu_if_menu_bar_active() {
             if (active_menu_bar !== get_top_most_menu(this).get_parent()) return;
@@ -389,10 +397,6 @@
                 parent.show();
                 active_menu = parent;
             }
-        }
-        #notify_user(e) {
-            this.get_arg_callback()(this, e);
-            hide_active_menu_bar();
         }
     }
 
@@ -471,6 +475,7 @@
                 parent.#show?.();
                 this.#set_position((position) => (position.left += element.offsetWidth));
             }
+            return this;
         }
         #hide() {
             this.get_element().classList.remove("active");
@@ -478,6 +483,7 @@
             for (const child of this.get_children().filter((child) => child instanceof QuillMenu)) {
                 child.#hide();
             }
+            return this;
         }
         #set_position(callback) {
             const content_element_rect = quill_config.content_element.getBoundingClientRect();
@@ -539,7 +545,7 @@
         panel.get_element().style.zIndex = z_index;
     }
     function start_moving_panel(panel, e) {
-        if (e.target.classList.contains("quill-button")) return;
+        if (e.target.classList.contains("quill-close-button")) return;
         if (moving === null && resizing === null) {
             const position = panel.get_position();
             moving = { panel, top: position.top - e.screenY, left: position.left - e.screenX };

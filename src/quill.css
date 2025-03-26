@@ -20,6 +20,10 @@
     display: flex;
 }
 
+.quill [disabled]:not([disabled] [disabled]) {
+    opacity: 0.5;
+}
+
 .quill .quill-content {
     position: relative;
     flex-grow: 1;
@@ -48,17 +52,18 @@
     font-size: var(--quill-panel-title-bar-font-size);
     font-weight: bold;
     cursor: move;
-    justify-content: space-between;
     align-items: center;
     gap: var(--quill-panel-padding-size);
 }
 .quill .quill-panel-title-bar > :nth-child(1) {
     overflow: hidden;
+    flex-grow: 1;
 }
-.quill .quill-panel-title-bar > .quill-button {
+.quill .quill-button.quill-close-button {
     font-size: 1.5em;
     line-height: 0.75em;
     cursor: initial;
+    background-color: transparent;
 }
 
 .quill .quill-panel-content {
@@ -194,43 +199,39 @@
 .quill .quill-tree {
     flex-direction: column;
 }
-.quill .quill-collapsing-header > :nth-child(1) {
+.quill .quill-collapsing-header > .quill-tree-header {
     background: var(--quill-item-background-color);
     font-weight: bold;
 }
-.quill .quill-tree > :nth-child(1) {
-    align-self: flex-start;
+.quill .quill-tree-header > :nth-child(2) {
+    overflow: hidden;
+    flex-grow: 1;
 }
-.quill .quill-collapsing-header > :nth-child(1),
-.quill .quill-tree > :nth-child(1) {
+.quill .quill-tree-header {
     align-items: center;
     gap: 0.2em;
     border-radius: var(--quill-item-border-radius-size);
     padding: 0 0.2em;
 }
-.quill .quill-collapsing-header > :nth-child(1) {
+.quill .quill-collapsing-header > .quill-tree-header {
     padding: var(--quill-item-padding-size);
 }
-.quill .quill-collapsing-header > :nth-child(1):hover,
-.quill .quill-tree > :nth-child(1):hover {
+.quill .quill-tree-header:hover {
     background-color: var(--quill-item-hover-color);
 }
-.quill .quill-collapsing-header > :nth-child(2),
-.quill .quill-tree > :nth-child(2) {
+.quill .quill-tree-body {
     flex-direction: column;
     gap: var(--quill-panel-padding-size);
     margin-top: var(--quill-panel-padding-size);
 }
-.quill .quill-tree > :nth-child(2) {
+.quill .quill-tree > .quill-tree-body {
     padding-left: 0.25em;
     margin-left: 1em;
 }
-.quill .quill-collapsing-header:not(.opened) > :nth-child(2),
-.quill .quill-tree:not(.opened) > :nth-child(2) {
+.quill :not(.expanded) > .quill-tree-body {
     display: none;
 }
-.quill .quill-collapsing-header.opened > :nth-child(1) > .quill-arrow-right,
-.quill .quill-tree.opened > :nth-child(1) > .quill-arrow-right {
+.quill .expanded > .quill-tree-header > .quill-arrow-right {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }
@@ -272,8 +273,8 @@
     line-height: 1em;
 }
 
-.quill .quill-text {
-    white-space: normal;
+.quill .quill-text.wrapped {
+    white-space: wrap;
 }
 
 .quill .quill-fieldset {

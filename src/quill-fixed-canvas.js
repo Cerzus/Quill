@@ -24,6 +24,8 @@ class QuillFixedCanvas extends QuillElement {
         this.#context = context;
     }
 
+    // Public methods
+
     get_canvas = () => this.#canvas;
     get_context = () => this.#context;
 }

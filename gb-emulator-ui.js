@@ -1,3 +1,5 @@
+"use strict";
+
 function create_game_boy_ui() {
     const Q = Quill;
 

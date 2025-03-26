@@ -6,6 +6,8 @@ class QuillTableColumn extends QuillElement {
         if (typeof child !== "undefined") this.add_children(child);
     }
 
+    // Private methods
+
     _add_child(child) {
         this.get_element().append(child instanceof QuillElement ? child.get_element() : child);
     }

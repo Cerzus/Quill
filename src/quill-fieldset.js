@@ -10,6 +10,8 @@ class QuillFieldset extends QuillElement {
         this.add_children(this.get_arg_children());
     }
 
+    // Private methods
+
     _add_child(child) {
         this.get_element().append(child.get_element());
     }

@@ -1,39 +1,52 @@
 "use strict";
 
 class QuillTree extends QuillElement {
-    #opened = false;
+    #expanded = false;
 
     constructor(header, ...args) {
         super(
             `<div class="quill-tree">
-                <div>
+                <div class="quill-tree-header">
                     <div class="quill-arrow-right"></div>
-                    ${header}
+                    <div>${header}</div>
                 </div>
-                <div></div>
+                <div class="quill-tree-body"></div>
             </div>`,
-            [QuillTree, QuillTable, QuillInfoTooltip, QuillFixedCanvas, QuillText, QuillButton],
+            [
+                QuillTree,
+                QuillTable,
+                QuillInfoTooltip,
+                QuillFixedCanvas,
+                QuillText,
+                QuillButton,
+                QuillRow,
+                QuillCheckbox,
+                QuillSeparator,
+            ],
             ...args
         );
         this.add_children(this.get_arg_children());
-        Util.add_mouse_down_event_listener(this.get_element().querySelector(":nth-child(1)"), (e) =>
-            this.#set_opened(!this.#opened)
-        );
+        Util.add_mouse_down_event_listener(this.get_element().querySelector(".quill-tree-header"), (e) => {
+            if (e.target.classList.contains("quill-close-button")) return;
+            this.#set_expanded(!this.#expanded);
+        });
+        this.#set_expanded(!!this.get_arg_config().expanded);
     }
 
     // Public methods
 
-    open = () => this.#set_opened(true);
-    close = () => this.#set_opened(false);
+    expand = () => this.#set_expanded(true);
+    collapse = () => this.#set_expanded(false);
 
     // Private methods
 
     _add_child(child) {
-        this.get_element().querySelector(":nth-child(2)").append(child.get_element());
+        this.get_element().querySelector(".quill-tree-body").append(child.get_element());
     }
-    #set_opened(opened) {
-        this.#opened = opened;
-        if (opened) this.get_element().classList.add("opened");
-        else this.get_element().classList.remove("opened");
+    #set_expanded(expanded) {
+        this.#expanded = expanded;
+        if (expanded) this.get_element().classList.add("expanded");
+        else this.get_element().classList.remove("expanded");
+        return this;
     }
 }

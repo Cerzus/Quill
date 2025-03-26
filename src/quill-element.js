@@ -19,6 +19,9 @@ class QuillElement {
         this.#arg_config = Object.freeze(named_args.config);
         this.#arg_callback = Object.freeze(named_args.callback);
         this.#arg_children = Object.freeze(named_args.children);
+
+        if (this.#arg_config.class) this.#element.classList.add(this.#arg_config.class);
+        if (!!this.#arg_config.disabled) this.#element.setAttribute("disabled", "");
     }
 
     // Public methods
@@ -58,15 +61,23 @@ class QuillElement {
             }
             this._add_child(child);
         }
+        return this;
     }
     remove() {
         this.#element.remove();
         this._remove();
-        for (const child of this.#children.slice()) {
-            child.remove();
-        }
+        for (const child of this.#children.slice()) child.remove();
         if (this.#parent) this.#parent.#children.splice(this.#parent.#children.indexOf(this), 1);
     }
+    show() {
+        this.#element.style.display = "";
+        return this;
+    }
+    hide() {
+        this.#element.style.display = "none";
+        return this;
+    }
+    is_visible = () => this.#element.style.display === "";
 
     // Private methods
 

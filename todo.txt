@@ -4,3 +4,4 @@
 - MenuBar: Disable/enable MenuItems
 - Add tests
 - Address TODO's
+- Get rid of _add_child "private" method

@@ -11,32 +11,61 @@ function quill_show_demo() {
     ]);
 
     Q.Panel("Quill Demo", { not_closeable: true, closed: true }, [
-        Q.CollapsingHeader("Tables", [
+        Q.CollapsingHeader("Widgets", [
             Q.Tree("Basic", [
-                Q.InfoTooltip("This table is created with nested Quill.create_array() calls."),
-                Q.Table(
-                    Q.create_array(4, (r) => Q.TableRow(Q.create_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))
-                ),
-                Q.InfoTooltip("This table is created with Quill.create_array(0) for the rows."),
-                Q.Table(
-                    Q.create_array(4, (r) =>
-                        Q.TableRow([Q.TableColumn(`R:${r}`), Q.TableColumn(`Some contents`), Q.TableColumn(123.456)])
+                Q.Row([
+                    Q.Button("Button", () => (text.is_visible() ? text.hide() : text.show())),
+                    (text = Q.Text("Thanks for clicking me!")).hide(),
+                ]),
+                Q.Checkbox("checkbox"),
+                Q.Separator(),
+            ]),
+            Q.Tree("Trees", [
+                Q.Tree(
+                    "Basic trees",
+                    Q.create_array(5, (i) =>
+                        Q.Tree(`Child ${i}`, { expanded: i === 0 }, [Q.Row([Q.Text("blah blah"), Q.Button("button")])])
                     )
                 ),
-                Q.InfoTooltip(
-                    "This table is created entirely by manually calling Quill.TableRow() and Quill.TableColumn()."
+            ]),
+            Q.Tree("Collapsing Headers", [
+                (checkbox = Q.Checkbox("Show 2nd header", { checked: true }, (item) =>
+                    item.is_checked() ? header.show() : header.hide()
+                )),
+                Q.CollapsingHeader(
+                    "Header",
+                    Q.create_array(5, (i) => Q.Text(`Some content ${i}`))
                 ),
-                Q.Table([
-                    Q.TableRow([Q.TableColumn(0), Q.TableColumn(1), Q.TableColumn(2)]),
-                    Q.TableRow([Q.TableColumn(3), Q.TableColumn(4), Q.TableColumn(5)]),
-                    Q.TableRow([Q.TableColumn(6), Q.TableColumn(7), Q.TableColumn(8)]),
-                    Q.TableRow([Q.TableColumn(9), Q.TableColumn(10)]),
+                (header = Q.CollapsingHeader(
+                    "Header with a close button",
+                    { closeable: true },
+                    Q.create_array(5, (i) => Q.Text(`Some content ${i}`))
+                )).on_close(() => checkbox.set_checked(false)),
+            ]),
+            Q.Tree("Text", [
+                Q.Tree("Colorful Text", [
+                    Q.Text("Pink", { color: Q.Color(255, 0, 255) }),
+                    Q.Text("Yellow", { color: Q.Color(255, 255, 0) }),
+                    Q.Row([
+                        Q.Text("Disabled", { disabled: true }),
+                        Q.InfoTooltip("The TextDisabled color is stored in ImGui.Style."),
+                    ]),
                 ]),
+                Q.Tree("Word Wrapping", [
+                    Q.Text(
+                        "This text should automatically wrap on the edge of the window. The current implementation " +
+                            "for text wrapping follows simple rules suitable for English and possibly other languages.",
+                        { wrapped: true }
+                    ),
+                ]),
+                Q.Tree("UTF-8 Text", [Q.Text("Hiragana: かきくけこ (kakikukeko)"), Q.Text("Kanjis: 日本語 (nihongo)")]),
             ]),
         ]),
         Q.CollapsingHeader("Modals", [
             Q.Tree("Modals", [
-                Q.Text("Modals are like Panels but the user cannot interact outside of them before closing them."),
+                Q.Text("Modals are like Panels but the user cannot interact outside of them before closing them.", {
+                    wrapped: true,
+                }),
                 Q.Button("Delete...", () => {
                     const modal = Q.Modal("Delete?", { not_closeable: true }, [
                         Q.Text("All those beautiful files will be deleted.\nThis operation cannot be undone!"),
@@ -60,7 +89,29 @@ function quill_show_demo() {
                 }),
             ]),
         ]),
-        Q.CollapsingHeader("Collapsing header", [Q.FixedCanvas({ min_scale: 1, max_scale: 1.5 })]),
+        Q.CollapsingHeader("Tables", [
+            Q.Tree("Basic", [
+                Q.InfoTooltip("This table is created with nested Quill.create_array() calls."),
+                Q.Table(
+                    Q.create_array(4, (r) => Q.TableRow(Q.create_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))
+                ),
+                Q.InfoTooltip("This table is created with Quill.create_array(0) for the rows."),
+                Q.Table(
+                    Q.create_array(4, (r) =>
+                        Q.TableRow([Q.TableColumn(`R:${r}`), Q.TableColumn(`Some contents`), Q.TableColumn(123.456)])
+                    )
+                ),
+                Q.InfoTooltip(
+                    "This table is created entirely by manually calling Quill.TableRow() and Quill.TableColumn()."
+                ),
+                Q.Table([
+                    Q.TableRow([Q.TableColumn(0), Q.TableColumn(1), Q.TableColumn(2)]),
+                    Q.TableRow([Q.TableColumn(3), Q.TableColumn(4), Q.TableColumn(5)]),
+                    Q.TableRow([Q.TableColumn(6), Q.TableColumn(7), Q.TableColumn(8)]),
+                    Q.TableRow([Q.TableColumn(9), Q.TableColumn(10)]),
+                ]),
+            ]),
+        ]),
         Q.MenuBar([
             Q.Menu("File", [Q.MenuItem("Load..."), (recent = Q.Menu("Recent")), Q.Separator(), Q.MenuItem("Quit")]),
             Q.Menu("Tools", {}, () => {}, [
