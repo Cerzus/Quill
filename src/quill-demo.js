@@ -160,14 +160,11 @@ function quill_show_demo() {
                     ]),
                 ]),
                 Q.MenuItem("Load...", { ctrl_key: "L" }, () =>
-                    Q.open_file_dialog(
-                        (files) => {
-                            console.log("Load", files);
-                            recent.get_children().forEach((child) => child.remove());
-                            recent.add_children([...files].map((file) => Q.MenuItem(file.name)));
-                        },
-                        { multiple: true }
-                    )
+                    Q.open_file_dialog({ multiple: true }, (files) => {
+                        console.log("Load", files);
+                        recent.get_children().forEach((child) => child.remove());
+                        recent.add_children([...files].map((file) => Q.MenuItem(file.name)));
+                    })
                 ),
                 Q.Menu("Recent", [
                     Q.MenuItem("1. some_file.txt"),

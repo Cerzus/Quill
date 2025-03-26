@@ -24,29 +24,25 @@ class Util {
 
     static config_and_callback_from_arguments(...args) {
         const result = { config: {}, callback: () => {} };
-        for (let i = 0; i < Math.min(args.length, 2); i++) {
-            const arg = args[i];
-            if (arg instanceof Function) {
-                result.callback = arg;
-            } else if (arg instanceof Object) {
-                result.config = arg;
-            }
-        }
+        let i = 0;
+        if (args[i] instanceof Object && !(args[i] instanceof Function)) result.config = args[i++];
+        if (args[i] instanceof Function) result.callback = args[i++];
         return result;
     }
 
     static config_callback_and_children_from_arguments(...args) {
         const result = { config: {}, callback: () => {}, children: [] };
-        for (let i = 0; i < Math.min(args.length, 3); i++) {
-            const arg = args[i];
-            if (arg instanceof QuillElement || arg instanceof Array) {
-                result.children = arg;
-            } else if (arg instanceof Function) {
-                result.callback = arg;
-            } else if (arg instanceof Object) {
-                result.config = arg;
-            }
+        let i = 0;
+        if (
+            args[i] instanceof Object &&
+            !(args[i] instanceof Function || args[i] instanceof Array || args[i] instanceof QuillElement)
+        ) {
+            result.config = args[i++];
         }
+        if (args[i] instanceof Function && !(args[i] instanceof Array || args[i] instanceof QuillElement)) {
+            result.callback = args[i++];
+        }
+        if (args[i] instanceof Array || args[i] instanceof QuillElement) result.children = args[i++];
         return result;
     }
 
