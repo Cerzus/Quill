@@ -159,12 +159,12 @@
 
             this.#modal = modal;
             this.#name = name;
-            this.#closeable = !this.get_arg_config().not_closeable;
+            this.#closeable = !this._get_arg_config().not_closeable;
             this.#panel_element = modal ? element.querySelector("div") : element;
 
             if (!this.#modal) {
                 this.#create_id(name);
-                this.#closed = !!this.get_arg_config().closed;
+                this.#closed = !!this._get_arg_config().closed;
                 Util.add_mouse_down_event_listener(element, () => show_panel_on_top(this));
             }
             Util.add_mouse_down_event_listener(element.querySelector(".quill-panel-title-bar"), (e) =>
@@ -209,7 +209,7 @@
                 if (this.#closed) this.#close();
             }
 
-            this.add_children(this.get_arg_children());
+            this.add_children(this._get_arg_children());
 
             quill_config.content_element.append(element);
         }
@@ -316,7 +316,7 @@
     class QuillMenuBar extends QuillElement {
         constructor(...args) {
             super(`<div class="quill-menu-bar"></div>`, [QuillMenu, QuillMenuItem], ...args);
-            this.add_children(this.get_arg_children());
+            this.add_children(this._get_arg_children());
         }
 
         // Private methods
@@ -356,7 +356,7 @@
                 ...args
             );
 
-            const config = this.get_arg_config();
+            const config = this._get_arg_config();
             if (!!config.checkable) {
                 this.#checkbox = new QuillCheckbox(null, { checked: !!config.checked }, (_, __, e) =>
                     this.#notify_user(e)
@@ -369,7 +369,7 @@
                 QuillMenuItem.#ctrl_keys[config.ctrl_key.toLowerCase()] = (e) => {
                     if (!this.get_panel().is_open()) return;
                     this.set_checked(!this.is_checked());
-                    this.get_arg_callback()(this, e);
+                    this._get_arg_callback()(this, e);
                 };
                 element.querySelector(":nth-child(3)").innerHTML = `Ctrl+${config.ctrl_key.toUpperCase()}`;
             }
@@ -390,7 +390,7 @@
         // Private methods
 
         #notify_user(e) {
-            this.get_arg_callback()(this, e);
+            this._get_arg_callback()(this, e);
             hide_active_menu_bar();
         }
         #show_parent_menu_if_menu_bar_active() {
@@ -428,7 +428,7 @@
             Util.add_mouse_down_event_listener(this.#menu_element, () => this.#prevent_from_being_hidden());
             element.addEventListener("mouseenter", () => this.#show_if_menu_bar_active());
 
-            this.add_children(this.get_arg_children());
+            this.add_children(this._get_arg_children());
             quill_config.content_element.append(this.#menu_element);
             element
                 .querySelector(":nth-child(4)")

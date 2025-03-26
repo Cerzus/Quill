@@ -7,7 +7,7 @@ class QuillFieldset extends QuillElement {
             [QuillTable, QuillSeparator],
             ...args
         );
-        this.add_children(this.get_arg_children());
+        this.add_children(this._get_arg_children());
     }
 
     // Private methods

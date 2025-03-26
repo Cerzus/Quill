@@ -29,13 +29,7 @@ class QuillElement {
     get_element = () => this.#element;
     get_parent = () => this.#parent;
     get_children = () => this.#children.slice();
-
-    get_arg_config = () => this.#arg_config;
-    get_arg_callback = () => this.#arg_callback;
-    get_arg_children = () => this.#arg_children;
-
     get_panel = () => (this instanceof QuillPanel ? this : this.get_parent().get_panel());
-
     add_children(...children) {
         if (children[0] instanceof Array) return this.add_children(...children[0]);
         const msg = `No children allowed for ${this.constructor.name}`;
@@ -81,6 +75,9 @@ class QuillElement {
 
     // Private methods
 
+    _get_arg_config = () => this.#arg_config;
+    _get_arg_callback = () => this.#arg_callback;
+    _get_arg_children = () => this.#arg_children;
     _add_child() {
         Util.assert(false, `TODO: Implement '_add_child(child)' in ${this.constructor.name}`);
     }

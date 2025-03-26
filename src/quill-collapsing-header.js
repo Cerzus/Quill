@@ -10,7 +10,7 @@ class QuillCollapsingHeader extends QuillTree {
         element.classList.remove("quill-tree");
         element.classList.add("quill-collapsing-header");
 
-        this.#closeable = !!this.get_arg_config().closeable;
+        this.#closeable = !!this._get_arg_config().closeable;
         if (this.#closeable) {
             const close_button = new QuillButton("&times;", { class: "quill-close-button" }, (_, e) => {
                 this.hide();

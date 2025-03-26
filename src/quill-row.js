@@ -7,7 +7,7 @@ class QuillRow extends QuillElement {
             [QuillButton, QuillFieldset, QuillText, QuillInfoTooltip, QuillDropdown],
             ...args
         );
-        this.add_children(this.get_arg_children());
+        this.add_children(this._get_arg_children());
     }
 
     // Private methods

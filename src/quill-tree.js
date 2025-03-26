@@ -26,12 +26,12 @@ class QuillTree extends QuillElement {
             ],
             ...args
         );
-        this.add_children(this.get_arg_children());
+        this.add_children(this._get_arg_children());
         Util.add_mouse_down_event_listener(this.get_element().querySelector(".quill-tree-header"), (e) => {
             if (e.target.classList.contains("quill-close-button")) return;
             this.#set_expanded(!this.#expanded);
         });
-        this.#set_expanded(!!this.get_arg_config().expanded);
+        this.#set_expanded(!!this._get_arg_config().expanded);
     }
 
     // Public methods

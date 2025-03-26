@@ -8,7 +8,7 @@ class QuillFixedCanvas extends QuillElement {
         super(`<div class="quill-fixed-canvas"></div>`, [], ...args);
 
         const canvas = document.createElement("canvas");
-        const config = this.get_arg_config();
+        const config = this._get_arg_config();
         if (+config.width) canvas.width = +config.width;
         if (+config.height) canvas.height = +config.height;
         canvas.style.minWidth = `${(+config.min_scale || 0) * canvas.width}px`;
