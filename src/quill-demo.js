@@ -28,9 +28,9 @@ function quill_show_demo() {
                     )
                 ),
             ]),
-            Q.Tree("Collapsing Headers", [
-                (checkbox = Q.Checkbox("Show 2nd header", { checked: true }, (item) =>
-                    item.is_checked() ? header.show() : header.hide()
+            Q.Tree("Collapsing headers", [
+                (checkbox = Q.Checkbox("Show 2nd header", { checked: true }, (checked) =>
+                    checked ? header.show() : header.hide()
                 )),
                 Q.CollapsingHeader(
                     "Header",

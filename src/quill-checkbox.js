@@ -8,7 +8,7 @@ class QuillCheckbox extends QuillElement {
         super(label ? `<label class="quill-label">${html}${label}</label>` : html, [], ...args);
         const element = label ? this.get_element().querySelector(`input[type="checkbox"]`) : this.get_element();
         this.#input_element = element;
-        element.addEventListener("change", (e) => this.get_arg_callback()(this, e));
+        element.addEventListener("change", (e) => this.get_arg_callback()(this.is_checked(), this, e));
         this.set_checked(!!this.get_arg_config().checked);
     }
 

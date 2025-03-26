@@ -17,14 +17,14 @@ function create_game_boy_ui() {
             new QuillFieldset("Flags", [
                 Q.Table(
                     ["Zero", "Subtract", "Carry", "Half-carry"].map((flag) =>
-                        Q.TableRow(Q.TableColumn(Q.Checkbox(flag, (item) => console.log(flag, item.is_checked()))))
+                        Q.TableRow(Q.TableColumn(Q.Checkbox(flag, (checked) => console.log(flag, checked))))
                     )
                 ),
             ]),
             new QuillFieldset("Interrupts", [
                 Q.Table(
                     ["HALT", "IME"].map((flag) =>
-                        Q.TableRow(Q.TableColumn(Q.Checkbox(flag, (item) => console.log(flag, item.is_checked()))))
+                        Q.TableRow(Q.TableColumn(Q.Checkbox(flag, (checked) => console.log(flag, checked))))
                     )
                 ),
                 Q.Separator(),
@@ -33,8 +33,8 @@ function create_game_boy_ui() {
                     ...["V-blank", "Stat", "Timer", "Serial", "Joypad"].map((source) =>
                         Q.TableRow([
                             Q.TableColumn(source),
-                            Q.TableColumn(Q.Checkbox(null, (item) => console.log("IE", source, item.is_checked()))),
-                            Q.TableColumn(Q.Checkbox(null, (item) => console.log("IF", source, item.is_checked()))),
+                            Q.TableColumn(Q.Checkbox(null, (checked) => console.log("IE", source, checked))),
+                            Q.TableColumn(Q.Checkbox(null, (checked) => console.log("IF", source, checked))),
                         ])
                     ),
                 ]),
