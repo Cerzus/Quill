@@ -23,6 +23,7 @@ class QuillTree extends QuillElement {
                 QuillCheckbox,
                 QuillSeparator,
                 QuillDropdown,
+                QuillHexEditor,
             ],
             ...args
         );

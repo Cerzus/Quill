@@ -16,6 +16,7 @@ const QuillConfig = {
         line_heavy: new QuillColor(255, 255, 255, 0.1),
         line_light: new QuillColor(255, 255, 255, 0.1),
         text: new QuillColor(255, 255, 255, 0.5),
+        input: new QuillColor(0, 192, 255, 1),
         scrollbar_thumb: new QuillColor(30, 30, 30),
         scrollbar_track: new QuillColor(50, 50, 50),
     },

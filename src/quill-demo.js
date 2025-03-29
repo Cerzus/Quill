@@ -9,9 +9,14 @@ function quill_show_demo() {
     let panels = null;
     let recent = null;
 
-    Q.Panel("Panel 2", []);
+    Q.Panel("Panel 2", [Q.HexEditor()]);
 
     Q.Panel("Panel 3", { closed: true }, [
+        Q.CollapsingHeader(
+            "Take a look, why don't you?",
+            { expanded: true },
+            Q.Tree("It's in here", { expanded: true }, Q.HexEditor())
+        ),
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
     ]);
 

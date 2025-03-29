@@ -106,6 +106,7 @@
         Quill.Dropdown = (...args) => new QuillDropdown(...args);
         Quill.DropdownOptions = (...args) => new QuillDropdownOptions(...args);
         Quill.InputInteger = (...args) => new QuillInputInteger(...args);
+        Quill.HexEditor = (...args) => new QuillHexEditor(...args);
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
@@ -133,7 +134,7 @@
                 <div class="quill-panel">
                     <div class="quill-panel-title-bar"><div>${name}</div></div>
                     <div class="quill-panel-menu-bar-container"></div>
-                    <div class="quill-panel-content"></div>
+                    <div class="quill-panel-content"><div></div></div>
                     <div class="quill-panel-resizer">
                         <div></div><div></div><div></div>
                         <div></div><div></div><div></div>
@@ -152,6 +153,7 @@
                     QuillButton,
                     QuillRow,
                     QuillCheckbox,
+                    QuillHexEditor,
                 ],
                 ...args
             );
@@ -275,7 +277,7 @@
             if (child instanceof QuillMenuBar) {
                 this.get_element().querySelector(".quill-panel-menu-bar-container").append(child.get_element());
             } else {
-                this.get_element().querySelector(".quill-panel-content").append(child.get_element());
+                this.get_element().querySelector(".quill-panel-content > div").append(child.get_element());
             }
         }
         #open() {

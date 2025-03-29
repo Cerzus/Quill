@@ -2,11 +2,11 @@
     background-color: var(--quill-background-color);
     font-family: var(--quill-proportional-font);
     font-size: 14px;
+    color: var(--quill-text-color);
 }
 
 .quill,
 .quill :not(script) {
-    color: var(--quill-text-color);
     padding: 0;
     margin: 0;
     white-space: nowrap;
@@ -68,10 +68,13 @@
 
 .quill .quill-panel-content {
     background-color: var(--quill-panel-content-color);
+    overflow: auto;
+    flex-grow: 1;
+}
+.quill .quill-panel-content > div {
     padding: var(--quill-panel-padding-size);
     flex-grow: 1;
     flex-direction: column;
-    overflow: auto;
     gap: var(--quill-panel-padding-size);
 }
 
@@ -309,6 +312,7 @@
     -moz-appearance: none; */
     padding: var(--quill-item-padding-size);
     border-radius: var(--quill-item-border-radius-size);
+    color: var(--quill-input-color);
 }
 .quill select.quill-select option {
     background: var(--quill-item-background-color);
@@ -337,19 +341,100 @@
     border: none;
     padding: 0 calc(0.2em + var(--quill-item-padding-size));
     border-radius: var(--quill-item-border-radius-size);
+    color: var(--quill-input-color);
 }
 .quill input.quill-input:hover,
 .quill input.quill-input:focus {
     background-color: var(--quill-item-hover-color);
 }
-
-input[type="number"] {
+.quill input.quill-input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
     margin: 0;
 }
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+.quill input.quill-input[type="number"]::-webkit-inner-spin-button,
+.quill input.quill-input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.quill .quill-hex-editor {
+    background-color: var(--quill-panel-title-bar-color);
+    flex-grow: 1;
+    flex-direction: column;
+    width: fit-content;
+    line-height: 1em;
+    font-family: var(--quill-monospace-font);
+    overflow: hidden;
+    border-radius: var(--quill-panel-border-radius-size);
+}
+.quill .quill-hex-editor > .quill-hex-editor-row {
+    padding: var(--quill-panel-padding-size);
+}
+.quill .quill-hex-editor-rows-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    height: 8em;
+}
+.quill .quill-hex-editor-rows {
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+.quill .quill-hex-editor-rows .quill-hex-editor-row {
+    position: absolute;
+}
+
+.quill .quill-hex-editor-row {
+    gap: 1em;
+    padding: 0 var(--quill-panel-padding-size);
+}
+.quill .quill-hex-editor-rows .quill-hex-editor-row:hover > div {
+    background-color: rgb(255 255 255 / 0.2);
+}
+
+.quill .quill-hex-editor-row-data > * {
+    padding: 0 0.2em;
+    width: 22px;
+    line-height: 16px;
+}
+.quill .quill-hex-editor-row > div > *:nth-child(4n + 1):not(:nth-child(1)) {
+    margin-left: 0.4em;
+}
+.quill .quill-hex-editor-rows .quill-hex-editor-row-data > * {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    color: var(--quill-input-color);
+    font-family: var(--quill-monospace-font);
+    font-size: 14px;
+    height: 1em;
+}
+.quill .quill-hex-editor[data-hovered-column="0"] .bulba:nth-child(1),
+.quill .quill-hex-editor[data-hovered-column="1"] .bulba:nth-child(2),
+.quill .quill-hex-editor[data-hovered-column="2"] .bulba:nth-child(3),
+.quill .quill-hex-editor[data-hovered-column="3"] .bulba:nth-child(4),
+.quill .quill-hex-editor[data-hovered-column="4"] .bulba:nth-child(5),
+.quill .quill-hex-editor[data-hovered-column="5"] .bulba:nth-child(6),
+.quill .quill-hex-editor[data-hovered-column="6"] .bulba:nth-child(7),
+.quill .quill-hex-editor[data-hovered-column="7"] .bulba:nth-child(8),
+.quill .quill-hex-editor[data-hovered-column="8"] .bulba:nth-child(9),
+.quill .quill-hex-editor[data-hovered-column="9"] .bulba:nth-child(10),
+.quill .quill-hex-editor[data-hovered-column="10"] .bulba:nth-child(11),
+.quill .quill-hex-editor[data-hovered-column="11"] .bulba:nth-child(12),
+.quill .quill-hex-editor[data-hovered-column="12"] .bulba:nth-child(13),
+.quill .quill-hex-editor[data-hovered-column="13"] .bulba:nth-child(14),
+.quill .quill-hex-editor[data-hovered-column="14"] .bulba:nth-child(15),
+.quill .quill-hex-editor[data-hovered-column="15"] .bulba:nth-child(16) {
+    background-color: rgb(255 255 255 / 0.2);
+}
+.quill .quill-hex-editor-row input.bulba:hover {
+    color: yellow;
+}
+
+.quill .quill-hex-editor-data-editor {
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: rgb(25 25 25);
 }
