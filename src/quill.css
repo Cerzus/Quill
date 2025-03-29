@@ -242,10 +242,10 @@
     border: 1px solid transparent;
     background-color: transparent;
 }
-.quill .quill-table-row {
+/* .quill .quill-table-row {
     line-height: 1em;
     height: 1.2em;
-}
+} */
 .quill .quill-table-row:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.2);
 }
@@ -299,10 +299,6 @@
     width: fit-content;
 }
 
-.quill .quill-checkbox {
-    background-color: transparent;
-}
-
 .quill select.quill-select {
     background: var(--quill-item-background-color);
     font-family: var(--quill-proportional-font);
@@ -320,7 +316,8 @@
 .quill select.quill-select optgroup {
     background: var(--quill-item-background-color);
 }
-.quill select.quill-select:hover {
+.quill select.quill-select:hover,
+.quill select.quill-select:focus {
     background-color: var(--quill-item-hover-color);
 }
 .quill select.quill-select::-webkit-scrollbar {
@@ -331,4 +328,28 @@
 }
 .quill select.quill-select::-webkit-scrollbar-thumb {
     background-color: var(--quill-scrollbar-thumb-color);
+}
+
+.quill input.quill-input {
+    background: var(--quill-item-background-color);
+    font-family: var(--quill-proportional-font);
+    outline: none;
+    border: none;
+    padding: 0 calc(0.2em + var(--quill-item-padding-size));
+    border-radius: var(--quill-item-border-radius-size);
+}
+.quill input.quill-input:hover,
+.quill input.quill-input:focus {
+    background-color: var(--quill-item-hover-color);
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    margin: 0;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

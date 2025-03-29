@@ -43,6 +43,7 @@ class Util {
             result.callback = args[i++];
         }
         if (args[i] instanceof Array || args[i] instanceof QuillElement) result.children = args[i++];
+        result.count = i;
         return result;
     }
 

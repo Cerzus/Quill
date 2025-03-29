@@ -105,6 +105,7 @@
         Quill.Checkbox = (...args) => new QuillCheckbox(...args);
         Quill.Dropdown = (...args) => new QuillDropdown(...args);
         Quill.DropdownOptions = (...args) => new QuillDropdownOptions(...args);
+        Quill.InputInteger = (...args) => new QuillInputInteger(...args);
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
@@ -305,9 +306,9 @@
 
     class QuillModal extends Panel {
         constructor(name, ...args) {
-            const { config, callback, children } = Util.config_callback_and_children_from_arguments(...args);
+            const { config, callback, children, count } = Util.config_callback_and_children_from_arguments(...args);
             config.modal = true;
-            super(name, config, callback, children, ...args.slice(3));
+            super(name, config, callback, children, ...args.slice(count));
         }
     }
 

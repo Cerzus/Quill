@@ -8,11 +8,14 @@ function create_game_boy_ui() {
         { closed: true },
         Q.Row([
             new QuillFieldset("Registers", [
-                Q.Table(
-                    ["A", "F", "B", "C", "D", "E", "H", "L", "SP", "PC", "IR"].map((register) =>
-                        Q.TableRow(Q.TableColumn(register))
-                    )
-                ),
+                Q.Table([
+                    ...["A", "F", "B", "C", "D", "E", "H", "L"].map((register) =>
+                        Q.TableRow(Q.TableColumn(Q.InputInteger(register, { min: 0, max: 255, step: 1 })))
+                    ),
+                    Q.TableRow(Q.TableColumn(Q.InputInteger("SP", { min: 0, max: 65535, step: 1 }))),
+                    Q.TableRow(Q.TableColumn(Q.InputInteger("PC", { min: 0, max: 65535, step: 1 }))),
+                    Q.TableRow(Q.TableColumn(Q.InputInteger("IR", { min: 0, max: 255, step: 1 }))),
+                ]),
             ]),
             new QuillFieldset("Flags", [
                 Q.Table(
