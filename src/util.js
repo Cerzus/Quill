@@ -58,4 +58,8 @@ class Util {
     static add_click_event_listener(element, callback) {
         element.addEventListener("click", (e) => e.button === 0 && callback(e));
     }
+
+    static fill_array(length, callback) {
+        return new Array(length).fill().map((_, i) => callback(i));
+    }
 }

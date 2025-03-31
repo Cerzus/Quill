@@ -110,7 +110,7 @@
 
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
-        Quill.create_array = create_array;
+        Quill.fill_array = Util.fill_array;
         Quill.show_demo = quill_show_demo;
 
         Object.freeze(Quill);
@@ -518,9 +518,6 @@
         if (config.multiple) input.multiple = true;
         input.addEventListener("change", (e) => callback(input.multiple ? input.files : input.files[0], e));
         input.click();
-    }
-    function create_array(length, callback) {
-        return new Array(length).fill().map((_, i) => callback(i));
     }
 
     // Helper functions

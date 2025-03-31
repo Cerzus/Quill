@@ -6,5 +6,7 @@
 - Address TODO's
 - Get rid of fake private methods (methods starting with "_")
 - Checkbox and Dropdown: Allow leaving out the label argument from the constructor
-- Add integer input element
 - Create a QuillInput element to inherit all other input elements from
+- Disable inputs
+- Disable in bulk
+- Update inputs on the fly

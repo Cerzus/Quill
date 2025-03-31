@@ -76,6 +76,7 @@
     flex-grow: 1;
     flex-direction: column;
     gap: var(--quill-panel-padding-size);
+    min-height: fit-content;
 }
 
 .quill .quill-panel-resizer {
@@ -378,13 +379,10 @@
 }
 .quill .quill-hex-editor-rows {
     flex-direction: column;
-    position: relative;
     overflow: hidden;
+    box-sizing: content-box;
+    padding-bottom: var(--quill-panel-padding-size);
 }
-.quill .quill-hex-editor-rows .quill-hex-editor-row {
-    position: absolute;
-}
-
 .quill .quill-hex-editor-row {
     gap: 1em;
     padding: 0 var(--quill-panel-padding-size);
@@ -392,7 +390,6 @@
 .quill .quill-hex-editor-rows .quill-hex-editor-row:hover > div {
     background-color: rgb(255 255 255 / 0.2);
 }
-
 .quill .quill-hex-editor-row-data > * {
     padding: 0 0.2em;
     width: 22px;
@@ -401,40 +398,36 @@
 .quill .quill-hex-editor-row > div > *:nth-child(4n + 1):not(:nth-child(1)) {
     margin-left: 0.4em;
 }
+.quill .quill-hex-editor-row-data > * {
+    font-size: 14px;
+    height: 1em;
+}
 .quill .quill-hex-editor-rows .quill-hex-editor-row-data > * {
     outline: none;
     border: none;
     background-color: transparent;
     color: var(--quill-input-color);
     font-family: var(--quill-monospace-font);
-    font-size: 14px;
-    height: 1em;
 }
-.quill .quill-hex-editor[data-hovered-column="0"] .bulba:nth-child(1),
-.quill .quill-hex-editor[data-hovered-column="1"] .bulba:nth-child(2),
-.quill .quill-hex-editor[data-hovered-column="2"] .bulba:nth-child(3),
-.quill .quill-hex-editor[data-hovered-column="3"] .bulba:nth-child(4),
-.quill .quill-hex-editor[data-hovered-column="4"] .bulba:nth-child(5),
-.quill .quill-hex-editor[data-hovered-column="5"] .bulba:nth-child(6),
-.quill .quill-hex-editor[data-hovered-column="6"] .bulba:nth-child(7),
-.quill .quill-hex-editor[data-hovered-column="7"] .bulba:nth-child(8),
-.quill .quill-hex-editor[data-hovered-column="8"] .bulba:nth-child(9),
-.quill .quill-hex-editor[data-hovered-column="9"] .bulba:nth-child(10),
-.quill .quill-hex-editor[data-hovered-column="10"] .bulba:nth-child(11),
-.quill .quill-hex-editor[data-hovered-column="11"] .bulba:nth-child(12),
-.quill .quill-hex-editor[data-hovered-column="12"] .bulba:nth-child(13),
-.quill .quill-hex-editor[data-hovered-column="13"] .bulba:nth-child(14),
-.quill .quill-hex-editor[data-hovered-column="14"] .bulba:nth-child(15),
-.quill .quill-hex-editor[data-hovered-column="15"] .bulba:nth-child(16) {
+/* TODO: Is there a nicer way to do this? */
+.quill .quill-hex-editor[data-hovered-column="0"] .quill-hex-editor-byte:nth-child(1),
+.quill .quill-hex-editor[data-hovered-column="1"] .quill-hex-editor-byte:nth-child(2),
+.quill .quill-hex-editor[data-hovered-column="2"] .quill-hex-editor-byte:nth-child(3),
+.quill .quill-hex-editor[data-hovered-column="3"] .quill-hex-editor-byte:nth-child(4),
+.quill .quill-hex-editor[data-hovered-column="4"] .quill-hex-editor-byte:nth-child(5),
+.quill .quill-hex-editor[data-hovered-column="5"] .quill-hex-editor-byte:nth-child(6),
+.quill .quill-hex-editor[data-hovered-column="6"] .quill-hex-editor-byte:nth-child(7),
+.quill .quill-hex-editor[data-hovered-column="7"] .quill-hex-editor-byte:nth-child(8),
+.quill .quill-hex-editor[data-hovered-column="8"] .quill-hex-editor-byte:nth-child(9),
+.quill .quill-hex-editor[data-hovered-column="9"] .quill-hex-editor-byte:nth-child(10),
+.quill .quill-hex-editor[data-hovered-column="10"] .quill-hex-editor-byte:nth-child(11),
+.quill .quill-hex-editor[data-hovered-column="11"] .quill-hex-editor-byte:nth-child(12),
+.quill .quill-hex-editor[data-hovered-column="12"] .quill-hex-editor-byte:nth-child(13),
+.quill .quill-hex-editor[data-hovered-column="13"] .quill-hex-editor-byte:nth-child(14),
+.quill .quill-hex-editor[data-hovered-column="14"] .quill-hex-editor-byte:nth-child(15),
+.quill .quill-hex-editor[data-hovered-column="15"] .quill-hex-editor-byte:nth-child(16) {
     background-color: rgb(255 255 255 / 0.2);
 }
-.quill .quill-hex-editor-row input.bulba:hover {
+.quill .quill-hex-editor-row input.quill-hex-editor-byte:hover {
     color: yellow;
-}
-
-.quill .quill-hex-editor-data-editor {
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    background: rgb(25 25 25);
 }

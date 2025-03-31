@@ -9,14 +9,18 @@ function quill_show_demo() {
     let panels = null;
     let recent = null;
 
-    Q.Panel("Panel 2", [Q.HexEditor()]);
+    const hex_editor_data = new Uint8Array(0x10000);
+    for (let i = 0; i < hex_editor_data.length; i++) {
+        const value = Math.random();
+        hex_editor_data[i] = value < 0.5 ? value * 512 : 0;
+    }
+
+    Q.Panel("Panel 2", [Q.HexEditor(0, 16, hex_editor_data.length, (i) => hex_editor_data[i])]);
 
     Q.Panel("Panel 3", { closed: true }, [
-        Q.CollapsingHeader(
-            "Take a look, why don't you?",
-            { expanded: true },
-            Q.Tree("It's in here", { expanded: true }, Q.HexEditor())
-        ),
+        Q.CollapsingHeader("Take a look, why don't you?", { expanded: true }, [
+            Q.Tree("It's in here", { expanded: true }, [Q.HexEditor(16, 8, 513, (i) => hex_editor_data[i])]),
+        ]),
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
     ]);
 
@@ -39,7 +43,7 @@ function quill_show_demo() {
             Q.Tree("Trees", [
                 Q.Tree(
                     "Basic trees",
-                    Q.create_array(5, (i) =>
+                    Q.fill_array(5, (i) =>
                         Q.Tree(`Child ${i}`, { expanded: i === 0 }, [Q.Row([Q.Text("blah blah"), Q.Button("button")])])
                     )
                 ),
@@ -50,12 +54,12 @@ function quill_show_demo() {
                 )),
                 Q.CollapsingHeader(
                     "Header",
-                    Q.create_array(5, (i) => Q.Text(`Some content ${i}`))
+                    Q.fill_array(5, (i) => Q.Text(`Some content ${i}`))
                 ),
                 (header = Q.CollapsingHeader(
                     "Header with a close button",
                     { closeable: true },
-                    Q.create_array(5, (i) => Q.Text(`Some content ${i}`))
+                    Q.fill_array(5, (i) => Q.Text(`Some content ${i}`))
                 )).on_close(() => checkbox.set_checked(false)),
             ]),
             Q.Tree("Text", [
@@ -87,7 +91,7 @@ function quill_show_demo() {
                     Q.InfoTooltip("Dropdown without a label"),
                 ]),
                 Q.Dropdown("Dropdown with values", { value: "Option 3" }, (value) => console.log(value), [
-                    Q.DropdownOptions([...Q.create_array(5, (i) => `Option ${i + 1}`)]),
+                    Q.DropdownOptions([...Q.fill_array(5, (i) => `Option ${i + 1}`)]),
                 ]),
                 Q.Dropdown("Dropdown with keys and values", (value) => console.log(value), [
                     Q.DropdownOptions({ alice: "aaa", 123: "bbb", cool: "ccc" }),
@@ -96,7 +100,7 @@ function quill_show_demo() {
                     Q.DropdownOptions("Group 1", { alice: "aaa", 123: "bbb", cool: "ccc" }),
                     Q.DropdownOptions(
                         "Group 2",
-                        Q.create_array(5, (i) => `Option ${i}`)
+                        Q.fill_array(5, (i) => `Option ${i}`)
                     ),
                 ]),
             ]),
@@ -131,13 +135,11 @@ function quill_show_demo() {
         ]),
         Q.CollapsingHeader("Tables", [
             Q.Tree("Basic", [
-                Q.InfoTooltip("This table is created with nested Quill.create_array() calls."),
+                Q.InfoTooltip("This table is created with nested Quill.fill_array() calls."),
+                Q.Table(Q.fill_array(4, (r) => Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))),
+                Q.InfoTooltip("This table is created with Quill.fill_array(0) for the rows."),
                 Q.Table(
-                    Q.create_array(4, (r) => Q.TableRow(Q.create_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))
-                ),
-                Q.InfoTooltip("This table is created with Quill.create_array(0) for the rows."),
-                Q.Table(
-                    Q.create_array(4, (r) =>
+                    Q.fill_array(4, (r) =>
                         Q.TableRow([Q.TableColumn(`R:${r}`), Q.TableColumn(`Some contents`), Q.TableColumn(123.456)])
                     )
                 ),
