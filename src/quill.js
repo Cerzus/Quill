@@ -106,6 +106,8 @@
         Quill.Dropdown = (...args) => new QuillDropdown(...args);
         Quill.DropdownOptions = (...args) => new QuillDropdownOptions(...args);
         Quill.InputInteger = (...args) => new QuillInputInteger(...args);
+        Quill.InputU8 = (...args) => new QuillInputU8(...args);
+        Quill.InputU16 = (...args) => new QuillInputU16(...args);
         Quill.HexEditor = (...args) => new QuillHexEditor(...args);
 
         Quill.get_panels = get_panels;
