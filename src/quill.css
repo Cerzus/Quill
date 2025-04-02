@@ -286,7 +286,7 @@
     border: var(--quill-line-heavy-size) solid var(--quill-line-heavy-color);
     border-radius: var(--quill-item-border-radius-size);
     padding: var(--quill-panel-padding-size);
-    gap: var(--quill-panel-padding-size);
+    gap: var(--quill-item-padding-size);
     align-self: flex-start;
     display: flex;
     flex-direction: column;
@@ -408,6 +408,12 @@
     background-color: transparent;
     color: var(--quill-input-color);
     font-family: var(--quill-monospace-font);
+}
+.quill .quill-hex-editor-rows .quill-hex-editor-row-data > *[data-value="0"] {
+    color: rgb(60, 60, 60);
+}
+.quill .quill-hex-editor-rows .quill-hex-editor-row-ascii > *[data-value="."] {
+    color: rgb(60, 60, 60);
 }
 /* TODO: Is there a nicer way to do this? */
 .quill .quill-hex-editor[data-hovered-column="0"] .quill-hex-editor-byte:nth-child(1),
