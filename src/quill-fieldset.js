@@ -4,7 +4,7 @@ class QuillFieldset extends QuillElement {
     constructor(legend, ...args) {
         super(
             `<fieldset class="quill-fieldset"><legend>${legend}</fieldset></fieldset>`,
-            [QuillTable, QuillSeparator, QuillInputNumber, QuillCheckbox],
+            [QuillTable, QuillSeparator, QuillDropdown, QuillInputNumber, QuillCheckbox],
             ...args
         );
         this.add_children(this._get_arg_children());

@@ -184,10 +184,13 @@ class QuillHexEditor extends QuillElement {
         );
     }
     #create_row_ascii_html(data) {
-        return data.map((x) =>
-            x < 0
-                ? `<div>\xa0</div>`
-                : `<div class="quill-hex-editor-byte" data-value="${x}">${this.#to_ascii(x)}</div>`
-        );
+        return data.map((x) => {
+            if (x < 0) {
+                return `<div>\xa0</div>`;
+            } else {
+                const ascii = this.#to_ascii(x);
+                return `<div class="quill-hex-editor-byte" data-value="${ascii}">${ascii}</div>`;
+            }
+        });
     }
 }

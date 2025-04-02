@@ -4,7 +4,7 @@ class QuillRow extends QuillElement {
     constructor(...args) {
         super(
             `<div class="quill-row"></div>`,
-            [QuillButton, QuillFieldset, QuillText, QuillInfoTooltip, QuillDropdown],
+            [QuillButton, QuillFieldset, QuillTable, QuillText, QuillInfoTooltip, QuillDropdown],
             ...args
         );
         this.add_children(this._get_arg_children());

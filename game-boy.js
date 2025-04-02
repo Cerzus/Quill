@@ -1,6 +1,6 @@
 "use strict";
 
-class GameBoy {
+class CPU {
     #a = 0;
     #zf = 0;
     #nf = 0;
@@ -19,7 +19,6 @@ class GameBoy {
     #if = 0;
     #ime = 0;
     #halt = 0;
-    #memory = new Uint8Array(0x10000).fill(0);
 
     get_a = () => this.#a;
     get_f = () => this.#zf | this.#nf | this.#hf | this.#cf;
@@ -50,8 +49,6 @@ class GameBoy {
     get_if_timer = () => !!(this.#if & 0x04);
     get_if_serial = () => !!(this.#if & 0x08);
     get_if_joypad = () => !!(this.#if & 0x10);
-    get_memory = () => this.#memory.slice();
-    read_memory = (address) => this.#memory[address];
 
     set_a = (value) => (this.#a = Math.min(Math.max(0, ~~value), 255));
     set_f = (value) => {
@@ -107,9 +104,109 @@ class GameBoy {
         this.#if = ~~(Math.random() * 0x100);
         this.#ime = !!(Math.random() < 0.5);
         this.#halt = !!(Math.random() < 0.5);
+    }
+}
+
+class PPU {
+    #lcdc;
+    #stat;
+    #scy;
+    #scx;
+    // #ly;
+    #lyc;
+    // #dma;
+    // #bgp;
+    // #obp0;
+    // #obp1;
+    #wy;
+    #wx;
+
+    #scanline;
+    #dot;
+    #frame;
+    #stat_int_signal;
+
+    get_show_bg_win = () => !!(this.#lcdc & 0x01);
+    get_show_obj = () => !!(this.#lcdc & 0x02);
+    get_obj_size = () => !!(this.#lcdc & 0x04);
+    get_bg_map = () => !!(this.#lcdc & 0x08);
+    get_bg_win_data = () => !!(this.#lcdc & 0x10);
+    get_show_win = () => !!(this.#lcdc & 0x20);
+    get_win_map = () => !!(this.#lcdc & 0x40);
+    get_enabled = () => !!(this.#lcdc & 0x80);
+    get_mode = () => this.#stat & 0x03;
+    get_lyc_eq_ly = () => !!(this.#stat & 0x04);
+    get_mode_0_int = () => !!(this.#stat & 0x08);
+    get_mode_1_int = () => !!(this.#stat & 0x10);
+    get_mode_2_int = () => !!(this.#stat & 0x20);
+    get_lyc_int = () => !!(this.#stat & 0x40);
+    get_scy = () => this.#scy;
+    get_scx = () => this.#scx;
+    // get_ly = () => this.#ly;
+    get_lyc = () => this.#lyc;
+    get_wy = () => this.#wy;
+    get_wx = () => this.#wx;
+    get_scanline = () => this.#scanline;
+    get_dot = () => this.#dot;
+    get_frame = () => this.#frame;
+    get_stat_int_signal = () => this.#stat_int_signal;
+
+    set_show_bg_win = (value) => (this.#lcdc = (this.#lcdc & ~0x01) | (!!value ? 0x01 : 0));
+    set_show_obj = (value) => (this.#lcdc = (this.#lcdc & ~0x02) | (!!value ? 0x02 : 0));
+    set_obj_size = (value) => (this.#lcdc = (this.#lcdc & ~0x04) | (!!value ? 0x04 : 0));
+    set_bg_map = (value) => (this.#lcdc = (this.#lcdc & ~0x08) | (!!value ? 0x08 : 0));
+    set_bg_win_data = (value) => (this.#lcdc = (this.#lcdc & ~0x10) | (!!value ? 0x10 : 0));
+    set_show_win = (value) => (this.#lcdc = (this.#lcdc & ~0x20) | (!!value ? 0x20 : 0));
+    set_win_map = (value) => (this.#lcdc = (this.#lcdc & ~0x40) | (!!value ? 0x40 : 0));
+    set_enabled = (value) => (this.#lcdc = (this.#lcdc & ~0x80) | (!!value ? 0x80 : 0));
+    set_mode = (value) => (this.#stat = (this.#stat & ~0x03) | (value & 0x03));
+    set_lyc_eq_ly = (value) => (this.#stat = (this.#stat & ~0x04) | (!!value ? 0x04 : 0));
+    set_mode_0_int = (value) => (this.#stat = (this.#stat & ~0x08) | (!!value ? 0x08 : 0));
+    set_mode_1_int = (value) => (this.#stat = (this.#stat & ~0x10) | (!!value ? 0x10 : 0));
+    set_mode_2_int = (value) => (this.#stat = (this.#stat & ~0x20) | (!!value ? 0x20 : 0));
+    set_lyc_int = (value) => (this.#stat = (this.#stat & ~0x40) | (!!value ? 0x40 : 0));
+    set_scy = (value) => (this.#scy = Math.min(Math.max(0, ~~value), 255));
+    set_scx = (value) => (this.#scx = Math.min(Math.max(0, ~~value), 255));
+    // set_ly = (value) => (this.#ly = Math.min(Math.max(0, ~~value), 255));
+    set_lyc = (value) => (this.#lyc = Math.min(Math.max(0, ~~value), 255));
+    set_wy = (value) => (this.#wy = Math.min(Math.max(0, ~~value), 255));
+    set_wx = (value) => (this.#wx = Math.min(Math.max(0, ~~value), 255));
+    set_scanline = (value) => (this.#scanline = Math.min(Math.max(0, ~~value), 154));
+    set_dot = (value) => (this.#dot = Math.min(Math.max(0, ~~value), 455));
+    set_frame = (value) => (this.#frame = Math.min(Math.max(0, ~~value), 99999999));
+    set_stat_int_signal = (value) => (this.#stat_int_signal = !!value);
+
+    randomize() {
+        this.#lcdc = ~~(Math.random() * 0x100);
+        this.#stat = ~~(Math.random() * 0x100);
+        this.#scy = ~~(Math.random() * 0x100);
+        this.#scx = ~~(Math.random() * 0x100);
+        this.#lyc = ~~(Math.random() * 0x100);
+        this.#wy = ~~(Math.random() * 0x100);
+        this.#wx = ~~(Math.random() * 0x100);
+        this.#scanline = ~~(Math.random() * 155);
+        this.#dot = ~~(Math.random() * 456);
+        this.#frame = ~~(Math.random() * 100000000);
+        this.#stat_int_signal = !!(Math.random() < 0.5);
+    }
+}
+
+class GameBoy {
+    #cpu = new CPU();
+    #ppu = new PPU();
+    #memory = new Uint8Array(0x10000).fill(0);
+
+    randomize() {
+        this.#cpu.randomize();
+        this.#ppu.randomize();
         for (let i = 0; i < 100; i++) {
             const r = Math.random();
             this.#memory[~~(Math.random() * this.#memory.length)] = r < 0.5 ? r * 0x200 : 0;
         }
     }
+
+    get_cpu = () => this.#cpu;
+    get_ppu = () => this.#ppu;
+    get_memory = () => this.#memory.slice();
+    read_memory = (address) => this.#memory[address];
 }

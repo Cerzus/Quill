@@ -9,4 +9,4 @@
 - Create a QuillInput element to inherit all other input elements from
 - Disable inputs
 - Disable in bulk
-- Update inputs on the fly
+- Add hexadecimal/binary inputs

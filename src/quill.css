@@ -242,6 +242,7 @@
 
 .quill .quill-table {
     width: 100%;
+    height: fit-content;
     border-collapse: collapse;
     border: 1px solid transparent;
     background-color: transparent;
@@ -300,23 +301,27 @@
     display: flex;
     align-items: center;
     gap: 0.5em;
+    justify-content: space-between;
     width: fit-content;
 }
 
-.quill select.quill-select {
+.quill select.quill-select,
+.quill input.quill-input {
     background: var(--quill-item-background-color);
-    font-family: var(--quill-proportional-font);
+    font-family: var(--quill-monospace-font);
     outline: none;
     border: none;
-    /* appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none; */
-    padding: var(--quill-item-padding-size);
+    height: 1.4em;
     border-radius: var(--quill-item-border-radius-size);
     color: var(--quill-input-color);
 }
+.quill input.quill-input[type="checkbox"] {
+    height: initial;
+}
+
 .quill select.quill-select option {
     background: var(--quill-item-background-color);
+    padding: 0;
 }
 .quill select.quill-select optgroup {
     background: var(--quill-item-background-color);
@@ -336,13 +341,7 @@
 }
 
 .quill input.quill-input {
-    background: var(--quill-item-background-color);
-    font-family: var(--quill-proportional-font);
-    outline: none;
-    border: none;
     padding: 0 calc(0.2em + var(--quill-item-padding-size));
-    border-radius: var(--quill-item-border-radius-size);
-    color: var(--quill-input-color);
 }
 .quill input.quill-input:hover,
 .quill input.quill-input:focus {
