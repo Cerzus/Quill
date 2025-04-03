@@ -44,6 +44,7 @@
     flex-direction: column;
     box-shadow: 0 0 8px black;
     overflow: hidden;
+    border: var(--quill-panel-border-size) solid var(--quill-panel-border-color);
 }
 
 .quill .quill-panel-title-bar {
@@ -301,7 +302,6 @@
     display: flex;
     align-items: center;
     gap: 0.5em;
-    justify-content: space-between;
     width: fit-content;
 }
 
@@ -315,7 +315,8 @@
     border-radius: var(--quill-item-border-radius-size);
     color: var(--quill-input-color);
 }
-.quill input.quill-input[type="checkbox"] {
+.quill input.quill-input[type="checkbox"],
+.quill input.quill-input[type="range"] {
     height: initial;
 }
 
@@ -356,6 +357,24 @@
 .quill input.quill-input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.quill input.quill-input[type="range"] {
+    width: 100%;
+}
+.quill input.quill-input[type="range"] + output {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: fit-content;
+    text-align: center;
+    color: var(--quill-input-color);
+    background: var(--quill-item-background-color);
+    border-radius: var(--quill-item-border-radius-size);
+    font-family: var(--quill-monospace-font);
+    padding: 0 calc(0.2em + var(--quill-item-padding-size));
+    pointer-events: none;
 }
 
 .quill .quill-hex-editor {

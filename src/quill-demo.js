@@ -41,6 +41,10 @@ function quill_show_demo() {
                         `Refer to the "Dropdowns" section below for an explanation of how to use the Dropdown API.`
                     ),
                 ]),
+                Q.InputInteger("Input integer", (value) => console.log(value)).set_value(123),
+                Q.InputFloat("Input float", (value) => console.log(value)),
+                Q.SliderInteger("Slider integer", (value) => console.log(value)).set_value(25),
+                Q.SliderFloat("Slider float", (value) => console.log(value)),
             ]),
             Q.Tree("Trees", [
                 Q.Tree(

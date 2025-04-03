@@ -27,8 +27,10 @@ class QuillDropdown extends QuillElement {
 
     constructor(label, ...args) {
         const html = `<select class="quill-select"></select>`;
-        super(label ? `<label class="quill-label">${html}${label}</label>` : html, [QuillDropdownOptions], ...args);
-        const element = label ? this.get_element().querySelector(`select`) : this.get_element();
+        // super(label ? `<label class="quill-label">${html}${label}</label>` : html, [QuillDropdownOptions], ...args);
+        // const element = label ? this.get_element().querySelector(`select`) : this.get_element();
+        super(`<label class="quill-label">${html}${label ?? ""}</label>`, [QuillDropdownOptions], ...args);
+        const element = this.get_element().querySelector(`select`);
         this.#input_element = element;
         element.addEventListener("change", (e) => this._get_arg_callback()(this.get_value(), this, e));
         this.add_children(this._get_arg_children());
