@@ -110,6 +110,8 @@
         Quill.InputU16 = (...args) => new QuillInputU16(...args);
         Quill.SliderFloat = (...args) => new QuillSliderFloat(...args);
         Quill.SliderInteger = (...args) => new QuillSliderInteger(...args);
+        Quill.Tabs = (...args) => new QuillTabs(...args);
+        Quill.Tab = (...args) => new QuillTab(...args);
         Quill.HexEditor = (...args) => new QuillHexEditor(...args);
 
         Quill.get_panels = get_panels;

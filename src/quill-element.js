@@ -32,8 +32,8 @@ class QuillElement {
     get_panel = () => (this instanceof QuillPanel ? this : this.get_parent().get_panel());
     add_children(...children) {
         if (children[0] instanceof Array) return this.add_children(...children[0]);
-        const msg = `No children allowed for ${this.constructor.name}`;
-        if (!Util.warning(this.#children_allowed.length > 0, msg)) return;
+        const msg = `No children allowed for ${this.constructor.name}. Found:`;
+        if (!Util.warning(this.#children_allowed.length > 0, msg, children[0])) return;
         for (const child of children) {
             const actual_child = typeof child === "string" || typeof child === "number" ? new String(child) : child;
             const child_is_allowed = this.#children_allowed.reduce(
@@ -49,11 +49,11 @@ class QuillElement {
                 );
                 return;
             }
+            this._add_child(child);
             if (child instanceof QuillElement) {
                 this.#children.push(child);
                 child.#parent = this;
             }
-            this._add_child(child);
         }
         return this;
     }

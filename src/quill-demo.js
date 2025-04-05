@@ -18,41 +18,44 @@ function quill_show_demo() {
     Q.Panel("Panel 2");
 
     Q.Panel("Panel 3", { closed: true }, [
-        Q.CollapsingHeader("Take a look, why don't you?", { expanded: true }, [
-            Q.Tree("It's in here", { expanded: true }, [
-                Q.HexEditor(16, 8, hex_editor_data.length, (i) => hex_editor_data[i]),
-            ]),
+        Q.CollapsingHeader("Take a look, why don't you?", [
+            Q.Tree("It's in here", [Q.HexEditor(16, 8, hex_editor_data.length, (i) => hex_editor_data[i])]),
         ]),
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
     ]);
 
     Q.Panel("Quill Demo", { not_closeable: true, closed: true }, [
-        Q.CollapsingHeader("Configuration", [
-            Q.Tree("Style", [
+        Q.CollapsingHeader("Configuration", { expanded: true }, [
+            Q.Tree("Style", { expanded: true }, [
                 Q.Separator(),
-                Q.Fieldset("Main", [
-                    ...[
-                        "font_size",
-                        "panel_padding",
-                        "panel_gap",
-                        "panel_border",
-                        "panel_border_radius",
-                        "panel_shadow",
-                        "menu_padding",
-                        "menu_gap",
-                        "menu_border",
-                        "menu_border_radius",
-                        "menu_shadow",
-                        "item_padding",
-                        "item_gap",
-                        "item_border_radius",
-                    ].map((property) =>
-                        Q.SliderInteger(
-                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { min: 0, max: 20 },
-                            (value) => Q.set_style(property, value)
-                        ).set_value(Q.get_style(property))
-                    ),
+                Q.Tabs([
+                    Q.Tab("Sizes", [
+                        Q.Fieldset("Main", [
+                            ...[
+                                "font_size",
+                                "panel_padding",
+                                "panel_gap",
+                                "panel_border",
+                                "panel_border_radius",
+                                "panel_shadow",
+                                "menu_padding",
+                                "menu_gap",
+                                "menu_border",
+                                "menu_border_radius",
+                                "menu_shadow",
+                                "item_padding",
+                                "item_gap",
+                                "item_border_radius",
+                            ].map((property) =>
+                                Q.SliderInteger(
+                                    (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                                    { min: 0, max: 20 },
+                                    (value) => Q.set_style(property, value)
+                                ).set_value(Q.get_style(property))
+                            ),
+                        ]),
+                    ]),
+                    Q.Tab("Colors"),
                 ]),
             ]),
         ]),
@@ -137,6 +140,16 @@ function quill_show_demo() {
                         "Group 2",
                         Q.fill_array(5, (i) => `Option ${i}`)
                     ),
+                ]),
+            ]),
+            Q.Tree("Tabs", [
+                Q.Tree("Basic", [
+                    Q.Tabs([
+                        Q.Tab("Avocado", Q.Text("This is the Avocado tab!\nblah blah blah blah blah")),
+                        Q.Tab("Broccoli", Q.Text("This is the Broccoli tab!\nblah blah blah blah blah")),
+                        Q.Tab("Cucumber", Q.Text("This is the Cucumber tab!\nblah blah blah blah blah")),
+                    ]),
+                    Q.Separator(),
                 ]),
             ]),
         ]),

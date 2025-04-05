@@ -10,3 +10,4 @@
 - Disable inputs
 - Disable in bulk
 - Add hexadecimal/binary inputs
+- Simplify lists of allowed children
