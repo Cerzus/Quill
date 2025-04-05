@@ -18,9 +18,10 @@ class QuillHexEditor extends QuillElement {
                     <div class="quill-hex-editor-row-data">
                         ${Util.fill_array(
                             number_of_columns,
-                            (i) => `<div class="quill-hex-editor-byte">
-                                        +${i.toString(16)}
-                                    </div>`
+                            (i) =>
+                                `<input readonly class="quill-hex-editor-byte" type="text" size="1" value=
+                                    "+${i.toString(16)}"
+                                />`
                         ).join("")}
                     </div>
                     <div>${Array(number_of_columns).fill("<div>\xa0</div>").join("")}</div>
@@ -43,15 +44,6 @@ class QuillHexEditor extends QuillElement {
 
         // Large list stuff
         const update_row_elements = () => {
-            // initialization
-            if (rows_element.offsetWidth === 0) {
-                const style = getComputedStyle(header_row_element);
-                const paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-                const borderY = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
-                this.#row_height = header_row_element.offsetHeight - paddingY - borderY;
-                rows_element.style.height = `${this.#row_height * Math.ceil(data_size / this.#number_of_columns)}px`;
-            }
-
             const scroll_top = rows_container_element.scrollTop;
             const offset_height = rows_container_element.offsetHeight;
             const first_index = Math.max(0, Math.floor(scroll_top / this.#row_height) - 0);
@@ -99,7 +91,14 @@ class QuillHexEditor extends QuillElement {
 
             this.#rows[0].row_element.style.marginTop = `${first_index * this.#row_height}px`;
         };
-        new ResizeObserver(update_row_elements).observe(rows_container_element);
+        new ResizeObserver(() => {
+            const style = getComputedStyle(header_row_element);
+            const paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+            const borderY = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+            this.#row_height = header_row_element.offsetHeight - paddingY - borderY;
+            rows_element.style.height = `${this.#row_height * Math.ceil(data_size / this.#number_of_columns)}px`;
+            update_row_elements();
+        }).observe(rows_container_element);
         rows_container_element.addEventListener("scroll", update_row_elements);
 
         //

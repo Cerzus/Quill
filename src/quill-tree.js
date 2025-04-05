@@ -25,6 +25,7 @@ class QuillTree extends QuillElement {
                 QuillDropdown,
                 QuillHexEditor,
                 QuillInputNumerical,
+                QuillFieldset,
             ],
             ...args
         );

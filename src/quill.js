@@ -22,7 +22,6 @@
                 ${config_to_css_var(quill_config.fonts, (font) => `font:${font}`)}
                 ${config_to_css_var(quill_config.colors, (color) => `color:${color.to_css()}`)}
                 ${config_to_css_var(quill_config.sizes, (size) => `size:${size}px`)}
-                ${config_to_css_var(quill_config.font_sizes, (font_size) => `font-size:${font_size}em`)}
             }
         `;
 
@@ -41,7 +40,7 @@
 
             if (resizing !== null) {
                 const MIN_WIDTH = 100;
-                const MIN_HEIGHT = 30;
+                const MIN_HEIGHT = 20;
                 const position = resizing.panel.get_position();
                 const size = resizing.panel.get_size();
                 const width = content_element.offsetWidth;
@@ -114,6 +113,8 @@
         Quill.HexEditor = (...args) => new QuillHexEditor(...args);
 
         Quill.get_panels = get_panels;
+        Quill.get_style = get_style;
+        Quill.set_style = set_style;
         Quill.open_file_dialog = open_file_dialog;
         Quill.fill_array = Util.fill_array;
         Quill.show_demo = quill_show_demo;
@@ -512,6 +513,15 @@
 
     // Public methods
 
+    function get_style(property) {
+        return quill_config.sizes[property];
+    }
+    function set_style(property, value) {
+        if (Object.hasOwn(quill_config.sizes, property)) {
+            quill_config.sizes[property] = value;
+            quill_config.root_element.style.setProperty(`--quill-${property.replaceAll("_", "-")}-size`, `${value}px`);
+        }
+    }
     function get_panels() {
         return { ...quill_panels };
     }

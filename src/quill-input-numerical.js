@@ -5,16 +5,17 @@ class QuillInputNumerical extends QuillElement {
     #min = null;
     #max = null;
     #step = null;
-    #on_change;
+    #event_type;
+    #on_event;
 
-    constructor(html, on_change, label, ...args) {
+    constructor(html, event_type, on_event, label, ...args) {
         super(label ? `<label class="quill-label">${html}${label}</label>` : html, [], ...args);
         const element = label ? this.get_element().querySelector(`input`) : this.get_element();
         // super(`<label class="quill-label">${html}${label ?? ""}</label>`, [], ...args);
         // const element = this.get_element().querySelector(`input`);
         this.#input_element = element;
-        this.#on_change = on_change;
-        element.addEventListener("change", (e) => {
+        this.#on_event = on_event;
+        element.addEventListener(event_type, (e) => {
             this.set_value(this.get_value());
             this._get_arg_callback()(this.get_value(), this, e);
         });
@@ -37,23 +38,23 @@ class QuillInputNumerical extends QuillElement {
     // Private methods
 
     #set_value(value) {
-        this.#input_element.value = this.#on_change(this.#apply_min(this.#apply_max(this.#apply_step(value))));
+        this.#input_element.value = this.#on_event(this.#apply_min(this.#apply_max(this.#apply_step(value))));
     }
-    #set_min = (min) => (this.#input_element.min = this.#min = this.#on_change(min));
-    #set_max = (max) => (this.#input_element.max = this.#max = this.#on_change(max));
-    #set_step = (step) => (this.#input_element.step = this.#step = this.#on_change(step));
+    #set_min = (min) => (this.#input_element.min = this.#min = this.#on_event(min));
+    #set_max = (max) => (this.#input_element.max = this.#max = this.#on_event(max));
+    #set_step = (step) => (this.#input_element.step = this.#step = this.#on_event(step));
 
     #apply_min = (value) => (this.#min === null ? value : Math.max(value, this.#min));
     #apply_max = (value) => (this.#max === null ? value : Math.min(value, this.#max));
     #apply_step(value) {
         if (this.#step === null || this.#min === null) return value;
-        else return this.#min + this.#on_change((value - this.#min) / this.#step) * this.#step;
+        else return this.#min + this.#on_event((value - this.#min) / this.#step) * this.#step;
     }
 }
 
 class QuillInputNumber extends QuillInputNumerical {
     constructor(...args) {
-        super(`<input class="quill-input" type="number" />`, ...args);
+        super(`<input class="quill-input" type="number" />`, "change", ...args);
     }
 }
 
@@ -90,10 +91,11 @@ class QuillInputU16 extends QuillInputInteger {
 class QuillInputRange extends QuillInputNumerical {
     constructor(...args) {
         super(
-            `<div style="position: relative;">
+            `<div style="position: relative; flex-grow: 1;">
                 <input class="quill-input" type="range">
                 <output></output>
             </div>`,
+            "input",
             ...args
         );
 
@@ -107,8 +109,8 @@ class QuillInputRange extends QuillInputNumerical {
     // Public methods
 
     set_value(value) {
-        const result = super.set_value(value);
-        // this.#update_output();
+        super.set_value(value);
+        this.get_element().querySelector("output").value = this.get_value();
         return this;
     }
 

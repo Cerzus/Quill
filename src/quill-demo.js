@@ -27,6 +27,35 @@ function quill_show_demo() {
     ]);
 
     Q.Panel("Quill Demo", { not_closeable: true, closed: true }, [
+        Q.CollapsingHeader("Configuration", [
+            Q.Tree("Style", [
+                Q.Separator(),
+                Q.Fieldset("Main", [
+                    ...[
+                        "font_size",
+                        "panel_padding",
+                        "panel_gap",
+                        "panel_border",
+                        "panel_border_radius",
+                        "panel_shadow",
+                        "menu_padding",
+                        "menu_gap",
+                        "menu_border",
+                        "menu_border_radius",
+                        "menu_shadow",
+                        "item_padding",
+                        "item_gap",
+                        "item_border_radius",
+                    ].map((property) =>
+                        Q.SliderInteger(
+                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                            { min: 0, max: 20 },
+                            (value) => Q.set_style(property, value)
+                        ).set_value(Q.get_style(property))
+                    ),
+                ]),
+            ]),
+        ]),
         Q.CollapsingHeader("Widgets", [
             Q.Tree("Basic", [
                 Q.Row([

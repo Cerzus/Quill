@@ -1,18 +1,18 @@
 .quill {
     background-color: var(--quill-background-color);
     font-family: var(--quill-proportional-font);
-    font-size: 14px;
     color: var(--quill-text-color);
+    font-size: var(--quill-font-size-size);
 }
 
 .quill,
 .quill :not(script) {
+    scrollbar-color: var(--quill-scrollbar-thumb-color) var(--quill-scrollbar-track-color);
     padding: 0;
     margin: 0;
     white-space: nowrap;
     box-sizing: border-box;
     scrollbar-width: thin;
-    scrollbar-color: var(--quill-scrollbar-thumb-color) var(--quill-scrollbar-track-color);
     user-select: none;
 }
 .quill,
@@ -40,21 +40,20 @@
 
 .quill .quill-panel {
     border-radius: var(--quill-panel-border-radius-size);
+    box-shadow: 0 0 var(--quill-panel-shadow-size) black;
+    border: var(--quill-panel-border-size) solid var(--quill-panel-border-color);
     position: absolute;
     flex-direction: column;
-    box-shadow: 0 0 8px black;
     overflow: hidden;
-    border: var(--quill-panel-border-size) solid var(--quill-panel-border-color);
 }
 
 .quill .quill-panel-title-bar {
     background-color: var(--quill-panel-title-bar-color);
     padding: var(--quill-panel-padding-size);
-    font-size: var(--quill-panel-title-bar-font-size);
+    gap: var(--quill-panel-gap-size);
     font-weight: bold;
     cursor: move;
     align-items: center;
-    gap: var(--quill-panel-padding-size);
 }
 .quill .quill-panel-title-bar > :nth-child(1) {
     overflow: hidden;
@@ -74,21 +73,21 @@
 }
 .quill .quill-panel-content > div {
     padding: var(--quill-panel-padding-size);
+    gap: var(--quill-panel-gap-size);
     flex-grow: 1;
     flex-direction: column;
-    gap: var(--quill-panel-padding-size);
     min-height: fit-content;
 }
 
 .quill .quill-panel-resizer {
+    grid-template-columns: var(--quill-panel-resizer-size) auto var(--quill-panel-resizer-size);
+    grid-template-rows: var(--quill-panel-resizer-size) auto var(--quill-panel-resizer-size);
+    display: grid;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    display: grid;
-    grid-template-columns: var(--quill-panel-resizer-size) auto var(--quill-panel-resizer-size);
-    grid-template-rows: var(--quill-panel-resizer-size) auto var(--quill-panel-resizer-size);
     pointer-events: none;
 }
 .quill .quill-panel-resizer > :not(:nth-child(5)) {
@@ -117,6 +116,7 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1/5;
+    gap: 0.25em;
 }
 .quill .quill-menu-item > * {
     padding: var(--quill-item-padding-size);
@@ -135,7 +135,7 @@
 }
 .quill .quill-menu-bar,
 .quill .quill-menu {
-    gap: var(--quill-menu-padding-size);
+    gap: var(--quill-menu-gap-size);
     padding: var(--quill-menu-padding-size);
 }
 .quill .quill-menu-bar > .quill-menu-item {
@@ -158,7 +158,8 @@
     padding: var(--quill-menu-padding-size);
     background-color: var(--quill-menu-color);
     border-radius: var(--quill-menu-border-radius-size);
-    box-shadow: 0 0 8px black;
+    box-shadow: 0 0 var(--quill-menu-shadow-size) black;
+    border: var(--quill-menu-border-size) solid var(--quill-panel-border-color);
     position: absolute;
     z-index: 9999;
     display: none;
@@ -186,7 +187,7 @@
 }
 
 .quill .quill-row {
-    gap: var(--quill-panel-padding-size);
+    gap: var(--quill-panel-gap-size);
 }
 
 .quill .quill-arrow-right {
@@ -224,10 +225,10 @@
 .quill .quill-tree-header:hover {
     background-color: var(--quill-item-hover-color);
 }
-.quill .quill-tree-body {
+.quill .quill-tree-body:not(:empty) {
+    gap: var(--quill-panel-gap-size);
+    margin-top: var(--quill-panel-gap-size);
     flex-direction: column;
-    gap: var(--quill-panel-padding-size);
-    margin-top: var(--quill-panel-padding-size);
 }
 .quill .quill-tree > .quill-tree-body {
     padding-left: 0.25em;
@@ -248,10 +249,6 @@
     border: 1px solid transparent;
     background-color: transparent;
 }
-/* .quill .quill-table-row {
-    line-height: 1em;
-    height: 1.2em;
-} */
 .quill .quill-table-row:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.2);
 }
@@ -262,8 +259,8 @@
 
 .quill .quill-button {
     display: inline-block;
-    align-self: flex-start;
-    background: rgba(50, 50, 50);
+    width: fit-content;
+    background: var(--quill-item-background-color);
     padding: var(--quill-item-padding-size) calc(0.1em + var(--quill-item-padding-size));
     border-radius: var(--quill-item-border-radius-size);
 }
@@ -276,7 +273,6 @@
     user-select: none;
     opacity: 0.5;
     font-size: 1.2em;
-    line-height: 1em;
     align-self: center;
 }
 
@@ -288,10 +284,11 @@
     border: var(--quill-line-heavy-size) solid var(--quill-line-heavy-color);
     border-radius: var(--quill-item-border-radius-size);
     padding: var(--quill-panel-padding-size);
-    gap: var(--quill-item-padding-size);
-    align-self: flex-start;
+    gap: var(--quill-item-gap-size);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    height: fit-content;
 }
 .quill .quill-fieldset > legend {
     text-align: center;
@@ -301,28 +298,37 @@
 .quill .quill-label {
     display: flex;
     align-items: center;
-    gap: 0.5em;
+    gap: 0.25em;
     width: fit-content;
+}
+.quill .quill-label.justify {
+    justify-content: space-between;
+    width: 100%;
+}
+.quill .quill-label.reverse {
+    flex-direction: row-reverse;
+}
+.quill .quill-label.reverse input,
+.quill .quill-label.reverse select {
+    text-align: right;
 }
 
 .quill select.quill-select,
 .quill input.quill-input {
     background: var(--quill-item-background-color);
     font-family: var(--quill-monospace-font);
-    outline: none;
-    border: none;
-    height: 1.4em;
     border-radius: var(--quill-item-border-radius-size);
     color: var(--quill-input-color);
+    outline: none;
+    border: none;
+    font-size: var(--quill-font-size-size);
+    font-weight: bold;
 }
-.quill input.quill-input[type="checkbox"],
-.quill input.quill-input[type="range"] {
-    height: initial;
+.quill select.quill-select {
+    padding: var(--quill-item-padding-size);
 }
-
 .quill select.quill-select option {
     background: var(--quill-item-background-color);
-    padding: 0;
 }
 .quill select.quill-select optgroup {
     background: var(--quill-item-background-color);
@@ -342,7 +348,7 @@
 }
 
 .quill input.quill-input {
-    padding: 0 calc(0.2em + var(--quill-item-padding-size));
+    padding: calc(1px + var(--quill-item-padding-size));
 }
 .quill input.quill-input:hover,
 .quill input.quill-input:focus {
@@ -360,35 +366,36 @@
 }
 
 .quill input.quill-input[type="range"] {
-    width: 100%;
+    flex-grow: 1;
 }
 .quill input.quill-input[type="range"] + output {
+    color: var(--quill-input-color);
+    background: var(--quill-item-background-color);
+    border-radius: var(--quill-item-border-radius-size);
+    font-family: var(--quill-monospace-font);
+    padding: calc(1px + var(--quill-item-padding-size));
     position: absolute;
     left: 0;
     right: 0;
     margin-inline: auto;
     width: fit-content;
-    text-align: center;
-    color: var(--quill-input-color);
-    background: var(--quill-item-background-color);
-    border-radius: var(--quill-item-border-radius-size);
-    font-family: var(--quill-monospace-font);
-    padding: 0 calc(0.2em + var(--quill-item-padding-size));
     pointer-events: none;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .quill .quill-hex-editor {
     background-color: var(--quill-panel-title-bar-color);
+    font-family: var(--quill-monospace-font);
+    border-radius: var(--quill-item-border-radius-size);
     flex-grow: 1;
     flex-direction: column;
     width: fit-content;
     line-height: 1em;
-    font-family: var(--quill-monospace-font);
     overflow: hidden;
-    border-radius: var(--quill-panel-border-radius-size);
 }
 .quill .quill-hex-editor > .quill-hex-editor-row {
-    padding: var(--quill-panel-padding-size);
+    padding: var(--quill-item-padding-size);
 }
 .quill .quill-hex-editor-rows-container {
     flex-grow: 1;
@@ -396,41 +403,41 @@
     height: 8em;
 }
 .quill .quill-hex-editor-rows {
+    padding-bottom: var(--quill-item-padding-size);
     flex-direction: column;
     overflow: hidden;
     box-sizing: content-box;
-    padding-bottom: var(--quill-panel-padding-size);
 }
 .quill .quill-hex-editor-row {
+    padding: 0 var(--quill-item-padding-size);
     gap: 1em;
-    padding: 0 var(--quill-panel-padding-size);
 }
 .quill .quill-hex-editor-rows .quill-hex-editor-row:hover > div {
     background-color: rgb(255 255 255 / 0.2);
 }
-.quill .quill-hex-editor-row-data > * {
+.quill .quill-hex-editor-row-data > .quill-hex-editor-byte {
     padding: 0 0.2em;
-    width: 22px;
-    line-height: 16px;
 }
-.quill .quill-hex-editor-row > div > *:nth-child(4n + 1):not(:nth-child(1)) {
+.quill .quill-hex-editor-row > div > .quill-hex-editor-byte:nth-child(4n + 1):not(:nth-child(1)) {
     margin-left: 0.4em;
 }
-.quill .quill-hex-editor-row-data > * {
-    font-size: 14px;
+.quill .quill-hex-editor-row-data > .quill-hex-editor-byte {
+    font-size: var(--quill-font-size-size);
     height: 1em;
 }
-.quill .quill-hex-editor-rows .quill-hex-editor-row-data > * {
+.quill .quill-hex-editor-rows .quill-hex-editor-row-data > .quill-hex-editor-byte,
+.quill .quill-hex-editor-row-data > .quill-hex-editor-byte {
+    color: var(--quill-input-color);
+    font-family: var(--quill-monospace-font);
     outline: none;
     border: none;
     background-color: transparent;
-    color: var(--quill-input-color);
-    font-family: var(--quill-monospace-font);
 }
-.quill .quill-hex-editor-rows .quill-hex-editor-row-data > *[data-value="0"] {
-    color: rgb(60, 60, 60);
+.quill .quill-hex-editor > .quill-hex-editor-row > .quill-hex-editor-row-data > .quill-hex-editor-byte {
+    color: var(--quill-text-color);
 }
-.quill .quill-hex-editor-rows .quill-hex-editor-row-ascii > *[data-value="."] {
+.quill .quill-hex-editor-rows .quill-hex-editor-row-data > .quill-hex-editor-byte[data-value="0"],
+.quill .quill-hex-editor-rows .quill-hex-editor-row-ascii > .quill-hex-editor-byte[data-value="."] {
     color: rgb(60, 60, 60);
 }
 /* TODO: Is there a nicer way to do this? */
