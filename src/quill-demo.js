@@ -6,7 +6,7 @@
 function get_style_editor() {
     const Q = Quill;
 
-    return [
+    return Q.Wrapper([
         Q.Separator(),
         Q.Tabs([
             Q.Tab("Sizes", [
@@ -29,7 +29,7 @@ function get_style_editor() {
                 ),
             ]),
         ]),
-    ];
+    ]);
 }
 
 function quill_show_demo() {
@@ -58,7 +58,7 @@ function quill_show_demo() {
         Q.CollapsingHeader("Configuration", [
             Q.Tree("Style", [
                 Q.InfoTooltip("The same contents can be accessed in the menu under [Tools] -> [Style editor]"),
-                ...get_style_editor(),
+                get_style_editor(),
                 Q.Separator(),
             ]),
         ]),
@@ -244,7 +244,7 @@ function quill_show_demo() {
             Q.MenuItem("Cool"),
             Q.MenuItem("Beans", { checkable: true }),
             Q.Separator(),
-            (tools = Q.Menu(
+            Q.Menu(
                 "Tools",
                 Q.Menu("File", [
                     Q.MenuItem("Load..."),
@@ -256,21 +256,19 @@ function quill_show_demo() {
                     Q.Separator(),
                     Q.MenuItem("Quit"),
                 ])
-            )),
+            ).add_children(
+                Object.values(Q.get_panels())
+                    .filter((panel) => panel.is_closeable())
+                    .map((panel) => {
+                        const name = panel.get_name();
+                        const config = { checkable: true, checked: panel.is_open() };
+                        const menu_item = Q.MenuItem(name, config, (element) => {
+                            element.is_checked() ? panel.open() : panel.close();
+                        });
+                        panel.on_close(() => menu_item.set_checked(false));
+                        return menu_item;
+                    })
+            ),
         ]),
     ]);
-
-    tools.add_children(
-        Object.values(Q.get_panels())
-            .filter((panel) => panel.is_closeable())
-            .map((panel) => {
-                const name = panel.get_name();
-                const config = { checkable: true, checked: panel.is_open() };
-                const menu_item = Q.MenuItem(name, config, (element) => {
-                    element.is_checked() ? panel.open() : panel.close();
-                });
-                panel.on_close(() => menu_item.set_checked(false));
-                return menu_item;
-            })
-    );
 }

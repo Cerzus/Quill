@@ -11,3 +11,8 @@
 - Disable in bulk
 - Add hexadecimal/binary inputs
 - Inputs: set_value/set_checked etc. for initialization vs config.value/config.checked etc.
+- Add config flags
+- Config per element and applied through the Wrapper element
+- Allow Wrapper element as child of MenuBar and Menu elements
+- Allow Wrapper element as child of Tabs element?
+- Test Row element with different kinds of child elements

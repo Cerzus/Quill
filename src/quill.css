@@ -503,3 +503,7 @@
 .quill .quill-hex-editor-row input.quill-hex-editor-byte:hover {
     color: yellow;
 }
+
+.quill .quill-wrapper {
+    display: contents;
+}

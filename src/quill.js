@@ -36,6 +36,7 @@
         Quill.ColorPicker = (...args) => new QuillColorPicker(...args);
         Quill.Tabs = (...args) => new QuillTabs(...args);
         Quill.Tab = (...args) => new QuillTab(...args);
+        Quill.Wrapper = (...args) => new QuillWrapper(...args);
         Quill.HexEditor = (...args) => new QuillHexEditor(...args);
 
         Quill.get_size_names = get_size_names;
@@ -156,7 +157,7 @@
                 </div>`;
             super(
                 modal ? `<div class="quill-modal-overlay">${html}</div>` : html,
-                [QuillNodeElement, QuillMenuBar],
+                [QuillWrapper, QuillNodeElement, QuillMenuBar],
                 ...args
             );
 

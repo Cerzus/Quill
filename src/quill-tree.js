@@ -12,22 +12,7 @@ class QuillTree extends QuillBranchElement {
                 </div>
                 <div class="quill-tree-body"></div>
             </div>`,
-            [
-                QuillTree,
-                QuillTable,
-                QuillInfoTooltip,
-                QuillFixedCanvas,
-                QuillText,
-                QuillButton,
-                QuillRow,
-                QuillCheckbox,
-                QuillSeparator,
-                QuillDropdown,
-                QuillHexEditor,
-                QuillInputNumerical,
-                QuillFieldset,
-                QuillTabs,
-            ],
+            [QuillWrapper, QuillNodeElement],
             ...args
         );
         this.add_children(this._get_arg_children());

@@ -8,7 +8,7 @@ class QuillTable extends QuillBranchElement {
                 <tbody></tbody>
                 <tfoot></tfoot>
             </table>`,
-            [QuillTableRow],
+            [QuillWrapper, QuillTableRow],
             ...args
         );
         this.add_children(this._get_arg_children());
@@ -17,13 +17,13 @@ class QuillTable extends QuillBranchElement {
     // Private methods
 
     _add_child(child) {
-        if (child instanceof QuillTableRow) this.get_element().querySelector("tbody").append(child.get_element());
+        this.get_element().querySelector("tbody").append(child.get_element());
     }
 }
 
-class QuillTableRow extends QuillElement {
+class QuillTableRow extends QuillWrappableElement {
     constructor(...args) {
-        super(`<tr class="quill-table-row"></tr>`, [QuillTableColumn], ...args);
+        super(`<tr class="quill-table-row"></tr>`, [QuillWrapper, QuillTableColumn], ...args);
         this.add_children(this._get_arg_children());
     }
 
@@ -34,7 +34,7 @@ class QuillTableRow extends QuillElement {
     }
 }
 
-class QuillTableColumn extends QuillElement {
+class QuillTableColumn extends QuillWrappableElement {
     constructor(child, ...args) {
         super(`<td class="quill-table-column"></td>`, [QuillLeafElement, String, Number], ...args);
         if (typeof child !== "undefined") this.add_children(child);

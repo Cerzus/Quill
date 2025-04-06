@@ -7,7 +7,11 @@ class QuillDropdown extends QuillInput {
         const html = `<select class="quill-select"></select>`;
         // super(label ? `<label class="quill-label">${html}${label}</label>` : html, [QuillDropdownOptions], ...args);
         // const element = label ? this.get_element().querySelector(`select`) : this.get_element();
-        super(`<label class="quill-label">${html}${label ?? ""}</label>`, [QuillDropdownOptions], ...args);
+        super(
+            `<label class="quill-label">${html}${label ?? ""}</label>`,
+            [QuillWrapper, QuillDropdownOptions],
+            ...args
+        );
         const element = this.get_element().querySelector(`select`);
         this.#input_element = element;
         element.addEventListener("change", (e) => this._get_arg_callback()(this.get_value(), this, e));
@@ -33,7 +37,7 @@ class QuillDropdown extends QuillInput {
     }
 }
 
-class QuillDropdownOptions extends QuillElement {
+class QuillDropdownOptions extends QuillWrappableElement {
     constructor(...args) {
         const label = typeof args[0] === "string" || typeof args[0] === "number" ? new String(args[0]) : null;
         const options = label instanceof String ? args[1] : args[0];

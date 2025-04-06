@@ -1,0 +1,40 @@
+Element
+    MenuBar                                 Menu, MenuItem, Separator (no Wrapper yet, because we use recursion to reach an ancestor)
+    Menu                                    Menu, MenuItem, Separator (no Wrapper yet, because we use recursion to reach an ancestor)
+    MenuItem                                -
+    Tab                                     Wrapper, NodeElement
+    Panel                                   Wrapper, NodeElement, MenuBar
+        Modal                               Wrapper, NodeElement, MenuBar
+    WrappableElement 
+        Wrapper                             WrappableElement
+        TableRow                            Wrapper, TableColumn
+        TableColumn                         LeafElement, String, Number (no Wrapper, because only one child is allowed)
+        DropdownOptions                     -
+        NodeElement
+            FixedCanvas                     -
+            HexEditor                       -
+            BranchElement
+                Table                       Wrapper, TableRow
+                Fieldset                    Wrapper, NodeElement
+                Row                         Wrapper, NodeElement??
+                Tabs                        Tab (no Wrapper, because we're adding two HTML elements for each tab. Which one to wrap around?)
+                Tree                        Wrapper, NodeElement
+                    CollapsingHeader        Wrapper, NodeElement
+            LeafElement
+                InfoTooltip                 -
+                Separator                   -
+                Text                        -
+                Button                      -
+                Input
+                    Checkbox                -
+                    ColorPicker             -
+                    Dropdown                Wrapper, DropdownOptions    
+                    InputNumerical
+                        InputNumber
+                            InputFloat      -
+                            InputInteger    -
+                                InputU8     -
+                                InputU16    -
+                        InputRange
+                            SliderFloat     -
+                            SliderInteger   -
