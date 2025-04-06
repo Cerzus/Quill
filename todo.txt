@@ -11,3 +11,4 @@
 - Disable in bulk
 - Add hexadecimal/binary inputs
 - Simplify lists of allowed children
+- Inputs: set_value/set_checked etc. for initialization vs config.value/config.checked etc.

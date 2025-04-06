@@ -47,7 +47,11 @@ class QuillTab extends QuillElement {
     #name;
 
     constructor(name, ...args) {
-        super(`<div class="quill-tab" data-name="${name}"></div>`, [QuillFieldset, QuillText], ...args);
+        super(
+            `<div class="quill-tab" data-name="${name}"></div>`,
+            [QuillFieldset, QuillText, QuillColorPicker],
+            ...args
+        );
         this.#name = name;
         this.add_children(this._get_arg_children());
     }

@@ -4,6 +4,51 @@
     Quill.init = (root_element) => {
         if (!Util.error(root_element instanceof Element)) return;
 
+        // Add all public-facing properties
+
+        Quill.Color = (...args) => new QuillColor(...args);
+        Quill.Separator = (...args) => new QuillSeparator(...args);
+        Quill.InfoTooltip = (...args) => new QuillInfoTooltip(...args);
+        Quill.Text = (...args) => new QuillText(...args);
+        Quill.Modal = (...args) => new QuillModal(...args);
+        Quill.Panel = (...args) => new Panel(...args);
+        Quill.MenuBar = (...args) => new QuillMenuBar(...args);
+        Quill.Menu = (...args) => new QuillMenu(...args);
+        Quill.MenuItem = (...args) => new QuillMenuItem(...args);
+        Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
+        Quill.Table = (...args) => new QuillTable(...args);
+        Quill.TableRow = (...args) => new QuillTableRow(...args);
+        Quill.TableColumn = (...args) => new QuillTableColumn(...args);
+        Quill.CollapsingHeader = (...args) => new QuillCollapsingHeader(...args);
+        Quill.Tree = (...args) => new QuillTree(...args);
+        Quill.Button = (...args) => new QuillButton(...args);
+        Quill.Row = (...args) => new QuillRow(...args);
+        Quill.Fieldset = (...args) => new QuillFieldset(...args);
+        Quill.Checkbox = (...args) => new QuillCheckbox(...args);
+        Quill.Dropdown = (...args) => new QuillDropdown(...args);
+        Quill.DropdownOptions = (...args) => new QuillDropdownOptions(...args);
+        Quill.InputFloat = (...args) => new QuillInputFloat(...args);
+        Quill.InputInteger = (...args) => new QuillInputInteger(...args);
+        Quill.InputU8 = (...args) => new QuillInputU8(...args);
+        Quill.InputU16 = (...args) => new QuillInputU16(...args);
+        Quill.SliderFloat = (...args) => new QuillSliderFloat(...args);
+        Quill.SliderInteger = (...args) => new QuillSliderInteger(...args);
+        Quill.ColorPicker = (...args) => new QuillColorPicker(...args);
+        Quill.Tabs = (...args) => new QuillTabs(...args);
+        Quill.Tab = (...args) => new QuillTab(...args);
+        Quill.HexEditor = (...args) => new QuillHexEditor(...args);
+
+        Quill.get_size_names = get_size_names;
+        Quill.get_size = get_size;
+        Quill.set_size = set_size;
+        Quill.get_color_names = get_color_names;
+        Quill.get_color = get_color;
+        Quill.set_color = set_color;
+        Quill.get_panels = get_panels;
+        Quill.open_file_dialog = open_file_dialog;
+        Quill.fill_array = Util.fill_array;
+        Quill.show_demo = quill_show_demo;
+
         const content_element = Util.element_from_html(`<div class="quill-content"></div>`);
 
         root_element.classList.add("quill");
@@ -81,46 +126,6 @@
 
         QuillMenuItem.init();
 
-        // Add all public-facing properties
-
-        Quill.Color = (...args) => new QuillColor(...args);
-        Quill.Separator = (...args) => new QuillSeparator(...args);
-        Quill.InfoTooltip = (...args) => new QuillInfoTooltip(...args);
-        Quill.Text = (...args) => new QuillText(...args);
-        Quill.Modal = (...args) => new QuillModal(...args);
-        Quill.Panel = (...args) => new Panel(...args);
-        Quill.MenuBar = (...args) => new QuillMenuBar(...args);
-        Quill.Menu = (...args) => new QuillMenu(...args);
-        Quill.MenuItem = (...args) => new QuillMenuItem(...args);
-        Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
-        Quill.Table = (...args) => new QuillTable(...args);
-        Quill.TableRow = (...args) => new QuillTableRow(...args);
-        Quill.TableColumn = (...args) => new QuillTableColumn(...args);
-        Quill.CollapsingHeader = (...args) => new QuillCollapsingHeader(...args);
-        Quill.Tree = (...args) => new QuillTree(...args);
-        Quill.Button = (...args) => new QuillButton(...args);
-        Quill.Row = (...args) => new QuillRow(...args);
-        Quill.Fieldset = (...args) => new QuillFieldset(...args);
-        Quill.Checkbox = (...args) => new QuillCheckbox(...args);
-        Quill.Dropdown = (...args) => new QuillDropdown(...args);
-        Quill.DropdownOptions = (...args) => new QuillDropdownOptions(...args);
-        Quill.InputFloat = (...args) => new QuillInputFloat(...args);
-        Quill.InputInteger = (...args) => new QuillInputInteger(...args);
-        Quill.InputU8 = (...args) => new QuillInputU8(...args);
-        Quill.InputU16 = (...args) => new QuillInputU16(...args);
-        Quill.SliderFloat = (...args) => new QuillSliderFloat(...args);
-        Quill.SliderInteger = (...args) => new QuillSliderInteger(...args);
-        Quill.Tabs = (...args) => new QuillTabs(...args);
-        Quill.Tab = (...args) => new QuillTab(...args);
-        Quill.HexEditor = (...args) => new QuillHexEditor(...args);
-
-        Quill.get_panels = get_panels;
-        Quill.get_style = get_style;
-        Quill.set_style = set_style;
-        Quill.open_file_dialog = open_file_dialog;
-        Quill.fill_array = Util.fill_array;
-        Quill.show_demo = quill_show_demo;
-
         Object.freeze(Quill);
     };
 
@@ -162,6 +167,7 @@
                     QuillRow,
                     QuillCheckbox,
                     QuillHexEditor,
+                    QuillTabs,
                 ],
                 ...args
             );
@@ -515,16 +521,36 @@
 
     // Public methods
 
-    function get_style(property) {
+    function get_size_names() {
+        return Object.keys(quill_config.sizes);
+    }
+    function get_size(property) {
         return quill_config.sizes[property];
     }
-    function set_style(property, value) {
+    function set_size(property, value) {
         if (Object.hasOwn(quill_config.sizes, property)) {
             quill_config.sizes[property] = value;
             quill_config.root_element.style.setProperty(`--quill-${property.replaceAll("_", "-")}-size`, `${value}px`);
         }
     }
+    function get_color_names() {
+        return Object.keys(quill_config.colors);
+    }
+    function get_color(property) {
+        return quill_config.colors[property];
+    }
+    function set_color(property, value) {
+        if (Object.hasOwn(quill_config.colors, property)) {
+            const color = QuillColor.from_hex(value);
+            quill_config.colors[property] = color;
+            quill_config.root_element.style.setProperty(
+                `--quill-${property.replaceAll("_", "-")}-color`,
+                color.to_css()
+            );
+        }
+    }
     function get_panels() {
+        // TODO: copy properly
         return { ...quill_panels };
     }
     function open_file_dialog(...args) {

@@ -3,10 +3,38 @@
     It is recommended to use strict mode in your application and define your variables before using them in the UI.
 */
 
+function get_style_editor() {
+    const Q = Quill;
+
+    return [
+        Q.Separator(),
+        Q.Tabs([
+            Q.Tab("Sizes", [
+                Q.Fieldset("Main", [
+                    ...Q.get_size_names().map((property) =>
+                        Q.SliderInteger(
+                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                            { min: 0, max: 20 },
+                            (value) => Q.set_size(property, value)
+                        ).set_value(Q.get_size(property))
+                    ),
+                ]),
+            ]),
+            Q.Tab("Colors", [
+                ...Q.get_color_names().map((property) =>
+                    Q.ColorPicker(
+                        (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                        (value) => Q.set_color(property, value)
+                    ).set_value(Q.get_color(property).to_hex())
+                ),
+            ]),
+        ]),
+    ];
+}
+
 function quill_show_demo() {
     const Q = Quill;
 
-    let panels = null;
     let recent = null;
 
     const hex_editor_data = new Uint8Array(513);
@@ -24,39 +52,14 @@ function quill_show_demo() {
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
     ]);
 
+    Q.Panel("Style editor", { closeable: true, closed: true }, get_style_editor());
+
     Q.Panel("Quill Demo", { not_closeable: true, closed: true }, [
-        Q.CollapsingHeader("Configuration", { expanded: true }, [
-            Q.Tree("Style", { expanded: true }, [
+        Q.CollapsingHeader("Configuration", [
+            Q.Tree("Style", [
+                Q.InfoTooltip("The same contents can be accessed in the menu under [Tools] -> [Style editor]"),
+                ...get_style_editor(),
                 Q.Separator(),
-                Q.Tabs([
-                    Q.Tab("Sizes", [
-                        Q.Fieldset("Main", [
-                            ...[
-                                "font_size",
-                                "panel_padding",
-                                "panel_gap",
-                                "panel_border",
-                                "panel_border_radius",
-                                "panel_shadow",
-                                "menu_padding",
-                                "menu_gap",
-                                "menu_border",
-                                "menu_border_radius",
-                                "menu_shadow",
-                                "item_padding",
-                                "item_gap",
-                                "item_border_radius",
-                            ].map((property) =>
-                                Q.SliderInteger(
-                                    (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                                    { min: 0, max: 20 },
-                                    (value) => Q.set_style(property, value)
-                                ).set_value(Q.get_style(property))
-                            ),
-                        ]),
-                    ]),
-                    Q.Tab("Colors"),
-                ]),
             ]),
         ]),
         Q.CollapsingHeader("Widgets", [
@@ -203,17 +206,8 @@ function quill_show_demo() {
             ]),
         ]),
         Q.MenuBar([
-            Q.Menu("File", [Q.MenuItem("Load..."), (recent = Q.Menu("Recent")), Q.Separator(), Q.MenuItem("Quit")]),
-            Q.Menu("Tools", {}, () => {}, [
-                Q.Menu("File", [
-                    Q.MenuItem("Load..."),
-                    Q.Separator(),
-                    Q.Menu("Recent", [
-                        Q.MenuItem("1. some_file.txt"),
-                        Q.MenuItem("2. Another file.txt"),
-                        Q.MenuItem("3. .yup"),
-                    ]),
-                ]),
+            Q.Menu("File", {}, () => {}, [
+                Q.Menu("File", [Q.MenuItem("Load..."), Q.Separator(), (recent = Q.Menu("Recent"))]),
                 Q.MenuItem("Load...", { ctrl_key: "L" }, () =>
                     Q.open_file_dialog({ multiple: true }, (files) => {
                         console.log("Load", files);
@@ -249,8 +243,8 @@ function quill_show_demo() {
             ]),
             Q.MenuItem("Cool"),
             Q.MenuItem("Beans", { checkable: true }),
-            (panels = Q.Menu(
-                "Panels",
+            (tools = Q.Menu(
+                "Tools",
                 Q.Menu("File", [
                     Q.MenuItem("Load..."),
                     Q.Menu("Recent", [
@@ -265,7 +259,7 @@ function quill_show_demo() {
         ]),
     ]);
 
-    panels.add_children(
+    tools.add_children(
         Object.values(Q.get_panels())
             .filter((panel) => panel.is_closeable())
             .map((panel) => {
