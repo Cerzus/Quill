@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillTabs extends QuillElement {
+class QuillTabs extends QuillBranchElement {
     #header_element;
     constructor(...args) {
         super(
@@ -47,11 +47,7 @@ class QuillTab extends QuillElement {
     #name;
 
     constructor(name, ...args) {
-        super(
-            `<div class="quill-tab" data-name="${name}"></div>`,
-            [QuillFieldset, QuillText, QuillColorPicker],
-            ...args
-        );
+        super(`<div class="quill-tab" data-name="${name}"></div>`, [QuillNodeElement], ...args);
         this.#name = name;
         this.add_children(this._get_arg_children());
     }

@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillTree extends QuillElement {
+class QuillTree extends QuillBranchElement {
     #expanded = false;
 
     constructor(header, ...args) {

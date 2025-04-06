@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillFixedCanvas extends QuillElement {
+class QuillFixedCanvas extends QuillNodeElement {
     #canvas;
     #context;
 

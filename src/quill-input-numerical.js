@@ -1,11 +1,10 @@
 "use strict";
 
-class QuillInputNumerical extends QuillElement {
+class QuillInputNumerical extends QuillInput {
     #input_element;
     #min = null;
     #max = null;
     #step = null;
-    #event_type;
     #on_event;
 
     constructor(html, event_type, on_event, label, ...args) {

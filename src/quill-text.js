@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillText extends QuillElement {
+class QuillText extends QuillLeafElement {
     constructor(text, ...args) {
         super(`<div class="quill-text">${text.replaceAll("\n", "<br>")}</div>`, [], ...args);
         const config = this._get_arg_config();

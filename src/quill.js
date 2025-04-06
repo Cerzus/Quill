@@ -156,19 +156,7 @@
                 </div>`;
             super(
                 modal ? `<div class="quill-modal-overlay">${html}</div>` : html,
-                [
-                    QuillMenuBar,
-                    QuillFixedCanvas,
-                    QuillText,
-                    QuillTable,
-                    QuillTree,
-                    QuillSeparator,
-                    QuillButton,
-                    QuillRow,
-                    QuillCheckbox,
-                    QuillHexEditor,
-                    QuillTabs,
-                ],
+                [QuillNodeElement, QuillMenuBar],
                 ...args
             );
 
@@ -332,7 +320,7 @@
 
     class QuillMenuBar extends QuillElement {
         constructor(...args) {
-            super(`<div class="quill-menu-bar"></div>`, [QuillMenu, QuillMenuItem], ...args);
+            super(`<div class="quill-menu-bar"></div>`, [QuillMenu, QuillMenuItem, QuillSeparator], ...args);
             this.add_children(this._get_arg_children());
         }
 

@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillColorPicker extends QuillElement {
+class QuillColorPicker extends QuillInput {
     #input_element;
 
     constructor(label, ...args) {

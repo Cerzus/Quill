@@ -1,0 +1,42 @@
+Color
+
+Element
+    TableRow                            TableColumn
+    TableColumn                         LeafElement, String, Number
+    DropdownOptions                     -
+    Tab                                 NodeElement
+    Panel                               NodeElement, MenuBar
+        Modal                           -
+    NodeElement
+        BranchElement
+            Table                       TableRow
+            Fieldset                    LeafElement
+            Row                         Fieldset, ???
+            Tabs                        Tab
+            Tree                        NodeElement
+                CollapsingHeader        NodeElement
+        LeafElement
+            InfoTooltip                 -
+            Separator                   -
+            Text                        -
+            Button                      -
+            Input
+                Checkbox                -
+                ColorPicker             -
+                Dropdown                DropdownOptions    
+                InputNumerical
+                    InputNumber
+                        InputFloat      -
+                        InputInteger    -
+                            InputU8     -
+                            InputU16    -
+                    InputRange
+                        SliderFloat     -
+                        SliderInteger   -
+        FixedCanvas                     -
+        HexEditor                       -
+    MenuBar                             Menu, MenuItem, Separator
+    Menu                                Menu, MenuItem, Separator
+    MenuItem                            -
+    
+    

@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillCheckbox extends QuillElement {
+class QuillCheckbox extends QuillInput {
     #input_element;
 
     constructor(label, ...args) {

@@ -243,6 +243,7 @@ function quill_show_demo() {
             ]),
             Q.MenuItem("Cool"),
             Q.MenuItem("Beans", { checkable: true }),
+            Q.Separator(),
             (tools = Q.Menu(
                 "Tools",
                 Q.Menu("File", [

@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillHexEditor extends QuillElement {
+class QuillHexEditor extends QuillNodeElement {
     #number_of_columns;
     #max_addr_length;
     #row_height;

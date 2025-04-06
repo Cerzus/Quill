@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillRow extends QuillElement {
+class QuillRow extends QuillBranchElement {
     constructor(...args) {
         super(
             `<div class="quill-row"></div>`,

@@ -179,8 +179,9 @@
 }
 
 .quill .quill-separator {
-    border: 0 solid var(--quill-line-light-color);
-    border-top-width: var(--quill-line-light-size);
+    border: var(--quill-line-size) solid var(--quill-line-color);
+    border-right-width: 0;
+    border-bottom-width: 0;
 }
 .quill .quill-menu > .quill-separator {
     grid-column: 1/5;
@@ -278,7 +279,7 @@
 }
 
 .quill .quill-fieldset {
-    border: var(--quill-line-heavy-size) solid var(--quill-line-heavy-color);
+    border: var(--quill-line-size) solid var(--quill-line-color);
     border-radius: var(--quill-item-border-radius-size);
     padding: var(--quill-panel-padding-size);
     gap: var(--quill-item-gap-size);

@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillButton extends QuillElement {
+class QuillButton extends QuillLeafElement {
     constructor(text, ...args) {
         super(`<div class="quill-button">${text}</div>`, [], ...args);
         Util.add_click_event_listener(this.get_element(), (e) => this._get_arg_callback()(this, e));

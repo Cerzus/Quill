@@ -83,3 +83,8 @@ class QuillElement {
     }
     _remove() {} // Implement in extending classes that create extra DOM elements outside #element.
 }
+
+class QuillNodeElement extends QuillElement {}
+class QuillBranchElement extends QuillNodeElement {}
+class QuillLeafElement extends QuillNodeElement {}
+class QuillInput extends QuillLeafElement {}
