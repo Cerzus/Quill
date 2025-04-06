@@ -45,13 +45,13 @@ function create_game_boy_ui() {
         const ppu = game_boy.get_ppu();
         inputs.ppu_show_bg_win.set_checked(ppu.get_show_bg_win());
         inputs.ppu_show_obj.set_checked(ppu.get_show_obj());
-        inputs.ppu_obj_size.set_value(ppu.get_obj_size());
-        inputs.ppu_bg_map.set_value(ppu.get_bg_map());
-        inputs.ppu_bg_win_data.set_value(ppu.get_bg_win_data());
+        inputs.ppu_obj_size.set_value(+ppu.get_obj_size());
+        inputs.ppu_bg_map.set_value(+ppu.get_bg_map());
+        inputs.ppu_bg_win_data.set_value(+ppu.get_bg_win_data());
         inputs.ppu_show_win.set_checked(ppu.get_show_win());
-        inputs.ppu_win_map.set_value(ppu.get_win_map());
+        inputs.ppu_win_map.set_value(+ppu.get_win_map());
         inputs.ppu_enabled.set_checked(ppu.get_enabled());
-        inputs.ppu_mode.set_value(ppu.get_mode());
+        inputs.ppu_mode.set_value(+ppu.get_mode());
         inputs.ppu_lyc_eq_ly.set_checked(ppu.get_lyc_eq_ly());
         inputs.ppu_mode_0_int.set_checked(ppu.get_mode_0_int());
         inputs.ppu_mode_1_int.set_checked(ppu.get_mode_1_int());
@@ -89,7 +89,7 @@ function create_game_boy_ui() {
         return (inputs[id] = Q.Checkbox(label, (checked) => set_property(id, checked)));
     }
     function dropdown(id, label, options) {
-        return (inputs[id] = Q.Dropdown(label, (value) => set_property(id, value), Q.DropdownOptions(options)));
+        return (inputs[id] = Q.Dropdown(label, (value) => set_property(id, +value), Q.DropdownOptions(options)));
     }
 
     const cpu_panel = Q.Panel("CPU", { closed: true }, [
@@ -137,7 +137,7 @@ function create_game_boy_ui() {
                 checkbox("ppu_show_bg_win", "Show BG/Window"),
                 checkbox("ppu_show_win", "Show window"),
                 checkbox("ppu_show_obj", "Show sprites"),
-                dropdown("ppu_obj_size", "Sprite size", { false: "8&times;8", true: "8&times;16" }),
+                dropdown("ppu_obj_size", "Sprite size", { 0: "8&times;8", 1: "8&times;16" }),
             ]),
             Q.Fieldset("Positioning", [
                 input_u8("ppu_scx", "Scroll X"),
@@ -146,9 +146,9 @@ function create_game_boy_ui() {
                 input_u8("ppu_wy", "Window Y"),
             ]),
             Q.Fieldset("Tiles", [
-                dropdown("ppu_bg_map", "BG map", { false: "$9c00", true: "$9800" }),
-                dropdown("ppu_win_map", "Window map", { false: "$9c00", true: "$9800" }),
-                dropdown("ppu_bg_win_data", "BG/Window data", { false: "$8000", true: "$8800" }),
+                dropdown("ppu_bg_map", "BG map", { 0: "$9c00", 1: "$9800" }),
+                dropdown("ppu_win_map", "Window map", { 0: "$9c00", 1: "$9800" }),
+                dropdown("ppu_bg_win_data", "BG/Window data", { 0: "$8000", 1: "$8800" }),
             ]),
             Q.Fieldset("Status", [
                 dropdown("ppu_mode", "Mode", {
