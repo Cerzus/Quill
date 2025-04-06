@@ -92,4 +92,3 @@ class QuillWrappableElement extends QuillElement {}
 class QuillNodeElement extends QuillWrappableElement {}
 class QuillBranchElement extends QuillNodeElement {}
 class QuillLeafElement extends QuillNodeElement {}
-class QuillInput extends QuillLeafElement {}

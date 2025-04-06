@@ -1,39 +1,19 @@
 "use strict";
 
 class QuillDropdown extends QuillInput {
-    #input_element;
-
-    constructor(label, ...args) {
-        const html = `<select class="quill-select"></select>`;
-        // super(label ? `<label class="quill-label">${html}${label}</label>` : html, [QuillDropdownOptions], ...args);
-        // const element = label ? this.get_element().querySelector(`select`) : this.get_element();
-        super(
-            `<label class="quill-label">${html}${label ?? ""}</label>`,
-            [QuillWrapper, QuillDropdownOptions],
-            ...args
-        );
-        const element = this.get_element().querySelector(`select`);
-        this.#input_element = element;
-        element.addEventListener("change", (e) => this._get_arg_callback()(this.get_value(), this, e));
+    constructor(...args) {
+        super(`<select class="quill-select"></select>`, "change", null, [QuillWrapper, QuillDropdownOptions], ...args);
         this.add_children(this._get_arg_children());
         const config = this._get_arg_config();
         if (Object.hasOwn(config, "value")) this.set_value(config.value);
-    }
-
-    // Public methods
-
-    get_value = () => this.#input_element.value;
-    set_value(value) {
-        this.#input_element.value = value;
-        return this;
     }
 
     // Private methods
 
     _add_child(options) {
         const element = options.get_element();
-        if (element.hasAttribute("label")) this.#input_element.append(element);
-        else for (const option of element.querySelectorAll("option")) this.#input_element.append(option);
+        if (element.hasAttribute("label")) this.get_input_element().append(element);
+        else for (const option of element.querySelectorAll("option")) this.get_input_element().append(option);
     }
 }
 

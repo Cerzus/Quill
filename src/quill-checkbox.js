@@ -1,22 +1,19 @@
 "use strict";
 
 class QuillCheckbox extends QuillInput {
-    #input_element;
-
-    constructor(label, ...args) {
+    constructor(...args) {
         const html = `<input class="quill-input" type="checkbox" />`;
-        super(label ? `<label class="quill-label">${html}${label}</label>` : html, [], ...args);
-        const element = label ? this.get_element().querySelector(`input`) : this.get_element();
-        this.#input_element = element;
-        element.addEventListener("change", (e) => this._get_arg_callback()(this.is_checked(), this, e));
+        super(html, "change", null, [], ...args);
         this.set_checked(!!this._get_arg_config().checked);
     }
 
     // Public methods
 
-    set_checked(checked) {
-        this.#input_element.checked = !!checked;
+    get_value = () => this.get_input_element().checked;
+    set_value(value) {
+        this.get_input_element().checked = !!value;
         return this;
     }
-    is_checked = () => this.#input_element.checked;
+    is_checked = this.get_value;
+    set_checked = this.set_value;
 }
