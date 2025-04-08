@@ -1,15 +1,13 @@
+- Address TODO's
+- Add tests
+- Add more settings to config
+- Get rid of fake private methods (methods starting with "_")
 - Panel: highlight topmost ("active") panel
 - Panel: Improve size and position functionality
-- Move more settings into config
 - MenuBar: Disable/enable MenuItems
-- Add tests
-- Address TODO's
-- Get rid of fake private methods (methods starting with "_")
-- Checkbox and Dropdown: Allow leaving out the label argument from the constructor
 - Disable inputs
 - Disable in bulk
 - Add hexadecimal/binary inputs
-- Add config flags
 - Config per element and applied through the Wrapper element
 - Allow Wrapper element as child of MenuBar and Menu elements
 - Allow Wrapper element as child of Tabs element?

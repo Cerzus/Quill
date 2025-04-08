@@ -8,7 +8,7 @@ class QuillInputNumerical extends QuillInput {
 
     constructor(html, event_type, sanitize_value, ...args) {
         super(html, event_type, sanitize_value, [], ...args);
-        this.#sanitize_value = sanitize_value || ((value) => value);
+        this.#sanitize_value = sanitize_value ?? ((value) => value);
         const config = this._get_arg_config();
         if (Object.hasOwn(config, "min")) this.#set_min(config.min);
         if (Object.hasOwn(config, "max")) this.#set_max(config.max);
@@ -79,7 +79,7 @@ class QuillInputU16 extends QuillInputInteger {
 class QuillInputRange extends QuillInputNumerical {
     constructor(...args) {
         super(
-            `<div style="position: relative; flex-grow: 1;">
+            `<div style="position: relative;/* flex-grow: 1;*/">
                 <input class="quill-input" type="range">
                 <output></output>
             </div>`,
@@ -111,10 +111,12 @@ class QuillInputRange extends QuillInputNumerical {
 
 class QuillSliderFloat extends QuillInputRange {
     constructor(...args) {
-        const { label, config, callback, children, count } = Util.config_callback_and_children_from_arguments(...args);
-        config.min = 0;
-        config.max = 1;
-        config.step = 0.01;
+        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
+            ...args
+        );
+        if (!Object.hasOwn(config, "min")) config.min = 0;
+        if (!Object.hasOwn(config, "max")) config.max = 1;
+        if (!Object.hasOwn(config, "step")) config.step = 0.01;
         super(null, label, config, callback, children, ...args.slice(count));
     }
 }

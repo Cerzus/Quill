@@ -34,9 +34,7 @@ class QuillTree extends QuillBranchElement {
         this.get_element().querySelector(".quill-tree-body").append(child.get_element());
     }
     #set_expanded(expanded) {
-        this.#expanded = expanded;
-        if (expanded) this.get_element().classList.add("expanded");
-        else this.get_element().classList.remove("expanded");
+        this.get_element().classList[(this.#expanded = expanded) ? "add" : "remove"]("expanded");
         return this;
     }
 }

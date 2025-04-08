@@ -7,19 +7,16 @@ class QuillInput extends QuillLeafElement {
             ...args
         );
         super(
-            label !== null ? `<label class="quill-label">${html}${label}</label>` : html,
+            `<label class="quill-label">${html}${label ?? ""}</label>`,
             allowed_children,
             config,
             callback,
             children,
             ...args.slice(count)
         );
-        const element = label !== null ? this.get_element().querySelector(`input, select`) : this.get_element();
-        // super(`<label class="quill-label">${html}${label ?? ""}</label>`, allowed_children, config, callback, children, ...args.slice(count));
-        // const element = this.get_element().querySelector(`input, select`);
-        this.#input_element = element;
-        this.#sanitize_value = sanitize_value || ((value) => value);
-        element.addEventListener(event_type, (e) => {
+        this.#sanitize_value = sanitize_value ?? ((value) => value);
+        this.#input_element = this.get_element().querySelector(`input, select`);
+        this.#input_element.addEventListener(event_type, (e) => {
             this.set_value(this.get_value());
             this._get_arg_callback()(this.get_value(), this, e);
         });

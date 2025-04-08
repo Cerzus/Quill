@@ -9,24 +9,38 @@ function get_style_editor() {
     return Q.Wrapper([
         Q.Separator(),
         Q.Tabs([
+            Q.Tab("Colors", [
+                Q.Fieldset("Main", [
+                    ...Q.get_color_names().map((property) =>
+                        Q.ColorPicker(
+                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                            { value: Q.get_color(property).to_hex() },
+                            (value) => Q.set_color(property, value)
+                        )
+                    ),
+                ]),
+            ]),
             Q.Tab("Sizes", [
                 Q.Fieldset("Main", [
                     ...Q.get_size_names().map((property) =>
                         Q.SliderInteger(
                             (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { min: 0, max: 20 },
+                            { min: 0, max: 20, value: Q.get_size(property) },
                             (value) => Q.set_size(property, value)
-                        ).set_value(Q.get_size(property))
+                        )
                     ),
                 ]),
             ]),
-            Q.Tab("Colors", [
-                ...Q.get_color_names().map((property) =>
-                    Q.ColorPicker(
-                        (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                        (value) => Q.set_color(property, value)
-                    ).set_value(Q.get_color(property).to_hex())
-                ),
+            Q.Tab("Flags", [
+                Q.Fieldset("Main", [
+                    ...Q.get_flag_names().map((property) =>
+                        Q.Checkbox(
+                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                            { checked: Q.get_flag(property) },
+                            (value) => Q.set_flag(property, value)
+                        )
+                    ),
+                ]),
             ]),
         ]),
     ]);
@@ -76,10 +90,10 @@ function quill_show_demo() {
                         `Refer to the "Dropdowns" section below for an explanation of how to use the Dropdown API.`
                     ),
                 ]),
-                Q.InputInteger("Input integer", (value) => console.log(value)).set_value(123),
-                Q.InputFloat("Input float", (value) => console.log(value)),
+                Q.InputInteger("Input integer", { value: 123 }, (value) => console.log(value)),
+                Q.InputFloat("Input float", { value: 0.5 }, (value) => console.log(value)),
                 Q.SliderInteger("Slider integer", (value) => console.log(value)).set_value(25),
-                Q.SliderFloat("Slider float", (value) => console.log(value)),
+                Q.SliderFloat("Slider float", (value) => console.log(value)).set_value(0.456),
             ]),
             Q.Tree("Trees", [
                 Q.Tree(
