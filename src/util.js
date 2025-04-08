@@ -39,9 +39,23 @@ class Util {
         ) {
             result.config = args[i++];
         }
-        if (args[i] instanceof Function && !(args[i] instanceof Array || args[i] instanceof QuillElement)) {
-            result.callback = args[i++];
+        if (args[i] instanceof Function) result.callback = args[i++];
+        if (args[i] instanceof Array || args[i] instanceof QuillElement) result.children = args[i++];
+        result.count = i;
+        return result;
+    }
+
+    static label_config_callback_and_children_from_arguments(...args) {
+        const result = { label: null, config: {}, callback: () => {}, children: [] };
+        let i = 0;
+        if (typeof args[i] === "string" || typeof args[i] === "number") result.label = args[i++];
+        if (
+            args[i] instanceof Object &&
+            !(args[i] instanceof Function || args[i] instanceof Array || args[i] instanceof QuillElement)
+        ) {
+            result.config = args[i++];
         }
+        if (args[i] instanceof Function) result.callback = args[i++];
         if (args[i] instanceof Array || args[i] instanceof QuillElement) result.children = args[i++];
         result.count = i;
         return result;

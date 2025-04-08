@@ -364,9 +364,7 @@
 
             const config = this._get_arg_config();
             if (!!config.checkable) {
-                this.#checkbox = new QuillCheckbox(null, { checked: !!config.checked }, (_, __, e) =>
-                    this.#notify_user(e)
-                );
+                this.#checkbox = new QuillCheckbox({ checked: !!config.checked }, (_, __, e) => this.#notify_user(e));
                 this.get_element().querySelector(":nth-child(1)").append(this.#checkbox.get_element());
             }
 

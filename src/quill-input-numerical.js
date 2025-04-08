@@ -55,8 +55,10 @@ class QuillInputInteger extends QuillInputNumber {
 }
 
 class QuillInputU8 extends QuillInputInteger {
-    constructor(label, ...args) {
-        const { config, callback, children, count } = Util.config_callback_and_children_from_arguments(...args);
+    constructor(...args) {
+        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
+            ...args
+        );
         config.min = 0;
         config.max = (1 << 8) - 1;
         super(label, config, callback, children, ...args.slice(count));
@@ -64,8 +66,10 @@ class QuillInputU8 extends QuillInputInteger {
 }
 
 class QuillInputU16 extends QuillInputInteger {
-    constructor(label, ...args) {
-        const { config, callback, children, count } = Util.config_callback_and_children_from_arguments(...args);
+    constructor(...args) {
+        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
+            ...args
+        );
         config.min = 0;
         config.max = (1 << 16) - 1;
         super(label, config, callback, children, ...args.slice(count));
@@ -106,8 +110,8 @@ class QuillInputRange extends QuillInputNumerical {
 }
 
 class QuillSliderFloat extends QuillInputRange {
-    constructor(label, ...args) {
-        const { config, callback, children, count } = Util.config_callback_and_children_from_arguments(...args);
+    constructor(...args) {
+        const { label, config, callback, children, count } = Util.config_callback_and_children_from_arguments(...args);
         config.min = 0;
         config.max = 1;
         config.step = 0.01;

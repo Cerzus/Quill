@@ -126,9 +126,10 @@ function quill_show_demo() {
             ]),
             Q.Tree("Dropdowns", [
                 Q.Row([
-                    Q.Dropdown(null, (value) => console.log(value), [
-                        Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH"]),
-                    ]),
+                    Q.Dropdown(
+                        (value) => console.log(value),
+                        [Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH"])]
+                    ),
                     Q.InfoTooltip("Dropdown without a label"),
                 ]),
                 Q.Dropdown("Dropdown with values", { value: "Option 3" }, (value) => console.log(value), [
