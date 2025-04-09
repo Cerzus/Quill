@@ -90,7 +90,7 @@ function quill_show_demo() {
         Q.CollapsingHeader("Widgets", [
             Q.Tree("Basic", [
                 Q.Row([
-                    Q.Button("Button", () => (text.is_visible() ? text.hide() : text.show())),
+                    Q.Button("Button", () => (text.is_hidden() ? text.hide() : text.show())),
                     (text = Q.Text("Thanks for clicking me!")).hide(),
                 ]),
                 Q.Checkbox("Checkbox").set_checked(true),
@@ -102,6 +102,7 @@ function quill_show_demo() {
                         `Refer to the "Dropdowns" section below for an explanation of how to use the Dropdown API.`
                     ),
                 ]),
+                Q.InputText("Input text", { value: "Hello, world!" }, (value) => console.log(value)),
                 Q.InputInteger("Input integer", { value: 123 }, (value) => console.log(value)),
                 Q.InputFloat("Input float", { value: 0.5 }, (value) => console.log(value)),
                 Q.SliderInteger("Slider integer", (value) => console.log(value)).set_value(25),

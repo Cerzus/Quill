@@ -29,8 +29,9 @@ Element
                 Input
                     Checkbox                -
                     ColorPicker             -
-                    Dropdown                Wrapper, DropdownOptions    
+                    Dropdown                Wrapper, DropdownOptions
                     RadioButtons            Wrapper, RadioButton  
+                    Text                    -
                     InputNumerical
                         InputNumber
                             InputFloat      -

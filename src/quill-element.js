@@ -20,6 +20,8 @@ class QuillElement {
         this.#arg_callback = Object.freeze(named_args.callback);
         this.#arg_children = Object.freeze(named_args.children);
 
+        if (this.#arg_config.hidden) this.hide();
+
         if (this.#arg_config.class) this.#element.classList.add(this.#arg_config.class);
         if (!!this.#arg_config.disabled) this.#element.setAttribute("disabled", "");
     }
@@ -58,7 +60,7 @@ class QuillElement {
         this.#element.style.display = "none";
         return this;
     }
-    is_visible = () => this.#element.style.display === "";
+    is_hidden = () => this.#element.style.display !== "";
 
     // Private methods
 
