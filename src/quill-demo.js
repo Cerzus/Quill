@@ -84,7 +84,7 @@ function quill_show_demo() {
             Q.Tree("Style", [
                 Q.InfoTooltip("The same contents can be accessed in the menu under [Tools] -> [Style editor]"),
                 get_style_editor(),
-                Q.Separator(),
+                // Q.Separator(),
             ]),
         ]),
         Q.CollapsingHeader("Widgets", [
@@ -212,7 +212,7 @@ function quill_show_demo() {
                 }),
             ]),
         ]),
-        Q.CollapsingHeader("Tables", [
+        Q.CollapsingHeader("Tables", { expanded: 1 }, [
             Q.Tree("Basic", [
                 Q.InfoTooltip("This table is created with nested Quill.fill_array() calls."),
                 Q.Table(Q.fill_array(4, (r) => Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))),
@@ -230,6 +230,28 @@ function quill_show_demo() {
                     Q.TableRow([Q.TableColumn(3), Q.TableColumn(4), Q.TableColumn(5)]),
                     Q.TableRow([Q.TableColumn(6), Q.TableColumn(7), Q.TableColumn(8)]),
                     Q.TableRow([Q.TableColumn(9), Q.TableColumn(10)]),
+                ]),
+            ]),
+            Q.Tree("Borders, background", { expanded: 1 }, [
+                Q.Checkbox("Row background"),
+                Q.CheckboxTree("Borders", {}, [
+                    Q.CheckboxTree("Horizontal borders", {}, [
+                        Q.Checkbox("Outer horizontal borders", {}, (checked) => console.log("ohb", checked)),
+                        Q.Checkbox("Inner horizontal borders", {}, (checked) => console.log("ihb", checked)),
+                    ]),
+                    Q.CheckboxTree("Vertical borders", {}, [
+                        Q.Checkbox("Outer vertical borders", {}, (checked) => console.log("ovb", checked)),
+                        Q.Checkbox("Inner vertical borders", {}, (checked) => console.log("ivb", checked)),
+                    ]),
+                    Q.Checkbox("Outer borders", {}, (checked) => console.log("ob", checked)),
+                    Q.Checkbox("Inner borders", {}, (checked) => console.log("ib", checked)),
+                ]),
+                Q.Row([
+                    Q.Text("Cell contents:"),
+                    Q.RadioButtons({ value: "text" }, (value) => console.log(value), [
+                        Q.RadioButton("Button", "button"),
+                        Q.RadioButton("Text", "text"),
+                    ]),
                 ]),
             ]),
         ]),

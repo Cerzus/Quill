@@ -29,6 +29,7 @@ Element
                 Button                      -
                 Input
                     Checkbox                -
+                    CheckboxTree            Wrapper, CheckboxTree, Checkbox
                     ColorPicker             -
                     Dropdown                Wrapper, DropdownOptions
                     RadioButtons            Wrapper, RadioButton  

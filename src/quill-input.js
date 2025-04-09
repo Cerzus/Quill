@@ -6,8 +6,9 @@ class QuillInput extends QuillLeafElement {
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
             ...args
         );
+        const wrapper_elemment = label || label === 0 || label === "" ? "label" : "div";
         super(
-            `<label class="quill-label">${html}${label ?? ""}</label>`,
+            `<${wrapper_elemment} class="quill-label">${html}${label ?? ""}</${wrapper_elemment}>`,
             allowed_children,
             config,
             callback,
