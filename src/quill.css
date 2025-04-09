@@ -1,5 +1,5 @@
 .quill {
-    background-color: var(--quill-background-color);
+    background: var(--quill-background-color);
     font-family: var(--quill-proportional-font);
     color: var(--quill-text-color);
     font-size: var(--quill-font-size-size);
@@ -49,7 +49,7 @@
 }
 
 .quill .quill-panel-title-bar {
-    background-color: var(--quill-panel-title-bar-color);
+    background: var(--quill-panel-title-bar-color);
     padding: var(--quill-panel-padding-size);
     gap: var(--quill-panel-gap-size);
     font-weight: bold;
@@ -65,11 +65,11 @@
     font-size: 1.5em;
     line-height: 0.75em;
     cursor: initial;
-    background-color: transparent;
+    background: transparent;
 }
 
 .quill .quill-panel-content {
-    background-color: var(--quill-panel-content-color);
+    background: var(--quill-panel-content-color);
     overflow: auto;
     flex-grow: 1;
 }
@@ -109,7 +109,7 @@
 }
 
 .quill .quill-menu-bar {
-    background-color: var(--quill-menu-color);
+    background: var(--quill-menu-color);
     flex-grow: 1;
 }
 .quill .quill-menu-item {
@@ -118,22 +118,15 @@
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1/5;
-    gap: 0.25em;
+    gap: var(--quill-item-inner-gap-size);
+    overflow: hidden;
 }
 .quill .quill-menu-item > * {
     padding: var(--quill-item-padding-size);
     align-items: center;
 }
-.quill .quill-menu-item > :nth-child(1) {
-    border-top-left-radius: var(--quill-item-border-radius-size);
-    border-bottom-left-radius: var(--quill-item-border-radius-size);
-}
 .quill .quill-menu-item > :nth-child(3) {
     opacity: 0.75;
-}
-.quill .quill-menu-item > :nth-child(4) {
-    border-top-right-radius: var(--quill-item-border-radius-size);
-    border-bottom-right-radius: var(--quill-item-border-radius-size);
 }
 .quill .quill-menu-bar,
 .quill .quill-menu {
@@ -141,7 +134,6 @@
     padding: var(--quill-menu-padding-size);
 }
 .quill .quill-menu-bar > .quill-menu-item {
-    padding: 0 0.2em;
     display: flex;
 }
 .quill .quill-menu-bar > .quill-menu-item > :empty,
@@ -149,19 +141,19 @@
     display: none;
 }
 .quill :not(.quill-menu-bar) > .quill-menu-item > :nth-child(2) {
-    padding: var(--quill-item-padding-size) calc(0.5em + var(--quill-item-padding-size));
+    padding: var(--quill-item-padding-size);
 }
 
 .quill .quill-menu-item:hover,
 .quill .quill-menu-item.active {
-    background-color: var(--quill-item-hover-color);
+    background: var(--quill-item-hover-color);
 }
 .quill .quill-menu-item:hover {
     color: var(--quill-item-hover-text-color);
 }
 .quill .quill-menu {
     padding: var(--quill-menu-padding-size);
-    background-color: var(--quill-menu-color);
+    background: var(--quill-menu-color);
     border-radius: var(--quill-menu-border-radius-size);
     box-shadow: 0 0 var(--quill-menu-shadow-size) black;
     border: var(--quill-menu-border-size) solid var(--quill-panel-border-color);
@@ -233,7 +225,7 @@
     padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
 }
 .quill .quill-tree-header:hover {
-    background-color: var(--quill-item-hover-color);
+    background: var(--quill-item-hover-color);
     color: var(--quill-item-hover-text-color);
 }
 .quill .quill-tree-body:not(:empty) {
@@ -253,11 +245,11 @@
     height: fit-content;
     border-collapse: collapse;
     border: 1px solid transparent;
-    background-color: transparent;
+    background: transparent;
     border-radius: var(--quill-item-border-radius-size);
 }
 .quill .quill-table-row:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
 }
 .quill .quill-table-column,
 .quill .quill-table-header-column {
@@ -265,10 +257,10 @@
     padding: 0 0.2em;
 }
 .quill .quill-table-header-column {
-    background-color: var(--quill-item-background-color);
+    background: var(--quill-item-background-color);
 }
 .quill .quill-table-header-column:hover {
-    background-color: var(--quill-item-hover-color);
+    background: var(--quill-item-hover-color);
     color: var(--quill-item-hover-text-color);
 }
 
@@ -280,7 +272,7 @@
     border-radius: var(--quill-item-border-radius-size);
 }
 .quill .quill-button:hover {
-    background-color: var(--quill-item-hover-color);
+    background: var(--quill-item-hover-color);
     color: var(--quill-item-hover-text-color);
 }
 
@@ -322,7 +314,7 @@
     gap: var(--quill-item-inner-gap-size);
     width: fit-content;
 }
-.quill .quill-label:hover:not(:has(.quill-label:hover)) {
+.quill .quill-label:hover:not(:has(.quill-label)) {
     color: var(--quill-item-hover-text-color);
 }
 .quill .quill-justify-labels .quill-label {
@@ -346,8 +338,8 @@
     font-family: var(--quill-monospace-font);
     border-radius: var(--quill-item-border-radius-size);
     color: var(--quill-input-color);
+    border: var(--quill-input-border-size) solid var(--quill-input-border-color);
     outline: none;
-    border: none;
     font-size: 0.9em;
     accent-color: var(--quill-input-color);
     height: 1.2em;
@@ -371,20 +363,20 @@
 }
 .quill select.quill-select:hover,
 .quill select.quill-select:focus {
-    background-color: var(--quill-item-hover-color);
+    background: var(--quill-item-hover-color);
 }
 .quill select.quill-select::-webkit-scrollbar {
     width: 10px;
 }
 .quill select.quill-select::-webkit-scrollbar-track {
-    background-color: var(--quill-scrollbar-track-color);
+    background: var(--quill-scrollbar-track-color);
 }
 .quill select.quill-select::-webkit-scrollbar-thumb {
-    background-color: var(--quill-scrollbar-thumb-color);
+    background: var(--quill-scrollbar-thumb-color);
 }
 
 .quill input.quill-input[type="text"] {
-    padding: var(--quill-item-padding-size);
+    padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
 }
 
 .quill input.quill-input[type="number"] {
@@ -395,7 +387,7 @@
 }
 .quill input.quill-input:hover,
 .quill input.quill-input:focus {
-    background-color: var(--quill-item-hover-color);
+    background: var(--quill-item-hover-color);
 }
 .quill input.quill-input[type="number"]::-webkit-inner-spin-button,
 .quill input.quill-input[type="number"]::-webkit-outer-spin-button {
@@ -412,7 +404,7 @@
     -webkit-appearance: none;
 }
 .quill input.quill-input[type="range"]::-webkit-slider-thumb {
-    background-color: var(--quill-input-color);
+    background: var(--quill-input-color);
     border-radius: var(--quill-item-border-radius-size);
     appearance: none;
     -webkit-appearance: none;
@@ -422,7 +414,7 @@
     outline: none;
 }
 .quill input.quill-input[type="range"]:hover::-webkit-slider-thumb {
-    background-color: var(--quill-input-hovered-text-color);
+    background: var(--quill-input-hovered-text-color);
 }
 .quill input.quill-input[type="range"] + output {
     color: var(--quill-input-color);
@@ -448,7 +440,7 @@
 .quill .quill-input[type="checkbox"] {
     border-radius: 0;
 }
-.quill :not(.quill-menu-item) .quill-input[type="checkbox"] {
+.quill .quill-input[type="checkbox"] {
     height: calc(1.2em + 2 * var(--quill-item-padding-size));
     width: calc(1.2em + 2 * var(--quill-item-padding-size));
 }
@@ -504,8 +496,6 @@
 .quill .quill-tabs-header > div:hover,
 .quill .quill-tabs-header > div.active {
     background: var(--quill-item-hover-color);
-}
-.quill .quill-tabs-header > div:hover {
     color: var(--quill-item-hover-text-color);
 }
 .quill .quill-tabs-body {
@@ -520,7 +510,7 @@
 }
 
 .quill .quill-hex-editor {
-    background-color: var(--quill-panel-title-bar-color);
+    background: var(--quill-panel-title-bar-color);
     font-family: var(--quill-monospace-font);
     border-radius: var(--quill-panel-border-radius-size);
     flex-grow: 1;
@@ -548,7 +538,7 @@
     gap: 1em;
 }
 .quill .quill-hex-editor-rows .quill-hex-editor-row:hover > div {
-    background-color: rgb(255 255 255 / 0.2);
+    background: rgb(255 255 255 / 0.2);
 }
 .quill .quill-hex-editor-row-data > .quill-hex-editor-byte {
     padding: 0 0.2em;
@@ -566,7 +556,7 @@
     font-family: var(--quill-monospace-font);
     outline: none;
     border: none;
-    background-color: transparent;
+    background: transparent;
 }
 .quill .quill-hex-editor > .quill-hex-editor-row > .quill-hex-editor-row-data > .quill-hex-editor-byte {
     color: var(--quill-text-color);
@@ -592,7 +582,7 @@
 .quill .quill-hex-editor[data-hovered-column="13"] .quill-hex-editor-byte:nth-child(14),
 .quill .quill-hex-editor[data-hovered-column="14"] .quill-hex-editor-byte:nth-child(15),
 .quill .quill-hex-editor[data-hovered-column="15"] .quill-hex-editor-byte:nth-child(16) {
-    background-color: rgb(255 255 255 / 0.2);
+    background: rgb(255 255 255 / 0.2);
 }
 .quill .quill-hex-editor-row input.quill-hex-editor-byte:hover {
     color: yellow;
