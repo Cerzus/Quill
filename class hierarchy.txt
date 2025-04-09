@@ -19,6 +19,7 @@ Element
                 Fieldset                    Wrapper, NodeElement
                 Row                         Wrapper, NodeElement??
                 Tabs                        Tab (no Wrapper, because we're adding two HTML elements for each tab. Which one to wrap around?)
+                Indent                      Wrapper, NodeElement
                 Tree                        Wrapper, NodeElement
                     CollapsingHeader        Wrapper, NodeElement
             LeafElement

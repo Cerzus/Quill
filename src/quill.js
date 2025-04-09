@@ -20,6 +20,7 @@
         Quill.TableRow = (...args) => new QuillTableRow(...args);
         Quill.TableColumn = (...args) => new QuillTableColumn(...args);
         Quill.CollapsingHeader = (...args) => new QuillCollapsingHeader(...args);
+        Quill.Indent = (...args) => new QuillIndent(...args);
         Quill.Tree = (...args) => new QuillTree(...args);
         Quill.Button = (...args) => new QuillButton(...args);
         Quill.Row = (...args) => new QuillRow(...args);

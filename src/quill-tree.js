@@ -10,7 +10,7 @@ class QuillTree extends QuillBranchElement {
                     <div class="quill-arrow-right"></div>
                     <div>${header}</div>
                 </div>
-                <div class="quill-tree-body"></div>
+                <div class="quill-tree-body quill-indent"></div>
             </div>`,
             [QuillWrapper, QuillNodeElement],
             ...args
