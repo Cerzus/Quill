@@ -253,6 +253,19 @@ function quill_show_demo() {
                         Q.RadioButton("Text", "text"),
                     ]),
                 ]),
+                Q.Checkbox("Display headers", (checked) =>
+                    checked ? table_header.show() : table_header.hide()
+                ).set_checked(true),
+                Q.Table([
+                    (table_header = Q.TableHeaderRow({ hidden: false }, [
+                        Q.TableHeaderColumn("One"),
+                        Q.TableHeaderColumn("Two"),
+                        Q.TableHeaderColumn("Three"),
+                    ])),
+                    ...Q.fill_array(5, (r) =>
+                        Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(Q.Text(`Hello ${c},${r}`))))
+                    ),
+                ]),
             ]),
         ]),
         Q.MenuBar([

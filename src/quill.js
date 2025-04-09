@@ -17,8 +17,10 @@
         Quill.MenuItem = (...args) => new QuillMenuItem(...args);
         Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
         Quill.Table = (...args) => new QuillTable(...args);
+        Quill.TableHeaderRow = (...args) => new QuillTableHeaderRow(...args);
         Quill.TableRow = (...args) => new QuillTableRow(...args);
         Quill.TableColumn = (...args) => new QuillTableColumn(...args);
+        Quill.TableHeaderColumn = (...args) => new QuillTableHeaderColumn(...args);
         Quill.CollapsingHeader = (...args) => new QuillCollapsingHeader(...args);
         Quill.Indent = (...args) => new QuillIndent(...args);
         Quill.Tree = (...args) => new QuillTree(...args);

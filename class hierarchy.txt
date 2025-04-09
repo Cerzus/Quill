@@ -8,14 +8,16 @@ Element
     WrappableElement 
         Wrapper                             WrappableElement
         TableRow                            Wrapper, TableColumn
+        TableHeaderRow                      Wrapper, TableColumn
         TableColumn                         LeafElement, String, Number (no Wrapper, because only one child is allowed)
+        TableHeaderColumn                   LeafElement, String, Number (no Wrapper, because only one child is allowed)
         DropdownOptions                     -
         RadioButton                         -
         NodeElement
             FixedCanvas                     -
             HexEditor                       -
             BranchElement
-                Table                       Wrapper, TableRow
+                Table                       Wrapper, TableRow, TableHeaderRow
                 Fieldset                    Wrapper, NodeElement
                 Row                         Wrapper, NodeElement??
                 Tabs                        Tab (no Wrapper, because we're adding two HTML elements for each tab. Which one to wrap around?)
