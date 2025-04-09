@@ -94,6 +94,7 @@ function quill_show_demo() {
                     (text = Q.Text("Thanks for clicking me!")).hide(),
                 ]),
                 Q.Checkbox("Checkbox").set_checked(true),
+                Q.RadioButtons([Q.RadioButton("Radio a", 0), Q.RadioButton("Radio b", 1), Q.RadioButton("Radio c", 2)]),
                 Q.Separator(),
                 Q.Row([
                     Q.Dropdown("Dropdown", Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF"])),

@@ -12,3 +12,8 @@
 - Allow Wrapper element as child of MenuBar and Menu elements
 - Allow Wrapper element as child of Tabs element?
 - Test Row element with different kinds of child elements
+- Test "add_children" methods
+- Add RadioButton element
+- Add NestedCheckboxes element
+- Improve RadioButtons labels hovering
+- Improve RadioButtons name generation

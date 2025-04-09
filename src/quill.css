@@ -301,8 +301,8 @@
     gap: var(--quill-item-inner-gap-size);
     width: fit-content;
 }
-.quill .quill-label:hover {
-    color: white;
+.quill .quill-label:hover:not(:has(.quill-label:hover)) {
+    color: var(--quill-item-hover-text-color);
 }
 .quill .quill-justify-labels .quill-label {
     justify-content: space-between;
@@ -317,10 +317,6 @@
 .quill .quill-labels-left select,
 .quill .quill-labels-left select {
     text-align: right;
-}
-
-.quill .quill-checkbox-wrapper {
-    padding: var(--quill-item-padding-size);
 }
 
 .quill select.quill-select,
@@ -414,6 +410,26 @@
     transform: translateY(-50%);
     font-size: 0.9em;
     line-height: 0.9em;
+}
+
+.quill .quill-checkbox-wrapper {
+    padding: var(--quill-item-padding-size);
+}
+.quill .quill-input[type="checkbox"] {
+    border-radius: 0;
+}
+
+.quill input.quill-input[type="radio"]:checked {
+    background: var(--quill-input-color);
+}
+.quill input.quill-input[type="radio"] {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    width: 1.2em;
+    height: 1.2em;
+    padding: var(--quill-item-padding-size);
+    border-radius: 100%;
 }
 
 .quill input.quill-input[type="color"] {

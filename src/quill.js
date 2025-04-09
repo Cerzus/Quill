@@ -25,6 +25,8 @@
         Quill.Row = (...args) => new QuillRow(...args);
         Quill.Fieldset = (...args) => new QuillFieldset(...args);
         Quill.Checkbox = (...args) => new QuillCheckbox(...args);
+        Quill.RadioButtons = (...args) => new QuillRadioButtons(...args);
+        Quill.RadioButton = (...args) => new QuillRadioButton(...args);
         Quill.Dropdown = (...args) => new QuillDropdown(...args);
         Quill.DropdownOptions = (...args) => new QuillDropdownOptions(...args);
         Quill.InputText = (...args) => new QuillInputText(...args);

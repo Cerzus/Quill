@@ -10,6 +10,7 @@ Element
         TableRow                            Wrapper, TableColumn
         TableColumn                         LeafElement, String, Number (no Wrapper, because only one child is allowed)
         DropdownOptions                     -
+        RadioButton                         -
         NodeElement
             FixedCanvas                     -
             HexEditor                       -
@@ -29,6 +30,7 @@ Element
                     Checkbox                -
                     ColorPicker             -
                     Dropdown                Wrapper, DropdownOptions    
+                    RadioButtons            Wrapper, RadioButton  
                     InputNumerical
                         InputNumber
                             InputFloat      -
