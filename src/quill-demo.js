@@ -9,6 +9,17 @@ function get_style_editor() {
     return Q.Wrapper([
         Q.Separator(),
         Q.Tabs([
+            Q.Tab("Fonts", [
+                Q.Fieldset("Main", [
+                    ...Q.get_font_names().map((property) =>
+                        Q.InputText(
+                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                            { value: Q.get_font(property) },
+                            (value) => Q.set_font(property, value)
+                        )
+                    ),
+                ]),
+            ]),
             Q.Tab("Colors", [
                 Q.Fieldset("Main", [
                     ...Q.get_color_names().map((property) =>
