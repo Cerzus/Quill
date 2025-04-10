@@ -16,6 +16,7 @@ Element
         NodeElement
             FixedCanvas                     -
             HexEditor                       -
+            CheckboxTree                    Wrapper, CheckboxTree, Checkbox
             BranchElement
                 Table                       Wrapper, TableRow, TableHeaderRow
                 Fieldset                    Wrapper, NodeElement
@@ -31,7 +32,6 @@ Element
                 Button                      -
                 Input
                     Checkbox                -
-                    CheckboxTree            Wrapper, CheckboxTree, Checkbox
                     ColorPicker             -
                     Dropdown                Wrapper, DropdownOptions
                     RadioButtons            Wrapper, RadioButton  
