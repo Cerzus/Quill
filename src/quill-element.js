@@ -29,8 +29,8 @@ class QuillElement {
     // Public methods
 
     get_element = () => this.#element;
-    get_parent = () => this.#parent;
-    get_children = () => this.#children.slice();
+    get_parent = () => this.#parent; // TODO: can we skip over Wrapper elements?
+    get_children = () => this.#children.slice(); // TODO: can we add Wrapper children's children to this list?
     get_panel = () => (this instanceof QuillPanel ? this : this.get_parent().get_panel());
     add_children(...children) {
         if (children[0] instanceof Array) return this.add_children(...children[0]);

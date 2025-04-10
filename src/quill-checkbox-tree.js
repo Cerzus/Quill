@@ -28,13 +28,16 @@ class QuillCheckboxTree extends QuillNodeElement {
             this.#number_of_events_to_ignore--;
             return;
         }
+        // TODO: Take Wrapper element into account when traversing up or down
         if (e.target === this.#checkbox.get_input_element()) {
             for (const child of this.get_children()) {
                 const checkbox = child instanceof QuillCheckboxTree ? child.#checkbox : child;
                 if (checkbox.is_checked() === this.#checkbox.is_checked()) continue;
-                const parent = this.get_parent();
-                if (parent instanceof QuillCheckboxTree) parent.#number_of_events_to_ignore++; // TODO: check with deeper nested
-                this.#number_of_events_to_ignore++;
+                (function increase_number_of_events_to_ignore(tree) {
+                    tree.#number_of_events_to_ignore++;
+                    const parent = tree.get_parent();
+                    if (parent instanceof QuillCheckboxTree) increase_number_of_events_to_ignore(parent);
+                })(this);
                 checkbox.get_input_element().click();
             }
         } else {

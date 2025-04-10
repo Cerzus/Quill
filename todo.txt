@@ -11,7 +11,7 @@
 - Config per element and applied through the Wrapper element
 - Allow Wrapper element as child of MenuBar and Menu elements
 - Allow Wrapper element as child of Tabs element?
-- Test Wrapper everywhere it's applicable
+- Test Wrapper everywhere it's applicable (especially when traversing the parent/children hierarchy)
 - Test Row element with different kinds of child elements
 - Test "add_children" methods
 - Improve RadioButtons labels hovering
