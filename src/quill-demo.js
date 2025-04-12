@@ -222,7 +222,7 @@ function quill_show_demo() {
                 }),
             ]),
         ]),
-        Q.CollapsingHeader("Tables", { expanded: 1 }, [
+        Q.CollapsingHeader("Tables", [
             Q.Tree("Basic", [
                 Q.InfoTooltip("This table is created with nested Quill.fill_array() calls."),
                 Q.Table(Q.fill_array(4, (r) => Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))),
@@ -242,7 +242,7 @@ function quill_show_demo() {
                     Q.TableRow([Q.TableColumn(9), Q.TableColumn(10)]),
                 ]),
             ]),
-            Q.Tree("Borders, background", { expanded: 1 }, [
+            Q.Tree("Borders, background", [
                 (row_bg = Q.Checkbox("Row background", { checked: true }, (checked) =>
                     table.set_style_flag("table_row_bg", checked)
                 )),
