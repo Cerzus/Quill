@@ -6,7 +6,12 @@ class QuillDropdown extends QuillInput {
         this.add_children(this._get_arg_children());
         const config = this._get_arg_config();
         if (Object.hasOwn(config, "value")) this.set_value(config.value);
+        if (Object.hasOwn(config, "selected")) this.set_selected(config.selected);
     }
+
+    // Public method
+    get_gelected = this.get_value;
+    set_selected = this.set_value;
 
     // Private methods
 

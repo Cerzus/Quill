@@ -4,7 +4,9 @@ class QuillCheckbox extends QuillInput {
     constructor(...args) {
         const html = `<div class="quill-checkbox-wrapper"><input class="quill-input" type="checkbox" /></div>`;
         super(html, "change", null, [], ...args);
-        this.set_checked(!!this._get_arg_config().checked);
+        const config = this._get_arg_config();
+        this.set_value(!!config.vale);
+        this.set_checked(!!config.checked);
     }
 
     // Public methods

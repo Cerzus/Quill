@@ -155,18 +155,18 @@ function quill_show_demo() {
             Q.Tree("Dropdowns", [
                 Q.Row([
                     Q.Dropdown(
-                        (value) => console.log(value),
+                        (selected) => console.log(selected),
                         [Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH"])]
                     ),
                     Q.InfoTooltip("Dropdown without a label"),
                 ]),
-                Q.Dropdown("Dropdown with values", { value: "Option 3" }, (value) => console.log(value), [
+                Q.Dropdown("Dropdown with values", { selected: "Option 3" }, (selected) => console.log(selected), [
                     Q.DropdownOptions([...Q.fill_array(5, (i) => `Option ${i + 1}`)]),
                 ]),
-                Q.Dropdown("Dropdown with keys and values", (value) => console.log(value), [
+                Q.Dropdown("Dropdown with keys and values", (selected) => console.log(selected), [
                     Q.DropdownOptions({ alice: "aaa", 123: "bbb", cool: "ccc" }),
-                ]).set_value("cool"),
-                Q.Dropdown("Dropdown with option groups", (value) => console.log(value), [
+                ]).set_selected("cool"),
+                Q.Dropdown("Dropdown with option groups", (selected) => console.log(selected), [
                     Q.DropdownOptions("Group 1", { alice: "aaa", 123: "bbb", cool: "ccc" }),
                     Q.DropdownOptions(
                         "Group 2",
