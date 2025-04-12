@@ -1,11 +1,11 @@
 .quill {
     background: var(--quill-background-color);
-    line-height: 1.2em;
 }
 .quill * {
     font-family: var(--quill-proportional-font);
     color: var(--quill-text-color);
     font-size: var(--quill-font-size);
+    line-height: 1.2em;
 }
 
 .quill,
