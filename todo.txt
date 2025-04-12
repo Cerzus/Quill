@@ -8,7 +8,6 @@
 - Disable inputs
 - Disable in bulk
 - Add hexadecimal/binary inputs
-- Config per element and applied through the Wrapper element
 - Allow Wrapper element as child of MenuBar and Menu elements
 - Allow Wrapper element as child of Tabs element?
 - Test Wrapper everywhere it's applicable (especially when traversing the parent/children hierarchy)

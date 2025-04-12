@@ -47,17 +47,17 @@
         Quill.HexEditor = (...args) => new QuillHexEditor(...args);
 
         Quill.get_color_names = get_color_names;
-        Quill.get_color = get_color;
-        Quill.set_color = set_color;
+        Quill.get_style_color = get_style_color;
+        Quill.set_style_color = set_style_color;
         Quill.get_font_names = get_font_names;
-        Quill.get_font = get_font;
-        Quill.set_font = set_font;
+        Quill.get_style_font = get_style_font;
+        Quill.set_style_font = set_style_font;
         Quill.get_size_names = get_size_names;
-        Quill.get_size = get_size;
-        Quill.set_size = set_size;
+        Quill.get_style_size = get_style_size;
+        Quill.set_style_size = set_style_size;
         Quill.get_flag_names = get_flag_names;
-        Quill.get_flag = get_flag;
-        Quill.set_flag = set_flag;
+        Quill.get_style_flag = get_style_flag;
+        Quill.set_style_flag = set_style_flag;
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
         Quill.fill_array = Util.fill_array;
@@ -74,7 +74,7 @@
         Object.entries(quill_config.fonts).forEach((entry) => apply_font_to_root_element(...entry));
         Object.entries(quill_config.colors).forEach((entry) => apply_color_to_root_element(...entry));
         Object.entries(quill_config.sizes).forEach((entry) => apply_size_to_root_element(...entry));
-        Object.entries(quill_config.flags).forEach((entry) => apply_flag_to_content_element(...entry));
+        Object.entries(quill_config.flags).forEach((entry) => apply_flag_to_root_element(...entry));
 
         window.addEventListener("mousemove", (e) => {
             if (moving !== null) {
@@ -514,51 +514,49 @@
     function get_font_names() {
         return Object.keys(quill_config.fonts);
     }
-    function get_font(property) {
+    function get_style_font(property) {
         return quill_config.fonts[property];
     }
-    function set_font(property, value) {
-        if (Object.hasOwn(quill_config.fonts, property)) {
-            quill_config.fonts[property] = value;
-            apply_font_to_root_element(property, value);
-        }
+    function set_style_font(property, value) {
+        const msg = `Unknown style font "${property}"`;
+        if (!Util.warning(Object.hasOwn(quill_config.fonts, property), msg)) return;
+        quill_config.fonts[property] = value;
+        apply_font_to_root_element(property, value);
     }
     function get_color_names() {
         return Object.keys(quill_config.colors);
     }
-    function get_color(property) {
+    function get_style_color(property) {
         return quill_config.colors[property];
     }
-    function set_color(property, value) {
-        if (Object.hasOwn(quill_config.colors, property)) {
-            const color = QuillColor.from_hex(value);
-            quill_config.colors[property] = color;
-            apply_color_to_root_element(property, color);
-        }
+    function set_style_color(property, value) {
+        const msg = `Unknown style color "${property}"`;
+        if (!Util.warning(Object.hasOwn(quill_config.colors, property), msg)) return;
+        const color = QuillColor.from_hex(value);
+        quill_config.colors[property] = color;
+        apply_color_to_root_element(property, color);
     }
     function get_size_names() {
         return Object.keys(quill_config.sizes);
     }
-    function get_size(property) {
+    function get_style_size(property) {
         return quill_config.sizes[property];
     }
-    function set_size(property, value) {
-        if (Object.hasOwn(quill_config.sizes, property)) {
-            quill_config.sizes[property] = value;
-            apply_size_to_root_element(property, value);
-        }
+    function set_style_size(property, value) {
+        const msg = `Unknown style size "${property}"`;
+        if (!Util.warning(Object.hasOwn(quill_config.sizes, property), msg)) return;
+        apply_size_to_root_element(property, (quill_config.sizes[property] = value));
     }
     function get_flag_names() {
         return Object.keys(quill_config.flags);
     }
-    function get_flag(property) {
-        return quill_config.flags[property];
+    function get_style_flag(property) {
+        return quill_config.flags[property].is_enabled();
     }
-    function set_flag(property, value) {
-        if (Object.hasOwn(quill_config.flags, property)) {
-            quill_config.flags[property] = value;
-            apply_flag_to_content_element(property, value);
-        }
+    function set_style_flag(property, value) {
+        const msg = `Unknown style flag "${property}"`;
+        if (!Util.warning(Object.hasOwn(quill_config.flags, property), msg)) return;
+        apply_flag_to_root_element(property, quill_config.flags[property].set(value));
     }
     function get_panels() {
         // TODO: copy properly?
@@ -577,16 +575,16 @@
     // Helper functions
 
     function apply_font_to_root_element(property, font) {
-        quill_config.root_element.style.setProperty(`--quill-${property.replaceAll("_", "-")}-font`, font);
+        Util.add_style_variable_to_element(quill_config.root_element, property, "-font", font);
     }
     function apply_color_to_root_element(property, color) {
-        quill_config.root_element.style.setProperty(`--quill-${property.replaceAll("_", "-")}-color`, color.to_css());
+        Util.add_style_variable_to_element(quill_config.root_element, property, "-color", color.to_css());
     }
     function apply_size_to_root_element(property, size) {
-        quill_config.root_element.style.setProperty(`--quill-${property.replaceAll("_", "-")}-size`, `${size}px`);
+        Util.add_style_variable_to_element(quill_config.root_element, property, "-size", `${size}px`);
     }
-    function apply_flag_to_content_element(flag, is_set) {
-        quill_config.content_element.classList[is_set ? "add" : "remove"](`quill-${flag.replaceAll("_", "-")}`);
+    function apply_flag_to_root_element(property, flag) {
+        Util.add_style_variable_to_element(quill_config.root_element, property, "", flag.get_value());
     }
 
     function hide_active_menu_bar() {

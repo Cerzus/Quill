@@ -24,6 +24,12 @@ class QuillElement {
 
         if (this.#arg_config.class) this.#element.classList.add(this.#arg_config.class);
         if (!!this.#arg_config.disabled) this.#element.setAttribute("disabled", "");
+
+        for (const style_type of ["font", "color", "size", "flag"]) {
+            for (const [property, value] of Object.entries(this.#arg_config[`${style_type}s`] ?? {})) {
+                this[`set_style_${style_type}`](property, value);
+            }
+        }
     }
 
     // Public methods
@@ -61,6 +67,34 @@ class QuillElement {
         return this;
     }
     is_hidden = () => this.#element.style.display !== "";
+    set_style_font(property, font) {
+        const msg = `Unknown style font "${property}"`;
+        if (!Util.warning(Object.hasOwn(QuillConfig.fonts, property), msg)) return;
+        QuillConfig.fonts[property] = font;
+        Util.add_style_variable_to_element(this.#element, property, "-font", font);
+        return this;
+    }
+    set_style_color(property, color) {
+        const msg = `Unknown style color "${property}"`;
+        if (!Util.warning(Object.hasOwn(QuillConfig.colors, property), msg)) return;
+        QuillConfig.colors[property] = color;
+        Util.add_style_variable_to_element(this.#element, property, "-color", color.to_css());
+        return this;
+    }
+    set_style_size(property, size) {
+        const msg = `Unknown style size "${property}"`;
+        if (!Util.warning(Object.hasOwn(QuillConfig.sizes, property), msg)) return;
+        QuillConfig.sizes[property] = size;
+        Util.add_style_variable_to_element(this.#element, property, "-size", `${size}px`);
+        return this;
+    }
+    set_style_flag(property, value) {
+        const msg = `Unknown style flag "${property}"`;
+        if (!Util.warning(Object.hasOwn(QuillConfig.flags, property), msg)) return;
+        const flag = QuillConfig.flags[property].set(value);
+        Util.add_style_variable_to_element(this.#element, property, "", flag.get_value());
+        return this;
+    }
 
     // Private methods
 

@@ -1,5 +1,23 @@
 "use strict";
 
+class QuillConfigFlag {
+    #values;
+    #enabled = false;
+
+    constructor(value_when_enabled, value_when_disabled) {
+        this.#values = Object.freeze({
+            true: value_when_enabled,
+            false: value_when_disabled,
+        });
+    }
+    set(enabled) {
+        this.#enabled = !!enabled;
+        return this;
+    }
+    is_enabled = () => this.#enabled;
+    get_value = (enabled) => this.#values[enabled ?? this.#enabled];
+}
+
 const QuillConfig = {
     element: null,
     fonts: {
@@ -8,23 +26,23 @@ const QuillConfig = {
     },
     colors: {
         background: new QuillColor(40, 40, 40),
-        panel_title_bar: new QuillColor(20, 20, 20),
-        panel_content: new QuillColor(30, 30, 30),
-        menu: new QuillColor(50, 50, 50),
-        item_background: new QuillColor(50, 50, 50),
-        item_hover: new QuillColor(70, 70, 70),
+        panel_title_bar_bg: new QuillColor(20, 20, 20),
+        panel_content_bg: new QuillColor(30, 30, 30),
+        menu_bg: new QuillColor(50, 50, 50),
+        item_bg: new QuillColor(50, 50, 50),
+        item_hovered_bg: new QuillColor(70, 70, 70),
         input_border: new QuillColor(0, 138, 110),
         line: new QuillColor(70, 70, 70),
         text: new QuillColor(150, 150, 150),
-        item_hover_text: new QuillColor(220, 220, 220),
+        item_hovered: new QuillColor(220, 220, 220),
         input: new QuillColor(0, 190, 255),
-        input_hovered_text: new QuillColor(128, 223, 255),
+        input_hovered: new QuillColor(128, 223, 255),
         scrollbar_thumb: new QuillColor(30, 30, 30),
         scrollbar_track: new QuillColor(50, 50, 50),
         panel_border: new QuillColor(72, 61, 139),
     },
     sizes: {
-        font_size: 20,
+        font: 16,
         panel_padding: 2,
         panel_gap: 2,
         panel_border: 2,
@@ -44,7 +62,7 @@ const QuillConfig = {
         indentation: 20,
     },
     flags: {
-        labels_left: false,
-        justify_labels: false,
+        labels_left: new QuillConfigFlag("row-reverse", "row").set(false),
+        justify_labels: new QuillConfigFlag("100%", "fit-content").set(false),
     },
 };

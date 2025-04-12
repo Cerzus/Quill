@@ -1,9 +1,11 @@
 .quill {
     background: var(--quill-background-color);
+    line-height: 1.2em;
+}
+.quill * {
     font-family: var(--quill-proportional-font);
     color: var(--quill-text-color);
-    font-size: var(--quill-font-size-size);
-    line-height: 1.2em;
+    font-size: var(--quill-font-size);
 }
 
 .quill,
@@ -49,7 +51,7 @@
 }
 
 .quill .quill-panel-title-bar {
-    background: var(--quill-panel-title-bar-color);
+    background: var(--quill-panel-title-bar-bg-color);
     padding: var(--quill-panel-padding-size);
     gap: var(--quill-panel-gap-size);
     font-weight: bold;
@@ -69,7 +71,7 @@
 }
 
 .quill .quill-panel-content {
-    background: var(--quill-panel-content-color);
+    background: var(--quill-panel-content-bg-color);
     overflow: auto;
     flex-grow: 1;
 }
@@ -109,16 +111,16 @@
 }
 
 .quill .quill-menu-bar {
-    background: var(--quill-menu-color);
+    background: var(--quill-menu-bg-color);
     flex-grow: 1;
 }
 .quill .quill-menu-item {
     border-radius: var(--quill-item-border-radius-size);
+    gap: var(--quill-item-inner-gap-size);
     position: relative;
     display: grid;
     grid-template-columns: subgrid;
     grid-column: 1/5;
-    gap: var(--quill-item-inner-gap-size);
     overflow: hidden;
 }
 .quill .quill-menu-item > * {
@@ -146,14 +148,14 @@
 
 .quill .quill-menu-item:hover,
 .quill .quill-menu-item.active {
-    background: var(--quill-item-hover-color);
+    background: var(--quill-item-hovered-bg-color);
 }
 .quill .quill-menu-item:hover {
-    color: var(--quill-item-hover-text-color);
+    color: var(--quill-item-hovered-color);
 }
 .quill .quill-menu {
     padding: var(--quill-menu-padding-size);
-    background: var(--quill-menu-color);
+    background: var(--quill-menu-bg-color);
     border-radius: var(--quill-menu-border-radius-size);
     box-shadow: 0 0 var(--quill-menu-shadow-size) black;
     border: var(--quill-menu-border-size) solid var(--quill-panel-border-color);
@@ -187,6 +189,7 @@
 
 .quill .quill-row {
     gap: var(--quill-panel-gap-size);
+    flex-grow: 1;
 }
 
 .quill .quill-arrow-right {
@@ -210,7 +213,7 @@
     flex-direction: column;
 }
 .quill .quill-collapsing-header > .quill-tree-header {
-    background: var(--quill-item-background-color);
+    background: var(--quill-item-bg-color);
     font-weight: bold;
 }
 .quill .quill-tree-header > :nth-child(2) {
@@ -218,15 +221,15 @@
     flex-grow: 1;
 }
 .quill .quill-tree-header {
+    border-radius: var(--quill-item-border-radius-size);
+    padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
     font-weight: bold;
     align-items: center;
     gap: 0.2em;
-    border-radius: var(--quill-item-border-radius-size);
-    padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
 }
 .quill .quill-tree-header:hover {
-    background: var(--quill-item-hover-color);
-    color: var(--quill-item-hover-text-color);
+    background: var(--quill-item-hovered-bg-color);
+    color: var(--quill-item-hovered-color);
 }
 .quill .quill-tree-body:not(:empty) {
     gap: var(--quill-panel-gap-size);
@@ -257,23 +260,23 @@
     padding: 0 0.2em;
 }
 .quill .quill-table-header-column {
-    background: var(--quill-item-background-color);
+    background: var(--quill-item-bg-color);
 }
 .quill .quill-table-header-column:hover {
-    background: var(--quill-item-hover-color);
-    color: var(--quill-item-hover-text-color);
+    background: var(--quill-item-hovered-bg-color);
+    color: var(--quill-item-hovered-color);
 }
 
 .quill .quill-button {
-    display: inline-block;
-    width: fit-content;
-    background: var(--quill-item-background-color);
+    background: var(--quill-item-bg-color);
     padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
     border-radius: var(--quill-item-border-radius-size);
+    display: inline-block;
+    width: fit-content;
 }
 .quill .quill-button:hover {
-    background: var(--quill-item-hover-color);
-    color: var(--quill-item-hover-text-color);
+    background: var(--quill-item-hovered-bg-color);
+    color: var(--quill-item-hovered-color);
 }
 
 .quill .quill-info-tooltip {
@@ -309,61 +312,57 @@
 }
 
 .quill .quill-label {
+    gap: var(--quill-item-inner-gap-size);
     display: flex;
     align-items: center;
-    gap: var(--quill-item-inner-gap-size);
-    width: fit-content;
+    justify-content: space-between;
 }
 .quill .quill-label:hover:not(:has(.quill-label)) {
-    color: var(--quill-item-hover-text-color);
+    color: var(--quill-item-hovered-color);
 }
-.quill .quill-justify-labels .quill-label {
-    justify-content: space-between;
-    width: 100%;
+.quill .quill-label {
+    width: var(--quill-justify-labels);
 }
-.quill .quill-labels-left .quill-label,
-.quill .quill-labels-left .quill-label {
-    flex-direction: row-reverse;
+.quill .quill-label {
+    flex-direction: var(--quill-labels-left);
 }
-.quill .quill-labels-left input,
-.quill .quill-labels-left input,
-.quill .quill-labels-left select,
+/* .quill .quill-labels-left input,
 .quill .quill-labels-left select {
     text-align: right;
-}
+} */
 
 .quill select.quill-select,
+.quill select.quill-select option,
 .quill input.quill-input {
-    background: var(--quill-item-background-color);
+    background: var(--quill-item-bg-color);
     font-family: var(--quill-monospace-font);
     border-radius: var(--quill-item-border-radius-size);
     color: var(--quill-input-color);
     border: var(--quill-input-border-size) solid var(--quill-input-border-color);
+    accent-color: var(--quill-input-color);
     outline: none;
     font-size: 0.9em;
-    accent-color: var(--quill-input-color);
     height: 1.2em;
     box-sizing: content-box;
 }
 .quill select.quill-select:hover,
 .quill input.quill-input:hover {
-    accent-color: var(--quill-input-hovered-text-color);
-    color: var(--quill-input-hovered-text-color);
+    accent-color: var(--quill-input-hovered-color);
+    color: var(--quill-input-hovered-color);
 }
 
 .quill select.quill-select {
     padding: var(--quill-item-padding-size);
 }
-.quill select.quill-select option {
-    background: var(--quill-item-background-color);
-    color: var(--quill-input-color);
-}
 .quill select.quill-select optgroup {
-    background: var(--quill-item-background-color);
+    background: var(--quill-item-bg-color);
+    color: var(--quill-text-color);
+    font-family: var(--quill-proportional-font);
+    font-size: var(--quill-font-size);
 }
 .quill select.quill-select:hover,
 .quill select.quill-select:focus {
-    background: var(--quill-item-hover-color);
+    background: var(--quill-item-hovered-bg-color);
 }
 .quill select.quill-select::-webkit-scrollbar {
     width: 10px;
@@ -387,7 +386,7 @@
 }
 .quill input.quill-input:hover,
 .quill input.quill-input:focus {
-    background: var(--quill-item-hover-color);
+    background: var(--quill-item-hovered-bg-color);
 }
 .quill input.quill-input[type="number"]::-webkit-inner-spin-button,
 .quill input.quill-input[type="number"]::-webkit-outer-spin-button {
@@ -414,11 +413,10 @@
     outline: none;
 }
 .quill input.quill-input[type="range"]:hover::-webkit-slider-thumb {
-    background: var(--quill-input-hovered-text-color);
+    background: var(--quill-input-hovered-color);
 }
 .quill input.quill-input[type="range"] + output {
     color: var(--quill-input-color);
-    background: var(--quill-item-background-color);
     border-radius: var(--quill-item-border-radius-size);
     font-family: var(--quill-monospace-font);
     padding: 0 1px;
@@ -432,9 +430,17 @@
     transform: translateY(-50%);
     font-size: 0.9em;
     line-height: 0.9em;
+    text-shadow: 1px 1px var(--quill-item-bg-color), -1px 1px var(--quill-item-bg-color),
+        -1px -1px var(--quill-item-bg-color), 1px -1px var(--quill-item-bg-color);
+}
+.quill input.quill-input[type="range"]:focus + output {
+    text-shadow: 1px 1px var(--quill-item-hovered-bg-color), -1px 1px var(--quill-item-hovered-bg-color),
+        -1px -1px var(--quill-item-hovered-bg-color), 1px -1px var(--quill-item-hovered-bg-color);
 }
 .quill input.quill-input[type="range"]:hover + output {
-    color: var(--quill-input-hovered-text-color);
+    text-shadow: 1px 1px var(--quill-item-hovered-bg-color), -1px 1px var(--quill-item-hovered-bg-color),
+        -1px -1px var(--quill-item-hovered-bg-color), 1px -1px var(--quill-item-hovered-bg-color);
+    color: var(--quill-input-hovered-color);
 }
 
 .quill .quill-checkbox-tree {
@@ -466,27 +472,27 @@
     background: var(--quill-input-color);
 }
 .quill input.quill-input[type="radio"]:checked:hover {
-    background: var(--quill-input-hovered-text-color);
+    background: var(--quill-input-hovered-color);
 }
 .quill input.quill-input[type="radio"] {
+    padding: var(--quill-item-padding-size);
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
     width: 1.2em;
     height: 1.2em;
-    padding: var(--quill-item-padding-size);
     border-radius: 100%;
 }
 
 .quill input.quill-input[type="color"] {
+    border: 1px solid var(--quill-item-bg-color);
     -webkit-appearance: none;
     appearance: none;
-    border: 1px solid var(--quill-item-background-color);
     height: auto;
     width: fit-content;
 }
 .quill input.quill-input[type="color"]:hover {
-    border-color: var(--quill-item-hover-color);
+    border-color: var(--quill-item-hovered-bg-color);
 }
 .quill input.quill-input[type="color"]::-webkit-color-swatch-wrapper {
     padding: 0;
@@ -500,11 +506,11 @@
     flex-direction: column;
 }
 .quill .quill-tabs-header {
-    border-bottom: var(--quill-line-size) solid var(--quill-item-hover-color);
+    border-bottom: var(--quill-line-size) solid var(--quill-item-hovered-bg-color);
     gap: var(--quill-item-inner-gap-size);
 }
 .quill .quill-tabs-header > div {
-    background: var(--quill-item-background-color);
+    background: var(--quill-item-bg-color);
     padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
     border-top-left-radius: var(--quill-item-border-radius-size);
     border-top-right-radius: var(--quill-item-border-radius-size);
@@ -512,22 +518,22 @@
 }
 .quill .quill-tabs-header > div:hover,
 .quill .quill-tabs-header > div.active {
-    background: var(--quill-item-hover-color);
-    color: var(--quill-item-hover-text-color);
+    background: var(--quill-item-hovered-bg-color);
+    color: var(--quill-item-hovered-color);
 }
 .quill .quill-tabs-body {
     padding-top: var(--quill-panel-padding-size);
 }
 .quill .quill-tab {
-    flex-direction: column;
     gap: var(--quill-panel-gap-size);
+    flex-direction: column;
 }
 .quill .quill-tab:not(.active) {
     display: none;
 }
 
 .quill .quill-hex-editor {
-    background: var(--quill-panel-title-bar-color);
+    background: var(--quill-panel-title-bar-bg-color);
     font-family: var(--quill-monospace-font);
     border-radius: var(--quill-panel-border-radius-size);
     flex-grow: 1;
@@ -564,7 +570,7 @@
     margin-left: 0.4em;
 }
 .quill .quill-hex-editor-row-data > .quill-hex-editor-byte {
-    font-size: var(--quill-font-size-size);
+    font-size: var(--quill-font-size);
     height: 1em;
 }
 .quill .quill-hex-editor-rows .quill-hex-editor-row-data > .quill-hex-editor-byte,

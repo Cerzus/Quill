@@ -76,4 +76,8 @@ class Util {
     static fill_array(length, callback) {
         return new Array(length).fill().map((_, i) => callback(i));
     }
+
+    static add_style_variable_to_element(element, property, suffix, value) {
+        element.style.setProperty(`--quill-${property.replaceAll("_", "-")}${suffix}`, value);
+    }
 }

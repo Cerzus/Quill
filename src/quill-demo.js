@@ -14,8 +14,8 @@ function get_style_editor() {
                     ...Q.get_font_names().map((property) =>
                         Q.InputText(
                             (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { value: Q.get_font(property) },
-                            (value) => Q.set_font(property, value)
+                            { value: Q.get_style_font(property) },
+                            (value) => Q.set_style_font(property, value)
                         )
                     ),
                 ]),
@@ -25,8 +25,8 @@ function get_style_editor() {
                     ...Q.get_color_names().map((property) =>
                         Q.ColorPicker(
                             (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { value: Q.get_color(property).to_hex() },
-                            (value) => Q.set_color(property, value)
+                            { value: Q.get_style_color(property).to_hex() },
+                            (value) => Q.set_style_color(property, value)
                         )
                     ),
                 ]),
@@ -36,8 +36,8 @@ function get_style_editor() {
                     ...Q.get_size_names().map((property) =>
                         Q.SliderInteger(
                             (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { min: 0, max: 20, value: Q.get_size(property) },
-                            (value) => Q.set_size(property, value)
+                            { min: 0, max: 20, value: Q.get_style_size(property) },
+                            (value) => Q.set_style_size(property, value)
                         )
                     ),
                 ]),
@@ -47,8 +47,8 @@ function get_style_editor() {
                     ...Q.get_flag_names().map((property) =>
                         Q.Checkbox(
                             (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { checked: Q.get_flag(property) },
-                            (value) => Q.set_flag(property, value)
+                            { checked: Q.get_style_flag(property) },
+                            (value) => Q.set_style_flag(property, value)
                         )
                     ),
                 ]),
