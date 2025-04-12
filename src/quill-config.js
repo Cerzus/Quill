@@ -62,6 +62,7 @@ const QuillConfig = {
         indentation: 20,
     },
     flags: {
+        wrap_text: new QuillConfigFlag("wrap", "nowrap").set(false),
         labels_left: new QuillConfigFlag("row-reverse", "row").set(false),
         justify_labels: new QuillConfigFlag("100%", "fit-content").set(false),
     },

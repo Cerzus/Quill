@@ -132,15 +132,17 @@ function quill_show_demo() {
             ]),
             Q.Tree("Text", [
                 Q.Tree("Colorful text", [
-                    Q.Text("Pink", { color: Q.Color(255, 0, 255) }),
-                    Q.Text("Yellow", { color: Q.Color(255, 255, 0) }),
+                    Q.Text("Pink", { colors: { text: Q.Color(255, 0, 255) } }),
+                    Q.Text("Yellow", { colors: { text: Q.Color(255, 255, 0) } }),
                     Q.Text("Disabled", { disabled: true }),
                 ]),
                 Q.Tree("Text wrapping", [
                     Q.Text(
-                        "This text should automatically wrap on the edge of the window. The current implementation " +
-                            "for text wrapping follows simple rules suitable for English and possibly other languages.",
-                        { wrapped: true }
+                        `This text should automatically wrap on the edge of the window. Here, the wrapping is enabled by enabling the "wrap_text" flag manually.`,
+                        { flags: { wrap_text: true } }
+                    ),
+                    Q.TextWrapped(
+                        `Here, the wrapping is enabled by using "Quill.TextWrapped" in stead of "Quill.Text".`
                     ),
                 ]),
                 Q.Tree("UTF-8 text", [
@@ -186,9 +188,9 @@ function quill_show_demo() {
         ]),
         Q.CollapsingHeader("Modals", [
             Q.Tree("Modals", [
-                Q.Text("Modals are like Panels but the user cannot interact outside of them before closing them.", {
-                    wrapped: true,
-                }),
+                Q.TextWrapped(
+                    "Modals are like Panels but the user cannot interact outside of them before closing them."
+                ),
                 Q.Button("Delete...", () => {
                     const modal = Q.Modal("Delete?", { not_closeable: true }, [
                         Q.Text("All those beautiful files will be deleted.\nThis operation cannot be undone!"),

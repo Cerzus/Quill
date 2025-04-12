@@ -292,8 +292,8 @@
     opacity: 0.5;
 }
 
-.quill .quill-text.wrapped {
-    white-space: wrap;
+.quill .quill-text {
+    white-space: var(--quill-wrap-text);
 }
 
 .quill .quill-fieldset {

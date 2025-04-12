@@ -10,6 +10,7 @@
         Quill.Separator = (...args) => new QuillSeparator(...args);
         Quill.InfoTooltip = (...args) => new QuillInfoTooltip(...args);
         Quill.Text = (...args) => new QuillText(...args);
+        Quill.TextWrapped = (...args) => new QuillTextWrapped(...args);
         Quill.Modal = (...args) => new QuillModal(...args);
         Quill.Panel = (...args) => new Panel(...args);
         Quill.MenuBar = (...args) => new QuillMenuBar(...args);

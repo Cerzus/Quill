@@ -29,6 +29,7 @@ Element
                 InfoTooltip                 -
                 Separator                   -
                 Text                        -
+                    TextWrapped             -
                 Button                      -
                 Input
                     Checkbox                -
