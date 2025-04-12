@@ -22,6 +22,7 @@ class QuillCheckboxTree extends QuillNodeElement {
 
     _add_child(child) {
         this.get_element().querySelector(".quill-checkbox-tree-body").append(child.get_element());
+        this.#set_status_based_on_children([child, ...this.get_children()]);
     }
     #on_change(e) {
         if (this.#number_of_events_to_ignore > 0) {
@@ -41,21 +42,24 @@ class QuillCheckboxTree extends QuillNodeElement {
                 checkbox.get_input_element().click();
             }
         } else {
-            const tally = { checked: false, unchecked: false };
-            (function tally_children_checked_status(parent) {
-                for (const child of parent.get_children()) {
-                    if (child instanceof QuillCheckboxTree) tally_children_checked_status(child);
-                    else child.is_checked() ? (tally.checked = true) : (tally.unchecked = true);
-                    if (tally.checked && tally.unchecked) return; // early out
-                }
-            })(this);
-            if (tally.checked && tally.unchecked) {
-                this.#checkbox.get_input_element().indeterminate = true;
-                this.#checkbox.set_checked(false);
-            } else {
-                this.#checkbox.get_input_element().indeterminate = false;
-                this.#checkbox.set_checked(tally.checked);
-            }
+            this.#set_status_based_on_children(this.get_children());
         }
+    }
+    #set_status_based_on_children(children) {
+        const tally = { checked: false, unchecked: false };
+        (function tally_children_checked_status(children) {
+            for (const child of children) {
+                if (child instanceof QuillCheckboxTree) {
+                    if (child.#checkbox.is_indeterminate()) tally.checked = tally.unchecked = true;
+                    else tally_children_checked_status(child.get_children());
+                } else {
+                    tally.checked |= child.is_checked() | child.is_indeterminate();
+                    tally.unchecked |= !child.is_checked() | child.is_indeterminate();
+                }
+                if (tally.checked && tally.unchecked) return;
+            }
+        })(children);
+        if (tally.checked && tally.unchecked) this.#checkbox.set_indeterminate();
+        else this.#checkbox.set_checked(tally.checked);
     }
 }

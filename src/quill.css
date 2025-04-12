@@ -443,18 +443,10 @@
     color: var(--quill-input-hovered-color);
 }
 
-.quill .quill-checkbox-tree {
-    flex-direction: column;
-    width: inherit;
-}
-.quill .quill-label:has(.quill-checkbox-tree) {
-    flex-direction: column;
-    align-items: start;
-    gap: var(--quill-item-gap-size);
-}
+.quill .quill-checkbox-tree,
 .quill .quill-checkbox-tree-body {
-    width: inherit;
     gap: var(--quill-item-gap-size);
+    flex-direction: column;
 }
 
 .quill .quill-checkbox-wrapper {

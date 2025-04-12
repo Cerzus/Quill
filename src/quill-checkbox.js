@@ -11,9 +11,16 @@ class QuillCheckbox extends QuillInput {
 
     get_value = () => this.get_input_element().checked;
     set_value(value) {
+        this.get_input_element().indeterminate = false;
         this.get_input_element().checked = !!value;
         return this;
     }
     is_checked = this.get_value;
     set_checked = this.set_value;
+    is_indeterminate = () => this.get_input_element().indeterminate;
+    set_indeterminate() {
+        this.get_input_element().checked = false;
+        this.get_input_element().indeterminate = true;
+        return this;
+    }
 }
