@@ -1,21 +1,27 @@
 "use strict";
 
 class QuillConfigFlag {
-    #values;
-    #enabled = false;
+    #options;
+    #selected;
+    #is_true_or_false;
 
-    constructor(value_when_enabled, value_when_disabled) {
-        this.#values = Object.freeze({
-            true: value_when_enabled,
-            false: value_when_disabled,
-        });
+    constructor(options) {
+        this.#is_true_or_false = options instanceof Array;
+        this.#options = Object.freeze({ ...(this.#is_true_or_false ? options.slice(0, 2) : options) });
+        this.#selected = this.get_options()[0];
     }
-    set(enabled) {
-        this.#enabled = !!enabled;
+
+    get_options = () => (this.#is_true_or_false ? [false, true] : Object.keys(this.#options));
+    set(selected) {
+        if (!Util.warning(this.get_options().includes(selected), this.get_options(), selected)) return this;
+        this.#selected = selected;
         return this;
     }
-    is_enabled = () => this.#enabled;
-    get_value = (enabled) => this.#values[enabled ?? this.#enabled];
+    get = () => this.#selected;
+    get_value(selected = this.#selected) {
+        if (!Util.warning(this.get_options().includes(selected), this.get_options(), selected)) return;
+        return this.#options[this.#is_true_or_false ? (+selected).toString() : selected];
+    }
 }
 
 const QuillConfig = {
@@ -66,13 +72,16 @@ const QuillConfig = {
         indentation: 20,
     },
     flags: {
-        wrap_text: new QuillConfigFlag("wrap", "nowrap").set(false),
-        labels_left: new QuillConfigFlag("row-reverse", "row").set(false),
-        justify_labels: new QuillConfigFlag("100%", "fit-content").set(false),
-        table_borders_outer_h: new QuillConfigFlag("solid", "none").set(false),
-        table_borders_outer_v: new QuillConfigFlag("solid", "none").set(false),
-        table_borders_inner_h: new QuillConfigFlag("solid", "none").set(false),
-        table_borders_inner_v: new QuillConfigFlag("solid", "none").set(false),
-        table_row_bg: new QuillConfigFlag("var(--quill-table-row-bg-color)", "transparent").set(false),
+        wrap_text: new QuillConfigFlag(["nowrap", "wrap"]),
+        panel_title_bar_text_align: new QuillConfigFlag({ left: "left", center: "center", right: "right" }),
+        input_text_align: new QuillConfigFlag({ left: "left", center: "center", right: "right" }),
+        fieldset_legend_text_align: new QuillConfigFlag({ left: "left", center: "center", right: "right" }),
+        labels_left: new QuillConfigFlag(["row", "row-reverse"]),
+        justify_labels: new QuillConfigFlag(["fit-content", "100%"]),
+        table_borders_outer_h: new QuillConfigFlag(["none", "solid"]),
+        table_borders_outer_v: new QuillConfigFlag(["none", "solid"]),
+        table_borders_inner_h: new QuillConfigFlag(["none", "solid"]),
+        table_borders_inner_v: new QuillConfigFlag(["none", "solid"]),
+        table_row_bg: new QuillConfigFlag(["transparent", "var(--quill-table-row-bg-color)"]),
     },
 };

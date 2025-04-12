@@ -58,6 +58,7 @@
         Quill.set_style_size = set_style_size;
         Quill.get_flag_names = get_flag_names;
         Quill.get_style_flag = get_style_flag;
+        Quill.get_style_flag_options = get_style_flag_options;
         Quill.set_style_flag = set_style_flag;
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
@@ -552,7 +553,10 @@
         return Object.keys(quill_config.flags);
     }
     function get_style_flag(property) {
-        return quill_config.flags[property].is_enabled();
+        return quill_config.flags[property].get();
+    }
+    function get_style_flag_options(property) {
+        return quill_config.flags[property].get_options();
     }
     function set_style_flag(property, value) {
         const msg = `Unknown style flag "${property}"`;

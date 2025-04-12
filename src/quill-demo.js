@@ -43,13 +43,22 @@ function get_style_editor() {
             ]),
             Q.Tab("Flags", [
                 Q.Fieldset("Main", [
-                    ...Q.get_flag_names().map((property) =>
-                        Q.Checkbox(
-                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { checked: Q.get_style_flag(property) },
-                            (value) => Q.set_style_flag(property, value)
-                        )
-                    ),
+                    ...Q.get_flag_names().map((property) => {
+                        if (Q.get_style_flag_options(property).length === 2) {
+                            return Q.Checkbox(
+                                (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                                { checked: Q.get_style_flag(property) },
+                                (checked) => Q.set_style_flag(property, checked)
+                            );
+                        } else {
+                            return Q.Dropdown(
+                                (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                                { selected: Q.get_style_flag(property) },
+                                (selected) => Q.set_style_flag(property, selected),
+                                Q.DropdownOptions(Q.get_style_flag_options(property))
+                            );
+                        }
+                    }),
                 ]),
             ]),
         ]),
