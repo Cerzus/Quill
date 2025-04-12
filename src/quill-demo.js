@@ -1,6 +1,5 @@
 /* 
     This demo deliberately does not use strict mode, to keep variables local for clarity of the examples.
-    It is recommended to use strict mode in your application and define your variables before using them in the UI.
 */
 
 function get_style_editor() {
