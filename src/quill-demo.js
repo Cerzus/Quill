@@ -234,39 +234,56 @@ function quill_show_demo() {
                 ]),
             ]),
             Q.Tree("Borders, background", { expanded: 1 }, [
-                Q.Checkbox("Row background"),
-                Q.CheckboxTree("Borders", {}, [
-                    Q.CheckboxTree("Horizontal borders", {}, [
-                        Q.Checkbox("Outer horizontal borders", {}, (checked) => console.log("ohb", checked)),
-                        Q.Checkbox("Inner horizontal borders", {}, (checked) => console.log("ihb", checked)),
-                    ]),
-                    Q.CheckboxTree("Vertical borders", {}, [
-                        Q.Checkbox("Outer vertical borders", {}, (checked) => console.log("ovb", checked)),
-                        Q.Checkbox("Inner vertical borders", {}, (checked) => console.log("ivb", checked)),
-                    ]),
-                    Q.Checkbox("Outer borders", {}, (checked) => console.log("ob", checked)),
-                    Q.Checkbox("Inner borders", {}, (checked) => console.log("ib", checked)),
-                ]),
-                Q.Row([
-                    Q.Text("Cell contents:"),
-                    Q.RadioButtons({ value: "text" }, (value) => console.log(value), [
-                        Q.RadioButton("Button", "button"),
-                        Q.RadioButton("Text", "text"),
-                    ]),
-                ]),
-                Q.Checkbox("Display headers", (checked) =>
-                    checked ? table_header.show() : table_header.hide()
-                ).set_checked(true),
-                Q.Table([
-                    (table_header = Q.TableHeaderRow({ hidden: false }, [
-                        Q.TableHeaderColumn("One"),
-                        Q.TableHeaderColumn("Two"),
-                        Q.TableHeaderColumn("Three"),
+                (row_bg = Q.Checkbox("Row background", { checked: true }, (checked) =>
+                    table.set_style_flag("table_row_bg", checked)
+                )),
+                Q.CheckboxTree("Borders", [
+                    (horizontal = Q.CheckboxTree("Horizontal", [
+                        Q.Checkbox("Outer", { checked: true }, (c) => table.set_style_flag("table_borders_outer_h", c)),
+                        Q.Checkbox("Inner", { checked: true }, (c) => table.set_style_flag("table_borders_inner_h", c)),
                     ])),
-                    ...Q.fill_array(5, (r) =>
-                        Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(Q.Text(`Hello ${c},${r}`))))
-                    ),
+                    (vertical = Q.CheckboxTree("Vertical", [
+                        Q.Checkbox("Outer", { checked: true }, (c) => table.set_style_flag("table_borders_outer_v", c)),
+                        Q.Checkbox("Inner", { checked: true }, (c) => table.set_style_flag("table_borders_inner_v", c)),
+                    ])),
+                    Q.Checkbox("Outer", { checked: true }, (checked) => {
+                        table.set_style_flag("table_borders_outer_h", checked);
+                        table.set_style_flag("table_borders_outer_v", checked);
+                    }),
+                    Q.Checkbox("Inner", { checked: true }, (checked) => {
+                        table.set_style_flag("table_borders_inner_h", checked);
+                        table.set_style_flag("table_borders_inner_v", checked);
+                    }),
                 ]),
+                // Q.Row([
+                //     Q.Text("Cell contents:"),
+                //     Q.RadioButtons({ value: "text" }, (value) => console.log(value), [
+                //         Q.RadioButton("Button", "button"),
+                //         Q.RadioButton("Text", "text"),
+                //     ]),
+                // ]),
+                Q.Checkbox("Display headers", (c) => (c ? table_header.show() : table_header.hide())).set_checked(true),
+                (table = Q.Table(
+                    {
+                        flags: {
+                            table_borders_outer_h: horizontal.get_children()[0].is_checked(),
+                            table_borders_outer_v: vertical.get_children()[0].is_checked(),
+                            table_borders_inner_h: horizontal.get_children()[1].is_checked(),
+                            table_borders_inner_v: vertical.get_children()[1].is_checked(),
+                            table_row_bg: row_bg.is_checked(),
+                        },
+                    },
+                    [
+                        (table_header = Q.TableHeaderRow({ hidden: false }, [
+                            Q.TableHeaderColumn("One"),
+                            Q.TableHeaderColumn("Two"),
+                            Q.TableHeaderColumn("Three"),
+                        ])),
+                        ...Q.fill_array(5, (r) =>
+                            Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(Q.Text(`Hello ${c},${r}`))))
+                        ),
+                    ]
+                )),
             ]),
         ]),
         Q.MenuBar([

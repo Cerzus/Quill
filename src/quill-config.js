@@ -40,6 +40,8 @@ const QuillConfig = {
         scrollbar_thumb: new QuillColor(30, 30, 30),
         scrollbar_track: new QuillColor(50, 50, 50),
         panel_border: new QuillColor(72, 61, 139),
+        table_border: new QuillColor(80, 80, 80),
+        table_row_bg: new QuillColor(20, 20, 20),
     },
     sizes: {
         font: 16,
@@ -58,6 +60,8 @@ const QuillConfig = {
         item_inner_gap: 2,
         item_border_radius: 0,
         input_border: 2,
+        table_primary_border: 2,
+        table_secondary_border: 1,
         line: 2,
         indentation: 20,
     },
@@ -65,5 +69,10 @@ const QuillConfig = {
         wrap_text: new QuillConfigFlag("wrap", "nowrap").set(false),
         labels_left: new QuillConfigFlag("row-reverse", "row").set(false),
         justify_labels: new QuillConfigFlag("100%", "fit-content").set(false),
+        table_borders_outer_h: new QuillConfigFlag("solid", "none").set(false),
+        table_borders_outer_v: new QuillConfigFlag("solid", "none").set(false),
+        table_borders_inner_h: new QuillConfigFlag("solid", "none").set(false),
+        table_borders_inner_v: new QuillConfigFlag("solid", "none").set(false),
+        table_row_bg: new QuillConfigFlag("var(--quill-table-row-bg-color)", "transparent").set(false),
     },
 };
