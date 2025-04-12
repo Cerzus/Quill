@@ -6,7 +6,6 @@ class QuillTable extends QuillBranchElement {
             `<table class="quill-table">
                 <thead></thead>
                 <tbody></tbody>
-                <tfoot></tfoot>
             </table>`,
             [QuillWrapper, QuillTableHeaderRow, QuillTableRow],
             ...args
