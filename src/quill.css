@@ -65,7 +65,7 @@
     flex-grow: 1;
 }
 .quill .quill-button.quill-close-button {
-    padding: var(--quill-item-padding-size) calc(0.1em + var(--quill-item-padding-size));
+    padding: 0 0.1em;
     font-size: 1.5em;
     line-height: 0.75em;
     cursor: initial;
@@ -191,7 +191,6 @@
 
 .quill .quill-row {
     gap: var(--quill-panel-gap-size);
-    flex-grow: 1;
 }
 
 .quill .quill-arrow-right {
@@ -543,7 +542,6 @@
 
 .quill .quill-hex-editor {
     background: var(--quill-panel-title-bar-bg-color);
-    font-family: var(--quill-monospace-font);
     border-radius: var(--quill-panel-border-radius-size);
     flex-grow: 1;
     flex-direction: column;
@@ -569,6 +567,12 @@
     padding: 0 var(--quill-panel-padding-size);
     gap: 1em;
 }
+.quill .quill-hex-editor-row > div {
+    font-family: var(--quill-monospace-font);
+}
+.quill .quill-hex-editor-row-address {
+    font-family: var(--quill-monospace-font);
+}
 .quill .quill-hex-editor-rows .quill-hex-editor-row:hover > div {
     background: rgb(255 255 255 / 0.2);
 }
@@ -578,14 +582,13 @@
 .quill .quill-hex-editor-row > div > .quill-hex-editor-byte:nth-child(4n + 1):not(:nth-child(1)) {
     margin-left: 0.4em;
 }
-.quill .quill-hex-editor-row-data > .quill-hex-editor-byte {
+.quill .quill-hex-editor-byte {
+    font-family: var(--quill-monospace-font);
     font-size: var(--quill-font-size);
-    height: 1em;
 }
 .quill .quill-hex-editor-rows .quill-hex-editor-row-data > .quill-hex-editor-byte,
 .quill .quill-hex-editor-row-data > .quill-hex-editor-byte {
     color: var(--quill-input-color);
-    font-family: var(--quill-monospace-font);
     outline: none;
     border: none;
     background: transparent;
