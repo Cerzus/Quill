@@ -540,6 +540,29 @@
     display: none;
 }
 
+.quill .quill-dynamic-rows {
+    padding: var(--quill-item-padding-size);
+    padding: 100px;
+    flex-grow: 1;
+    overflow: auto;
+    height: 0;
+    width: 0;
+    min-width: 100%;
+    min-height: 9.6em;
+    background: darkblue;
+}
+.quill .quill-dynamic-rows-list {
+    background: darkmagenta;
+    flex-direction: column;
+    /* box-sizing: content-box; */
+    /* width: fit-content; */
+}
+.quill .quill-dynamic-rows-list > .quill-row {
+    /* border: 1px solid white; */
+    background: darkgreen;
+    width: fit-content;
+}
+
 .quill .quill-hex-editor {
     background: var(--quill-panel-title-bar-bg-color);
     border-radius: var(--quill-panel-border-radius-size);

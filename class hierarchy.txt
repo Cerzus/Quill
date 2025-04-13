@@ -17,6 +17,7 @@ Element
             FixedCanvas                     -
             HexEditor                       -
             CheckboxTree                    Wrapper, CheckboxTree, Checkbox
+            DynamicRows                     -
             BranchElement
                 Table                       Wrapper, TableRow, TableHeaderRow
                 Fieldset                    Wrapper, NodeElement
