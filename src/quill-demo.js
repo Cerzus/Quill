@@ -220,8 +220,8 @@ function quill_show_demo() {
                 //     // Simple selection popup (if you want to show the current selection inside the Button itself,
                 //     // you may want to build a string using the "###" operator to preserve a constant ID with a variable label)
                 Q.Row([
-                    Q.Button("Select...", () =>
-                        Q.Popup("my_select_popup", [
+                    Q.Button("Select...", (_, e) =>
+                        Q.Popup("my_select_popup", e.pageY, e.pageX, [
                             Q.Text("my_select_popup"),
                             Q.Text("Aquarium"),
                             //         Q.Separator();
@@ -234,8 +234,8 @@ function quill_show_demo() {
                     //     Q.TextUnformatted(selected_fish.value === -1 ? "<None>" : names[selected_fish.value]);
                 ]),
                 //     // Showing a menu with toggles
-                Q.Button("Toggle...", () =>
-                    Q.Popup("my_toggle_popup", [
+                Q.Button("Toggle...", (_, e) =>
+                    Q.Popup("my_toggle_popup", e.pageY, e.pageX, [
                         Q.Text("my_toggle_popup"),
                         //         for (let i = 0; i < Q.ARRAYSIZE(names); i++)
                         //             Q.MenuItem(names[i], "", toggles.access(i));
@@ -267,8 +267,8 @@ function quill_show_demo() {
                     ])
                 ),
                 //     // Call the more complete ShowExampleMenuFile which we use in various places of this demo
-                Q.Button("With a menu...", () =>
-                    Q.Popup("my_file_popup", [
+                Q.Button("With a menu...", (_, e) =>
+                    Q.Popup("my_file_popup", e.pageY, e.pageX, [
                         Q.Text("my_file_popup"),
                         //     if (Q.BeginPopup("my_file_popup", Q.WindowFlags.MenuBar)) {
                         //         if (Q.BeginMenuBar()) {

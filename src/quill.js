@@ -245,19 +245,27 @@
     /* Quill.Popup */
 
     class QuillPopup extends QuillBasePanel {
-        constructor(name, ...args) {
-            super(name, false, start_moving_panel, start_resizing_panel, ...args);
+        constructor(name, top, left, ...args) {
+            const foo = Util.config_callback_and_children_from_arguments(...args);
+            foo.config.has_title_bar = false;
+            foo.config.has_menu_bar = false;
+            foo.config.can_move = false;
+            foo.config.can_resize = false;
+            foo.config.can_close = false;
+
+            super(
+                name,
+                false,
+                start_moving_panel,
+                start_resizing_panel,
+                ...Object.values(foo),
+                ...args.slice(foo.count)
+            );
 
             const element = this.get_element();
             element.classList.add("quill-popup");
 
-            const width = 150;
-            const height = 50;
-            this.set_size({ width, height });
-            this.set_position({
-                top: (quill_config.content_element.offsetHeight - height) / 2,
-                left: (quill_config.content_element.offsetWidth - width) / 2,
-            });
+            this.set_position({ top, left });
             element.style.zIndex = 10000;
 
             quill_config.content_element.append(element);
