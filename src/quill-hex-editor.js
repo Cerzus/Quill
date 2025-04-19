@@ -14,7 +14,7 @@ class QuillHexEditor extends QuillNodeElement {
 
         super(
             `<div class="quill-hex-editor">
-                <div class="quill-row">
+                <div class="quill-row" style="padding-bottom: 5px;">
                     <div class="quill-hex-editor-address" style="width: ${max_addr_length}ch;"></div>
                     <div class="quill-hex-editor-data">
                         ${Util.fill_array(

@@ -1,6 +1,7 @@
-- Address TODO's
+- ALWAYS: Address TODO's
+- ALWAYS: Do not use !important in CSS
+- ALWAYS: Add more settings to config
 - Add tests
-- Add more settings to config
 - Get rid of fake private methods (methods starting with "_")
 - Panel: highlight topmost ("active") panel
 - Panel: Improve size and position functionality

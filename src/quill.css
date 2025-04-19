@@ -23,8 +23,10 @@
     display: flex;
 }
 
-.quill [disabled]:not([disabled] [disabled]) {
-    color: color-mix(in srgb, var(--quill-text-color), transparent 50%) !important;
+.quill .quill-text[disabled],
+.quill input.quill-input[disabled],
+.quill [disabled] input.quill-input {
+    color: color-mix(in srgb, var(--quill-text-color), transparent 50%);
 }
 
 .quill .quill-content {
@@ -560,13 +562,16 @@
 }
 
 .quill .quill-hex-editor {
-    background: var(--quill-panel-title-bar-bg-color);
     flex-grow: 1;
     flex-direction: column;
     width: fit-content;
 }
+.quill .quill-hex-editor > .quill-row:first-child {
+    background: var(--quill-panel-title-bar-bg-color);
+}
 .quill .quill-hex-editor .quill-dynamic-rows {
     width: fit-content;
+    background: var(--quill-panel-title-bar-bg-color);
 }
 .quill .quill-hex-editor .quill-row {
     gap: 1em;
@@ -602,8 +607,7 @@
 }
 .quill .quill-hex-editor > .quill-row > .quill-hex-editor-data > .quill-hex-editor-byte {
     color: var(--quill-text-color);
-    opacity: initial;
-    user-select: none;
+    pointer-events: none;
 }
 .quill
     .quill-hex-editor
