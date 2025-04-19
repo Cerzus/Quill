@@ -70,7 +70,7 @@ function quill_show_demo() {
 
     let recent = null;
 
-    const hex_editor_data = new Uint8Array(513);
+    const hex_editor_data = new Uint8Array(1000);
     for (let i = 0; i < hex_editor_data.length; i++) {
         const value = Math.random();
         hex_editor_data[i] = value < 0.5 ? value * 512 : 0;
@@ -80,7 +80,7 @@ function quill_show_demo() {
 
     Q.Panel("Panel 3", { closed: true }, [
         Q.CollapsingHeader("Take a look, why don't you?", [
-            Q.Tree("It's in here", [Q.HexEditor(16, 8, hex_editor_data.length, (i) => hex_editor_data[i])]),
+            Q.Tree("It's in here", [Q.HexEditor(16, 8, 0x050, 513, (i) => hex_editor_data[i])]),
         ]),
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
     ]);

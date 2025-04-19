@@ -24,7 +24,7 @@
 }
 
 .quill [disabled]:not([disabled] [disabled]) {
-    opacity: 0.5;
+    color: color-mix(in srgb, var(--quill-text-color), transparent 50%) !important;
 }
 
 .quill .quill-content {
@@ -542,85 +542,79 @@
 
 .quill .quill-dynamic-rows {
     padding: var(--quill-item-padding-size);
-    padding: 100px;
     flex-grow: 1;
     overflow: auto;
     height: 0;
     width: 0;
     min-width: 100%;
     min-height: 9.6em;
-    background: darkblue;
 }
 .quill .quill-dynamic-rows-list {
-    background: darkmagenta;
     flex-direction: column;
-    /* box-sizing: content-box; */
-    /* width: fit-content; */
 }
-.quill .quill-dynamic-rows-list > .quill-row {
-    /* border: 1px solid white; */
-    background: darkgreen;
+.quill .quill-dynamic-rows-list .quill-row {
     width: fit-content;
+}
+.quill .quill-dynamic-rows-offset {
+    flex-direction: column;
 }
 
 .quill .quill-hex-editor {
     background: var(--quill-panel-title-bar-bg-color);
-    border-radius: var(--quill-panel-border-radius-size);
     flex-grow: 1;
     flex-direction: column;
     width: fit-content;
-    line-height: 1em;
-    overflow: hidden;
 }
-.quill .quill-hex-editor > .quill-hex-editor-row {
-    padding: var(--quill-panel-padding-size);
+.quill .quill-hex-editor .quill-dynamic-rows {
+    width: fit-content;
 }
-.quill .quill-hex-editor-rows-container {
-    flex-grow: 1;
-    overflow-y: auto;
-    height: 8em;
-}
-.quill .quill-hex-editor-rows {
-    padding-bottom: var(--quill-panel-padding-size);
-    flex-direction: column;
-    overflow: hidden;
-    box-sizing: content-box;
-}
-.quill .quill-hex-editor-row {
-    padding: 0 var(--quill-panel-padding-size);
+.quill .quill-hex-editor .quill-row {
     gap: 1em;
 }
-.quill .quill-hex-editor-row > div {
+.quill .quill-hex-editor-address {
     font-family: var(--quill-monospace-font);
 }
-.quill .quill-hex-editor-row-address {
-    font-family: var(--quill-monospace-font);
-}
-.quill .quill-hex-editor-rows .quill-hex-editor-row:hover > div {
+.quill .quill-hex-editor .quill-dynamic-rows-list .quill-row:hover > div {
     background: rgb(255 255 255 / 0.2);
 }
-.quill .quill-hex-editor-row-data > .quill-hex-editor-byte {
+.quill .quill-hex-editor-data > * {
+    font-family: var(--quill-monospace-font);
+    font-size: var(--quill-font-size);
     padding: 0 0.2em;
 }
-.quill .quill-hex-editor-row > div > .quill-hex-editor-byte:nth-child(4n + 1):not(:nth-child(1)) {
+.quill .quill-hex-editor-ascii > * {
+    font-family: var(--quill-monospace-font);
+    font-size: var(--quill-font-size);
+}
+.quill .quill-hex-editor .quill-row > div > .quill-hex-editor-byte:nth-child(4n + 1):not(:nth-child(1)) {
     margin-left: 0.4em;
 }
 .quill .quill-hex-editor-byte {
     font-family: var(--quill-monospace-font);
     font-size: var(--quill-font-size);
 }
-.quill .quill-hex-editor-rows .quill-hex-editor-row-data > .quill-hex-editor-byte,
-.quill .quill-hex-editor-row-data > .quill-hex-editor-byte {
+.quill .quill-hex-editor .quill-hex-editor-data > .quill-hex-editor-byte,
+.quill .quill-hex-editor-data > .quill-hex-editor-byte {
     color: var(--quill-input-color);
     outline: none;
     border: none;
     background: transparent;
 }
-.quill .quill-hex-editor > .quill-hex-editor-row > .quill-hex-editor-row-data > .quill-hex-editor-byte {
+.quill .quill-hex-editor > .quill-row > .quill-hex-editor-data > .quill-hex-editor-byte {
     color: var(--quill-text-color);
+    opacity: initial;
+    user-select: none;
 }
-.quill .quill-hex-editor-rows .quill-hex-editor-row-data > .quill-hex-editor-byte[data-value="0"],
-.quill .quill-hex-editor-rows .quill-hex-editor-row-ascii > .quill-hex-editor-byte[data-value="."] {
+.quill
+    .quill-hex-editor
+    .quill-dynamic-rows-list
+    .quill-hex-editor-data
+    > .quill-hex-editor-byte[data-value="0"]:not(:hover),
+.quill
+    .quill-hex-editor
+    .quill-dynamic-rows-list
+    .quill-hex-editor-ascii
+    > .quill-hex-editor-byte[data-value="."]:not(:hover) {
     color: rgb(60, 60, 60);
 }
 /* TODO: Is there a nicer way to do this? */
@@ -642,7 +636,7 @@
 .quill .quill-hex-editor[data-hovered-column="15"] .quill-hex-editor-byte:nth-child(16) {
     background: rgb(255 255 255 / 0.2);
 }
-.quill .quill-hex-editor-row input.quill-hex-editor-byte:hover {
+.quill .quill-hex-editor .quill-dynamic-rows input.quill-hex-editor-byte:hover {
     color: yellow;
 }
 

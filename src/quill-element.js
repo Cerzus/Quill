@@ -23,6 +23,11 @@ class QuillElement {
         if (this.#arg_config.hidden) this.hide();
 
         if (this.#arg_config.class) this.#element.classList.add(this.#arg_config.class);
+        if (this.#arg_config.css) {
+            for (const entry of Object.entries(this.#arg_config.css)) {
+                this.#element.style[entry[0]] = entry[1];
+            }
+        }
         if (!!this.#arg_config.disabled) this.#element.setAttribute("disabled", "");
 
         for (const style_type of ["font", "color", "size", "flag"]) {

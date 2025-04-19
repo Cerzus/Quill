@@ -174,8 +174,19 @@ function create_game_boy_ui() {
     ]);
 
     const memory_panel = Q.Panel("Memory", { closed: true }, [
-        (inputs.memory = Q.HexEditor(0, 16, game_boy.get_memory().length, (i) => game_boy.read_memory(i))),
+        (inputs.memory = Q.HexEditor(0, 16, 0, game_boy.get_memory().length, (i) => game_boy.read_memory(i))),
     ]);
+
+    const disassembly_panel = Q.Panel("Disassembly", { closed: true }, [
+        Q.Row([Q.Button("Copy"), Q.Button("Go to PC"), Q.Checkbox("Follow PC")]),
+        Q.DynamicRows(
+            100000,
+            (i) => [Q.Text("Row " + (i + 1))],
+            (i, row) => row.get_children()[0].set_text("dffg")
+        ),
+        Q.Text("Below DynamicRows"),
+    ]);
+    requestAnimationFrame(() => requestAnimationFrame(() => disassembly_panel.get_children()[1].update()));
 
     Q.Panel("Game Boy", { not_closeable: true }, [
         Q.MenuBar([
@@ -211,7 +222,7 @@ function create_game_boy_ui() {
             ]),
             Q.Menu("Emulation", [Q.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console"))]),
             Q.Menu("Tools", [
-                ...[cpu_panel, ppu_panel, memory_panel].map((panel) => {
+                ...[cpu_panel, ppu_panel, memory_panel, disassembly_panel].map((panel) => {
                     const config = { checkable: true, checked: panel.is_open() };
                     const menu_item = Q.MenuItem(panel.get_name(), config, (element) =>
                         element.is_checked() ? panel.open() : panel.close()

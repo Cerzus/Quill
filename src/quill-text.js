@@ -2,8 +2,13 @@
 
 class QuillText extends QuillLeafElement {
     constructor(text, ...args) {
-        super(`<div class="quill-text">${text.replaceAll("\n", "<br>")}</div>`, [], ...args);
+        super(`<div class="quill-text"></div>`, [], ...args);
+        this.set_text(text);
     }
+
+    // Public methods
+
+    set_text = (text) => (this.get_element().innerHTML = text.toString().replaceAll("\n", "<br>"));
 }
 
 class QuillTextWrapped extends QuillText {

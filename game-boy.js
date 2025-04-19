@@ -196,17 +196,22 @@ class GameBoy {
     #ppu = new PPU();
     #memory = new Uint8Array(0x10000).fill(0);
 
-    randomize() {
-        this.#cpu.randomize();
-        this.#ppu.randomize();
-        for (let i = 0; i < 100; i++) {
-            const r = Math.random();
-            this.#memory[~~(Math.random() * this.#memory.length)] = r < 0.5 ? r * 0x200 : 0;
-        }
+    constructor() {
+        this.#randomize(this.#memory.length);
     }
 
+    randomize = () => this.#randomize(100);
     get_cpu = () => this.#cpu;
     get_ppu = () => this.#ppu;
     get_memory = () => this.#memory.slice();
     read_memory = (address) => this.#memory[address];
+
+    #randomize(number_of_memory_changes) {
+        this.#cpu.randomize();
+        this.#ppu.randomize();
+        for (let i = 0; i < number_of_memory_changes; i++) {
+            const r = Math.random();
+            this.#memory[~~(Math.random() * this.#memory.length)] = r < 0.5 ? r * 0x200 : 0;
+        }
+    }
 }
