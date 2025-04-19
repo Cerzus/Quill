@@ -174,7 +174,7 @@
         // Public methods
 
         get_id = () => this.#id;
-        is_open = () => !(this.is_closeable() && this.#closed);
+        is_open = () => !(this.can_close() && this.#closed);
         is_closed = () => this.#closed;
 
         open() {
@@ -191,14 +191,14 @@
         // Private methods
 
         #open() {
-            if (this.is_closeable()) {
+            if (this.can_close()) {
                 this.#closed = false;
                 this.get_element().style.display = "";
                 show_panel_on_top(this);
             }
         }
         #close() {
-            if (this.is_closeable()) {
+            if (this.can_close()) {
                 this.#closed = true;
                 this.get_element().style.display = "none";
             }

@@ -2,7 +2,11 @@
 
 class QuillBasePanel extends QuillElement {
     #name;
-    #closeable;
+    #has_title_bar;
+    #has_menu_bar;
+    #can_move;
+    #can_resize;
+    #can_close;
     #on_close_callback;
     #panel_element;
 
@@ -26,36 +30,65 @@ class QuillBasePanel extends QuillElement {
 
         const element = this.get_element();
 
+        const close_button = new QuillButton("&times;", { class: "quill-close-button" }, (_, e) => {
+            this.close();
+            this.#on_close_callback?.(this, e);
+        });
+        element.querySelector(".quill-panel-title-bar").append(close_button.get_element());
+
         this.#name = name;
-        this.#closeable = !this._get_arg_config().not_closeable;
+
+        const config = this._get_arg_config();
+        this.set_has_title_bar(Object.hasOwn(config, "has_title_bar") ? config.has_title_bar : true);
+        this.set_has_menu_bar(Object.hasOwn(config, "has_menu_bar") ? config.has_menu_bar : true);
+        this.set_can_move(Object.hasOwn(config, "can_move") ? config.can_move : true);
+        this.set_can_resize(Object.hasOwn(config, "can_resize") ? config.can_resize : true);
+        this.set_can_close(Object.hasOwn(config, "can_close") ? config.can_close : true);
 
         this.#panel_element = is_modal ? element.querySelector("div") : element;
 
-        Util.add_mouse_down_event_listener(element.querySelector(".quill-panel-title-bar"), (e) =>
-            start_moving_panel(this, e)
-        );
+        Util.add_mouse_down_event_listener(element.querySelector(".quill-panel-title-bar"), (e) => {
+            if (this.#can_move) start_moving_panel(this, e);
+        });
         Util.add_mouse_down_event_listener(element.querySelector(".quill-panel-resizer"), (e) =>
             start_resizing_panel(this, e)
         );
-
-        if (this.#closeable) {
-            const close_button = new QuillButton("&times;", { class: "quill-close-button" }, (_, e) => {
-                this.close();
-                this.#on_close_callback?.(this, e);
-            });
-            element.querySelector(".quill-panel-title-bar").append(close_button.get_element());
-        }
 
         this.add_children(this._get_arg_children());
     }
 
     // Public methods
 
-    is_closeable = () => this.#closeable;
     get_name = () => this.#name;
+    has_title_bar = () => this.#has_title_bar;
+    has_menu_bar = () => this.#has_menu_bar;
+    can_move = () => this.#can_move;
+    can_resize = () => this.#can_resize;
+    can_close = () => this.#can_close;
     on_close(callback) {
         this.#on_close_callback = callback;
         return this;
+    }
+    set_has_title_bar(has_title_bar) {
+        const display = (this.#has_title_bar = !!has_title_bar) ? "" : "none";
+        this.get_element().querySelector(".quill-panel-title-bar").style.display = display;
+    }
+    set_has_menu_bar(has_menu_bar) {
+        const display = (this.#has_menu_bar = !!has_menu_bar) ? "" : "none";
+        this.get_element().querySelector(".quill-panel-menu-bar-container").style.display = display;
+    }
+    set_can_move(can_move) {
+        this.#can_move = !!can_move;
+        const cursor = (this.#can_move = !!can_move) ? "" : "initial";
+        this.get_element().querySelector(".quill-panel-title-bar").style.cursor = cursor;
+    }
+    set_can_resize(can_resize) {
+        const display = (this.#can_resize = !!can_resize) ? "" : "none";
+        this.get_element().querySelector(".quill-panel-resizer").style.display = display;
+    }
+    set_can_close(can_close) {
+        const display = (this.#can_close = !!can_close) ? "" : "none";
+        this.get_element().querySelector(".quill-close-button").style.display = display;
     }
     get_position() {
         const display = this.#panel_element.style.display;

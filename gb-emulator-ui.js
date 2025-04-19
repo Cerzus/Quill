@@ -188,7 +188,7 @@ function create_game_boy_ui() {
     ]);
     requestAnimationFrame(() => requestAnimationFrame(() => disassembly_panel.get_children()[1].update()));
 
-    Q.Panel("Game Boy", { not_closeable: true }, [
+    Q.Panel("Game Boy", { can_close: false }, [
         Q.MenuBar([
             Q.Menu("File", [
                 Q.MenuItem("Open ROM file...", { ctrl_key: "O" }, () => {

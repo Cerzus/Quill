@@ -85,14 +85,29 @@ function quill_show_demo() {
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
     ]);
 
-    Q.Panel("Style editor", { closeable: true, closed: true }, get_style_editor());
+    Q.Panel("Style editor", { closed: true }, get_style_editor());
 
-    Q.Panel("Quill Demo", { not_closeable: true, closed: true }, [
+    const demo_panel = Q.Panel("Quill Demo", { closed: true }, [
         Q.CollapsingHeader("Configuration", [
             Q.Tree("Style", [
                 Q.InfoTooltip("The same contents can be accessed in the menu under [Tools] -> [Style editor]"),
                 get_style_editor(),
                 // Q.Separator(),
+            ]),
+        ]),
+        Q.CollapsingHeader("Window options", [
+            Q.Table([
+                Q.TableRow([
+                    Q.TableColumn(
+                        Q.Checkbox("Has title bar", { checked: true }, (c) => demo_panel.set_has_title_bar(c))
+                    ),
+                    Q.TableColumn(Q.Checkbox("Has menu bar", { checked: true }, (c) => demo_panel.set_has_menu_bar(c))),
+                    Q.TableColumn(Q.Checkbox("Can move", { checked: true }, (c) => demo_panel.set_can_move(c))),
+                ]),
+                Q.TableRow([
+                    Q.TableColumn(Q.Checkbox("Can resize", { checked: true }, (c) => demo_panel.set_can_resize(c))),
+                    Q.TableColumn(Q.Checkbox("Can close", { checked: true }, (c) => demo_panel.set_can_close(c))),
+                ]),
             ]),
         ]),
         Q.CollapsingHeader("Widgets", [
@@ -427,7 +442,7 @@ function quill_show_demo() {
                 ])
             ).add_children(
                 Object.values(Q.get_panels())
-                    .filter((panel) => panel.is_closeable())
+                    .filter((panel) => panel.can_close())
                     .map((panel) => {
                         const name = panel.get_name();
                         const config = { checkable: true, checked: panel.is_open() };
