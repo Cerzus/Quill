@@ -610,12 +610,12 @@
     pointer-events: none;
 }
 .quill
-    .quill-hex-editor
+    .quill-hex-editor.quill-grey-out-zeroes
     .quill-dynamic-rows-list
     .quill-hex-editor-data
     > .quill-hex-editor-byte[data-value="0"]:not(:hover),
 .quill
-    .quill-hex-editor
+    .quill-hex-editor.quill-grey-out-zeroes
     .quill-dynamic-rows-list
     .quill-hex-editor-ascii
     > .quill-hex-editor-byte[data-value="."]:not(:hover) {

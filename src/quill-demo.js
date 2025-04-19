@@ -80,7 +80,14 @@ function quill_show_demo() {
 
     Q.Panel("Panel 3", { closed: true }, [
         Q.CollapsingHeader("Take a look, why don't you?", [
-            Q.Tree("It's in here", [Q.HexEditor(16, 8, 0x050, 513, (i) => hex_editor_data[i])]),
+            Q.Tree("It's in here", [
+                Q.HexEditor(0x050, 513, (i) => hex_editor_data[i], {
+                    number_of_columns: 8,
+                    show_ascii: false,
+                    grey_out_zeroes: false,
+                    uppercase_hex: true,
+                }),
+            ]),
         ]),
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
     ]);
@@ -221,7 +228,7 @@ function quill_show_demo() {
                 //     // you may want to build a string using the "###" operator to preserve a constant ID with a variable label)
                 Q.Row([
                     Q.Button("Select...", (_, e) =>
-                        Q.Popup("my_select_popup", e.pageY, e.pageX, [
+                        Q.Popup("my_select_popup", e.pageX, e.pageY, [
                             Q.Text("my_select_popup"),
                             Q.Text("Aquarium"),
                             //         Q.Separator();
@@ -235,7 +242,7 @@ function quill_show_demo() {
                 ]),
                 //     // Showing a menu with toggles
                 Q.Button("Toggle...", (_, e) =>
-                    Q.Popup("my_toggle_popup", e.pageY, e.pageX, [
+                    Q.Popup("my_toggle_popup", e.pageX, e.pageY, [
                         Q.Text("my_toggle_popup"),
                         //         for (let i = 0; i < Q.ARRAYSIZE(names); i++)
                         //             Q.MenuItem(names[i], "", toggles.access(i));
@@ -268,7 +275,7 @@ function quill_show_demo() {
                 ),
                 //     // Call the more complete ShowExampleMenuFile which we use in various places of this demo
                 Q.Button("With a menu...", (_, e) =>
-                    Q.Popup("my_file_popup", e.pageY, e.pageX, [
+                    Q.Popup("my_file_popup", e.pageX, e.pageY, [
                         Q.Text("my_file_popup"),
                         //     if (Q.BeginPopup("my_file_popup", Q.WindowFlags.MenuBar)) {
                         //         if (Q.BeginMenuBar()) {

@@ -57,6 +57,10 @@ class QuillElement {
         }
         return this;
     }
+    get_page_x = () => window.pageXOffset + this.#element.getBoundingClientRect().left;
+    get_page_x_right = () => this.get_page_x() + this.#element.offsetWidth;
+    get_page_y = () => window.pageYOffset + this.#element.getBoundingClientRect().top;
+    get_page_y_bottom = () => this.get_page_y() + this.#element.offsetHeight;
     remove() {
         this.#element.remove();
         this._remove();

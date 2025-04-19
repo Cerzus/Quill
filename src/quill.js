@@ -245,7 +245,7 @@
     /* Quill.Popup */
 
     class QuillPopup extends QuillBasePanel {
-        constructor(name, top, left, ...args) {
+        constructor(name, left, top, ...args) {
             const foo = Util.config_callback_and_children_from_arguments(...args);
             foo.config.has_title_bar = false;
             foo.config.has_menu_bar = false;
@@ -467,6 +467,216 @@
             callback(position);
             this.#menu_element.style.top = `${position.top}px`;
             this.#menu_element.style.left = `${position.left}px`;
+        }
+    }
+
+    // Quill.HexEditor
+
+    class QuillHexEditor extends QuillNodeElement {
+        #number_of_columns;
+        #show_ascii;
+        #grey_out_zeroes;
+        #uppercase_hex;
+
+        #start_address;
+        #end_address;
+        #read_callback;
+        #max_addr_length;
+        #dynamic_rows;
+
+        constructor(start_address, data_size, read_callback, ...args) {
+            super(`<div class="quill-hex-editor"></div>`, [], ...args);
+
+            const config = this._get_arg_config();
+            this.#number_of_columns = Object.hasOwn(config, "number_of_columns")
+                ? Math.min(Math.max(0, config.number_of_columns), 16)
+                : 16;
+            this.#show_ascii = Object.hasOwn(config, "show_ascii") ? !!config.show_ascii : true;
+            this.set_grey_out_zeroes(Object.hasOwn(config, "grey_out_zeroes") ? !!config.grey_out_zeroes : true);
+            this.#uppercase_hex = Object.hasOwn(config, "uppercase_hex") ? !!config.uppercase_hex : false;
+
+            this.#start_address = start_address;
+            this.#end_address = start_address + data_size;
+            this.#read_callback = read_callback;
+            this.#max_addr_length = (this.#end_address - 1).toString(16).length;
+            this.#dynamic_rows = new QuillDynamicRows(
+                Math.ceil((this.#end_address - start_address) / this.#number_of_columns),
+                (index) => this.#create_row_element(index),
+                (...args) => this.#update_row_element(...args)
+            );
+
+            const document_fragment = new DocumentFragment();
+            document_fragment.append(
+                this.#create_header_row(),
+                this.#dynamic_rows.get_element(),
+                this.#create_footer_row()
+            );
+            this.get_element().append(document_fragment);
+
+            const header_row_element = this.get_element().querySelector(".quill-row");
+            header_row_element.addEventListener("mouseover", (e) => {
+                if (e.target.classList.contains("quill-hex-editor-byte")) {
+                    this.#set_hovered_column(Array.from(e.target.parentNode.children).indexOf(e.target));
+                }
+            });
+            header_row_element.addEventListener("mouseout", () => this.#set_hovered_column(-1));
+            header_row_element.addEventListener("mouseleave", () => this.#set_hovered_column(-1));
+
+            const rows_element = this.get_element().querySelector(".quill-dynamic-rows-list");
+            rows_element.addEventListener("mouseover", (e) => {
+                if (e.target.classList.contains("quill-hex-editor-byte")) {
+                    this.#set_hovered_column(Array.from(e.target.parentNode.children).indexOf(e.target));
+                }
+            });
+            rows_element.addEventListener("mouseout", () => this.#set_hovered_column(-1));
+            rows_element.addEventListener("mouseleave", () => this.#set_hovered_column(-1));
+        }
+
+        // Public methods
+
+        update() {
+            this.#dynamic_rows.update();
+            return this;
+        }
+        set_show_ascii(show_ascii) {
+            this.#show_ascii = !!show_ascii;
+            this.#dynamic_rows.refresh();
+            return this;
+        }
+        set_grey_out_zeroes(grey_out_zeroes) {
+            this.#grey_out_zeroes = !!grey_out_zeroes;
+            if (this.#grey_out_zeroes) this.get_element().classList.add("quill-grey-out-zeroes");
+            else this.get_element().classList.remove("quill-grey-out-zeroes");
+        }
+        set_uppercase_hex(uppercase_hex) {
+            this.#uppercase_hex = !!uppercase_hex;
+            const element = this.get_element();
+            element.firstChild.remove();
+            element.prepend(this.#create_header_row());
+            element.lastChild.remove();
+            element.append(this.#create_footer_row());
+            this.#dynamic_rows.refresh();
+            return this;
+        }
+
+        // Private methods
+
+        #create_header_row() {
+            return new QuillRow({ css: { paddingBottom: "5px" } }, [
+                new QuillNodeElement(
+                    `<div class="quill-hex-editor-address" style="width: ${this.#max_addr_length}ch;"></div>`
+                ),
+                new QuillNodeElement(
+                    `<div class="quill-hex-editor-data">${Util.fill_array(
+                        this.#number_of_columns,
+                        (i) =>
+                            `<input disabled class="quill-hex-editor-byte" size="1" value="+${this.#to_hex(i, 1)}" />`
+                    ).join("")}</div>`
+                ),
+            ]).get_element();
+        }
+        #create_footer_row() {
+            return new QuillRow([
+                new QuillButton("Options", (button) => {
+                    return new QuillPopup("", button.get_page_x(), button.get_page_y_bottom(), [
+                        new QuillText("16 columns"),
+                        new QuillCheckbox("Show ASCII", { checked: this.#show_ascii }, (checked) =>
+                            this.set_show_ascii(checked)
+                        ),
+                        new QuillCheckbox("Grey out zeroes", { checked: this.#grey_out_zeroes }, (checked) =>
+                            this.set_grey_out_zeroes(checked)
+                        ),
+                        new QuillCheckbox("Uppercase hex", { checked: this.#uppercase_hex }, (checked) =>
+                            this.set_uppercase_hex(checked)
+                        ),
+                    ]);
+                }),
+                new QuillText(
+                    `Range ${this.#format_address(this.#start_address)}` +
+                        `...${this.#format_address(this.#end_address - 1)}`
+                ),
+                new QuillButton("", { css: { width: "100px" } }),
+            ]).get_element();
+        }
+        #to_hex(value, number_of_characters) {
+            const hex = value.toString(16).padStart(number_of_characters, 0);
+            return this.#uppercase_hex ? hex.toUpperCase() : hex;
+        }
+        #to_ascii(value) {
+            return String.fromCharCode(value >= 32 && value < 127 ? value : 46).replaceAll(/\s/g, "\xa0");
+        }
+        #format_address(address) {
+            return this.#to_hex(address, this.#max_addr_length);
+        }
+        #set_hovered_column(n) {
+            this.get_element().setAttribute("data-hovered-column", n);
+        }
+        #address_and_data_from_index(index) {
+            const address = index * this.#number_of_columns + this.#start_address;
+            return {
+                address,
+                data: Array(this.#number_of_columns)
+                    .fill()
+                    .map((_, i) => (address + i < this.#end_address ? this.#read_callback(address + i) : -1)),
+            };
+        }
+        #update_row_element(index, row) {
+            const { data } = this.#address_and_data_from_index(index);
+            const children_data = row.get_element().querySelector(".quill-hex-editor-data").children;
+            const children_ascii = row.get_element().querySelector(".quill-hex-editor-ascii").children;
+            for (const [i, value] of data.entries()) {
+                const child_data = children_data[i];
+                if (child_data.dataset.value !== value) {
+                    child_data.value = this.#to_hex(value, 2);
+                    child_data.dataset.value = value;
+                    if (this.#show_ascii) {
+                        const child_ascii = children_ascii[i];
+                        child_ascii.dataset.value = child_ascii.firstChild.nodeValue = this.#to_ascii(value);
+                    }
+                }
+            }
+        }
+        #create_row_element(index) {
+            const { address, data } = this.#address_and_data_from_index(index);
+            const children = [
+                new QuillNodeElement(`<div class="quill-hex-editor-address">${this.#format_address(address)}</div>`),
+                new QuillNodeElement(`<div class="quill-hex-editor-data">${this.#create_row_data_html(data)}</div>`),
+            ];
+            if (this.#show_ascii) {
+                const html = `<div class="quill-hex-editor-ascii">${this.#create_row_ascii_html(data)}</div>`;
+                children.push(new QuillNodeElement(html));
+            }
+            return children;
+        }
+        #create_row_data_html(data) {
+            return data
+                .map((x) => {
+                    if (x < 0) {
+                        return `<input class="quill-hex-editor-byte" 
+                                   size="1"
+                                   maxlength="2"
+                                   disabled />`;
+                    } else {
+                        return `<input class="quill-hex-editor-byte" 
+                                   size="1"
+                                   maxlength="2"
+                                   data-value="${x}"
+                                   value="${this.#to_hex(x, 2)}" />`;
+                    }
+                })
+                .join("");
+        }
+        #create_row_ascii_html(data) {
+            return data
+                .map((x) => {
+                    if (x < 0) {
+                        return `<div class="quill-hex-editor-byte">\xa0</div>`;
+                    } else {
+                        const ascii = this.#to_ascii(x);
+                        return `<div class="quill-hex-editor-byte" data-value="${ascii}">${ascii}</div>`;
+                    }
+                })
+                .join("");
         }
     }
 
