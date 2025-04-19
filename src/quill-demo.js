@@ -194,13 +194,92 @@ function quill_show_demo() {
                 ]),
             ]),
         ]),
-        Q.CollapsingHeader("Modals", [
+        Q.CollapsingHeader("Popups & Modals", { expanded: 1 }, [
+            Q.Tree("Popups", { expanded: 1 }, [
+                Q.TextWrapped(
+                    "When a popup is active, it inhibits interacting with windows that are behind the popup.\nClicking outside the popup closes it."
+                ),
+                //     const selected_fish = STATIC(UNIQUE("selected_fish#ba576008"), -1);
+                //     const names = ["Bream", "Haddock", "Mackerel", "Pollock", "Tilefish"];
+                //     const toggles = STATIC_ARRAY(5, UNIQUE("toggles#b168bdf3"), [true, false, false, false, false]);
+                //     // Simple selection popup (if you want to show the current selection inside the Button itself,
+                //     // you may want to build a string using the "###" operator to preserve a constant ID with a variable label)
+                Q.Row([
+                    Q.Button("Select...", () =>
+                        Q.Popup("my_select_popup", [
+                            Q.Text("my_select_popup"),
+                            Q.Text("Aquarium"),
+                            //         Q.Separator();
+                            //         for (let i = 0; i < Q.ARRAYSIZE(names); i++)
+                            //             if (Q.Selectable(names[i]))
+                            //                 selected_fish.value = i;
+                        ])
+                    ),
+                    (text = Q.Text("<None>")),
+                    //     Q.TextUnformatted(selected_fish.value === -1 ? "<None>" : names[selected_fish.value]);
+                ]),
+                //     // Showing a menu with toggles
+                Q.Button("Toggle...", () =>
+                    Q.Popup("my_toggle_popup", [
+                        Q.Text("my_toggle_popup"),
+                        //         for (let i = 0; i < Q.ARRAYSIZE(names); i++)
+                        //             Q.MenuItem(names[i], "", toggles.access(i));
+                        //         if (Q.BeginMenu("Sub-menu")) {
+                        //             Q.MenuItem("Click me");
+                        //             Q.EndMenu();
+                        //         }
+                        //         Q.Separator();
+                        //         Q.Text("Tooltip here");
+                        //         if (Q.IsItemHovered())
+                        //             Q.SetTooltip("I am a tooltip over a popup");
+                        //         if (Q.Button("Stacked Popup"))
+                        //             Q.OpenPopup("another popup");
+                        //         if (Q.BeginPopup("another popup")) {
+                        //             for (let i = 0; i < Q.ARRAYSIZE(names); i++)
+                        //                 Q.MenuItem(names[i], "", toggles.access(i));
+                        //             if (Q.BeginMenu("Sub-menu")) {
+                        //                 Q.MenuItem("Click me");
+                        //                 if (Q.Button("Stacked Popup"))
+                        //                     Q.OpenPopup("another popup");
+                        //                 if (Q.BeginPopup("another popup")) {
+                        //                     Q.Text("I am the last one here.");
+                        //                     Q.EndPopup();
+                        //                 }
+                        //                 Q.EndMenu();
+                        //             }
+                        //             Q.EndPopup();
+                        //         }
+                    ])
+                ),
+                //     // Call the more complete ShowExampleMenuFile which we use in various places of this demo
+                Q.Button("With a menu...", () =>
+                    Q.Popup("my_file_popup", [
+                        Q.Text("my_file_popup"),
+                        //     if (Q.BeginPopup("my_file_popup", Q.WindowFlags.MenuBar)) {
+                        //         if (Q.BeginMenuBar()) {
+                        //             if (Q.BeginMenu("File")) {
+                        //                 ShowExampleMenuFile();
+                        //                 Q.EndMenu();
+                        //             }
+                        //             if (Q.BeginMenu("Edit")) {
+                        //                 Q.MenuItem("Dummy");
+                        //                 Q.EndMenu();
+                        //             }
+                        //             Q.EndMenuBar();
+                        //         }
+                        //         Q.Text("Hello from popup!");
+                        //         Q.Button("This is a dummy button..");
+                        //     }
+                        // }
+                    ])
+                ),
+            ]),
             Q.Tree("Modals", [
                 Q.TextWrapped(
                     "Modals are like Panels but the user cannot interact outside of them before closing them."
                 ),
                 Q.Button("Delete...", () => {
-                    const modal = Q.Modal("Delete?", { not_closeable: true }, [
+                    const modal = Q.Modal("Delete?", [
                         Q.Text("All those beautiful files will be deleted.\nThis operation cannot be undone!"),
                         Q.Separator(),
                         Q.Checkbox("Don't ask me next time"),

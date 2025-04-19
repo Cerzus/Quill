@@ -8,7 +8,15 @@ class QuillText extends QuillLeafElement {
 
     // Public methods
 
-    set_text = (text) => (this.get_element().innerHTML = text.toString().replaceAll("\n", "<br>"));
+    set_text = (text) =>
+        (this.get_element().innerHTML = text
+            .toString()
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;")
+            .replaceAll("\n", "<br>"));
 }
 
 class QuillTextWrapped extends QuillText {

@@ -11,9 +11,10 @@
         Quill.InfoTooltip = (...args) => new QuillInfoTooltip(...args);
         Quill.Text = (...args) => new QuillText(...args);
         Quill.TextWrapped = (...args) => new QuillTextWrapped(...args);
-        Quill.Modal = (...args) => new QuillModal(...args);
         Quill.Panel = (...args) => new Panel(...args);
-        Quill.MenuBar = (...args) => new QuillMenuBar(...args);
+        Quill.Modal = (...args) => new QuillModal(...args);
+        Quill.Popup = (...args) => new QuillPopup(...args);
+        Quill.MenuBar = (...args) => new MenuBar(...args);
         Quill.Menu = (...args) => new QuillMenu(...args);
         Quill.MenuItem = (...args) => new QuillMenuItem(...args);
         Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
@@ -126,10 +127,10 @@
             prevent_menu_from_being_hidden = false;
         });
 
-        Util.add_mouse_down_event_listener(
-            content_element,
-            () => !prevent_menu_from_being_hidden && hide_active_menu_bar()
-        );
+        Util.add_mouse_down_event_listener(content_element, (e) => {
+            if (e.target.closest(".quill-popup") === null) close_popup();
+            if (!prevent_menu_from_being_hidden) hide_active_menu_bar();
+        });
 
         QuillMenuItem.init();
 
@@ -140,164 +141,64 @@
 
     class Panel extends QuillPanel {
         #id;
-        #name;
-        #closeable = true;
         #closed = true;
-        #on_close_callback;
-        #modal = false;
-        #panel_element;
 
         constructor(name, ...args) {
-            const { config } = Util.config_callback_and_children_from_arguments(...args);
-            const modal = !!config.modal;
-            const html = `
-                <div class="quill-panel">
-                    <div class="quill-panel-title-bar"><div>${name}</div></div>
-                    <div class="quill-panel-menu-bar-container"></div>
-                    <div class="quill-panel-content"><div></div></div>
-                    <div class="quill-panel-resizer">
-                        <div></div><div></div><div></div>
-                        <div></div><div></div><div></div>
-                        <div></div><div></div><div></div>
-                    </div>
-                </div>`;
-            super(
-                modal ? `<div class="quill-modal-overlay">${html}</div>` : html,
-                [QuillWrapper, QuillNodeElement, QuillMenuBar],
-                ...args
-            );
+            super(name, false, start_moving_panel, start_resizing_panel, ...args);
 
             const element = this.get_element();
 
-            this.#modal = modal;
-            this.#name = name;
-            this.#closeable = !this._get_arg_config().not_closeable;
-            this.#panel_element = modal ? element.querySelector("div") : element;
+            this.#create_id(name);
+            this.#closed = !!this._get_arg_config().closed;
+            Util.add_mouse_down_event_listener(element, () => show_panel_on_top(this));
 
-            if (!this.#modal) {
-                this.#create_id(name);
-                this.#closed = !!this._get_arg_config().closed;
-                Util.add_mouse_down_event_listener(element, () => show_panel_on_top(this));
-            }
-            Util.add_mouse_down_event_listener(element.querySelector(".quill-panel-title-bar"), (e) =>
-                start_moving_panel(this, e)
-            );
-            Util.add_mouse_down_event_listener(element.querySelector(".quill-panel-resizer"), (e) =>
-                start_resizing_panel(this, e)
-            );
-
-            if (this.#closeable) {
-                const close_button = new QuillButton("&times;", { class: "quill-close-button" }, (_, e) => {
-                    this.close();
-                    this.#on_close_callback?.(this, e);
-                });
-                element.querySelector(".quill-panel-title-bar").append(close_button.get_element());
-            }
-
-            if (this.#modal) {
-                const width = 300;
-                const height = 200;
-                this.set_size({ width, height });
-                this.set_position({
-                    top: (quill_config.content_element.offsetHeight - height) / 2,
-                    left: (quill_config.content_element.offsetWidth - width) / 2,
-                });
-                element.style.zIndex = 1000;
+            const stored_index = quill_panels_order.indexOf(this.#id);
+            if (stored_index < 0) {
+                const new_index = quill_panels_order.length;
+                this.set_position({ top: new_index * 25, left: new_index * 25 });
+                this.set_size({ width: 300, height: 200 });
+                set_panel_z_index(this, new_index);
+                quill_panels_order.push(this.#id);
             } else {
-                const stored_index = quill_panels_order.indexOf(this.#id);
-                if (stored_index < 0) {
-                    const new_index = quill_panels_order.length;
-                    this.set_position({ top: new_index * 25, left: new_index * 25 });
-                    this.set_size({ width: 300, height: 200 });
-                    set_panel_z_index(this, new_index);
-                    quill_panels_order.push(this.#id);
-                } else {
-                    const config = stored_panels_config_at_init[stored_index];
-                    this.set_position({ top: config.y, left: config.x });
-                    this.set_size({ width: config.w, height: config.h });
-                    set_panel_z_index(this, stored_index);
-                    this.#closed = !config.o;
-                }
-                if (this.#closed) this.#close();
+                const config = stored_panels_config_at_init[stored_index];
+                this.set_position({ top: config.y, left: config.x });
+                this.set_size({ width: config.w, height: config.h });
+                set_panel_z_index(this, stored_index);
+                this.#closed = !config.o;
             }
-
-            this.add_children(this._get_arg_children());
+            if (this.#closed) this.#close();
 
             quill_config.content_element.append(element);
         }
 
         // Public methods
 
-        get_name = () => this.#name;
-        get_id = () => this.#id; // TODO: what if modal?
-        is_closeable = () => this.#closeable; // TODO: what if modal?
-        is_open = () => !(this.#closeable && this.#closed); // TODO: what if modal?
-        is_closed = () => this.#closed; // TODO: what if modal?
-        on_close(callback) {
-            this.#on_close_callback = callback;
-            return this;
-        }
+        get_id = () => this.#id;
+        is_open = () => !(this.is_closeable() && this.#closed);
+        is_closed = () => this.#closed;
+
         open() {
-            if (!this.#modal) {
-                this.#open();
-                store_panels_config();
-            } else {
-                // TODO: what?
-            }
+            this.#open();
+            store_panels_config();
             return this;
         }
         close() {
-            if (this.#modal) {
-                this.remove();
-            } else {
-                this.#close();
-                store_panels_config();
-            }
+            this.#close();
+            store_panels_config();
             return this;
-        }
-        get_position() {
-            const display = this.#panel_element.style.display;
-            // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
-            this.#panel_element.style.display = "";
-            const position = { top: this.#panel_element.offsetTop, left: this.#panel_element.offsetLeft };
-            this.#panel_element.style.display = display;
-            return position;
-        }
-        get_size() {
-            const display = this.#panel_element.style.display;
-            // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
-            this.#panel_element.style.display = "";
-            const size = { width: this.#panel_element.offsetWidth, height: this.#panel_element.offsetHeight };
-            this.#panel_element.style.display = display;
-            return size;
-        }
-        set_position(position) {
-            this.#panel_element.style.top = `${position.top}px`;
-            this.#panel_element.style.left = `${position.left}px`;
-        }
-        set_size(size) {
-            this.#panel_element.style.width = `${size.width}px`;
-            this.#panel_element.style.height = `${size.height}px`;
         }
 
         // Private methods
 
-        _add_child(child) {
-            if (child instanceof QuillMenuBar) {
-                this.get_element().querySelector(".quill-panel-menu-bar-container").append(child.get_element());
-            } else {
-                this.get_element().querySelector(".quill-panel-content > div").append(child.get_element());
-            }
-        }
         #open() {
-            if (this.#closeable) {
+            if (this.is_closeable()) {
                 this.#closed = false;
                 this.get_element().style.display = "";
                 show_panel_on_top(this);
             }
         }
         #close() {
-            if (this.#closeable) {
+            if (this.is_closeable()) {
                 this.#closed = true;
                 this.get_element().style.display = "none";
             }
@@ -315,17 +216,66 @@
 
     /* Quill.Modal */
 
-    class QuillModal extends Panel {
+    class QuillModal extends QuillBasePanel {
         constructor(name, ...args) {
-            const { config, callback, children, count } = Util.config_callback_and_children_from_arguments(...args);
-            config.modal = true;
-            super(name, config, callback, children, ...args.slice(count));
+            super(name, true, start_moving_panel, start_resizing_panel, ...args);
+
+            const element = this.get_element();
+
+            const width = 300;
+            const height = 200;
+            this.set_size({ width, height });
+            this.set_position({
+                top: (quill_config.content_element.offsetHeight - height) / 2,
+                left: (quill_config.content_element.offsetWidth - width) / 2,
+            });
+            element.style.zIndex = 1000;
+
+            quill_config.content_element.append(element);
+        }
+
+        // Public methods
+
+        close() {
+            this.remove();
+            return this;
+        }
+    }
+
+    /* Quill.Popup */
+
+    class QuillPopup extends QuillBasePanel {
+        constructor(name, ...args) {
+            super(name, false, start_moving_panel, start_resizing_panel, ...args);
+
+            const element = this.get_element();
+            element.classList.add("quill-popup");
+
+            const width = 150;
+            const height = 50;
+            this.set_size({ width, height });
+            this.set_position({
+                top: (quill_config.content_element.offsetHeight - height) / 2,
+                left: (quill_config.content_element.offsetWidth - width) / 2,
+            });
+            element.style.zIndex = 10000;
+
+            quill_config.content_element.append(element);
+
+            active_popup = this;
+        }
+
+        // Public methods
+
+        close() {
+            this.remove();
+            return this;
         }
     }
 
     /* Quill.MenuBar */
 
-    class QuillMenuBar extends QuillElement {
+    class MenuBar extends QuillMenuBar {
         constructor(...args) {
             super(`<div class="quill-menu-bar"></div>`, [QuillMenu, QuillMenuItem, QuillSeparator], ...args);
             this.add_children(this._get_arg_children());
@@ -593,6 +543,10 @@
         Util.add_style_variable_to_element(quill_config.root_element, property, "", flag.get_value());
     }
 
+    function close_popup() {
+        if (active_popup !== null) active_popup.close();
+        active_popup = null;
+    }
     function hide_active_menu_bar() {
         hide_active_menu();
         active_menu_bar = null;
@@ -675,6 +629,7 @@
     const quill_panels = {};
     let moving = null;
     let resizing = null;
+    let active_popup = null;
     let active_menu_bar = null;
     let active_menu = null;
     let prevent_menu_from_being_hidden = false;
