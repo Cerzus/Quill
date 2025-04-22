@@ -432,48 +432,78 @@
         }
     }
 
-    input.quill-input[type="range"] {
-        padding: var(--quill-item-padding-size);
-        flex-grow: 1;
-        appearance: none;
-        -webkit-appearance: none;
-        &::-webkit-slider-thumb {
-            background: var(--quill-input-color);
-            border-radius: var(--quill-item-border-radius-size);
+    .quill-slider {
+        position: relative;
+        input {
+            padding: var(--quill-item-padding-size);
+            flex-grow: 1;
             appearance: none;
             -webkit-appearance: none;
-            width: 1.2em;
-            height: 1.2em;
-            cursor: pointer;
-            outline: none;
-        }
-        + output {
-            color: var(--quill-input-color);
-            border-radius: var(--quill-item-border-radius-size);
-            font-family: var(--quill-monospace-font);
-            padding: 0 1px;
-            position: absolute;
-            left: 0;
-            right: 0;
-            margin-inline: auto;
-            width: fit-content;
-            pointer-events: none;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.9em;
-            line-height: 0.9em;
-            text-shadow: 1px 1px var(--quill-item-bg-color), -1px 1px var(--quill-item-bg-color),
-                -1px -1px var(--quill-item-bg-color), 1px -1px var(--quill-item-bg-color);
-        }
-        &:hover,
-        &:focus {
             &::-webkit-slider-thumb {
-                background: var(--quill-input-hovered-color);
+                background: var(--quill-input-color);
+                border-radius: var(--quill-item-border-radius-size);
+                appearance: none;
+                -webkit-appearance: none;
+                width: 1.2em;
+                height: 1.2em;
+                cursor: pointer;
+                outline: none;
             }
             + output {
-                text-shadow: 1px 1px var(--quill-item-hovered-bg-color), -1px 1px var(--quill-item-hovered-bg-color),
-                    -1px -1px var(--quill-item-hovered-bg-color), 1px -1px var(--quill-item-hovered-bg-color);
-                color: var(--quill-input-hovered-color);
+                color: var(--quill-input-color);
+                border-radius: var(--quill-item-border-radius-size);
+                font-family: var(--quill-monospace-font);
+                padding: 0 1px;
+                position: absolute;
+                left: 0;
+                right: 0;
+                margin-inline: auto;
+                width: fit-content;
+                pointer-events: none;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 0.9em;
+                line-height: 0.9em;
+                text-shadow: 1px 1px var(--quill-item-bg-color), -1px 1px var(--quill-item-bg-color),
+                    -1px -1px var(--quill-item-bg-color), 1px -1px var(--quill-item-bg-color);
+            }
+            &:hover,
+            &:focus {
+                &::-webkit-slider-thumb {
+                    background: var(--quill-input-hovered-color);
+                }
+                + output {
+                    text-shadow: 1px 1px var(--quill-item-hovered-bg-color), -1px 1px var(--quill-item-hovered-bg-color),
+                        -1px -1px var(--quill-item-hovered-bg-color), 1px -1px var(--quill-item-hovered-bg-color);
+                    color: var(--quill-input-hovered-color);
+                }
+            }
+        }
+    }
+
+    .quill-drag {
+        position: relative;
+        input {
+            + output {
+                color: var(--quill-input-color);
+                border-radius: var(--quill-item-border-radius-size);
+                font-family: var(--quill-monospace-font);
+                border-radius: var(--quill-item-border-radius-size);
+                border: var(--quill-input-border-size) solid var(--quill-input-border-color);
+                background: var(--quill-item-bg-color);
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                font-size: 0.9em;
+                text-align: center;
+            }
+            &:hover {
+                + output {
+                    color: var(--quill-input-hovered-color);
+                    background: var(--quill-item-hovered-bg-color);
+                }
             }
         }
     }

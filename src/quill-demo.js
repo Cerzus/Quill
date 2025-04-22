@@ -137,6 +137,8 @@ function quill_show_demo() {
                 Q.InputFloat("Input float", { value: 0.5 }, (value) => console.log(value)),
                 Q.SliderInteger("Slider integer", (value) => console.log(value)).set_value(25),
                 Q.SliderFloat("Slider float", (value) => console.log(value)).set_value(0.456),
+                Q.DragInteger("Drag integer", { value: 50 }, (value) => console.log(value)),
+                Q.DragFloat("Drag float", (value) => console.log(value)).set_value(1),
             ]),
             Q.Tree("Trees", [
                 Q.Tree(

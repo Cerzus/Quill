@@ -44,6 +44,9 @@ Element
                             InputInteger    -
                                 InputU8     -
                                 InputU16    -
-                        InputRange
+                        Slider
                             SliderFloat     -
                             SliderInteger   -
+                        Drag
+                            DragFloat       -
+                            DragInteger     -

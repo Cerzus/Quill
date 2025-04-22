@@ -17,10 +17,12 @@ class QuillInput extends QuillLeafElement {
         );
         this.#sanitize_value = sanitize_value ?? ((value) => value);
         this.#input_element = this.get_element().querySelector(`input, select`);
-        this.get_element().addEventListener(event_type, (e) => {
-            this.set_value(this.get_value());
-            this._get_arg_callback()(this.get_value(), this, e);
-        });
+        if (event_type !== null) {
+            this.get_element().addEventListener(event_type, (e) => {
+                this.set_value(this.get_value());
+                this._get_arg_callback()(this.get_value(), this, e);
+            });
+        }
     }
 
     // Public methods

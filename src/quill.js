@@ -42,6 +42,8 @@
         Quill.InputU16 = (...args) => new QuillInputU16(...args);
         Quill.SliderFloat = (...args) => new QuillSliderFloat(...args);
         Quill.SliderInteger = (...args) => new QuillSliderInteger(...args);
+        Quill.DragFloat = (...args) => new QuillDragFloat(...args);
+        Quill.DragInteger = (...args) => new QuillDragInteger(...args);
         Quill.ColorPicker = (...args) => new QuillColorPicker(...args);
         Quill.Tabs = (...args) => new QuillTabs(...args);
         Quill.Tab = (...args) => new QuillTab(...args);
@@ -133,6 +135,7 @@
         });
 
         QuillMenuItem.init();
+        QuillDrag.init();
 
         Object.freeze(Quill);
     };
@@ -299,13 +302,14 @@
     /* Quill.MenuItem */
 
     class QuillMenuItem extends QuillElement {
-        static #ctrl_keys = {};
         static #initialized = false;
+        static #ctrl_keys = {};
         #checkbox = null;
 
         // TODO: Make private somehow
         static init() {
             if (QuillMenuItem.#initialized) return;
+            QuillMenuItem.#initialized = true;
             window.addEventListener("keydown", (e) => {
                 if (e.ctrlKey && QuillMenuItem.#ctrl_keys[e.key]) {
                     QuillMenuItem.#ctrl_keys[e.key](e);

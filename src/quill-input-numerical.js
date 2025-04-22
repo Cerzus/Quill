@@ -31,8 +31,9 @@ class QuillInputNumerical extends QuillInput {
     #apply_min = (value) => (this.#min === null ? value : Math.max(value, this.#min));
     #apply_max = (value) => (this.#max === null ? value : Math.min(value, this.#max));
     #apply_step(value) {
-        if (this.#step === null || this.#min === null) return value;
-        else return this.#min + this.#sanitize_value((value - this.#min) / this.#step) * this.#step;
+        if (this.#step === null) return value;
+        const n_steps_above_min = Math.round((value - this.#min) / this.#step);
+        return Math.round(((this.#min ?? 0) + this.#sanitize_value(n_steps_above_min * this.#step)) * 1e10) / 1e10;
     }
 }
 
@@ -76,22 +77,86 @@ class QuillInputU16 extends QuillInputInteger {
     }
 }
 
-class QuillInputRange extends QuillInputNumerical {
+class QuillSlider extends QuillInputNumerical {
     constructor(...args) {
         super(
-            `<div style="position: relative;/* flex-grow: 1;*/">
+            `<div class="quill-slider">
                 <input class="quill-input" type="range">
                 <output></output>
             </div>`,
             "input",
             ...args
         );
+    }
 
-        this.get_element()
-            .querySelector("input")
-            .addEventListener("input", () => this.#update_output());
+    // Public methods
 
-        this.#update_output();
+    set_value(value) {
+        super.set_value(value);
+        this.get_element().querySelector("output").value = this.get_value();
+        return this;
+    }
+}
+
+class QuillSliderFloat extends QuillSlider {
+    constructor(...args) {
+        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
+            ...args
+        );
+        if (!Object.hasOwn(config, "min")) config.min = 0;
+        if (!Object.hasOwn(config, "max")) config.max = 1;
+        if (!Object.hasOwn(config, "step")) config.step = 0.01;
+        super(null, label, config, callback, children, ...args.slice(count));
+    }
+}
+
+class QuillSliderInteger extends QuillSlider {
+    constructor(...args) {
+        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
+            ...args
+        );
+        if (!Object.hasOwn(config, "min")) config.min = 0;
+        if (!Object.hasOwn(config, "max")) config.max = 100;
+        if (!Object.hasOwn(config, "step")) config.step = 1;
+        super((value) => ~~value, label, config, callback, children, ...args.slice(count));
+    }
+}
+
+class QuillDrag extends QuillInputNumerical {
+    static #initialized = false;
+    static #drag_element = null;
+    static #x;
+    static #value;
+
+    // TODO: Make private somehow
+    static init() {
+        if (QuillDrag.#initialized) return;
+        QuillDrag.#initialized = true;
+        window.addEventListener("mousemove", (e) => {
+            const element = QuillDrag.#drag_element;
+            if (element === null) return;
+            const previous_value = element.get_value();
+            const value = QuillDrag.#value + (e.screenX - QuillDrag.#x) * element._get_arg_config().step;
+            element.set_value(value);
+            const sanitized_value = element.get_value();
+            if (sanitized_value !== previous_value) element._get_arg_callback()(sanitized_value, element, e);
+        });
+        window.addEventListener("mouseup", () => (QuillDrag.#drag_element = null));
+    }
+
+    constructor(...args) {
+        super(
+            `<div class="quill-drag">
+                <input class="quill-input" type="number">
+                <output></output>
+            </div>`,
+            null,
+            ...args
+        );
+
+        Util.add_mouse_down_event_listener(this.get_element().querySelector("output"), (e) => {
+            QuillDrag.#start_dragging(this, e);
+        });
     }
 
     // Public methods
@@ -104,25 +169,29 @@ class QuillInputRange extends QuillInputNumerical {
 
     // Private methods
 
-    #update_output() {
-        this.get_element().querySelector("output").value = this.get_value();
+    static #start_dragging(drag_element, e) {
+        QuillDrag.#drag_element = drag_element;
+        QuillDrag.#x = e.screenX;
+        QuillDrag.#value = +drag_element.get_value();
     }
 }
 
-class QuillSliderFloat extends QuillInputRange {
+class QuillDragFloat extends QuillDrag {
     constructor(...args) {
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
             ...args
         );
-        if (!Object.hasOwn(config, "min")) config.min = 0;
-        if (!Object.hasOwn(config, "max")) config.max = 1;
         if (!Object.hasOwn(config, "step")) config.step = 0.01;
         super(null, label, config, callback, children, ...args.slice(count));
     }
 }
 
-class QuillSliderInteger extends QuillInputRange {
+class QuillDragInteger extends QuillDrag {
     constructor(...args) {
-        super((value) => ~~value, ...args);
+        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
+            ...args
+        );
+        if (!Object.hasOwn(config, "step")) config.step = 1;
+        super((value) => ~~value, label, config, callback, children, ...args.slice(count));
     }
 }
