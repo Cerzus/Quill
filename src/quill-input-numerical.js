@@ -93,7 +93,8 @@ class QuillSlider extends QuillInputNumerical {
 
     set_value(value) {
         super.set_value(value);
-        this.get_element().querySelector("output").value = this.get_value();
+        const output = (this._get_arg_config().prefix ?? "") + this.get_value() + (this._get_arg_config().suffix ?? "");
+        this.get_element().querySelector("output").value = output;
         return this;
     }
 }
@@ -163,7 +164,8 @@ class QuillDrag extends QuillInputNumerical {
 
     set_value(value) {
         super.set_value(value);
-        this.get_element().querySelector("output").value = this.get_value();
+        const output = (this._get_arg_config().prefix ?? "") + this.get_value() + (this._get_arg_config().suffix ?? "");
+        this.get_element().querySelector("output").value = output;
         return this;
     }
 

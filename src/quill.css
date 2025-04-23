@@ -434,6 +434,7 @@
 
     .quill-slider {
         position: relative;
+        overflow: hidden;
         input {
             padding: var(--quill-item-padding-size);
             flex-grow: 1;
@@ -483,6 +484,7 @@
 
     .quill-drag {
         position: relative;
+        overflow: hidden;
         input {
             + output {
                 color: var(--quill-input-color);

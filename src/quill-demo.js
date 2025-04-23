@@ -135,10 +135,23 @@ function quill_show_demo() {
                 Q.InputText("Input text", { value: "Hello, world!" }, (value) => console.log(value)),
                 Q.InputInteger("Input integer", { value: 123 }, (value) => console.log(value)),
                 Q.InputFloat("Input float", { value: 0.5 }, (value) => console.log(value)),
-                Q.SliderInteger("Slider integer", (value) => console.log(value)).set_value(25),
-                Q.SliderFloat("Slider float", (value) => console.log(value)).set_value(0.456),
                 Q.DragInteger("Drag integer", { value: 50 }, (value) => console.log(value)),
-                Q.DragFloat("Drag float", (value) => console.log(value)).set_value(1),
+                Q.DragInteger("Drag integer bounded", { value: 42, min: 0, max: 100, suffix: "%" }, (value) =>
+                    console.log(value)
+                ),
+                Q.DragFloat("Drag float", { step: 0.005, value: 1 }, (value) => console.log(value)).set_value(1),
+                Q.DragFloat("Drag float with suffix", { step: 0.0001, suffix: "ns", value: 0.0067 }, (value) =>
+                    console.log(value)
+                ),
+                Q.SliderInteger("Slider integer", { min: -1, max: 3 }, (value) => console.log(value)).set_value(0),
+                Q.SliderFloat("Slider float with prefix", { prefix: "ratio = ", value: 0.123, step: 0.001 }, (value) =>
+                    console.log(value)
+                ),
+                Q.SliderInteger(
+                    "Slider integer with suffix",
+                    { suffix: "°", value: 0, min: -360, max: +360 },
+                    (value) => console.log(value)
+                ),
             ]),
             Q.Tree("Trees", [
                 Q.Tree(
