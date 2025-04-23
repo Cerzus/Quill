@@ -133,6 +133,9 @@ function quill_show_demo() {
                     ),
                 ]),
                 Q.InputText("Input text", { value: "Hello, world!" }, (value) => console.log(value)),
+                Q.InputText("Input text with placeholder", { placeholder: "Type something" }, (value) =>
+                    console.log(value)
+                ),
                 Q.InputInteger("Input integer", { value: 123 }, (value) => console.log(value)),
                 Q.InputFloat("Input float", { value: 0.5 }, (value) => console.log(value)),
                 Q.DragInteger("Drag integer", { value: 50 }, (value) => console.log(value)),
