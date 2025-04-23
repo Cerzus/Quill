@@ -125,6 +125,18 @@ function quill_show_demo() {
                 ]),
                 Q.Checkbox("Checkbox").set_checked(true),
                 Q.RadioButtons([Q.RadioButton("Radio a", 0), Q.RadioButton("Radio b", 1), Q.RadioButton("Radio c", 2)]),
+                Q.Row(
+                    Q.fill_array(7, (i) =>
+                        Q.Button("Click", {
+                            colors: {
+                                text: Q.Color(i * 10, 0, 60 - i * 10),
+                                item_bg: Q.Color(i * 30, 0, 180 - i * 30),
+                                item_hovered_bg: Q.Color(i * 30, 100, 180 - i * 30),
+                                item_hovered: Q.Color(i * 30, 255, 180 - i * 30),
+                            },
+                        })
+                    )
+                ),
                 Q.Separator(),
                 Q.Row([
                     Q.Dropdown("Dropdown", Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF"])),
