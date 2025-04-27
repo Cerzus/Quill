@@ -76,8 +76,6 @@ function quill_show_demo() {
         hex_editor_data[i] = value < 0.5 ? value * 512 : 0;
     }
 
-    Q.Panel("Panel 2");
-
     Q.Panel("Panel 3", { closed: true }, [
         Q.CollapsingHeader("Take a look, why don't you?", [
             Q.Tree("It's in here", [
@@ -117,8 +115,8 @@ function quill_show_demo() {
                 ]),
             ]),
         ]),
-        Q.CollapsingHeader("Widgets", [
-            Q.Tree("Basic", [
+        Q.CollapsingHeader("Widgets", { expanded: 1 }, [
+            Q.Tree("Basic", { expanded: 1 }, [
                 Q.Row([
                     Q.Button("Button", () => (text.is_hidden() ? text.hide() : text.show())),
                     (text = Q.Text("Thanks for clicking me!")).hide(),
@@ -339,7 +337,7 @@ function quill_show_demo() {
                     ]);
                 }),
                 Q.Button("Stacked modals...", () => {
-                    const modal = Q.Modal("Stacked 1", { not_closeable: true }, [
+                    const modal = Q.Modal("Stacked 1", { can_close: false }, [
                         Q.MenuBar(Q.Menu("File", Q.MenuItem("Some menu item"))),
                         Q.Text("Hello from Stacked The First"),
                         Q.Button("Add another modal...", () => {
@@ -357,7 +355,7 @@ function quill_show_demo() {
             Q.Tree("Basic", [
                 Q.InfoTooltip("This table is created with nested Quill.fill_array() calls."),
                 Q.Table(Q.fill_array(4, (r) => Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))),
-                Q.InfoTooltip("This table is created with Quill.fill_array(0) for the rows."),
+                Q.InfoTooltip("This table is created with Quill.fill_array() for the rows."),
                 Q.Table(
                     Q.fill_array(4, (r) =>
                         Q.TableRow([Q.TableColumn(`R:${r}`), Q.TableColumn(`Some contents`), Q.TableColumn(123.456)])
@@ -492,4 +490,6 @@ function quill_show_demo() {
             ),
         ]),
     ]);
+
+    return demo_panel;
 }
