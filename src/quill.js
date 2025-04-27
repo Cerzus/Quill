@@ -493,47 +493,29 @@
 
             const config = this._get_arg_config();
             this.#number_of_columns = Object.hasOwn(config, "number_of_columns")
-                ? Math.min(Math.max(0, config.number_of_columns), 16)
+                ? Math.min(Math.max(0, ~~config.number_of_columns), 16)
                 : 16;
             this.#show_ascii = Object.hasOwn(config, "show_ascii") ? !!config.show_ascii : true;
-            this.set_grey_out_zeroes(Object.hasOwn(config, "grey_out_zeroes") ? !!config.grey_out_zeroes : true);
+            this.#set_grey_out_zeroes(Object.hasOwn(config, "grey_out_zeroes") ? !!config.grey_out_zeroes : true);
             this.#uppercase_hex = Object.hasOwn(config, "uppercase_hex") ? !!config.uppercase_hex : false;
 
             this.#start_address = start_address;
             this.#end_address = start_address + data_size;
             this.#read_callback = read_callback;
-            this.#max_addr_length = (this.#end_address - 1).toString(16).length;
+            this.#max_addr_length = this.#to_hex(this.#end_address - 1).length;
             this.#dynamic_rows = new QuillDynamicRows(
-                Math.ceil((this.#end_address - start_address) / this.#number_of_columns),
+                this.#get_number_of_rows(),
                 (index) => this.#create_row_element(index),
                 (...args) => this.#update_row_element(...args)
             );
 
             const document_fragment = new DocumentFragment();
             document_fragment.append(
-                this.#create_header_row(),
-                this.#dynamic_rows.get_element(),
+                this.#add_event_listeners(this.#create_header_row()),
+                this.#add_event_listeners(this.#dynamic_rows.get_element()),
                 this.#create_footer_row()
             );
             this.get_element().append(document_fragment);
-
-            const header_row_element = this.get_element().querySelector(".quill-row");
-            header_row_element.addEventListener("mouseover", (e) => {
-                if (e.target.classList.contains("quill-hex-editor-byte")) {
-                    this.#set_hovered_column(Array.from(e.target.parentNode.children).indexOf(e.target));
-                }
-            });
-            header_row_element.addEventListener("mouseout", () => this.#set_hovered_column(-1));
-            header_row_element.addEventListener("mouseleave", () => this.#set_hovered_column(-1));
-
-            const rows_element = this.get_element().querySelector(".quill-dynamic-rows-list");
-            rows_element.addEventListener("mouseover", (e) => {
-                if (e.target.classList.contains("quill-hex-editor-byte")) {
-                    this.#set_hovered_column(Array.from(e.target.parentNode.children).indexOf(e.target));
-                }
-            });
-            rows_element.addEventListener("mouseout", () => this.#set_hovered_column(-1));
-            rows_element.addEventListener("mouseleave", () => this.#set_hovered_column(-1));
         }
 
         // Public methods
@@ -542,17 +524,25 @@
             this.#dynamic_rows.update();
             return this;
         }
-        set_show_ascii(show_ascii) {
+
+        // Private methods
+
+        #set_number_of_columns(number_of_columns) {
+            this.#number_of_columns = Math.min(Math.max(0, ~~number_of_columns), 16);
+            this.get_element().firstChild.replaceWith(this.#add_event_listeners(this.#create_header_row()));
+            this.#dynamic_rows.set_number_of_rows(this.#get_number_of_rows());
+        }
+        #set_show_ascii(show_ascii) {
             this.#show_ascii = !!show_ascii;
             this.#dynamic_rows.refresh();
             return this;
         }
-        set_grey_out_zeroes(grey_out_zeroes) {
+        #set_grey_out_zeroes(grey_out_zeroes) {
             this.#grey_out_zeroes = !!grey_out_zeroes;
             if (this.#grey_out_zeroes) this.get_element().classList.add("quill-grey-out-zeroes");
             else this.get_element().classList.remove("quill-grey-out-zeroes");
         }
-        set_uppercase_hex(uppercase_hex) {
+        #set_uppercase_hex(uppercase_hex) {
             this.#uppercase_hex = !!uppercase_hex;
             const element = this.get_element();
             element.firstChild.remove();
@@ -562,13 +552,15 @@
             this.#dynamic_rows.refresh();
             return this;
         }
-
-        // Private methods
-
+        #get_number_of_rows() {
+            return Math.ceil((this.#end_address - this.#start_address) / this.#number_of_columns);
+        }
         #create_header_row() {
             return new QuillRow({ css: { paddingBottom: "5px" } }, [
                 new QuillNodeElement(
-                    `<div class="quill-hex-editor-address" style="width: ${this.#max_addr_length}ch;"></div>`
+                    `<div class="quill-hex-editor-address"
+                          style="width: ${this.#format_address(this.#end_address - 1).length}ch;">
+                    </div>`
                 ),
                 new QuillNodeElement(
                     `<div class="quill-hex-editor-data">${Util.fill_array(
@@ -579,25 +571,36 @@
                 ),
             ]).get_element();
         }
+        #add_event_listeners(element) {
+            element.addEventListener("mouseover", (e) => {
+                if (e.target.classList.contains("quill-hex-editor-byte")) {
+                    this.#set_hovered_column(Array.from(e.target.parentNode.children).indexOf(e.target));
+                }
+            });
+            element.addEventListener("mouseout", () => this.#set_hovered_column(-1));
+            element.addEventListener("mouseleave", () => this.#set_hovered_column(-1));
+            return element;
+        }
         #create_footer_row() {
             return new QuillRow([
                 new QuillButton("Options", (button) => {
                     return new QuillPopup("", button.get_page_x(), button.get_page_y_bottom(), [
-                        new QuillText("16 columns"),
+                        new QuillDragInteger("Columns", { min: 1, max: 16, value: this.#number_of_columns }, (value) =>
+                            this.#set_number_of_columns(value)
+                        ),
                         new QuillCheckbox("Show ASCII", { checked: this.#show_ascii }, (checked) =>
-                            this.set_show_ascii(checked)
+                            this.#set_show_ascii(checked)
                         ),
                         new QuillCheckbox("Grey out zeroes", { checked: this.#grey_out_zeroes }, (checked) =>
-                            this.set_grey_out_zeroes(checked)
+                            this.#set_grey_out_zeroes(checked)
                         ),
                         new QuillCheckbox("Uppercase hex", { checked: this.#uppercase_hex }, (checked) =>
-                            this.set_uppercase_hex(checked)
+                            this.#set_uppercase_hex(checked)
                         ),
                     ]);
                 }),
                 new QuillText(
-                    `Range ${this.#format_address(this.#start_address)}` +
-                        `...${this.#format_address(this.#end_address - 1)}`
+                    this.#format_address(this.#start_address) + " ... " + this.#format_address(this.#end_address - 1)
                 ),
                 new QuillButton("", { css: { width: "100px" } }),
             ]).get_element();
@@ -609,8 +612,8 @@
         #to_ascii(value) {
             return String.fromCharCode(value >= 32 && value < 127 ? value : 46).replaceAll(/\s/g, "\xa0");
         }
-        #format_address(address) {
-            return this.#to_hex(address, this.#max_addr_length);
+        #format_address(address, length = this.#max_addr_length) {
+            return "0x" + this.#to_hex(address, length);
         }
         #set_hovered_column(n) {
             this.get_element().setAttribute("data-hovered-column", n);

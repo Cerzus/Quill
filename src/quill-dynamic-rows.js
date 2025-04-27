@@ -33,6 +33,11 @@ class QuillDynamicRows extends QuillNodeElement {
         for (const row of this.#rows) this._get_arg_callback()(row.index, row.row);
         return this;
     }
+    set_number_of_rows(number_of_rows) {
+        if (number_of_rows === this.#number_of_rows) return;
+        this.#number_of_rows = number_of_rows;
+        this.refresh();
+    }
     refresh() {
         const rows_element = this.get_element().querySelector(".quill-dynamic-rows-list");
         const offset_element = this.get_element().querySelector(".quill-dynamic-rows-offset");

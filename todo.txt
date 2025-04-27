@@ -18,3 +18,4 @@
 - Improve RadioButtons name generation
 - Focus Panel on middle mouse button down; and therefor also close menu's etc.
 - Make a choice between top/left and x/y
+- Sanitize inputs
