@@ -92,15 +92,25 @@ function quill_show_demo() {
 
     Q.Panel("Style editor", { closed: true }, get_style_editor());
 
-    const demo_panel = Q.Panel("Quill Demo", { closed: true }, [
-        Q.CollapsingHeader("Configuration", [
+    return (demo_panel = Q.Panel("Quill Demo", { closed: true }, [
+        show_collapsing_header_configuration(),
+        show_collapsing_header_window_options(),
+        show_collapsing_header_widgets(),
+        show_collapsing_header_popups_and_modals(),
+        show_collapsing_header_tables(),
+        show_menu_bar(),
+    ]));
+    function show_collapsing_header_configuration(expanded) {
+        return Q.CollapsingHeader("Configuration", { expanded }, [
             Q.Tree("Style", [
                 Q.InfoTooltip("The same contents can be accessed in the menu under [Tools] -> [Style editor]"),
                 get_style_editor(),
                 // Q.Separator(),
             ]),
-        ]),
-        Q.CollapsingHeader("Window options", [
+        ]);
+    }
+    function show_collapsing_header_window_options(expanded) {
+        return Q.CollapsingHeader("Window options", { expanded }, [
             Q.Table([
                 Q.TableRow([
                     Q.TableColumn(
@@ -114,9 +124,19 @@ function quill_show_demo() {
                     Q.TableColumn(Q.Checkbox("Can close", { checked: true }, (c) => demo_panel.set_can_close(c))),
                 ]),
             ]),
-        ]),
-        Q.CollapsingHeader("Widgets", { expanded: 1 }, [
-            Q.Tree("Basic", { expanded: 1 }, [
+        ]);
+    }
+    function show_collapsing_header_widgets(expanded) {
+        return Q.CollapsingHeader("Widgets", { expanded }, [
+            show_tree_basic(),
+            show_tree_trees(),
+            show_tree_collapsing_headers(),
+            show_tree_text(),
+            show_tree_dropdowns(),
+            show_tree_tabs(),
+        ]);
+        function show_tree_basic(expanded) {
+            return Q.Tree("Basic", { expanded }, [
                 Q.Row([
                     Q.Button("Button", () => (text.is_hidden() ? text.hide() : text.show())),
                     (text = Q.Text("Thanks for clicking me!")).hide(),
@@ -165,16 +185,20 @@ function quill_show_demo() {
                     { suffix: "°", value: 0, min: -360, max: +360 },
                     (value) => console.log(value)
                 ),
-            ]),
-            Q.Tree("Trees", [
+            ]);
+        }
+        function show_tree_trees(expanded) {
+            return Q.Tree("Trees", { expanded }, [
                 Q.Tree(
                     "Basic trees",
                     Q.fill_array(5, (i) =>
                         Q.Tree(`Child ${i}`, { expanded: i === 0 }, [Q.Row([Q.Text("blah blah"), Q.Button("button")])])
                     )
                 ),
-            ]),
-            Q.Tree("Collapsing headers", [
+            ]);
+        }
+        function show_tree_collapsing_headers(expanded) {
+            return Q.Tree("Collapsing headers", { expanded }, [
                 (checkbox = Q.Checkbox("Show 2nd header", { checked: true }, (checked) =>
                     checked ? header.show() : header.hide()
                 )),
@@ -187,8 +211,10 @@ function quill_show_demo() {
                     { closeable: true },
                     Q.fill_array(5, (i) => Q.Text(`Some content ${i}`))
                 )).on_close(() => checkbox.set_checked(false)),
-            ]),
-            Q.Tree("Text", [
+            ]);
+        }
+        function show_tree_text(expanded) {
+            return Q.Tree("Text", { expanded }, [
                 Q.Tree("Colorful text", [
                     Q.Text("Pink", { colors: { text: Q.Color(255, 0, 255) } }),
                     Q.Text("Yellow", { colors: { text: Q.Color(255, 255, 0) } }),
@@ -210,8 +236,10 @@ function quill_show_demo() {
                     Q.Text("Hiragana: かきくけこ (kakikukeko)"),
                     Q.Text("Kanjis: 日本語 (nihongo)"),
                 ]),
-            ]),
-            Q.Tree("Dropdowns", [
+            ]);
+        }
+        function show_tree_dropdowns(expanded) {
+            return Q.Tree("Dropdowns", { expanded }, [
                 Q.Row([
                     Q.Dropdown(
                         (selected) => console.log(selected),
@@ -232,8 +260,10 @@ function quill_show_demo() {
                         Q.fill_array(5, (i) => `Option ${i}`)
                     ),
                 ]),
-            ]),
-            Q.Tree("Tabs", [
+            ]);
+        }
+        function show_tree_tabs(expanded) {
+            return Q.Tree("Tabs", { expanded }, [
                 Q.Tree("Basic", [
                     Q.Tabs([
                         Q.Tab("Avocado", Q.Text("This is the Avocado tab!\nblah blah blah blah blah")),
@@ -242,10 +272,13 @@ function quill_show_demo() {
                     ]),
                     Q.Separator(),
                 ]),
-            ]),
-        ]),
-        Q.CollapsingHeader("Popups & Modals", { expanded: 1 }, [
-            Q.Tree("Popups", { expanded: 1 }, [
+            ]);
+        }
+    }
+    function show_collapsing_header_popups_and_modals(expanded) {
+        return Q.CollapsingHeader("Popups & Modals", { expanded }, [show_tree_popups(), show_tree_modals()]);
+        function show_tree_popups(expanded) {
+            return Q.Tree("Popups", { expanded }, [
                 Q.TextWrapped(
                     "When a popup is active, it inhibits interacting with windows that are behind the popup.\nClicking outside the popup closes it."
                 ),
@@ -323,8 +356,10 @@ function quill_show_demo() {
                         // }
                     ])
                 ),
-            ]),
-            Q.Tree("Modals", [
+            ]);
+        }
+        function show_tree_modals(expanded) {
+            return Q.Tree("Modals", { expanded }, [
                 Q.TextWrapped(
                     "Modals are like Panels but the user cannot interact outside of them before closing them."
                 ),
@@ -349,10 +384,13 @@ function quill_show_demo() {
                         Q.Button("Close", () => modal.close()),
                     ]);
                 }),
-            ]),
-        ]),
-        Q.CollapsingHeader("Tables", [
-            Q.Tree("Basic", [
+            ]);
+        }
+    }
+    function show_collapsing_header_tables(expanded) {
+        return Q.CollapsingHeader("Tables", { expanded }, [show_tree_basic(), show_tree_borders()]);
+        function show_tree_basic(expanded) {
+            return Q.Tree("Basic", { expanded }, [
                 Q.InfoTooltip("This table is created with nested Quill.fill_array() calls."),
                 Q.Table(Q.fill_array(4, (r) => Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))),
                 Q.InfoTooltip("This table is created with Quill.fill_array() for the rows."),
@@ -370,8 +408,10 @@ function quill_show_demo() {
                     Q.TableRow([Q.TableColumn(6), Q.TableColumn(7), Q.TableColumn(8)]),
                     Q.TableRow([Q.TableColumn(9), Q.TableColumn(10)]),
                 ]),
-            ]),
-            Q.Tree("Borders, background", [
+            ]);
+        }
+        function show_tree_borders(expanded) {
+            return Q.Tree("Borders, background", { expanded }, [
                 (row_bg = Q.Checkbox("Row background", { checked: true }, (checked) =>
                     table.set_style_flag("table_row_bg", checked)
                 )),
@@ -422,9 +462,11 @@ function quill_show_demo() {
                         ),
                     ]
                 )),
-            ]),
-        ]),
-        Q.MenuBar([
+            ]);
+        }
+    }
+    function show_menu_bar() {
+        return Q.MenuBar([
             Q.Menu("File", {}, () => {}, [
                 Q.Menu("File", [Q.MenuItem("Load..."), Q.Separator(), (recent = Q.Menu("Recent"))]),
                 Q.MenuItem("Load...", { ctrl_key: "L" }, () =>
@@ -488,8 +530,6 @@ function quill_show_demo() {
                         return menu_item;
                     })
             ),
-        ]),
-    ]);
-
-    return demo_panel;
+        ]);
+    }
 }
