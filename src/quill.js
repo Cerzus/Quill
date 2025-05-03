@@ -8,6 +8,7 @@
 
         Quill.Color = (...args) => new QuillColor(...args);
         Quill.Separator = (...args) => new QuillSeparator(...args);
+        Quill.Spacing = (...args) => new QuillSpacing(...args);
         Quill.InfoTooltip = (...args) => new QuillInfoTooltip(...args);
         Quill.Text = (...args) => new QuillText(...args);
         Quill.TextWrapped = (...args) => new QuillTextWrapped(...args);
