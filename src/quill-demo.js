@@ -95,7 +95,7 @@ function quill_show_demo() {
     return (demo_panel = Q.Panel("Quill Demo", { closed: true }, [
         show_collapsing_header_configuration(),
         show_collapsing_header_window_options(),
-        show_collapsing_header_widgets(),
+        show_collapsing_header_elements(),
         show_collapsing_header_popups_and_modals(),
         show_collapsing_header_tables(),
         show_menu_bar(),
@@ -126,14 +126,15 @@ function quill_show_demo() {
             ]),
         ]);
     }
-    function show_collapsing_header_widgets(expanded) {
-        return Q.CollapsingHeader("Widgets", { expanded }, [
+    function show_collapsing_header_elements(expanded) {
+        return Q.CollapsingHeader("Elements", { expanded }, [
             show_tree_basic(),
             show_tree_trees(),
             show_tree_collapsing_headers(),
             show_tree_text(),
             show_tree_dropdowns(),
             show_tree_tabs(),
+            show_tree_multi_component_elements(),
         ]);
         function show_tree_basic(expanded) {
             return Q.Tree("Basic", { expanded }, [
@@ -272,6 +273,38 @@ function quill_show_demo() {
                     ]),
                     Q.Separator(),
                 ]),
+            ]);
+        }
+        function show_tree_multi_component_elements(expanded) {
+            const vec4f = [0.1, 0.2, 0.3, 0.44];
+            const vec4i = [1, 5, 100, 255];
+            const config_float = { value: vec4f, min: 0, max: 1, step: 0.01 };
+            const config_integer = { value: vec4i, min: 0, max: 255, step: 1 };
+            const float_inputs = [];
+            const integer_inputs = [];
+            const update_float_inputs = (value) => float_inputs.forEach((x) => x.set_value(value));
+            const update_integer_inputs = (value) => integer_inputs.forEach((x) => x.set_value(value));
+            return Q.Tree("Multi-component elements", { expanded }, [
+                (float_inputs[0] = Q.InputFloat2("input float2", { value: vec4f }, update_float_inputs)),
+                (integer_inputs[0] = Q.InputInteger2("input int2", { value: vec4i }, update_integer_inputs)),
+                (float_inputs[1] = Q.InputFloat3("input float3", { value: vec4f }, update_float_inputs)),
+                (integer_inputs[1] = Q.InputInteger3("input int3", { value: vec4i }, update_integer_inputs)),
+                (float_inputs[2] = Q.InputFloat4("input float4", { value: vec4f }, update_float_inputs)),
+                (integer_inputs[2] = Q.InputInteger4("input int4", { value: vec4i }, update_integer_inputs)),
+                Q.Spacing(),
+                (float_inputs[3] = Q.DragFloat2("drag float2", config_float, update_float_inputs)),
+                (integer_inputs[3] = Q.DragInteger2("drag int2", config_integer, update_integer_inputs)),
+                (float_inputs[4] = Q.DragFloat3("drag float3", config_float, update_float_inputs)),
+                (integer_inputs[4] = Q.DragInteger3("drag int3", config_integer, update_integer_inputs)),
+                (float_inputs[5] = Q.DragFloat4("drag float4", config_float, update_float_inputs)),
+                (integer_inputs[5] = Q.DragInteger4("drag int4", config_integer, update_integer_inputs)),
+                Q.Spacing(),
+                (float_inputs[6] = Q.SliderFloat2("slider float2", config_float, update_float_inputs)),
+                (integer_inputs[6] = Q.SliderInteger2("slider int2", config_integer, update_integer_inputs)),
+                (float_inputs[7] = Q.SliderFloat3("slider float3", config_float, update_float_inputs)),
+                (integer_inputs[7] = Q.SliderInteger3("slider int3", config_integer, update_integer_inputs)),
+                (float_inputs[8] = Q.SliderFloat4("slider float4", config_float, update_float_inputs)),
+                (integer_inputs[8] = Q.SliderInteger4("slider int4", config_integer, update_integer_inputs)),
             ]);
         }
     }

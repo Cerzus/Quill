@@ -46,7 +46,7 @@ class Util {
     }
 
     static label_config_callback_and_children_from_arguments(...args) {
-        const result = { label: null, config: {}, callback: () => {}, children: [] };
+        const result = { label: "", config: {}, callback: () => {}, children: [] };
         let i = 0;
         if (typeof args[i] === "string" || typeof args[i] === "number") result.label = args[i++];
         if (

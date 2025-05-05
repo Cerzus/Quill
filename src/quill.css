@@ -350,9 +350,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        &:hover:not(:has(.quill-label)) {
+        &:hover {
             color: var(--quill-item-hovered-color);
         }
+    }
+
+    .quill-multi-component-input {
+        gap: var(--quill-item-inner-gap-size);
     }
 
     select.quill-select,
@@ -456,15 +460,14 @@
                 font-family: var(--quill-monospace-font);
                 padding: 0 1px;
                 position: absolute;
-                left: 0;
+                top: 0;
                 right: 0;
-                margin-inline: auto;
-                width: fit-content;
+                bottom: 0;
+                left: 0;
                 pointer-events: none;
-                top: 50%;
-                transform: translateY(-50%);
                 font-size: 0.9em;
-                line-height: 0.9em;
+                text-align: center;
+                align-content: center;
                 text-shadow: 1px 1px var(--quill-item-bg-color), -1px 1px var(--quill-item-bg-color),
                     -1px -1px var(--quill-item-bg-color), 1px -1px var(--quill-item-bg-color);
             }
@@ -495,11 +498,18 @@
                 background: var(--quill-item-bg-color);
                 position: absolute;
                 top: 0;
+                right: 0;
                 bottom: 0;
                 left: 0;
-                right: 0;
                 font-size: 0.9em;
                 text-align: center;
+                align-content: center;
+                &:hover,
+                &:focus {
+                    accent-color: var(--quill-input-hovered-color);
+                    color: var(--quill-input-hovered-color);
+                    background: var(--quill-item-hovered-bg-color);
+                }
             }
             &:hover {
                 + output {

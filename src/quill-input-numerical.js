@@ -48,10 +48,40 @@ class QuillInputFloat extends QuillInputNumber {
         super(null, ...args);
     }
 }
+class QuillInputFloat2 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillInputFloat, 2, ...args);
+    }
+}
+class QuillInputFloat3 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillInputFloat, 3, ...args);
+    }
+}
+class QuillInputFloat4 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillInputFloat, 4, ...args);
+    }
+}
 
 class QuillInputInteger extends QuillInputNumber {
     constructor(...args) {
         super((value) => ~~value, ...args);
+    }
+}
+class QuillInputInteger2 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillInputInteger, 2, ...args);
+    }
+}
+class QuillInputInteger3 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillInputInteger, 3, ...args);
+    }
+}
+class QuillInputInteger4 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillInputInteger, 4, ...args);
     }
 }
 
@@ -110,6 +140,21 @@ class QuillSliderFloat extends QuillSlider {
         super(null, label, config, callback, children, ...args.slice(count));
     }
 }
+class QuillSliderFloat2 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillSliderFloat, 2, ...args);
+    }
+}
+class QuillSliderFloat3 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillSliderFloat, 3, ...args);
+    }
+}
+class QuillSliderFloat4 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillSliderFloat, 4, ...args);
+    }
+}
 
 class QuillSliderInteger extends QuillSlider {
     constructor(...args) {
@@ -120,6 +165,21 @@ class QuillSliderInteger extends QuillSlider {
         if (!Object.hasOwn(config, "max")) config.max = 100;
         if (!Object.hasOwn(config, "step")) config.step = 1;
         super((value) => ~~value, label, config, callback, children, ...args.slice(count));
+    }
+}
+class QuillSliderInteger2 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillSliderInteger, 2, ...args);
+    }
+}
+class QuillSliderInteger3 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillSliderInteger, 3, ...args);
+    }
+}
+class QuillSliderInteger4 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillSliderInteger, 4, ...args);
     }
 }
 
@@ -187,6 +247,21 @@ class QuillDragFloat extends QuillDrag {
         super(null, label, config, callback, children, ...args.slice(count));
     }
 }
+class QuillDragFloat2 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillDragFloat, 2, ...args);
+    }
+}
+class QuillDragFloat3 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillDragFloat, 3, ...args);
+    }
+}
+class QuillDragFloat4 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillDragFloat, 4, ...args);
+    }
+}
 
 class QuillDragInteger extends QuillDrag {
     constructor(...args) {
@@ -195,5 +270,20 @@ class QuillDragInteger extends QuillDrag {
         );
         if (!Object.hasOwn(config, "step")) config.step = 1;
         super((value) => ~~value, label, config, callback, children, ...args.slice(count));
+    }
+}
+class QuillDragInteger2 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillDragInteger, 2, ...args);
+    }
+}
+class QuillDragInteger3 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillDragInteger, 3, ...args);
+    }
+}
+class QuillDragInteger4 extends QuillInputMultiComponent {
+    constructor(...args) {
+        super(QuillDragInteger, 4, ...args);
     }
 }
