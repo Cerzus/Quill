@@ -341,6 +341,28 @@ function quill_show_demo() {
                     (s16_inputs[3] = Q.SliderS16("SliderS16", { value: values_s[1] }, update_s16_inputs)),
                     (u16_inputs[3] = Q.SliderU16("SliderU16", { value: values_u[1] }, update_u16_inputs)),
                 ]),
+                Q.Tree("Sliders (reverse)", { expanded: true }, [
+                    (s8_inputs[4] = Q.SliderS8(
+                        "SliderS8 reverse",
+                        { value: values_s[0], reverse: true },
+                        update_s8_inputs
+                    )),
+                    (u8_inputs[4] = Q.SliderU8(
+                        "SliderU8 reverse",
+                        { value: values_u[0], reverse: true },
+                        update_u8_inputs
+                    )),
+                    (s16_inputs[4] = Q.SliderS16(
+                        "SliderS16 reverse",
+                        { value: values_s[1], reverse: true },
+                        update_s16_inputs
+                    )),
+                    (u16_inputs[4] = Q.SliderU16(
+                        "SliderU16 reverse",
+                        { value: values_u[1], reverse: true },
+                        update_u16_inputs
+                    )),
+                ]),
                 Q.Tree("Drags", { expanded: true }, [
                     (s8_inputs[5] = Q.DragS8("DragS8", { value: values_s[0] }, update_s8_inputs)),
                     (u8_inputs[5] = Q.DragU8("DragU8", { value: values_u[0], suffix: " ms" }, update_u8_inputs)),

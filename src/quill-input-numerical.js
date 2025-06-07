@@ -76,6 +76,7 @@ class QuillSlider extends QuillInputNumerical {
             "input",
             ...args
         );
+        if (this._get_arg_config().reverse) this.get_input_element().style.direction = "rtl";
     }
 
     // Public methods
