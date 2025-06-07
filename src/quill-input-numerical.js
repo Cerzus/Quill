@@ -55,24 +55,13 @@ class QuillInputInteger extends QuillInputNumber {
     }
 }
 
-class QuillInputU8 extends QuillInputInteger {
-    constructor(...args) {
+class QuillInputI extends QuillInputInteger {
+    constructor(min, max, ...args) {
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
             ...args
         );
-        config.min = 0;
-        config.max = (1 << 8) - 1;
-        super(label, config, callback, children, ...args.slice(count));
-    }
-}
-
-class QuillInputU16 extends QuillInputInteger {
-    constructor(...args) {
-        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
-            ...args
-        );
-        config.min = 0;
-        config.max = (1 << 16) - 1;
+        config.min = min;
+        config.max = max;
         super(label, config, callback, children, ...args.slice(count));
     }
 }
@@ -92,8 +81,9 @@ class QuillSlider extends QuillInputNumerical {
     // Public methods
 
     set_value(value) {
+        const config = this._get_arg_config();
         super.set_value(value);
-        const output = (this._get_arg_config().prefix ?? "") + this.get_value() + (this._get_arg_config().suffix ?? "");
+        const output = (config.prefix ?? "") + this.get_value() + (config.suffix ?? "");
         this.get_element().querySelector("output").value = output;
         return this;
     }
@@ -122,6 +112,15 @@ class QuillSliderInteger extends QuillSlider {
         super((value) => ~~value, label, config, callback, children, ...args.slice(count));
     }
 }
+
+class QuillSliderI extends QuillSliderInteger {
+    constructor(min, max, ...args) {
+        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
+            ...args
+        );
+        config.min = min;
+        config.max = max;
+        super(label, config, callback, children, ...args.slice(count));
     }
 }
 
@@ -197,5 +196,16 @@ class QuillDragInteger extends QuillDrag {
         );
         if (!Object.hasOwn(config, "step")) config.step = 1;
         super((value) => ~~value, label, config, callback, children, ...args.slice(count));
+    }
+}
+
+class QuillDragI extends QuillDragInteger {
+    constructor(min, max, ...args) {
+        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
+            ...args
+        );
+        config.min = min;
+        config.max = max;
+        super(label, config, callback, children, ...args.slice(count));
     }
 }
