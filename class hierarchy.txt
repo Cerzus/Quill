@@ -42,11 +42,43 @@ Element
                         InputNumber
                             InputFloat      -
                             InputInteger    -
+                                InputS8     -
                                 InputU8     -
+                                InputS16    -
                                 InputU16    -
+                                InputS32    -
                         Slider
                             SliderFloat     -
                             SliderInteger   -
+                                SliderS8    -
+                                SliderU8    -
+                                SliderS16   -
+                                SliderU16   -
+                                SliderS32   -
                         Drag
                             DragFloat       -
                             DragInteger     -
+                                DragS8      -
+                                DragU8      -
+                                DragS16     -
+                                DragU16     -
+                                DragS32     -
+                InputMultiComponent
+                    InputFloat2             -
+                    InputFloat3             -
+                    InputFloat4             -
+                    InputInteger2           -
+                    InputInteger3           -
+                    InputInteger4           -
+                    SliderFloat2            -
+                    SliderFloat3            -
+                    SliderFloat4            -
+                    SliderInteger2          -
+                    SliderInteger3          -
+                    SliderInteger4          -
+                    DragFloat2              -
+                    DragFloat3              -
+                    DragFloat4              -
+                    DragInteger2            -
+                    DragInteger3            -
+                    DragInteger4            -
