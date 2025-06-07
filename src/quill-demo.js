@@ -277,38 +277,76 @@ function quill_show_demo() {
             ]);
         }
         function show_tree_data_types(expanded) {
-            const signed_values = [127, 32767, -1];
-            const unsigned_values = [255, 65535, 4294967295];
+            const values_s = [127, 32767, -1];
+            const values_u = [255, 65535];
             const s8_inputs = [];
             const u8_inputs = [];
             const s16_inputs = [];
             const u16_inputs = [];
             const s32_inputs = [];
-            const u32_inputs = [];
             const update_s8_inputs = (value) => s8_inputs.forEach((x) => x.set_value(value));
             const update_u8_inputs = (value) => u8_inputs.forEach((x) => x.set_value(value));
             const update_s16_inputs = (value) => s16_inputs.forEach((x) => x.set_value(value));
             const update_u16_inputs = (value) => u16_inputs.forEach((x) => x.set_value(value));
             const update_s32_inputs = (value) => s32_inputs.forEach((x) => x.set_value(value));
-            const update_u32_inputs = (value) => u32_inputs.forEach((x) => x.set_value(value));
             return Q.Tree("Data types", { expanded }, [
-                Q.Text("Inputs"),
-                (s8_inputs[0] = Q.InputS8("InputS8", { value: signed_values[0] }, update_s8_inputs)),
-                (u8_inputs[0] = Q.InputU8("InputU8", { value: unsigned_values[0] }, update_u8_inputs)),
-                (s16_inputs[0] = Q.InputS16("InputS16", { value: signed_values[1] }, update_s16_inputs)),
-                (u16_inputs[0] = Q.InputU16("InputU16", { value: unsigned_values[1] }, update_u16_inputs)),
-                (s32_inputs[0] = Q.InputS32("InputS32", { value: signed_values[2] }, update_s32_inputs)),
-                (u32_inputs[0] = Q.InputU32("InputU32", { value: unsigned_values[2] }, update_u32_inputs)),
-                Q.Text("Sliders"),
-                (s8_inputs[1] = Q.SliderS8("SliderS8", { value: signed_values[0] }, update_s8_inputs)),
-                (u8_inputs[1] = Q.SliderU8("SliderU8", { value: unsigned_values[0] }, update_u8_inputs)),
-                (s16_inputs[1] = Q.SliderS16("SliderS16", { value: signed_values[1] }, update_s16_inputs)),
-                (u16_inputs[1] = Q.SliderU16("SliderU16", { value: unsigned_values[1] }, update_u16_inputs)),
-                Q.Text("Drags:"),
-                (s8_inputs[2] = Q.DragS8("DragS8", { value: signed_values[0] }, update_s8_inputs)),
-                (u8_inputs[2] = Q.DragU8("DragU8", { value: unsigned_values[0] }, update_u8_inputs)),
-                (s16_inputs[2] = Q.DragS16("DragS16", { value: signed_values[1] }, update_s16_inputs)),
-                (u16_inputs[2] = Q.DragU16("DragU16", { value: unsigned_values[1] }, update_u16_inputs)),
+                Q.Tree("Inputs (decimal)", { expanded: true }, [
+                    (s8_inputs[0] = Q.InputS8("InputS8", { value: values_s[0] }, update_s8_inputs)),
+                    (u8_inputs[0] = Q.InputU8("InputU8", { value: values_u[0] }, update_u8_inputs)),
+                    (s16_inputs[0] = Q.InputS16("InputS16", { value: values_s[1] }, update_s16_inputs)),
+                    (u16_inputs[0] = Q.InputU16("InputU16", { value: values_u[1] }, update_u16_inputs)),
+                    (s32_inputs[0] = Q.InputS32("InputS32", { value: values_s[2] }, update_s32_inputs)),
+                ]),
+                Q.Tree("Inputs (hexadecimal)", { expanded: true }, [
+                    (s8_inputs[1] = Q.InputHex("InputHex (s8)", { value: values_s[0], length: 2 }, update_s8_inputs)),
+                    (u8_inputs[1] = Q.InputHex("InputHex (u8)", { value: values_u[0], length: 2 }, update_u8_inputs)),
+                    (s16_inputs[1] = Q.InputHex(
+                        "InputHex (s16)",
+                        { value: values_s[1], length: 4 },
+                        update_s16_inputs
+                    )),
+                    (u16_inputs[1] = Q.InputHex(
+                        "InputHex (u16)",
+                        { value: values_u[1], length: 4 },
+                        update_u16_inputs
+                    )),
+                    (s32_inputs[1] = Q.InputHex(
+                        "InputHex (s32)",
+                        { value: values_s[2], length: 8 },
+                        update_s32_inputs
+                    )),
+                ]),
+                Q.Tree("Inputs (binary)", { expanded: true }, [
+                    (s8_inputs[2] = Q.InputBin("InputBin (s8)", { value: values_s[0], length: 8 }, update_s8_inputs)),
+                    (u8_inputs[2] = Q.InputBin("InputBin (u8)", { value: values_u[0], length: 8 }, update_u8_inputs)),
+                    (s16_inputs[2] = Q.InputBin(
+                        "InputBin (s16)",
+                        { value: values_s[1], length: 16 },
+                        update_s16_inputs
+                    )),
+                    (u16_inputs[2] = Q.InputBin(
+                        "InputBin (u16)",
+                        { value: values_u[1], length: 16 },
+                        update_u16_inputs
+                    )),
+                    (s32_inputs[2] = Q.InputBin(
+                        "InputBin (s32)",
+                        { value: values_s[2], length: 32 },
+                        update_s32_inputs
+                    )),
+                ]),
+                Q.Tree("Sliders", { expanded: true }, [
+                    (s8_inputs[3] = Q.SliderS8("SliderS8", { value: values_s[0] }, update_s8_inputs)),
+                    (u8_inputs[3] = Q.SliderU8("SliderU8", { value: values_u[0] }, update_u8_inputs)),
+                    (s16_inputs[3] = Q.SliderS16("SliderS16", { value: values_s[1] }, update_s16_inputs)),
+                    (u16_inputs[3] = Q.SliderU16("SliderU16", { value: values_u[1] }, update_u16_inputs)),
+                ]),
+                Q.Tree("Drags", { expanded: true }, [
+                    (s8_inputs[5] = Q.DragS8("DragS8", { value: values_s[0] }, update_s8_inputs)),
+                    (u8_inputs[5] = Q.DragU8("DragU8", { value: values_u[0], suffix: " ms" }, update_u8_inputs)),
+                    (s16_inputs[5] = Q.DragS16("DragS16", { value: values_s[1] }, update_s16_inputs)),
+                    (u16_inputs[5] = Q.DragU16("DragU16", { value: values_u[1], suffix: " ms" }, update_u16_inputs)),
+                ]),
             ]);
         }
         function show_tree_multi_component_elements(expanded) {

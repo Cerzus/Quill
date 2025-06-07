@@ -50,7 +50,8 @@
         Quill.InputS16 = (...args) => new QuillInputI(-32768, 32768 - 1, ...args);
         Quill.InputU16 = (...args) => new QuillInputI(0, 65536 - 1, ...args);
         Quill.InputS32 = (...args) => new QuillInputI(-2147483648, 2147483647, ...args);
-        Quill.InputU32 = (...args) => new QuillInputI(0, 4294967295, ...args);
+        Quill.InputHex = (...args) => new QuillInputBase(16, ...args);
+        Quill.InputBin = (...args) => new QuillInputBase(2, ...args);
         Quill.SliderFloat = (...args) => new QuillSliderFloat(...args);
         Quill.SliderFloat2 = (...args) => new QuillInputMultiComponent(QuillSliderFloat, 2, ...args);
         Quill.SliderFloat3 = (...args) => new QuillInputMultiComponent(QuillSliderFloat, 3, ...args);
