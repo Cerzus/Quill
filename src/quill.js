@@ -37,6 +37,10 @@
         Quill.Dropdown = (...args) => new QuillDropdown(...args);
         Quill.DropdownOptions = (...args) => new QuillDropdownOptions(...args);
         Quill.InputText = (...args) => new QuillInputText(...args);
+        Quill.InputHex = (...args) => new QuillInputBase(16, ...args);
+        Quill.InputBin = (...args) => new QuillInputBase(2, ...args);
+        Quill.InputByte = (...args) => new QuillInputBytes(1, ...args);
+        Quill.InputWord = (...args) => new QuillInputBytes(2, ...args);
         Quill.InputFloat = (...args) => new QuillInputFloat(...args);
         Quill.InputFloat2 = (...args) => new QuillInputMultiComponent(QuillInputFloat, 2, ...args);
         Quill.InputFloat3 = (...args) => new QuillInputMultiComponent(QuillInputFloat, 3, ...args);
@@ -50,8 +54,6 @@
         Quill.InputS16 = (...args) => new QuillInputI(-32768, 32768 - 1, ...args);
         Quill.InputU16 = (...args) => new QuillInputI(0, 65536 - 1, ...args);
         Quill.InputS32 = (...args) => new QuillInputI(-2147483648, 2147483647, ...args);
-        Quill.InputHex = (...args) => new QuillInputBase(16, ...args);
-        Quill.InputBin = (...args) => new QuillInputBase(2, ...args);
         Quill.SliderFloat = (...args) => new QuillSliderFloat(...args);
         Quill.SliderFloat2 = (...args) => new QuillInputMultiComponent(QuillSliderFloat, 2, ...args);
         Quill.SliderFloat3 = (...args) => new QuillInputMultiComponent(QuillSliderFloat, 3, ...args);
@@ -504,6 +506,82 @@
             this.#menu_element.style.top = `${position.top}px`;
             this.#menu_element.style.left = `${position.left}px`;
         }
+    }
+
+    // Quill.InputBytes
+
+    class QuillInputBytes extends QuillInput {
+        constructor(size, ...args) {
+            Util.assert(size === 1 || size === 2);
+
+            const html = `<input class="quill-input" type="text" size="${size * 2}" maxlength="${size * 2}" />`;
+            super(html, "change", sanitize_value, [], ...args);
+
+            const mask = (0x100 << ((size - 1) * 8)) - 1;
+
+            function sanitize_value(value) {
+                return (value & mask).toString(16).padStart(size * 2, 0);
+            }
+            function value_to_signed(value) {
+                return value > mask >> 1 ? value - mask - 1 : value;
+            }
+            function ascii_to_value(ascii) {
+                return parseInt(
+                    ascii
+                        .split("")
+                        .map((x) => (x.charCodeAt() & 0xff).toString(16))
+                        .join(""),
+                    16
+                );
+            }
+            function value_to_ascii(value) {
+                return String.fromCharCode(
+                    ...value
+                        .toString(16)
+                        .padStart(size * 2, 0)
+                        .match(/.{2}/g)
+                        .map((x) => parseInt(x, 16))
+                );
+            }
+
+            const input_u = size === 1 ? Quill.InputU8 : Quill.InputU16;
+            const input_s = size === 1 ? Quill.InputS8 : Quill.InputS16;
+
+            this.get_input_element().addEventListener("click", () => {
+                const update_popup = (value) => {
+                    const children = popup.get_children();
+                    children[0].set_value(value);
+                    children[1].set_value(value);
+                    children[2].set_value(value);
+                    children[3].set_value(value_to_signed(value));
+                    children[4].set_value(value_to_ascii(value));
+                };
+                const update_and_dispatch = (value) => {
+                    update_popup(value);
+                    this.set_value(value);
+                    const input_element = this.get_input_element();
+                    input_element.dispatchEvent(new Event("input", { bubbles: true }));
+                    input_element.dispatchEvent(new Event("change", { bubbles: true }));
+                };
+                const popup = new QuillPopup("", this.get_page_x_right(), this.get_page_y_bottom(), [
+                    Quill.InputHex("Hexadecimal", { length: size * 2 }, update_and_dispatch),
+                    Quill.InputBin("Binary", { length: size * 8 }, update_and_dispatch),
+                    input_u("Unsigned", update_and_dispatch),
+                    input_s("Signed", (value) => update_and_dispatch(value & mask)),
+                    Quill.InputText("ASCII", { length: size }, (value) => update_and_dispatch(ascii_to_value(value))),
+                ]);
+
+                update_popup(this.get_value());
+
+                const first_input = popup.get_children()[0].get_input_element();
+                first_input.focus();
+                first_input.select();
+            });
+        }
+
+        // Public methods
+
+        get_value = () => parseInt(super.get_value(), 16);
     }
 
     // Quill.HexEditor

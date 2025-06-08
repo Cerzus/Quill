@@ -82,8 +82,11 @@ function create_game_boy_ui() {
     function input_u8(id, label) {
         return (inputs[id] = Q.InputU8(label, (value) => set_property(id, value)));
     }
-    function input_u16(id, label) {
-        return (inputs[id] = Q.InputU16(label, (value) => set_property(id, value)));
+    function input_byte(id, label) {
+        return (inputs[id] = Q.InputByte(label, (value) => set_property(id, value)));
+    }
+    function input_word(id, label) {
+        return (inputs[id] = Q.InputWord(label, (value) => set_property(id, value)));
     }
     function checkbox(id, label) {
         return (inputs[id] = Q.Checkbox(label, (checked) => set_property(id, checked)));
@@ -96,11 +99,11 @@ function create_game_boy_ui() {
         Q.Row([
             Q.Fieldset("Registers", [
                 ...["a", "f", "b", "c", "d", "e", "h", "l"].map((register) =>
-                    input_u8(`cpu_${register}`, register.toUpperCase())
+                    input_byte(`cpu_${register}`, register.toUpperCase())
                 ),
-                input_u16("cpu_sp", "SP"),
-                input_u16("cpu_pc", "PC"),
-                input_u8("cpu_ir", "IR"),
+                input_word("cpu_sp", "SP"),
+                input_word("cpu_pc", "PC"),
+                input_byte("cpu_ir", "IR"),
             ]),
             Q.Fieldset("Flags", [
                 ...Object.entries({ z_flag: "Zero", n_flag: "Subtract", h_flag: "Half-carry", c_flag: "Carry" }).map(

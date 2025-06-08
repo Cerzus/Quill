@@ -7,6 +7,10 @@ class QuillInputText extends QuillInput {
         const config = this._get_arg_config();
         if (Object.hasOwn(config, "value")) this.set_value(config.value);
         if (Object.hasOwn(config, "placeholder")) this.get_input_element().placeholder = config.placeholder;
+        if (Object.hasOwn(config, "length")) {
+            this.get_input_element().size = config.length;
+            this.get_input_element().maxLength = config.length;
+        }
     }
 }
 
