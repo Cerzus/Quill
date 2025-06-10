@@ -67,14 +67,91 @@ function create_game_boy_ui() {
         inputs.ppu_frame.set_value(ppu.get_frame());
         inputs.ppu_stat_int_signal.set_checked(ppu.get_stat_int_signal());
 
+        const apu = game_boy.get_apu();
+        inputs.apu_enabled.set_checked(apu.get_enabled());
+        inputs.apu_volume_left.set_value(apu.get_volume_left());
+        inputs.apu_volume_right.set_value(apu.get_volume_right());
+        inputs.apu_frame_sequencer_step.set_value(apu.get_frame_sequencer_step());
+        inputs.apu_ch1_enabled.set_checked(apu.get_ch1_enabled());
+        inputs.apu_ch1_dac_enabled.set_checked(apu.get_ch1_dac_enabled());
+        inputs.apu_ch1_panning_left.set_checked(apu.get_ch1_panning_left());
+        inputs.apu_ch1_panning_right.set_checked(apu.get_ch1_panning_right());
+        inputs.apu_ch1_length_enable.set_checked(apu.get_ch1_length_enable());
+        inputs.apu_ch1_length_counter.set_value(apu.get_ch1_length_counter());
+        inputs.apu_ch2_enabled.set_checked(apu.get_ch2_enabled());
+        inputs.apu_ch2_dac_enabled.set_checked(apu.get_ch2_dac_enabled());
+        inputs.apu_ch2_panning_left.set_checked(apu.get_ch2_panning_left());
+        inputs.apu_ch2_panning_right.set_checked(apu.get_ch2_panning_right());
+        inputs.apu_ch2_length_enable.set_checked(apu.get_ch2_length_enable());
+        inputs.apu_ch2_length_counter.set_value(apu.get_ch2_length_counter());
+        inputs.apu_ch3_enabled.set_checked(apu.get_ch3_enabled());
+        inputs.apu_ch3_dac_enabled.set_checked(apu.get_ch3_dac_enabled());
+        inputs.apu_ch3_panning_left.set_checked(apu.get_ch3_panning_left());
+        inputs.apu_ch3_panning_right.set_checked(apu.get_ch3_panning_right());
+        inputs.apu_ch3_length_enable.set_checked(apu.get_ch3_length_enable());
+        inputs.apu_ch3_length_counter.set_value(apu.get_ch3_length_counter());
+        inputs.apu_ch4_enabled.set_checked(apu.get_ch4_enabled());
+        inputs.apu_ch4_dac_enabled.set_checked(apu.get_ch4_dac_enabled());
+        inputs.apu_ch4_panning_left.set_checked(apu.get_ch4_panning_left());
+        inputs.apu_ch4_panning_right.set_checked(apu.get_ch4_panning_right());
+        inputs.apu_ch4_length_enable.set_checked(apu.get_ch4_length_enable());
+        inputs.apu_ch4_length_counter.set_value(apu.get_ch4_length_counter());
+        inputs.apu_ch1_envelope_starting_volume.set_value(apu.get_ch1_envelope_starting_volume());
+        inputs.apu_ch1_envelope_increase.set_checked(apu.get_ch1_envelope_increase());
+        inputs.apu_ch1_envelope_period.set_value(apu.get_ch1_envelope_period());
+        inputs.apu_ch1_envelope_timer.set_value(apu.get_ch1_envelope_timer());
+        inputs.apu_ch1_envelope_volume.set_value(apu.get_ch1_envelope_volume());
+        inputs.apu_ch2_envelope_starting_volume.set_value(apu.get_ch2_envelope_starting_volume());
+        inputs.apu_ch2_envelope_increase.set_checked(apu.get_ch2_envelope_increase());
+        inputs.apu_ch2_envelope_period.set_value(apu.get_ch2_envelope_period());
+        inputs.apu_ch2_envelope_timer.set_value(apu.get_ch2_envelope_timer());
+        inputs.apu_ch2_envelope_volume.set_value(apu.get_ch2_envelope_volume());
+        inputs.apu_ch4_envelope_starting_volume.set_value(apu.get_ch4_envelope_starting_volume());
+        inputs.apu_ch4_envelope_increase.set_checked(apu.get_ch4_envelope_increase());
+        inputs.apu_ch4_envelope_period.set_value(apu.get_ch4_envelope_period());
+        inputs.apu_ch4_envelope_timer.set_value(apu.get_ch4_envelope_timer());
+        inputs.apu_ch4_envelope_volume.set_value(apu.get_ch4_envelope_volume());
+        inputs.apu_ch1_sweep_enabled.set_checked(apu.get_ch1_sweep_enabled());
+        inputs.apu_ch1_sweep_shift.set_value(apu.get_ch1_sweep_shift());
+        inputs.apu_ch1_sweep_negate.set_checked(apu.get_ch1_sweep_negate());
+        inputs.apu_ch1_sweep_period.set_value(apu.get_ch1_sweep_period());
+        inputs.apu_ch1_sweep_timer.set_value(apu.get_ch1_sweep_timer());
+        inputs.apu_ch1_sweep_frequency_period.set_value(apu.get_ch1_sweep_frequency_period());
+        inputs.apu_ch1_frequency_period.set_value(apu.get_ch1_frequency_period());
+        inputs.apu_ch1_frequency_timer.set_value(apu.get_ch1_frequency_timer());
+        inputs.apu_ch1_duty.set_value(apu.get_ch1_duty());
+        inputs.apu_ch1_waveform_index.set_value(apu.get_ch1_waveform_index());
+        inputs.apu_ch2_frequency_period.set_value(apu.get_ch2_frequency_period());
+        inputs.apu_ch2_frequency_timer.set_value(apu.get_ch2_frequency_timer());
+        inputs.apu_ch2_duty.set_value(apu.get_ch2_duty());
+        inputs.apu_ch2_waveform_index.set_value(apu.get_ch2_waveform_index());
+        inputs.apu_ch3_frequency_period.set_value(apu.get_ch3_frequency_period());
+        inputs.apu_ch3_frequency_timer.set_value(apu.get_ch3_frequency_timer());
+        inputs.apu_ch3_sample_buffer.set_value(apu.get_ch3_sample_buffer());
+        inputs.apu_ch3_position_counter.set_value(apu.get_ch3_position_counter());
+        inputs.apu_ch3_volume_setting.set_value(apu.get_ch3_volume_setting());
+        inputs.apu_ch4_clock_shift.set_value(apu.get_ch4_clock_shift());
+        inputs.apu_ch4_clock_divider.set_value(apu.get_ch4_clock_divider());
+        inputs.apu_ch4_frequency_timer.set_value(apu.get_ch4_frequency_timer());
+        inputs.apu_ch4_lfsr_width.set_value(+apu.get_ch4_lfsr_width());
+        inputs.apu_ch4_lfsr.set_value(apu.get_ch4_lfsr());
+
         inputs.memory.update();
     }
 
     function set_property(property, value) {
         const match = property.match(/^[a-z]{1,}_/);
-        const component = { cpu_: game_boy.get_cpu(), ppu_: game_boy.get_ppu(), null: game_boy }[match[0]];
+        const component = {
+            cpu_: game_boy.get_cpu(),
+            ppu_: game_boy.get_ppu(),
+            apu_: game_boy.get_apu(),
+            null: game_boy,
+        }[match[0]];
         component[`set_${property.substr(match[0]?.length)}`](value);
         update_ui();
+    }
+    function input_bin(id, label, config) {
+        return (inputs[id] = Q.InputBin(label, config, (value) => set_property(id, value)));
     }
     function input_integer(id, label, config) {
         return (inputs[id] = Q.InputInteger(label, config, (value) => set_property(id, value)));
@@ -176,6 +253,112 @@ function create_game_boy_ui() {
         ]),
     ]);
 
+    const apu_panel = Q.Panel("APU", { closed: true }, [
+        Q.Row([
+            Q.Fieldset("Global controls", [
+                checkbox("apu_enabled", "Enabled"),
+                input_integer("apu_volume_left", "Volume left", { min: 0, max: 7 }),
+                input_integer("apu_volume_right", "Volume right", { min: 0, max: 7 }),
+                input_integer("apu_frame_sequencer_step", "Sequencer step", { min: 0, max: 7 }),
+            ]),
+            Q.Fieldset("Channel 1 - Pulse", [
+                checkbox("apu_ch1_enabled", "Enabled"),
+                checkbox("apu_ch1_dac_enabled", "DAC"),
+                checkbox("apu_ch1_panning_left", "Panning left"),
+                checkbox("apu_ch1_panning_right", "Panning right"),
+                checkbox("apu_ch1_length_enable", "Length enable"),
+                input_integer("apu_ch1_length_counter", "Length counter", { min: 0, max: 63 }),
+                Q.Fieldset("Waveform", [
+                    input_integer("apu_ch1_frequency_period", "Freq. period", { min: 0, max: 2047 }),
+                    input_integer("apu_ch1_frequency_timer", "Freq. timer", { min: 0, max: 2047 }),
+                    input_integer("apu_ch1_duty", "Duty", { min: 0, max: 3 }),
+                    input_integer("apu_ch1_waveform_index", "Index", { min: 0, max: 7 }),
+                ]),
+                Q.Fieldset("Envelope", [
+                    input_integer("apu_ch1_envelope_timer", "Timer", { min: 0, max: 7 }),
+                    input_integer("apu_ch1_envelope_period", "Period", { min: 0, max: 7 }),
+                    checkbox("apu_ch1_envelope_increase", "Increase"),
+                    input_integer("apu_ch1_envelope_starting_volume", "Starting volume", { min: 0, max: 15 }),
+                    input_integer("apu_ch1_envelope_volume", "Volume", { min: 0, max: 15 }),
+                ]),
+                Q.Fieldset("Frequency sweep", [
+                    checkbox("apu_ch1_sweep_enabled", "Enabled"),
+                    input_integer("apu_ch1_sweep_period", "Period", { min: 0, max: 7 }),
+                    input_integer("apu_ch1_sweep_timer", "Timer", { min: 0, max: 7 }),
+                    input_integer("apu_ch1_sweep_shift", "Shift", { min: 0, max: 7 }),
+                    checkbox("apu_ch1_sweep_negate", "Negate"),
+                    input_integer("apu_ch1_sweep_frequency_period", "Freq. period", { min: 0, max: 2047 }),
+                ]),
+            ]),
+            Q.Fieldset("Channel 2 - Pulse", [
+                checkbox("apu_ch2_enabled", "Enabled"),
+                checkbox("apu_ch2_dac_enabled", "DAC"),
+                checkbox("apu_ch2_panning_left", "Panning left"),
+                checkbox("apu_ch2_panning_right", "Panning right"),
+                checkbox("apu_ch2_length_enable", "Length enable"),
+                input_integer("apu_ch2_length_counter", "Length counter", { min: 0, max: 63 }),
+                Q.Fieldset("Waveform", [
+                    input_integer("apu_ch2_frequency_period", "Freq. period", { min: 0, max: 2047 }),
+                    input_integer("apu_ch2_frequency_timer", "Freq. timer", { min: 0, max: 2047 }),
+                    input_integer("apu_ch2_duty", "Duty", { min: 0, max: 3 }),
+                    input_integer("apu_ch2_waveform_index", "Index", { min: 0, max: 7 }),
+                ]),
+                Q.Fieldset("Envelope", [
+                    input_integer("apu_ch2_envelope_timer", "Timer", { min: 0, max: 7 }),
+                    input_integer("apu_ch2_envelope_period", "Period", { min: 0, max: 7 }),
+                    checkbox("apu_ch2_envelope_increase", "Increase"),
+                    input_integer("apu_ch2_envelope_starting_volume", "Starting volume", { min: 0, max: 15 }),
+                    input_integer("apu_ch2_envelope_volume", "Volume", { min: 0, max: 15 }),
+                ]),
+            ]),
+            Q.Fieldset("Channel 3 - Wave", [
+                checkbox("apu_ch3_enabled", "Enabled"),
+                checkbox("apu_ch3_dac_enabled", "DAC"),
+                checkbox("apu_ch3_panning_left", "Panning left"),
+                checkbox("apu_ch3_panning_right", "Panning right"),
+                checkbox("apu_ch3_length_enable", "Length enable"),
+                input_integer("apu_ch3_length_counter", "Length counter", { min: 0, max: 255 }),
+                Q.Fieldset("Waveform", [
+                    input_integer("apu_ch3_frequency_period", "Freq. period", { min: 0, max: 2047 }),
+                    input_integer("apu_ch3_frequency_timer", "Freq. timer", { min: 0, max: 2047 }),
+                    input_integer("apu_ch3_sample_buffer", "Sample buffer", { min: 0, max: 15 }),
+                    input_integer("apu_ch3_position_counter", "Position counter", { min: 0, max: 31 }),
+                ]),
+                dropdown("apu_ch3_volume_setting", "Volume setting", {
+                    0: "0% (0)",
+                    1: "100% (1)",
+                    2: "50% (2)",
+                    3: "25% (3)",
+                }),
+            ]),
+            Q.Fieldset("Channel 4 - Noise", [
+                checkbox("apu_ch4_enabled", "Enabled"),
+                checkbox("apu_ch4_dac_enabled", "DAC"),
+                checkbox("apu_ch4_panning_left", "Panning left"),
+                checkbox("apu_ch4_panning_right", "Panning right"),
+                checkbox("apu_ch4_length_enable", "Length enable"),
+                input_integer("apu_ch4_length_counter", "Length counter", { min: 0, max: 63 }),
+                Q.Fieldset("Waveform", [
+                    input_integer("apu_ch4_clock_divider", "Clock divider", { min: 0, max: 7 }),
+                    input_integer("apu_ch4_clock_shift", "Clock shift", { min: 0, max: 15 }),
+                    input_integer("apu_ch4_frequency_timer", "Freq. timer", { min: 0, max: 7 << 17 }),
+                    dropdown("apu_ch4_lfsr_width", "LFSR width", {
+                        0: "15-bit",
+                        1: "7-bit",
+                    }),
+                    input_bin("apu_ch4_lfsr", "LFSR", { length: 15 }),
+                ]),
+                Q.Fieldset("Envelope", [
+                    input_integer("apu_ch4_envelope_timer", "Timer", { min: 0, max: 7 }),
+                    input_integer("apu_ch4_envelope_period", "Period", { min: 0, max: 7 }),
+                    checkbox("apu_ch4_envelope_increase", "Increase"),
+                    input_integer("apu_ch4_envelope_starting_volume", "Starting volume", { min: 0, max: 15 }),
+                    input_integer("apu_ch4_envelope_volume", "Volume", { min: 0, max: 15 }),
+                ]),
+            ]),
+        ]),
+    ]);
+
     const memory_panel = Q.Panel("Memory", { closed: true, css: { maxWidth: "fit-content" } }, [
         (inputs.memory = Q.HexEditor(0, game_boy.get_memory().length, (i) => game_boy.read_memory(i))),
     ]);
@@ -225,7 +408,7 @@ function create_game_boy_ui() {
             ]),
             Q.Menu("Emulation", [Q.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console"))]),
             Q.Menu("Tools", [
-                ...[cpu_panel, ppu_panel, memory_panel, disassembly_panel].map((panel) => {
+                ...[cpu_panel, ppu_panel, apu_panel, memory_panel, disassembly_panel].map((panel) => {
                     const config = { checkable: true, checked: panel.is_open() };
                     const menu_item = Q.MenuItem(panel.get_name(), config, (element) =>
                         element.is_checked() ? panel.open() : panel.close()
