@@ -220,7 +220,7 @@ function quill_show_demo() {
                 Q.Tree("Colorful text", [
                     Q.Text("Pink", { colors: { text: Q.Color(255, 0, 255) } }),
                     Q.Text("Yellow", { colors: { text: Q.Color(255, 255, 0) } }),
-                    Q.Text("Disabled", { disabled: true }),
+                    Q.Text("Muted", { muted: true }),
                 ]),
                 Q.Tree("Text wrapping", [
                     Q.Text(

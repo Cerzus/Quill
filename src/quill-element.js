@@ -28,7 +28,6 @@ class QuillElement {
                 this.#element.style[entry[0]] = entry[1];
             }
         }
-        if (!!this.#arg_config.disabled) this.#element.setAttribute("disabled", "");
 
         for (const style_type of ["font", "color", "size", "flag"]) {
             for (const [property, value] of Object.entries(this.#arg_config[`${style_type}s`] ?? {})) {

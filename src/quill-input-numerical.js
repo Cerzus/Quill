@@ -158,7 +158,7 @@ class QuillDrag extends QuillInputNumerical {
         );
 
         Util.add_mouse_down_event_listener(this.get_element().querySelector("output"), (e) => {
-            QuillDrag.#start_dragging(this, e);
+            if (this.get_input_element().closest("[disabled]") === null) QuillDrag.#start_dragging(this, e);
         });
     }
 

@@ -4,7 +4,7 @@ class QuillRadioButtons extends QuillInput {
     #name;
 
     constructor(...args) {
-        const html = `<div class="quill-radio-buttons"></div>`;
+        const html = `<fieldset class="quill-radio-buttons"></fieldset>`;
         super(html, "change", null, [QuillWrapper, QuillRadioButton], ...args);
         this.#name = Math.random();
         this.add_children(this._get_arg_children());
@@ -20,7 +20,6 @@ class QuillRadioButtons extends QuillInput {
         this.get_element().querySelector(`[value="${value}"]`).checked = true;
         return this;
     }
-    get_input_element = () => undefined; // TODO: Keep public?
 
     // Private methods
 
@@ -36,7 +35,17 @@ class QuillRadioButton extends QuillWrappableElement {
             `<label class="quill-label">
                 <input class="quill-input" type="radio" value="${value}" />${label ?? ""}
             </label>`,
+            [],
             ...args
         );
+        this.set_disabled(!!this._get_arg_config().disabled);
+    }
+
+    // Public methods
+
+    set_disabled(disabled) {
+        if (disabled) this.get_element().querySelector(`input`).setAttribute("disabled", "");
+        else this.get_element().querySelector(`input`).removeAttribute("disabled");
+        return this;
     }
 }

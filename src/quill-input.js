@@ -16,13 +16,14 @@ class QuillInput extends QuillLeafElement {
             ...args.slice(count)
         );
         this.#sanitize_value = sanitize_value ?? ((value) => value);
-        this.#input_element = this.get_element().querySelector(`input, select`);
+        this.#input_element = this.get_element().querySelector(`input, select, fieldset`);
         if (event_type !== null) {
             this.get_element().addEventListener(event_type, (e) => {
                 this.set_value(this.get_value());
                 this._get_arg_callback()(this.get_value(), this, e);
             });
         }
+        this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
@@ -35,7 +36,12 @@ class QuillInput extends QuillLeafElement {
         this.#input_element.value = this.#sanitize_value(value);
         return this;
     }
-    get_input_element = () => this.#input_element; // TODO: Keep public?
+    set_disabled(disabled) {
+        if (disabled) this.get_input_element().setAttribute("disabled", "");
+        else this.get_input_element().removeAttribute("disabled");
+        return this;
+    }
+    get_input_element = () => this.#input_element; // TODO: Keep public? No
 }
 
 class QuillInputMultiComponent extends QuillLeafElement {
@@ -61,6 +67,12 @@ class QuillInputMultiComponent extends QuillLeafElement {
     set_value(value) {
         for (let i = 0; i < Math.min(this.#inputs.length, value.length); i++) {
             this.#inputs[i].set_value(value[i]);
+        }
+        return this;
+    }
+    set_disabled(disabled) {
+        for (let i = 0; i < this.#inputs.length; i++) {
+            this.#inputs[i].set_disabled(disabled);
         }
         return this;
     }

@@ -3,6 +3,7 @@
 class QuillText extends QuillLeafElement {
     constructor(text, ...args) {
         super(`<div class="quill-text"></div>`, [], ...args);
+        if (!!this._get_arg_config().muted) this.get_element().setAttribute("muted", "");
         this.set_text(text);
     }
 
