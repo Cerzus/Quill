@@ -3,7 +3,7 @@
 class QuillFieldset extends QuillBranchElement {
     constructor(legend, ...args) {
         super(
-            `<fieldset class="quill-fieldset"><legend>${legend}</fieldset></fieldset>`,
+            `<fieldset class="quill-fieldset"><legend>${legend}</legend></fieldset>`,
             [QuillWrapper, QuillNodeElement],
             ...args
         );

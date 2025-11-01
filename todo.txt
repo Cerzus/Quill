@@ -15,6 +15,6 @@
 - Test "add_children" methods
 - Improve RadioButtons labels hovering
 - Improve RadioButtons name generation
-- Focus Panel on middle mouse button down; and therefor also close menu's etc.
+- Focus Panel on middle mouse button down; and therefore also close menus etc.
 - Make a choice between top/left and x/y
 - Sanitize inputs

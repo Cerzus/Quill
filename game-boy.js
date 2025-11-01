@@ -171,10 +171,10 @@ class PPU {
     set_lyc = (value) => (this.#lyc = value & 0xff);
     set_wy = (value) => (this.#wy = value & 0xff);
     set_wx = (value) => (this.#wx = value & 0xff);
-    set_scanline = (value) => (this.#scanline = Math.min(Math.max(0, ~~value), 154));
-    set_dot = (value) => (this.#dot = Math.min(Math.max(0, ~~value), 455));
-    set_frame = (value) => (this.#frame = Math.min(Math.max(0, ~~value), 99999999));
-    set_stat_int_signal = (value) => (this.#stat_int_signal = !!value);
+    // set_scanline = (value) => (this.#scanline = Math.min(Math.max(0, ~~value), 154));
+    // set_dot = (value) => (this.#dot = Math.min(Math.max(0, ~~value), 455));
+    // set_frame = (value) => (this.#frame = Math.min(Math.max(0, ~~value), 99999999));
+    // set_stat_int_signal = (value) => (this.#stat_int_signal = !!value);
 
     randomize() {
         this.#lcdc = ~~(Math.random() * 0x100);
@@ -184,6 +184,7 @@ class PPU {
         this.#lyc = ~~(Math.random() * 0x100);
         this.#wy = ~~(Math.random() * 0x100);
         this.#wx = ~~(Math.random() * 0x100);
+
         this.#scanline = ~~(Math.random() * 155);
         this.#dot = ~~(Math.random() * 456);
         this.#frame = ~~(Math.random() * 100000000);
