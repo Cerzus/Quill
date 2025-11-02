@@ -13,7 +13,7 @@ class QuillDynamicRows extends QuillNodeElement {
         super(
             `<div class="quill-dynamic-rows">
                 <div class="quill-dynamic-rows-list">
-                    <div class="quill-dynamic-rows-offset"></div>
+                    <fieldset class="quill-dynamic-rows-offset"></fieldset>
                 </div>
             </div>`,
             [],
@@ -25,6 +25,7 @@ class QuillDynamicRows extends QuillNodeElement {
         new ResizeObserver(() => this.refresh()).observe(this.get_element());
 
         this.get_element().addEventListener("scroll", () => this.#update_row_elements(false));
+        this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
@@ -47,6 +48,10 @@ class QuillDynamicRows extends QuillNodeElement {
         example_row_element.remove();
         rows_element.style.height = `${this.#row_height * this.#number_of_rows}px`;
         this.#update_row_elements(true);
+    }
+    set_disabled(disabled) {
+        Util.disable_html_element(this.get_element().querySelector(".quill-dynamic-rows-offset"), disabled);
+        return this;
     }
 
     // Private methods

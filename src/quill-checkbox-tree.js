@@ -6,9 +6,9 @@ class QuillCheckboxTree extends QuillNodeElement {
 
     constructor(label, ...args) {
         super(
-            `<div class="quill-checkbox-tree">
+            `<fieldset class="quill-checkbox-tree">
                 <div class="quill-checkbox-tree-body quill-indent"></div>
-            </div>`,
+            </fieldset>`,
             [QuillWrapper, QuillCheckboxTree, QuillCheckbox],
             ...args
         );
@@ -16,8 +16,15 @@ class QuillCheckboxTree extends QuillNodeElement {
         this.#checkbox = new QuillCheckbox(label);
         this.get_element().prepend(this.#checkbox.get_element());
         this.add_children(this._get_arg_children());
+        this.set_disabled(!!this._get_arg_config().disabled);
     }
 
+    // Public methods
+
+    set_disabled(disabled) {
+        Util.disable_html_element(this.get_element(), disabled);
+        return this;
+    }
     // Private methods
 
     _add_child(child) {

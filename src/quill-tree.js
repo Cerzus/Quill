@@ -10,7 +10,7 @@ class QuillTree extends QuillBranchElement {
                     <div class="quill-arrow-right"></div>
                     <div>${header}</div>
                 </div>
-                <div class="quill-tree-body quill-indent"></div>
+                <fieldset class="quill-tree-body quill-indent"></fieldset>
             </div>`,
             [QuillWrapper, QuillNodeElement],
             ...args
@@ -21,12 +21,17 @@ class QuillTree extends QuillBranchElement {
             this.#set_expanded(!this.#expanded);
         });
         this.#set_expanded(!!this._get_arg_config().expanded);
+        this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
 
     expand = () => this.#set_expanded(true);
     collapse = () => this.#set_expanded(false);
+    set_disabled(disabled) {
+        Util.disable_html_element(this.get_element().querySelector(".quill-tree-body"), disabled);
+        return this;
+    }
 
     // Private methods
 

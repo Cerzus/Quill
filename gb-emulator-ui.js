@@ -6,10 +6,14 @@ function create_game_boy_ui() {
     const game_boy = new GameBoy();
     const inputs = {};
 
+    let running = false;
+
     function update(timestamp) {
         game_boy.randomize();
         update_ui();
-        // requestAnimationFrame(update);
+        if (running) {
+            requestAnimationFrame(update);
+        }
     }
 
     function update_ui() {
@@ -165,8 +169,8 @@ function create_game_boy_ui() {
     function input_word(id, label) {
         return (inputs[id] = Q.InputWord(label, (value) => set_property(id, value)));
     }
-    function checkbox(id, label) {
-        return (inputs[id] = Q.Checkbox(label, (checked) => set_property(id, checked)));
+    function checkbox(id, label, config) {
+        return (inputs[id] = Q.Checkbox(label, config, (checked) => set_property(id, checked)));
     }
     function dropdown(id, label, options) {
         return (inputs[id] = Q.Dropdown(label, (value) => set_property(id, +value), Q.DropdownOptions(options)));
@@ -183,9 +187,12 @@ function create_game_boy_ui() {
                 input_byte("cpu_ir", "IR"),
             ]),
             Q.Fieldset("Flags", [
-                ...Object.entries({ z_flag: "Zero", n_flag: "Subtract", h_flag: "Half-carry", c_flag: "Carry" }).map(
-                    (flag) => checkbox(`cpu_${flag[0]}`, flag[1])
-                ),
+                ...Object.entries({
+                    z_flag: "Zero",
+                    n_flag: "Subtract",
+                    h_flag: "Half-carry",
+                    c_flag: "Carry",
+                }).map((flag) => checkbox(`cpu_${flag[0]}`, flag[1])),
             ]),
             Q.Fieldset("Interrupts", [
                 ...["halt", "ime"].map((flag) => checkbox(`cpu_${flag}`, flag.toUpperCase())),
@@ -244,11 +251,13 @@ function create_game_boy_ui() {
                 checkbox("ppu_lyc_int", "LYC intr."),
             ]),
             Q.Table([
-                Q.TableRow(Q.TableColumn(input_integer("ppu_dot", "Dot", { min: 0, max: 455 }))),
-                Q.TableRow(Q.TableColumn(input_integer("ppu_scanline", "Line", { min: 0, max: 154 }))),
+                Q.TableRow(Q.TableColumn(input_integer("ppu_dot", "Dot", { min: 0, max: 455, disabled: true }))),
+                Q.TableRow(Q.TableColumn(input_integer("ppu_scanline", "Line", { min: 0, max: 154, disabled: true }))),
                 Q.TableRow(Q.TableColumn(input_u8("ppu_lyc", "LYC"))),
-                Q.TableRow(Q.TableColumn(input_integer("ppu_frame", "Frame no.", { min: 0, max: 99999999 }))),
-                Q.TableRow(Q.TableColumn(checkbox("ppu_stat_int_signal", "STAT int. signal"))),
+                Q.TableRow(
+                    Q.TableColumn(input_integer("ppu_frame", "Frame no.", { min: 0, max: 99999999, disabled: true }))
+                ),
+                Q.TableRow(Q.TableColumn(checkbox("ppu_stat_int_signal", "STAT int. signal", { disabled: true }))),
             ]),
         ]),
     ]);
@@ -263,7 +272,7 @@ function create_game_boy_ui() {
             ]),
             Q.Fieldset("Channel 1 - Pulse", [
                 checkbox("apu_ch1_enabled", "Enabled"),
-                checkbox("apu_ch1_dac_enabled", "DAC"),
+                checkbox("apu_ch1_dac_enabled", "DAC", { disabled: true }),
                 checkbox("apu_ch1_panning_left", "Panning left"),
                 checkbox("apu_ch1_panning_right", "Panning right"),
                 checkbox("apu_ch1_length_enable", "Length enable"),
@@ -292,7 +301,7 @@ function create_game_boy_ui() {
             ]),
             Q.Fieldset("Channel 2 - Pulse", [
                 checkbox("apu_ch2_enabled", "Enabled"),
-                checkbox("apu_ch2_dac_enabled", "DAC"),
+                checkbox("apu_ch2_dac_enabled", "DAC", { disabled: true }),
                 checkbox("apu_ch2_panning_left", "Panning left"),
                 checkbox("apu_ch2_panning_right", "Panning right"),
                 checkbox("apu_ch2_length_enable", "Length enable"),
@@ -313,7 +322,7 @@ function create_game_boy_ui() {
             ]),
             Q.Fieldset("Channel 3 - Wave", [
                 checkbox("apu_ch3_enabled", "Enabled"),
-                checkbox("apu_ch3_dac_enabled", "DAC"),
+                checkbox("apu_ch3_dac_enabled", "DAC", { disabled: true }),
                 checkbox("apu_ch3_panning_left", "Panning left"),
                 checkbox("apu_ch3_panning_right", "Panning right"),
                 checkbox("apu_ch3_length_enable", "Length enable"),
@@ -333,7 +342,7 @@ function create_game_boy_ui() {
             ]),
             Q.Fieldset("Channel 4 - Noise", [
                 checkbox("apu_ch4_enabled", "Enabled"),
-                checkbox("apu_ch4_dac_enabled", "DAC"),
+                checkbox("apu_ch4_dac_enabled", "DAC", { disabled: true }),
                 checkbox("apu_ch4_panning_left", "Panning left"),
                 checkbox("apu_ch4_panning_right", "Panning right"),
                 checkbox("apu_ch4_length_enable", "Length enable"),
@@ -406,7 +415,16 @@ function create_game_boy_ui() {
                     ]);
                 }),
             ]),
-            Q.Menu("Emulation", [Q.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console"))]),
+            Q.Menu("Emulation", [
+                Q.MenuItem("Play/pause", { ctrl_key: " " }, () => {
+                    running = !running;
+                    for (const panel of [cpu_panel, ppu_panel, apu_panel, memory_panel]) {
+                        panel.get_children()[0].set_disabled(running);
+                    }
+                    if (running) update();
+                }),
+                Q.MenuItem("Reset console", { ctrl_key: "R" }, () => console.log("Reset console")),
+            ]),
             Q.Menu("Tools", [
                 ...[cpu_panel, ppu_panel, apu_panel, memory_panel, disassembly_panel].map((panel) => {
                     const config = { checkable: true, checked: panel.is_open() };

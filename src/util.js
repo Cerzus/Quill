@@ -80,4 +80,9 @@ class Util {
     static add_style_variable_to_element(element, property, suffix, value) {
         element.style.setProperty(`--quill-${property.replaceAll("_", "-")}${suffix}`, value);
     }
+
+    static disable_html_element(html_element, disable) {
+        if (disable) html_element.setAttribute("disabled", "");
+        else html_element.removeAttribute("disabled");
+    }
 }

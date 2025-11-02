@@ -9,7 +9,8 @@
     user-select: none;
 }
 .quill,
-.quill div {
+.quill div,
+.quill fieldset {
     display: flex;
 }
 
@@ -22,6 +23,10 @@
         font-size: var(--quill-font-size);
         line-height: 1.2em;
         opacity: 1;
+    }
+
+    fieldset {
+        border: none;
     }
 
     input.quill-input:disabled,
@@ -354,7 +359,6 @@
         border-radius: var(--quill-item-border-radius-size);
         padding: var(--quill-panel-padding-size);
         gap: var(--quill-item-gap-size);
-        display: flex;
         flex-direction: column;
         overflow: hidden;
         height: fit-content;
@@ -502,9 +506,8 @@
                         background: var(--quill-input-hovered-color);
                     }
                     + output {
-                        text-shadow: 1px 1px var(--quill-item-hovered-bg-color),
-                            -1px 1px var(--quill-item-hovered-bg-color), -1px -1px var(--quill-item-hovered-bg-color),
-                            1px -1px var(--quill-item-hovered-bg-color);
+                        text-shadow: 1px 1px var(--quill-item-hovered-bg-color), -1px 1px var(--quill-item-hovered-bg-color),
+                            -1px -1px var(--quill-item-hovered-bg-color), 1px -1px var(--quill-item-hovered-bg-color);
                         color: var(--quill-input-hovered-color);
                     }
                 }
@@ -641,6 +644,7 @@
     .quill-wrapper {
         display: contents;
     }
+
     .quill-hex-editor {
         border: var(--quill-line-size) solid var(--quill-line-color);
         flex-grow: 1;
@@ -675,16 +679,16 @@
         &[data-hovered-column="13"] .quill-hex-editor-byte:nth-child(14),
         &[data-hovered-column="14"] .quill-hex-editor-byte:nth-child(15),
         &[data-hovered-column="15"] .quill-hex-editor-byte:nth-child(16) {
-            background: rgb(255 255 255 / 0.2);
+            background: rgb(255 255 255 / 0.25);
         }
 
         .quill-dynamic-rows {
             width: fit-content;
-            input.quill-hex-editor-byte:hover {
+            input.quill-hex-editor-byte:hover:not(:disabled) {
                 color: var(--quill-input-hovered-color);
             }
             .quill-row:hover > div {
-                background: rgb(255 255 255 / 0.2);
+                background: rgb(255 255 255 / 0.25);
             }
         }
 
@@ -715,6 +719,9 @@
                 outline: none;
                 border: none;
                 background: transparent;
+                &:disabled {
+                    color: var(--quill-input-disabled-color);
+                }
             }
         }
 

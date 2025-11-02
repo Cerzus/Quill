@@ -3,9 +3,7 @@ class QuillInput extends QuillLeafElement {
     #sanitize_value;
 
     constructor(html, event_type, sanitize_value, allowed_children, ...args) {
-        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(
-            ...args
-        );
+        const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
         const wrapper_element = label || label === 0 ? "label" : "div";
         super(
             `<${wrapper_element} class="quill-label">${html}${label ?? ""}</${wrapper_element}>`,
@@ -37,8 +35,7 @@ class QuillInput extends QuillLeafElement {
         return this;
     }
     set_disabled(disabled) {
-        if (disabled) this.get_input_element().setAttribute("disabled", "");
-        else this.get_input_element().removeAttribute("disabled");
+        Util.disable_html_element(this.get_input_element(), disabled);
         return this;
     }
     get_input_element = () => this.#input_element; // TODO: Keep public? No

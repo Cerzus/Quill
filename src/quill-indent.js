@@ -2,8 +2,16 @@
 
 class QuillIndent extends QuillBranchElement {
     constructor(...args) {
-        super(`<div class="quill-indent"></div>`, [QuillWrapper, QuillNodeElement], ...args);
+        super(`<fieldset class="quill-indent"></fieldset>`, [QuillWrapper, QuillNodeElement], ...args);
         this.add_children(this._get_arg_children());
+        this.set_disabled(!!this._get_arg_config().disabled);
+    }
+
+    // Public methods
+
+    set_disabled(disabled) {
+        Util.disable_html_element(this.get_element(), disabled);
+        return this;
     }
 
     // Private methods

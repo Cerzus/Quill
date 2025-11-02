@@ -47,14 +47,19 @@ class QuillTab extends QuillElement {
     #name;
 
     constructor(name, ...args) {
-        super(`<div class="quill-tab" data-name="${name}"></div>`, [QuillWrapper, QuillNodeElement], ...args);
+        super(`<fieldset class="quill-tab" data-name="${name}"></fieldset>`, [QuillWrapper, QuillNodeElement], ...args);
         this.#name = name;
         this.add_children(this._get_arg_children());
+        this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
 
     get_name = () => this.#name;
+    set_disabled(disabled) {
+        Util.disable_html_element(this.get_element(), disabled);
+        return this;
+    }
 
     // Private methods
 

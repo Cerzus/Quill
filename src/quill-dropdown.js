@@ -9,7 +9,8 @@ class QuillDropdown extends QuillInput {
         if (Object.hasOwn(config, "selected")) this.set_selected(config.selected);
     }
 
-    // Public method
+    // Public methods
+
     get_gelected = this.get_value;
     set_selected = this.set_value;
 
@@ -26,11 +27,7 @@ class QuillDropdownOptions extends QuillWrappableElement {
     constructor(...args) {
         const label = typeof args[0] === "string" || typeof args[0] === "number" ? new String(args[0]) : null;
         const options = label instanceof String ? args[1] : args[0];
-        super(
-            `<optgroup ${label ? `label="${label}"` : ``}></optgroup`,
-            [],
-            ...args.slice(label instanceof String ? 2 : 1)
-        );
+        super(`<optgroup ${label ? `label="${label}"` : ``}></optgroup`, [], ...args.slice(label instanceof String ? 2 : 1));
         const element = this.get_element();
         if (options instanceof Array) {
             for (const option of options) {

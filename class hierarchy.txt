@@ -1,93 +1,93 @@
-Element
-    MenuBar                                     Menu, MenuItem, Separator (no Wrapper yet, because we use recursion to reach an ancestor)
-    Menu                                        Menu, MenuItem, Separator (no Wrapper yet, because we use recursion to reach an ancestor)
-    MenuItem                                    -
-    Tab                                         Wrapper, NodeElement
-    Panel                                       Wrapper, NodeElement, MenuBar
-        Modal                                   Wrapper, NodeElement, MenuBar
+                                                Disable?    Children
+
+~Element
+    MenuBar                                     No          Menu, MenuItem, Separator (no Wrapper yet, because we use recursion to reach an ancestor)
+    Menu                                        No          Menu, MenuItem, Separator (no Wrapper yet, because we use recursion to reach an ancestor)
+    MenuItem                                    No          -
+    Tab                                         Yes         Wrapper, NodeElement
+    Panel                                       No          Wrapper, NodeElement, MenuBar
+        Modal                                   No          Wrapper, NodeElement, MenuBar
     WrappableElement
-        Wrapper                                 WrappableElement
-        TableRow                                Wrapper, TableColumn
-        TableHeaderRow                          Wrapper, TableColumn
-        TableColumn                             LeafElement, String, Number (no Wrapper, because only one child is allowed)
-        TableHeaderColumn                       LeafElement, String, Number (no Wrapper, because only one child is allowed)
-        DropdownOptions                         -
-        RadioButton                             -
-        NodeElement
-            FixedCanvas                         -
-            HexEditor                           -
-            CheckboxTree                        Wrapper, CheckboxTree, Checkbox
-            DynamicRows                         -
-            BranchElement
-                Table                           Wrapper, TableRow, TableHeaderRow
-                Fieldset                        Wrapper, NodeElement
-                Row                             Wrapper, NodeElement??
-                Tabs                            Tab (no Wrapper, because we're adding two HTML elements for each tab. Which one to wrap around?)
-                Indent                          Wrapper, NodeElement
-                Tree                            Wrapper, NodeElement
-                    CollapsingHeader            Wrapper, NodeElement
-            LeafElement
-                InfoTooltip                     -
-                Separator                       -
-                Text                            -
-                    TextWrapped                 -
-                Button                          -
-                Input
-                    Checkbox                    -
-                    ColorPicker                 -
-                    Dropdown                    Wrapper, DropdownOptions
-                    RadioButtons                Wrapper, RadioButton  
-                    Text                        -
-                    InputBase
-                        InputHex                -
-                        InputBin                -
-                    InputBytes
-                        InputByte               -
-                        InputWord               -
-                    InputNumerical
-                        InputNumber
-                            InputFloat          -
-                            InputInteger        -
-                                InputI          -
-                                    InputS8     -
-                                    InputU8     -
-                                    InputS16    -
-                                    InputU16    -
-                                    InputS32    -
-                        Slider
-                            SliderFloat         -
-                            SliderInteger       -
-                                SliderI         -
-                                    SliderS8    -
-                                    SliderU8    -
-                                    SliderS16   -
-                                    SliderU16   -
-                                    SliderS32   -
-                        Drag
-                            DragFloat           -
-                            DragInteger         -
-                                DragI           -
-                                    DragS8      -
-                                    DragU8      -
-                                    DragS16     -
-                                    DragU16     -
-                                    DragS32     -
-                InputMultiComponent
-                    InputFloat2                 -
-                    InputFloat3                 -
-                    InputFloat4                 -
-                    InputInteger2               -
-                    InputInteger3               -
-                    InputInteger4               -
-                    SliderFloat2                -
-                    SliderFloat3                -
-                    SliderFloat4                -
-                    SliderInteger2              -
-                    SliderInteger3              -
-                    SliderInteger4              -
-                    DragFloat2                  -
-                    DragFloat3                  -
-                    DragFloat4                  -
-                    DragInteger2                -
-                    DragInteger3                -
-                    DragInteger4                -
+        Wrapper                                 Yes         WrappableElement
+        TableRow                                No          Wrapper, TableColumn
+        TableHeaderRow                          No          Wrapper, TableColumn
+        TableColumn                             No          LeafElement, String, Number (no Wrapper, because only one child is allowed)
+        TableHeaderColumn                       No          LeafElement, String, Number (no Wrapper, because only one child is allowed)
+        DropdownOptions                         No          -
+        RadioButton                             Yes         -
+        ~NodeElement
+            FixedCanvas                         No          -
+            HexEditor                           Yes         -
+            CheckboxTree                        Yes         Wrapper, CheckboxTree, Checkbox
+            DynamicRows                         Yes         -
+            ~BranchElement
+                Table                           No          Wrapper, TableRow, TableHeaderRow
+                Fieldset                        Yes         Wrapper, NodeElement
+                Row                             Yes         Wrapper, NodeElement??
+                Tabs                            No          Tab (no Wrapper, because we're adding two HTML elements for each tab. Which one to wrap around?)
+                Indent                          Yes         Wrapper, NodeElement
+                Tree                            Yes         Wrapper, NodeElement
+                    CollapsingHeader            Yes         Wrapper, NodeElement
+            ~LeafElement
+                InfoTooltip                     No          -
+                Separator                       No          -
+                Text                            No          -
+                    TextWrapped                 No          -
+                Button                          Yes         -
+                ~Input
+                    Checkbox                    Yes         -
+                    ColorPicker                 Yes         -
+                    Dropdown                    Yes         Wrapper, DropdownOptions
+                    RadioButtons                Yes         Wrapper, RadioButton  
+                    InputText                   Yes         -
+                    ~InputBase
+                        InputHex                Yes         -
+                        InputBin                Yes         -
+                    ~InputBytes
+                        InputByte               Yes         -
+                        InputWord               Yes         -
+                    ~InputNumerical
+                        ~InputNumber
+                            InputFloat          Yes         -
+                            InputInteger        Yes         -
+                                ~InputI
+                                    InputS8     Yes         -
+                                    InputU8     Yes         -
+                                    InputS16    Yes         -
+                                    InputU16    Yes         -
+                                    InputS32    Yes         -
+                        ~Slider
+                            SliderFloat         Yes         -
+                            SliderInteger       Yes         -
+                                ~SliderI
+                                    SliderS8    Yes         -
+                                    SliderU8    Yes         -
+                                    SliderS16   Yes         -
+                                    SliderU16   Yes         -
+                        ~Drag
+                            DragFloat           Yes         -
+                            DragInteger         Yes         -
+                                ~DragI
+                                    DragS8      Yes         -
+                                    DragU8      Yes         -
+                                    DragS16     Yes         -
+                                    DragU16     Yes         -
+                ~InputMultiComponent
+                    InputFloat2                 Yes         -
+                    InputFloat3                 Yes         -
+                    InputFloat4                 Yes         -
+                    InputInteger2               Yes         -
+                    InputInteger3               Yes         -
+                    InputInteger4               Yes         -
+                    SliderFloat2                Yes         -
+                    SliderFloat3                Yes         -
+                    SliderFloat4                Yes         -
+                    SliderInteger2              Yes         -
+                    SliderInteger3              Yes         -
+                    SliderInteger4              Yes         -
+                    DragFloat2                  Yes         -
+                    DragFloat3                  Yes         -
+                    DragFloat4                  Yes         -
+                    DragInteger2                Yes         -
+                    DragInteger3                Yes         -
+                    DragInteger4                Yes         -

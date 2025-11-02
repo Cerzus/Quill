@@ -290,14 +290,7 @@
             foo.config.can_resize = false;
             foo.config.can_close = false;
 
-            super(
-                name,
-                false,
-                start_moving_panel,
-                start_resizing_panel,
-                ...Object.values(foo),
-                ...args.slice(foo.count)
-            );
+            super(name, false, start_moving_panel, start_resizing_panel, ...Object.values(foo), ...args.slice(foo.count));
 
             const element = this.get_element();
             element.classList.add("quill-popup");
@@ -436,9 +429,7 @@
 
             this.add_children(this._get_arg_children());
             quill_config.content_element.append(this.#menu_element);
-            element
-                .querySelector(":nth-child(4)")
-                .append(Util.element_from_html(`<div class="quill-arrow-right"></div>`));
+            element.querySelector(":nth-child(4)").append(Util.element_from_html(`<div class="quill-arrow-right"></div>`));
         }
 
         show = () => this.#show();
@@ -626,12 +617,17 @@
                 this.#create_footer_row()
             );
             this.get_element().append(document_fragment);
+            this.set_disabled(!!this._get_arg_config().disabled);
         }
 
         // Public methods
 
         update() {
             this.#dynamic_rows.update();
+            return this;
+        }
+        set_disabled(disabled) {
+            this.#dynamic_rows.set_disabled(disabled);
             return this;
         }
 
@@ -675,8 +671,7 @@
                 new QuillNodeElement(
                     `<div class="quill-hex-editor-data">${Util.fill_array(
                         this.#number_of_columns,
-                        (i) =>
-                            `<input disabled class="quill-hex-editor-byte" size="1" value="+${this.#to_hex(i, 1)}" />`
+                        (i) => `<input disabled class="quill-hex-editor-byte" size="1" value="+${this.#to_hex(i, 1)}" />`
                     ).join("")}</div>`
                 ),
             ]).get_element();

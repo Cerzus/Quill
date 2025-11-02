@@ -6,8 +6,6 @@
 - Panel: highlight topmost ("active") panel
 - Panel: Improve size and position functionality
 - MenuBar: Disable/enable MenuItems
-- Disable inputs
-- Disable in bulk
 - Allow Wrapper element as child of MenuBar and Menu elements
 - Allow Wrapper element as child of Tabs element?
 - Test Wrapper everywhere it's applicable (especially when traversing the parent/children hierarchy)
@@ -18,3 +16,6 @@
 - Focus Panel on middle mouse button down; and therefore also close menus etc.
 - Make a choice between top/left and x/y
 - Sanitize inputs
+- Get rid of BranchElement?
+- Rework Table: nest CSS and rename Column to Cell
+- Only allow valid hexadecimal strings in memory editor

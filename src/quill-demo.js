@@ -100,6 +100,7 @@ function quill_show_demo() {
         show_collapsing_header_tables(),
         show_menu_bar(),
     ]));
+
     function show_collapsing_header_configuration(expanded) {
         return Q.CollapsingHeader("Configuration", { expanded }, [
             Q.Tree("Style", [
@@ -109,13 +110,12 @@ function quill_show_demo() {
             ]),
         ]);
     }
+
     function show_collapsing_header_window_options(expanded) {
         return Q.CollapsingHeader("Window options", { expanded }, [
             Q.Table([
                 Q.TableRow([
-                    Q.TableColumn(
-                        Q.Checkbox("Has title bar", { checked: true }, (c) => demo_panel.set_has_title_bar(c))
-                    ),
+                    Q.TableColumn(Q.Checkbox("Has title bar", { checked: true }, (c) => demo_panel.set_has_title_bar(c))),
                     Q.TableColumn(Q.Checkbox("Has menu bar", { checked: true }, (c) => demo_panel.set_has_menu_bar(c))),
                     Q.TableColumn(Q.Checkbox("Can move", { checked: true }, (c) => demo_panel.set_can_move(c))),
                 ]),
@@ -126,6 +126,7 @@ function quill_show_demo() {
             ]),
         ]);
     }
+
     function show_collapsing_header_elements(expanded) {
         return Q.CollapsingHeader("Elements", { expanded }, [
             show_tree_basic(),
@@ -137,13 +138,14 @@ function quill_show_demo() {
             show_tree_data_types(true),
             show_tree_multi_component_elements(),
         ]);
+
         function show_tree_basic(expanded) {
             return Q.Tree("Basic", { expanded }, [
                 Q.Row([
-                    Q.Button("Button", () => (text.is_hidden() ? text.hide() : text.show())),
+                    Q.Button("Button", () => (text.is_hidden() ? text.show() : text.hide())),
                     (text = Q.Text("Thanks for clicking me!")).hide(),
                 ]),
-                Q.Checkbox("Checkbox").set_checked(true),
+                Q.Checkbox("Checkbox", { disabled: true }).set_checked(true),
                 Q.RadioButtons([Q.RadioButton("Radio a", 0), Q.RadioButton("Radio b", 1), Q.RadioButton("Radio c", 2)]),
                 Q.Row(
                     Q.fill_array(7, (i) =>
@@ -165,9 +167,7 @@ function quill_show_demo() {
                     ),
                 ]),
                 Q.InputText("Input text", { value: "Hello, world!" }, (value) => console.log(value)),
-                Q.InputText("Input text with placeholder", { placeholder: "Type something" }, (value) =>
-                    console.log(value)
-                ),
+                Q.InputText("Input text with placeholder", { placeholder: "Type something" }, (value) => console.log(value)),
                 Q.InputInteger("Input integer", { value: 123 }, (value) => console.log(value)),
                 Q.InputFloat("Input float", { value: 0.5 }, (value) => console.log(value)),
                 Q.DragInteger("Drag integer", { value: 50 }, (value) => console.log(value)),
@@ -182,13 +182,12 @@ function quill_show_demo() {
                 Q.SliderFloat("Slider float with prefix", { prefix: "ratio = ", value: 0.123, step: 0.001 }, (value) =>
                     console.log(value)
                 ),
-                Q.SliderInteger(
-                    "Slider integer with suffix",
-                    { suffix: "°", value: 0, min: -360, max: +360 },
-                    (value) => console.log(value)
+                Q.SliderInteger("Slider integer with suffix", { suffix: "°", value: 0, min: -360, max: +360 }, (value) =>
+                    console.log(value)
                 ),
             ]);
         }
+
         function show_tree_trees(expanded) {
             return Q.Tree("Trees", { expanded }, [
                 Q.Tree(
@@ -199,6 +198,7 @@ function quill_show_demo() {
                 ),
             ]);
         }
+
         function show_tree_collapsing_headers(expanded) {
             return Q.Tree("Collapsing headers", { expanded }, [
                 (checkbox = Q.Checkbox("Show 2nd header", { checked: true }, (checked) =>
@@ -211,10 +211,11 @@ function quill_show_demo() {
                 (header = Q.CollapsingHeader(
                     "Header with a close button",
                     { closeable: true },
-                    Q.fill_array(5, (i) => Q.Text(`Some content ${i}`))
+                    Q.fill_array(5, (i) => Q.InputText(`Some content ${i}`))
                 )).on_close(() => checkbox.set_checked(false)),
             ]);
         }
+
         function show_tree_text(expanded) {
             return Q.Tree("Text", { expanded }, [
                 Q.Tree("Colorful text", [
@@ -227,9 +228,7 @@ function quill_show_demo() {
                         `This text should automatically wrap on the edge of the window. Here, the wrapping is enabled by enabling the "wrap_text" flag manually.`,
                         { flags: { wrap_text: true } }
                     ),
-                    Q.TextWrapped(
-                        `Here, the wrapping is enabled by using "Quill.TextWrapped" in stead of "Quill.Text".`
-                    ),
+                    Q.TextWrapped(`Here, the wrapping is enabled by using "Quill.TextWrapped" in stead of "Quill.Text".`),
                 ]),
                 Q.Tree("UTF-8 text", [
                     Q.InfoTooltip(
@@ -240,6 +239,7 @@ function quill_show_demo() {
                 ]),
             ]);
         }
+
         function show_tree_dropdowns(expanded) {
             return Q.Tree("Dropdowns", { expanded }, [
                 Q.Row([
@@ -264,6 +264,7 @@ function quill_show_demo() {
                 ]),
             ]);
         }
+
         function show_tree_tabs(expanded) {
             return Q.Tree("Tabs", { expanded }, [
                 Q.Tree("Basic", [
@@ -276,6 +277,7 @@ function quill_show_demo() {
                 ]),
             ]);
         }
+
         function show_tree_data_types(expanded) {
             const values_s = [127, 32767, -1];
             const values_u = [255, 65535];
@@ -300,40 +302,16 @@ function quill_show_demo() {
                 Q.Tree("Inputs (hexadecimal)", { expanded: true }, [
                     (s8_inputs[1] = Q.InputHex("InputHex (s8)", { value: values_s[0], length: 2 }, update_s8_inputs)),
                     (u8_inputs[1] = Q.InputHex("InputHex (u8)", { value: values_u[0], length: 2 }, update_u8_inputs)),
-                    (s16_inputs[1] = Q.InputHex(
-                        "InputHex (s16)",
-                        { value: values_s[1], length: 4 },
-                        update_s16_inputs
-                    )),
-                    (u16_inputs[1] = Q.InputHex(
-                        "InputHex (u16)",
-                        { value: values_u[1], length: 4 },
-                        update_u16_inputs
-                    )),
-                    (s32_inputs[1] = Q.InputHex(
-                        "InputHex (s32)",
-                        { value: values_s[2], length: 8 },
-                        update_s32_inputs
-                    )),
+                    (s16_inputs[1] = Q.InputHex("InputHex (s16)", { value: values_s[1], length: 4 }, update_s16_inputs)),
+                    (u16_inputs[1] = Q.InputHex("InputHex (u16)", { value: values_u[1], length: 4 }, update_u16_inputs)),
+                    (s32_inputs[1] = Q.InputHex("InputHex (s32)", { value: values_s[2], length: 8 }, update_s32_inputs)),
                 ]),
                 Q.Tree("Inputs (binary)", { expanded: true }, [
                     (s8_inputs[2] = Q.InputBin("InputBin (s8)", { value: values_s[0], length: 8 }, update_s8_inputs)),
                     (u8_inputs[2] = Q.InputBin("InputBin (u8)", { value: values_u[0], length: 8 }, update_u8_inputs)),
-                    (s16_inputs[2] = Q.InputBin(
-                        "InputBin (s16)",
-                        { value: values_s[1], length: 16 },
-                        update_s16_inputs
-                    )),
-                    (u16_inputs[2] = Q.InputBin(
-                        "InputBin (u16)",
-                        { value: values_u[1], length: 16 },
-                        update_u16_inputs
-                    )),
-                    (s32_inputs[2] = Q.InputBin(
-                        "InputBin (s32)",
-                        { value: values_s[2], length: 32 },
-                        update_s32_inputs
-                    )),
+                    (s16_inputs[2] = Q.InputBin("InputBin (s16)", { value: values_s[1], length: 16 }, update_s16_inputs)),
+                    (u16_inputs[2] = Q.InputBin("InputBin (u16)", { value: values_u[1], length: 16 }, update_u16_inputs)),
+                    (s32_inputs[2] = Q.InputBin("InputBin (s32)", { value: values_s[2], length: 32 }, update_s32_inputs)),
                 ]),
                 Q.Tree("Sliders", { expanded: true }, [
                     (s8_inputs[3] = Q.SliderS8("SliderS8", { value: values_s[0] }, update_s8_inputs)),
@@ -342,16 +320,8 @@ function quill_show_demo() {
                     (u16_inputs[3] = Q.SliderU16("SliderU16", { value: values_u[1] }, update_u16_inputs)),
                 ]),
                 Q.Tree("Sliders (reverse)", { expanded: true }, [
-                    (s8_inputs[4] = Q.SliderS8(
-                        "SliderS8 reverse",
-                        { value: values_s[0], reverse: true },
-                        update_s8_inputs
-                    )),
-                    (u8_inputs[4] = Q.SliderU8(
-                        "SliderU8 reverse",
-                        { value: values_u[0], reverse: true },
-                        update_u8_inputs
-                    )),
+                    (s8_inputs[4] = Q.SliderS8("SliderS8 reverse", { value: values_s[0], reverse: true }, update_s8_inputs)),
+                    (u8_inputs[4] = Q.SliderU8("SliderU8 reverse", { value: values_u[0], reverse: true }, update_u8_inputs)),
                     (s16_inputs[4] = Q.SliderS16(
                         "SliderS16 reverse",
                         { value: values_s[1], reverse: true },
@@ -371,6 +341,7 @@ function quill_show_demo() {
                 ]),
             ]);
         }
+
         function show_tree_multi_component_elements(expanded) {
             const vec4f = [0.1, 0.2, 0.3, 0.44];
             const vec4i = [1, 5, 100, 255];
@@ -404,8 +375,10 @@ function quill_show_demo() {
             ]);
         }
     }
+
     function show_collapsing_header_popups_and_modals(expanded) {
         return Q.CollapsingHeader("Popups & Modals", { expanded }, [show_tree_popups(), show_tree_modals()]);
+
         function show_tree_popups(expanded) {
             return Q.Tree("Popups", { expanded }, [
                 Q.TextWrapped(
@@ -427,7 +400,7 @@ function quill_show_demo() {
                             //                 selected_fish.value = i;
                         ])
                     ),
-                    (text = Q.Text("<None>")),
+                    Q.Text("<None>"),
                     //     Q.TextUnformatted(selected_fish.value === -1 ? "<None>" : names[selected_fish.value]);
                 ]),
                 //     // Showing a menu with toggles
@@ -487,11 +460,10 @@ function quill_show_demo() {
                 ),
             ]);
         }
+
         function show_tree_modals(expanded) {
             return Q.Tree("Modals", { expanded }, [
-                Q.TextWrapped(
-                    "Modals are like Panels but the user cannot interact outside of them before closing them."
-                ),
+                Q.TextWrapped("Modals are like Panels but the user cannot interact outside of them before closing them."),
                 Q.Button("Delete...", () => {
                     const modal = Q.Modal("Delete?", [
                         Q.Text("All those beautiful files will be deleted.\nThis operation cannot be undone!"),
@@ -516,8 +488,10 @@ function quill_show_demo() {
             ]);
         }
     }
+
     function show_collapsing_header_tables(expanded) {
         return Q.CollapsingHeader("Tables", { expanded }, [show_tree_basic(), show_tree_borders()]);
+
         function show_tree_basic(expanded) {
             return Q.Tree("Basic", { expanded }, [
                 Q.InfoTooltip("This table is created with nested Quill.fill_array() calls."),
@@ -539,6 +513,7 @@ function quill_show_demo() {
                 ]),
             ]);
         }
+
         function show_tree_borders(expanded) {
             return Q.Tree("Borders, background", { expanded }, [
                 (row_bg = Q.Checkbox("Row background", { checked: true }, (checked) =>
@@ -594,6 +569,7 @@ function quill_show_demo() {
             ]);
         }
     }
+
     function show_menu_bar() {
         return Q.MenuBar([
             Q.Menu("File", {}, () => {}, [

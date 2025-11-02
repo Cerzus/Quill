@@ -10,8 +10,8 @@ class QuillWrapper extends QuillWrappableElement {
     // Public methods
 
     set_disabled(disabled) {
-        if (disabled) this.get_element().setAttribute("disabled", "");
-        else this.get_element().removeAttribute("disabled");
+        Util.disable_html_element(this.get_element(), disabled);
+        return this;
     }
 
     // Private methods
