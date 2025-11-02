@@ -9,10 +9,10 @@
         Modal                                   No          Wrapper, NodeElement, MenuBar
     WrappableElement
         Wrapper                                 Yes         WrappableElement
-        TableRow                                No          Wrapper, TableColumn
-        TableHeaderRow                          No          Wrapper, TableColumn
-        TableColumn                             No          LeafElement, String, Number (no Wrapper, because only one child is allowed)
-        TableHeaderColumn                       No          LeafElement, String, Number (no Wrapper, because only one child is allowed)
+        TableRow                                No          Wrapper, TableCell
+        TableHeaderRow                          No          Wrapper, TableHeaderCell
+        TableCell                               No          LeafElement, String, Number (no Wrapper, because only one child is allowed)
+        TableHeaderCell                         No          LeafElement, String, Number (no Wrapper, because only one child is allowed)
         DropdownOptions                         No          -
         RadioButton                             Yes         -
         ~NodeElement

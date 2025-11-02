@@ -115,13 +115,13 @@ function quill_show_demo() {
         return Q.CollapsingHeader("Window options", { expanded }, [
             Q.Table([
                 Q.TableRow([
-                    Q.TableColumn(Q.Checkbox("Has title bar", { checked: true }, (c) => demo_panel.set_has_title_bar(c))),
-                    Q.TableColumn(Q.Checkbox("Has menu bar", { checked: true }, (c) => demo_panel.set_has_menu_bar(c))),
-                    Q.TableColumn(Q.Checkbox("Can move", { checked: true }, (c) => demo_panel.set_can_move(c))),
+                    Q.TableCell(Q.Checkbox("Has title bar", { checked: true }, (c) => demo_panel.set_has_title_bar(c))),
+                    Q.TableCell(Q.Checkbox("Has menu bar", { checked: true }, (c) => demo_panel.set_has_menu_bar(c))),
+                    Q.TableCell(Q.Checkbox("Can move", { checked: true }, (c) => demo_panel.set_can_move(c))),
                 ]),
                 Q.TableRow([
-                    Q.TableColumn(Q.Checkbox("Can resize", { checked: true }, (c) => demo_panel.set_can_resize(c))),
-                    Q.TableColumn(Q.Checkbox("Can close", { checked: true }, (c) => demo_panel.set_can_close(c))),
+                    Q.TableCell(Q.Checkbox("Can resize", { checked: true }, (c) => demo_panel.set_can_resize(c))),
+                    Q.TableCell(Q.Checkbox("Can close", { checked: true }, (c) => demo_panel.set_can_close(c))),
                 ]),
             ]),
         ]);
@@ -495,21 +495,19 @@ function quill_show_demo() {
         function show_tree_basic(expanded) {
             return Q.Tree("Basic", { expanded }, [
                 Q.InfoTooltip("This table is created with nested Quill.fill_array() calls."),
-                Q.Table(Q.fill_array(4, (r) => Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(`R:${r}, C:${c}`))))),
+                Q.Table(Q.fill_array(4, (r) => Q.TableRow(Q.fill_array(3, (c) => Q.TableCell(`R:${r}, C:${c}`))))),
                 Q.InfoTooltip("This table is created with Quill.fill_array() for the rows."),
                 Q.Table(
                     Q.fill_array(4, (r) =>
-                        Q.TableRow([Q.TableColumn(`R:${r}`), Q.TableColumn(`Some contents`), Q.TableColumn(123.456)])
+                        Q.TableRow([Q.TableCell(`R:${r}`), Q.TableCell(`Some contents`), Q.TableCell(123.456)])
                     )
                 ),
-                Q.InfoTooltip(
-                    "This table is created entirely by manually calling Quill.TableRow() and Quill.TableColumn()."
-                ),
+                Q.InfoTooltip("This table is created entirely by manually calling Quill.TableRow() and Quill.TableCell()."),
                 Q.Table([
-                    Q.TableRow([Q.TableColumn(0), Q.TableColumn(1), Q.TableColumn(2)]),
-                    Q.TableRow([Q.TableColumn(3), Q.TableColumn(4), Q.TableColumn(5)]),
-                    Q.TableRow([Q.TableColumn(6), Q.TableColumn(7), Q.TableColumn(8)]),
-                    Q.TableRow([Q.TableColumn(9), Q.TableColumn(10)]),
+                    Q.TableRow([Q.TableCell(0), Q.TableCell(1), Q.TableCell(2)]),
+                    Q.TableRow([Q.TableCell(3), Q.TableCell(4), Q.TableCell(5)]),
+                    Q.TableRow([Q.TableCell(6), Q.TableCell(7), Q.TableCell(8)]),
+                    Q.TableRow([Q.TableCell(9), Q.TableCell(10)]),
                 ]),
             ]);
         }
@@ -557,12 +555,12 @@ function quill_show_demo() {
                     },
                     [
                         (table_header = Q.TableHeaderRow({ hidden: false }, [
-                            Q.TableHeaderColumn("One"),
-                            Q.TableHeaderColumn("Two"),
-                            Q.TableHeaderColumn("Three"),
+                            Q.TableHeaderCell("One"),
+                            Q.TableHeaderCell("Two"),
+                            Q.TableHeaderCell("Three"),
                         ])),
                         ...Q.fill_array(5, (r) =>
-                            Q.TableRow(Q.fill_array(3, (c) => Q.TableColumn(Q.Text(`Hello ${c},${r}`))))
+                            Q.TableRow(Q.fill_array(3, (c) => Q.TableCell(Q.Text(`Hello ${c},${r}`))))
                         ),
                     ]
                 )),

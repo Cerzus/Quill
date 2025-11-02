@@ -17,5 +17,4 @@
 - Make a choice between top/left and x/y
 - Sanitize inputs
 - Get rid of BranchElement?
-- Rework Table: nest CSS and rename Column to Cell
 - Only allow valid hexadecimal strings in memory editor

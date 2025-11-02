@@ -198,7 +198,7 @@ function create_game_boy_ui() {
                 ...["halt", "ime"].map((flag) => checkbox(`cpu_${flag}`, flag.toUpperCase())),
                 Q.Separator(),
                 Q.Table([
-                    Q.TableRow([Q.TableColumn(), Q.TableColumn("IE"), Q.TableColumn("IF")]),
+                    Q.TableRow([Q.TableCell(), Q.TableCell("IE"), Q.TableCell("IF")]),
                     ...Object.entries({
                         vblank: "V-blank",
                         stat: "Stat",
@@ -207,9 +207,9 @@ function create_game_boy_ui() {
                         joypad: "Joypad",
                     }).map((source) =>
                         Q.TableRow([
-                            Q.TableColumn(source[1]),
-                            Q.TableColumn(checkbox(`cpu_ie_${source[0]}`, null)),
-                            Q.TableColumn(checkbox(`cpu_if_${source[0]}`, null)),
+                            Q.TableCell(source[1]),
+                            Q.TableCell(checkbox(`cpu_ie_${source[0]}`, null)),
+                            Q.TableCell(checkbox(`cpu_if_${source[0]}`, null)),
                         ])
                     ),
                 ]),
@@ -251,13 +251,11 @@ function create_game_boy_ui() {
                 checkbox("ppu_lyc_int", "LYC intr."),
             ]),
             Q.Table([
-                Q.TableRow(Q.TableColumn(input_integer("ppu_dot", "Dot", { min: 0, max: 455, disabled: true }))),
-                Q.TableRow(Q.TableColumn(input_integer("ppu_scanline", "Line", { min: 0, max: 154, disabled: true }))),
-                Q.TableRow(Q.TableColumn(input_u8("ppu_lyc", "LYC"))),
-                Q.TableRow(
-                    Q.TableColumn(input_integer("ppu_frame", "Frame no.", { min: 0, max: 99999999, disabled: true }))
-                ),
-                Q.TableRow(Q.TableColumn(checkbox("ppu_stat_int_signal", "STAT int. signal", { disabled: true }))),
+                Q.TableRow(Q.TableCell(input_integer("ppu_dot", "Dot", { min: 0, max: 455, disabled: true }))),
+                Q.TableRow(Q.TableCell(input_integer("ppu_scanline", "Line", { min: 0, max: 154, disabled: true }))),
+                Q.TableRow(Q.TableCell(input_u8("ppu_lyc", "LYC"))),
+                Q.TableRow(Q.TableCell(input_integer("ppu_frame", "Frame no.", { min: 0, max: 99999999, disabled: true }))),
+                Q.TableRow(Q.TableCell(checkbox("ppu_stat_int_signal", "STAT int. signal", { disabled: true }))),
             ]),
         ]),
     ]);
@@ -400,15 +398,15 @@ function create_game_boy_ui() {
                         Q.Table(
                             ["DMG0", "DMG", "MGB", "SGB", "SGB2", "CGB0", "CGB"].map((type) =>
                                 Q.TableRow([
-                                    Q.TableColumn(type),
-                                    Q.TableColumn(
+                                    Q.TableCell(type),
+                                    Q.TableCell(
                                         Q.Button("Open file...", () => {
                                             Q.open_file_dialog({ accept: [".bin"] }, (file) =>
                                                 console.log(`Open BOOT rom file for ${type}`, file)
                                             );
                                         })
                                     ),
-                                    Q.TableColumn("boot.bin"),
+                                    Q.TableCell("boot.bin"),
                                 ])
                             )
                         ),

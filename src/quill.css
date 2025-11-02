@@ -282,12 +282,8 @@
 
     .quill-table,
     .quill-table-header-row,
-    .quill-table-header-column {
+    .quill-table-header-cell {
         border: var(--quill-table-primary-border-size) none var(--quill-table-border-color);
-    }
-    .quill-table-row,
-    .quill-table-column {
-        border: var(--quill-table-secondary-border-size) none var(--quill-table-border-color);
     }
     .quill-table {
         border-collapse: collapse;
@@ -296,32 +292,32 @@
         border-bottom-style: var(--quill-table-borders-outer-h);
         border-left-style: var(--quill-table-borders-outer-v);
         height: fit-content;
-    }
-    .quill-table-header-row:not(:last-child) {
-        border-bottom-style: var(--quill-table-borders-inner-h);
-    }
-    .quill-table-row:not(:last-child) {
-        border-bottom-style: var(--quill-table-borders-inner-h);
-    }
-    .quill-table-header-column:not(:last-child) {
-        border-right-style: var(--quill-table-borders-inner-v);
-    }
-    .quill-table-column:not(:last-child) {
-        border-right-style: var(--quill-table-borders-inner-v);
-    }
-    .quill-table-row:nth-child(even) {
-        background: var(--quill-table-row-bg);
-    }
-    .quill-table-column,
-    .quill-table-header-column {
-        padding: calc(var(--quill-item-gap-size) / 2) calc(var(--quill-item-inner-gap-size) / 2);
-    }
-    .quill-table-header-column {
-        background: var(--quill-item-bg-color);
-    }
-    .quill-table-header-column:hover {
-        background: var(--quill-item-hovered-bg-color);
-        color: var(--quill-item-hovered-color);
+        .quill-table-row,
+        .quill-table-cell {
+            border: var(--quill-table-secondary-border-size) none var(--quill-table-border-color);
+        }
+        .quill-table-header-row:not(:last-child),
+        .quill-table-row:not(:last-child) {
+            border-bottom-style: var(--quill-table-borders-inner-h);
+        }
+        .quill-table-header-cell:not(:last-child),
+        .quill-table-cell:not(:last-child) {
+            border-right-style: var(--quill-table-borders-inner-v);
+        }
+        .quill-table-row:nth-child(even) {
+            background: var(--quill-table-row-bg);
+        }
+        .quill-table-cell,
+        .quill-table-header-cell {
+            padding: calc(var(--quill-item-gap-size) / 2) calc(var(--quill-item-inner-gap-size) / 2);
+        }
+        .quill-table-header-cell {
+            background: var(--quill-item-bg-color);
+            &:hover {
+                background: var(--quill-item-hovered-bg-color);
+                color: var(--quill-item-hovered-color);
+            }
+        }
     }
 
     .quill-button {

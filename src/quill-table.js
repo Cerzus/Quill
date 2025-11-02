@@ -22,7 +22,7 @@ class QuillTable extends QuillBranchElement {
 
 class QuillTableRow extends QuillWrappableElement {
     constructor(...args) {
-        super(`<tr class="quill-table-row"></tr>`, [QuillWrapper, QuillTableColumn], ...args);
+        super(`<tr class="quill-table-row"></tr>`, [QuillWrapper, QuillTableCell], ...args);
         this.add_children(this._get_arg_children());
     }
 
@@ -35,7 +35,7 @@ class QuillTableRow extends QuillWrappableElement {
 
 class QuillTableHeaderRow extends QuillWrappableElement {
     constructor(...args) {
-        super(`<tr class="quill-table-header-row"></tr>`, [QuillWrapper, QuillTableHeaderColumn], ...args);
+        super(`<tr class="quill-table-header-row"></tr>`, [QuillWrapper, QuillTableHeaderCell], ...args);
         this.add_children(this._get_arg_children());
     }
 
@@ -46,9 +46,9 @@ class QuillTableHeaderRow extends QuillWrappableElement {
     }
 }
 
-class QuillTableColumn extends QuillWrappableElement {
+class QuillTableCell extends QuillWrappableElement {
     constructor(child, ...args) {
-        super(`<td class="quill-table-column"></td>`, [QuillLeafElement, String, Number], ...args);
+        super(`<td class="quill-table-cell"></td>`, [QuillLeafElement, String, Number], ...args);
         if (typeof child !== "undefined") this.add_children(child);
     }
 
@@ -59,9 +59,9 @@ class QuillTableColumn extends QuillWrappableElement {
     }
 }
 
-class QuillTableHeaderColumn extends QuillWrappableElement {
+class QuillTableHeaderCell extends QuillWrappableElement {
     constructor(child, ...args) {
-        super(`<td class="quill-table-header-column"></td>`, [QuillLeafElement, String, Number], ...args);
+        super(`<td class="quill-table-header-cell"></td>`, [QuillLeafElement, String, Number], ...args);
         if (typeof child !== "undefined") this.add_children(child);
     }
 
