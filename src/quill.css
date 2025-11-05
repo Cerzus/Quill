@@ -90,6 +90,7 @@
             display: initial;
             overflow: hidden;
             flex-grow: 1;
+            font-size: calc(var(--quill-font-size) * 1.2);
         }
         > .quill-close-button {
             padding: 0 0.1em;
@@ -362,6 +363,7 @@
         > legend {
             text-align: var(--quill-fieldset-legend-text-align);
             font-weight: bold;
+            font-size: calc(var(--quill-font-size) * 1.1);
         }
     }
 
