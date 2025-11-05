@@ -610,10 +610,31 @@
                 (...args) => this.#update_row_element(...args)
             );
 
+            const dynamic_rows_element = this.#dynamic_rows.get_element();
+            const write = (e) => {
+                const input = e.target;
+                const value = (parseInt(input.value, 16) >>> 0) & 0xff;
+                input.dataset.value = value;
+                input.value = this.#to_hex(value, 2);
+                if (this.#show_ascii) {
+                    const index = Array.from(input.parentNode.children).indexOf(input);
+                    const child_ascii = input.closest(".quill-row").querySelector(".quill-hex-editor-ascii").children[index];
+                    child_ascii.dataset.value = child_ascii.firstChild.nodeValue = this.#to_ascii(value);
+                }
+                this._get_arg_callback()(+input.dataset.address, value);
+                focus_next(e);
+            };
+            const focus_next = (e) =>
+                (e.target.nextSibling || e.target.closest(".quill-row").nextSibling?.querySelector("input"))?.focus();
+
+            dynamic_rows_element.addEventListener("input", (e) => (e.target.value.length >= 2 ? focus_next(e) : null));
+            dynamic_rows_element.addEventListener("change", write);
+            dynamic_rows_element.addEventListener("focusin", (e) => e.target.select());
+
             const document_fragment = new DocumentFragment();
             document_fragment.append(
                 this.#add_event_listeners(this.#create_header_row()),
-                this.#add_event_listeners(this.#dynamic_rows.get_element()),
+                this.#add_event_listeners(dynamic_rows_element),
                 this.#create_footer_row()
             );
             this.get_element().append(document_fragment);
@@ -735,8 +756,11 @@
         #update_row_element(index, row) {
             const { data } = this.#address_and_data_from_index(index);
             const children_data = row.get_element().querySelector(".quill-hex-editor-data").children;
-            const children_ascii = row.get_element().querySelector(".quill-hex-editor-ascii").children;
+            const children_ascii = this.#show_ascii
+                ? row.get_element().querySelector(".quill-hex-editor-ascii").children
+                : null;
             for (const [i, value] of data.entries()) {
+                if (value < 0) continue;
                 const child_data = children_data[i];
                 if (child_data.dataset.value !== value) {
                     child_data.value = this.#to_hex(value, 2);
@@ -752,7 +776,9 @@
             const { address, data } = this.#address_and_data_from_index(index);
             const children = [
                 new QuillNodeElement(`<div class="quill-hex-editor-address">${this.#format_address(address)}</div>`),
-                new QuillNodeElement(`<div class="quill-hex-editor-data">${this.#create_row_data_html(data)}</div>`),
+                new QuillNodeElement(
+                    `<div class="quill-hex-editor-data">${this.#create_row_data_html(address, data)}</div>`
+                ),
             ];
             if (this.#show_ascii) {
                 const html = `<div class="quill-hex-editor-ascii">${this.#create_row_ascii_html(data)}</div>`;
@@ -760,9 +786,9 @@
             }
             return children;
         }
-        #create_row_data_html(data) {
+        #create_row_data_html(address, data) {
             return data
-                .map((x) => {
+                .map((x, i) => {
                     if (x < 0) {
                         return `<input class="quill-hex-editor-byte" 
                                    size="1"
@@ -772,6 +798,7 @@
                         return `<input class="quill-hex-editor-byte" 
                                    size="1"
                                    maxlength="2"
+                                   data-address="${address + i}"
                                    data-value="${x}"
                                    value="${this.#to_hex(x, 2)}" />`;
                     }

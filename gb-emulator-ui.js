@@ -367,7 +367,12 @@ function create_game_boy_ui() {
     ]);
 
     const memory_panel = Q.Panel("Memory", { closed: true, css: { maxWidth: "fit-content" } }, [
-        (inputs.memory = Q.HexEditor(0, game_boy.get_memory().length, (i) => game_boy.read_memory(i))),
+        (inputs.memory = Q.HexEditor(
+            0,
+            game_boy.get_memory().length,
+            (address) => game_boy.read_memory(address),
+            (address, u8) => game_boy.write_memory(address, u8)
+        )),
     ]);
 
     const disassembly_panel = Q.Panel("Disassembly", { closed: true }, [

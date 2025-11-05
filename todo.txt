@@ -17,4 +17,3 @@
 - Make a choice between top/left and x/y
 - Sanitize inputs
 - Get rid of BranchElement?
-- Only allow valid hexadecimal strings in memory editor

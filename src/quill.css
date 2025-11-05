@@ -715,7 +715,7 @@
                 outline: none;
                 border: none;
                 background: transparent;
-                &:disabled {
+                &[data-address]:disabled {
                     color: var(--quill-input-disabled-color);
                 }
             }

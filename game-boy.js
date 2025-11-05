@@ -335,8 +335,7 @@ class APU {
     set_ch1_panning_right = (value) =>
         (this.#nr51_master_panning = (this.#nr51_master_panning & ~0x01) | (!!value ? 0x01 : 0));
     set_ch1_length_enable = (value) =>
-        (this.#nr14_ch1_period_high_and_control =
-            (this.#nr14_ch1_period_high_and_control & ~0x40) | (!!value ? 0x40 : 0));
+        (this.#nr14_ch1_period_high_and_control = (this.#nr14_ch1_period_high_and_control & ~0x40) | (!!value ? 0x40 : 0));
     set_ch1_length_counter = (value) => (this.#ch1_length_counter = value & 0x3f);
     set_ch2_enabled = (value) => (this.#nr52_master_control = (this.#nr52_master_control & ~2) | (!!value ? 2 : 0));
     // set_ch2_dac_enabled = (value) => (this.#nr22_ch2_volume_and_envelope = (this.#nr22_ch2_volume_and_envelope&~0xff)|( !!value?0xff:0));
@@ -345,8 +344,7 @@ class APU {
     set_ch2_panning_right = (value) =>
         (this.#nr51_master_panning = (this.#nr51_master_panning & ~0x02) | (!!value ? 0x02 : 0));
     set_ch2_length_enable = (value) =>
-        (this.#nr24_ch2_period_high_and_control =
-            (this.#nr24_ch2_period_high_and_control & ~0x40) | (!!value ? 0x40 : 0));
+        (this.#nr24_ch2_period_high_and_control = (this.#nr24_ch2_period_high_and_control & ~0x40) | (!!value ? 0x40 : 0));
     set_ch2_length_counter = (value) => (this.#ch2_length_counter = value & 0x3f);
     set_ch3_enabled = (value) => (this.#nr52_master_control = (this.#nr52_master_control & ~4) | (!!value ? 4 : 0));
     // set_ch3_dac_enabled = (value) => (this.#nr30_ch3_dac = (this.#nr30_ch3_dac&~0xff)|( !!value?0xff:0));
@@ -355,8 +353,7 @@ class APU {
     set_ch3_panning_right = (value) =>
         (this.#nr51_master_panning = (this.#nr51_master_panning & ~0x04) | (!!value ? 0x04 : 0));
     set_ch3_length_enable = (value) =>
-        (this.#nr34_ch3_period_high_and_control =
-            (this.#nr34_ch3_period_high_and_control & ~0x40) | (!!value ? 0x40 : 0));
+        (this.#nr34_ch3_period_high_and_control = (this.#nr34_ch3_period_high_and_control & ~0x40) | (!!value ? 0x40 : 0));
     set_ch3_length_counter = (value) => (this.#ch3_length_counter = value & 0xff);
     set_ch4_enabled = (value) => (this.#nr52_master_control = (this.#nr52_master_control & ~8) | (!!value ? 8 : 0));
     // set_ch4_dac_enabled = (value) => (this.#nr42_ch4_volume_and_envelope = (this.#nr42_ch4_volume_and_envelope&~0xff)|( !!value?0xff:0));
@@ -364,8 +361,7 @@ class APU {
         (this.#nr51_master_panning = (this.#nr51_master_panning & ~0x80) | (!!value ? 0x80 : 0));
     set_ch4_panning_right = (value) =>
         (this.#nr51_master_panning = (this.#nr51_master_panning & ~0x08) | (!!value ? 0x08 : 0));
-    set_ch4_length_enable = (value) =>
-        (this.#nr44_ch4_control = (this.#nr44_ch4_control & ~0x40) | (!!value ? 0x40 : 0));
+    set_ch4_length_enable = (value) => (this.#nr44_ch4_control = (this.#nr44_ch4_control & ~0x40) | (!!value ? 0x40 : 0));
     set_ch4_length_counter = (value) => (this.#ch4_length_counter = value & 0x3f);
     set_ch1_envelope_starting_volume = (value) =>
         (this.#nr12_ch1_volume_and_envelope = (this.#nr12_ch1_volume_and_envelope & ~0xf0) | ((value & 15) << 4));
@@ -423,8 +419,7 @@ class APU {
     set_ch3_volume_setting = (value) =>
         (this.#nr32_ch3_volume_setting = (this.#nr32_ch3_volume_setting & ~0x60) | ((value & 3) << 5));
     set_ch4_clock_shift = (value) =>
-        (this.#nr43_ch4_frequency_and_randomness =
-            (this.#nr43_ch4_frequency_and_randomness & ~0xf0) | ((value & 15) << 4));
+        (this.#nr43_ch4_frequency_and_randomness = (this.#nr43_ch4_frequency_and_randomness & ~0xf0) | ((value & 15) << 4));
     set_ch4_clock_divider = (value) =>
         (this.#nr43_ch4_frequency_and_randomness = (this.#nr43_ch4_frequency_and_randomness & ~7) | (value & 7));
     set_ch4_frequency_timer = (value) => (this.#ch4_frequency_timer = Math.min(Math.max(0, value), 7 << 17));
@@ -514,6 +509,7 @@ class GameBoy {
     get_apu = () => this.#apu;
     get_memory = () => this.#memory.slice();
     read_memory = (address) => this.#memory[address];
+    write_memory = (address, u8) => (this.#memory[address] = u8);
 
     #randomize(number_of_memory_changes) {
         this.#cpu.randomize();

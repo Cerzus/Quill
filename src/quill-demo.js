@@ -79,12 +79,18 @@ function quill_show_demo() {
     Q.Panel("Panel 3", { closed: true }, [
         Q.CollapsingHeader("Take a look, why don't you?", [
             Q.Tree("It's in here", [
-                Q.HexEditor(0x050, 513, (i) => hex_editor_data[i], {
-                    number_of_columns: 8,
-                    show_ascii: false,
-                    grey_out_zeroes: false,
-                    uppercase_hex: true,
-                }),
+                Q.HexEditor(
+                    0x050,
+                    513,
+                    (i) => hex_editor_data[i],
+                    {
+                        number_of_columns: 8,
+                        show_ascii: false,
+                        grey_out_zeroes: false,
+                        uppercase_hex: true,
+                    },
+                    (i, v) => (hex_editor_data[i] = v)
+                ),
             ]),
         ]),
         Q.MenuBar([Q.MenuItem("HMM", { ctrl_key: "H" }, (element, e) => console.log("Ctrl+H", element, e))]),
