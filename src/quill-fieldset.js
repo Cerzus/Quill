@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillFieldset extends QuillBranchElement {
+class QuillFieldset extends QuillNodeElement {
     constructor(legend, ...args) {
         super(
             `<fieldset class="quill-fieldset"><legend>${legend}</legend></fieldset>`,

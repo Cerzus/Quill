@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillTable extends QuillBranchElement {
+class QuillTable extends QuillNodeElement {
     constructor(...args) {
         super(
             `<table class="quill-table">

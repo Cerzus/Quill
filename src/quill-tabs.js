@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillTabs extends QuillBranchElement {
+class QuillTabs extends QuillNodeElement {
     #header_element;
     constructor(...args) {
         super(

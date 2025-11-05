@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillRow extends QuillBranchElement {
+class QuillRow extends QuillNodeElement {
     constructor(...args) {
         super(`<fieldset class="quill-row"></fieldset>`, [QuillWrapper, QuillNodeElement], ...args);
         this.add_children(this._get_arg_children());

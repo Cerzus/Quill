@@ -1,6 +1,6 @@
 "use strict";
 
-class QuillIndent extends QuillBranchElement {
+class QuillIndent extends QuillNodeElement {
     constructor(...args) {
         super(`<fieldset class="quill-indent"></fieldset>`, [QuillWrapper, QuillNodeElement], ...args);
         this.add_children(this._get_arg_children());

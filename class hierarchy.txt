@@ -20,14 +20,13 @@
             HexEditor                           Yes         -
             CheckboxTree                        Yes         Wrapper, CheckboxTree, Checkbox
             DynamicRows                         Yes         -
-            ~BranchElement
-                Table                           No          Wrapper, TableRow, TableHeaderRow
-                Fieldset                        Yes         Wrapper, NodeElement
-                Row                             Yes         Wrapper, NodeElement??
-                Tabs                            No          Tab (no Wrapper, because we're adding two HTML elements for each tab. Which one to wrap around?)
-                Indent                          Yes         Wrapper, NodeElement
-                Tree                            Yes         Wrapper, NodeElement
-                    CollapsingHeader            Yes         Wrapper, NodeElement
+            Table                               No          Wrapper, TableRow, TableHeaderRow
+            Fieldset                            Yes         Wrapper, NodeElement
+            Row                                 Yes         Wrapper, NodeElement??
+            Tabs                                No          Tab (no Wrapper, because we're adding two HTML elements for each tab. Which one to wrap around?)
+            Indent                              Yes         Wrapper, NodeElement
+            Tree                                Yes         Wrapper, NodeElement
+                CollapsingHeader                Yes         Wrapper, NodeElement
             ~LeafElement
                 InfoTooltip                     No          -
                 Separator                       No          -

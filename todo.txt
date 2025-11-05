@@ -16,4 +16,3 @@
 - Focus Panel on middle mouse button down; and therefore also close menus etc.
 - Make a choice between top/left and x/y
 - Sanitize inputs
-- Get rid of BranchElement?
