@@ -151,7 +151,7 @@ function quill_show_demo() {
                     Q.Button("Button", () => (text.is_hidden() ? text.show() : text.hide())),
                     (text = Q.Text("Thanks for clicking me!")).hide(),
                 ]),
-                Q.Checkbox("Checkbox", { disabled: true }).set_checked(true),
+                Q.Checkbox("Checkbox").set_checked(true),
                 Q.RadioButtons([Q.RadioButton("Radio a", 0), Q.RadioButton("Radio b", 1), Q.RadioButton("Radio c", 2)]),
                 Q.Row(
                     Q.fill_array(7, (i) =>

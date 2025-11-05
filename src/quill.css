@@ -23,6 +23,9 @@
         font-size: var(--quill-font-size);
         line-height: 1.2em;
         opacity: 1;
+        &:focus {
+            outline: none;
+        }
     }
 
     fieldset {
@@ -49,7 +52,11 @@
         }
     }
     input.quill-input[type="radio"]:disabled:checked {
+        border: 3px solid var(--quill-item-disabled-bg-color);
         background: var(--quill-input-disabled-color);
+    }
+    input.quill-input[type="checkbox"]:disabled:checked::after {
+        border-color: var(--quill-input-disabled-color);
     }
     input.quill-input[type="color"]:disabled {
         border-color: var(--quill-item-disabled-bg-color);
@@ -328,9 +335,12 @@
         border-radius: var(--quill-item-border-radius-size);
         display: inline-block;
         width: fit-content;
-        &:not(:disabled):hover {
-            background: var(--quill-item-hovered-bg-color);
-            color: var(--quill-item-hovered-color);
+        &:not(:disabled) {
+            &:hover,
+            &:focus {
+                background: var(--quill-item-hovered-bg-color);
+                color: var(--quill-item-hovered-color);
+            }
         }
     }
 
@@ -440,6 +450,26 @@
         border-radius: 0;
         height: calc(1.2em + 2 * var(--quill-item-padding-size));
         width: calc(1.2em + 2 * var(--quill-item-padding-size));
+        appearance: none;
+        &:checked {
+            &::after {
+                border: solid var(--quill-input-color);
+                content: "";
+                display: block;
+                border-width: 0 0.2em 0.2em 0;
+                width: 25%;
+                height: 50%;
+                margin: 0.05em 0.35em;
+                transform: rotate(45deg);
+                -webkit-transform: rotate(45deg);
+            }
+            &:hover,
+            &:focus {
+                &::after {
+                    border-color: var(--quill-input-hovered-color);
+                }
+            }
+        }
     }
 
     input.quill-input[type="text"] {
@@ -563,9 +593,13 @@
         width: 1.2em;
         height: 1.2em;
         border-radius: 100%;
+        box-sizing: border-box;
         &:not(:disabled):checked {
+            border: 0.25em solid var(--quill-item-bg-color);
             background: var(--quill-input-color);
-            &:hover {
+            &:hover,
+            &:focus {
+                border-color: var(--quill-item-hovered-bg-color);
                 background: var(--quill-input-hovered-color);
             }
         }
@@ -577,8 +611,11 @@
         appearance: none;
         height: auto;
         width: fit-content;
-        &:not(:disabled):hover {
-            border-color: var(--quill-item-hovered-bg-color);
+        &:not(:disabled) {
+            &:hover,
+            &:focus {
+                border-color: var(--quill-item-hovered-bg-color);
+            }
         }
         &::-webkit-color-swatch-wrapper {
             padding: 0;
