@@ -5,6 +5,8 @@ class QuillBasePanel extends QuillElement {
     #has_title_bar;
     #has_menu_bar;
     #can_move;
+    #can_grow;
+    #can_shrink;
     #can_resize;
     #can_close;
     #on_close_callback;
@@ -42,6 +44,8 @@ class QuillBasePanel extends QuillElement {
         this.set_has_title_bar(Object.hasOwn(config, "has_title_bar") ? config.has_title_bar : true);
         this.set_has_menu_bar(Object.hasOwn(config, "has_menu_bar") ? config.has_menu_bar : true);
         this.set_can_move(Object.hasOwn(config, "can_move") ? config.can_move : true);
+        this.set_can_grow(Object.hasOwn(config, "can_grow") ? config.can_grow : true);
+        this.set_can_shrink(Object.hasOwn(config, "can_shrink") ? config.can_shrink : true);
         this.set_can_resize(Object.hasOwn(config, "can_resize") ? config.can_resize : true);
         this.set_can_close(Object.hasOwn(config, "can_close") ? config.can_close : true);
 
@@ -63,6 +67,8 @@ class QuillBasePanel extends QuillElement {
     has_title_bar = () => this.#has_title_bar;
     has_menu_bar = () => this.#has_menu_bar;
     can_move = () => this.#can_move;
+    can_grow = () => this.#can_grow;
+    can_shrink = () => this.#can_shrink;
     can_resize = () => this.#can_resize;
     can_close = () => this.#can_close;
     on_close(callback) {
@@ -82,9 +88,25 @@ class QuillBasePanel extends QuillElement {
         const cursor = (this.#can_move = !!can_move) ? "" : "initial";
         this.get_element().querySelector(".quill-panel-title-bar").style.cursor = cursor;
     }
+    set_can_grow(can_grow) {
+        const max_size = (this.#can_grow = !!can_grow) && this.#can_resize ? "" : "fit-content";
+        this.get_element().style.maxWidth = max_size;
+        this.get_element().style.maxHeight = max_size;
+    }
+    set_can_shrink(can_shrink) {
+        const min_size = (this.#can_shrink = !!can_shrink) && this.#can_resize ? "" : "fit-content";
+        this.get_element().style.minWidth = min_size;
+        this.get_element().style.minHeight = min_size;
+    }
     set_can_resize(can_resize) {
         const display = (this.#can_resize = !!can_resize) ? "" : "none";
         this.get_element().querySelector(".quill-panel-resizer").style.display = display;
+        const max_size = this.#can_grow && this.#can_resize ? "" : "fit-content";
+        this.get_element().style.maxWidth = max_size;
+        this.get_element().style.maxHeight = max_size;
+        const min_size = this.#can_shrink && this.#can_resize ? "" : "fit-content";
+        this.get_element().style.minWidth = min_size;
+        this.get_element().style.minHeight = min_size;
     }
     set_can_close(can_close) {
         const display = (this.#can_close = !!can_close) ? "" : "none";

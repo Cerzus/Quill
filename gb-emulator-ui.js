@@ -176,7 +176,7 @@ function create_game_boy_ui() {
         return (inputs[id] = Q.Dropdown(label, (value) => set_property(id, +value), Q.DropdownOptions(options)));
     }
 
-    const cpu_panel = Q.Panel("CPU", { closed: true }, [
+    const cpu_panel = Q.Panel("CPU", { closed: true, can_resize: false }, [
         Q.Row([
             Q.Fieldset("Registers", [
                 ...["a", "f", "b", "c", "d", "e", "h", "l"].map((register) =>
@@ -217,7 +217,7 @@ function create_game_boy_ui() {
         ]),
     ]);
 
-    const ppu_panel = Q.Panel("PPU", { closed: true }, [
+    const ppu_panel = Q.Panel("PPU", { closed: true, can_resize: false }, [
         Q.Row([
             Q.Fieldset("Controls", [
                 checkbox("ppu_enabled", "Enabled"),
@@ -260,7 +260,7 @@ function create_game_boy_ui() {
         ]),
     ]);
 
-    const apu_panel = Q.Panel("APU", { closed: true }, [
+    const apu_panel = Q.Panel("APU", { closed: true, can_resize: false }, [
         Q.Row([
             Q.Fieldset("Global controls", [
                 checkbox("apu_enabled", "Enabled"),
@@ -366,7 +366,7 @@ function create_game_boy_ui() {
         ]),
     ]);
 
-    const memory_panel = Q.Panel("Memory", { closed: true, css: { maxWidth: "fit-content" } }, [
+    const memory_panel = Q.Panel("Memory", { closed: true }, [
         (inputs.memory = Q.HexEditor(
             0,
             game_boy.get_memory().length,
