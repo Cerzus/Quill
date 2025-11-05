@@ -199,9 +199,9 @@
             } else {
                 const config = stored_panels_config_at_init[stored_index];
                 this.set_position({ top: config.y, left: config.x });
-                this.set_size({ width: config.w, height: config.h });
+                this.set_size({ width: config.width, height: config.height });
                 set_panel_z_index(this, stored_index);
-                this.#closed = !config.o;
+                this.#closed = !config.is_open;
             }
             if (this.#closed) this.#close();
 
@@ -972,7 +972,7 @@
                 const position = panel.get_position();
                 const size = panel.get_size();
                 const open = panel.is_open();
-                return { id, x: position.left, y: position.top, w: size.width, h: size.height, o: open };
+                return { id, x: position.left, y: position.top, width: size.width, height: size.height, is_open: open };
             });
         localStorage.setItem("quill_panels", JSON.stringify(panels_config));
     }
