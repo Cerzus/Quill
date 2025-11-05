@@ -23,6 +23,8 @@
         font-size: var(--quill-font-size);
         line-height: 1.2em;
         opacity: 1;
+        /* background-color: rgba(255, 255, 255, 0.1);
+        color: rgba(0, 0, 0); */
         &:focus {
             outline: none;
         }
@@ -55,7 +57,7 @@
         border: 3px solid var(--quill-item-disabled-bg-color);
         background: var(--quill-input-disabled-color);
     }
-    input.quill-input[type="checkbox"]:disabled:checked::after {
+    input.quill-input[type="checkbox"]:disabled::after {
         border-color: var(--quill-input-disabled-color);
     }
     input.quill-input[type="color"]:disabled {
@@ -451,23 +453,33 @@
         height: calc(1.2em + 2 * var(--quill-item-padding-size));
         width: calc(1.2em + 2 * var(--quill-item-padding-size));
         appearance: none;
-        &:checked {
+        position: relative;
+        &::after {
+            border: 0 solid var(--quill-input-color);
+            content: "";
+            display: block;
+        }
+        &:checked::after {
+            border-width: 0 0.2em 0.2em 0;
+            width: 25%;
+            height: 50%;
+            margin: 0.05em 0.35em;
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+        }
+        &:indeterminate::after {
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            margin: 0 auto;
+            border-top-width: 0.2em;
+            width: 60%;
+            transform: translateY(-50%);
+        }
+        &:hover,
+        &:focus {
             &::after {
-                border: solid var(--quill-input-color);
-                content: "";
-                display: block;
-                border-width: 0 0.2em 0.2em 0;
-                width: 25%;
-                height: 50%;
-                margin: 0.05em 0.35em;
-                transform: rotate(45deg);
-                -webkit-transform: rotate(45deg);
-            }
-            &:hover,
-            &:focus {
-                &::after {
-                    border-color: var(--quill-input-hovered-color);
-                }
+                border-color: var(--quill-input-hovered-color);
             }
         }
     }
