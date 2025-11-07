@@ -78,29 +78,25 @@ class QuillElement {
     set_style_font(property, font) {
         const msg = `Unknown style font "${property}"`;
         if (!Util.warning(Object.hasOwn(QuillConfig.fonts, property), msg)) return;
-        QuillConfig.fonts[property] = font;
         Util.add_style_variable_to_element(this.#element, property, "-font", font);
         return this;
     }
     set_style_color(property, color) {
         const msg = `Unknown style color "${property}"`;
         if (!Util.warning(Object.hasOwn(QuillConfig.colors, property), msg)) return;
-        QuillConfig.colors[property] = color;
         Util.add_style_variable_to_element(this.#element, property, "-color", color.to_css());
         return this;
     }
     set_style_size(property, size) {
         const msg = `Unknown style size "${property}"`;
         if (!Util.warning(Object.hasOwn(QuillConfig.sizes, property), msg)) return;
-        QuillConfig.sizes[property] = size;
         Util.add_style_variable_to_element(this.#element, property, "-size", `${size}px`);
         return this;
     }
     set_style_flag(property, value) {
         const msg = `Unknown style flag "${property}"`;
         if (!Util.warning(Object.hasOwn(QuillConfig.flags, property), msg)) return;
-        const flag = QuillConfig.flags[property].set(value);
-        Util.add_style_variable_to_element(this.#element, property, "", flag.get_value());
+        Util.add_style_variable_to_element(this.#element, property, "", QuillConfig.flags[property].get_value(value));
         return this;
     }
 
