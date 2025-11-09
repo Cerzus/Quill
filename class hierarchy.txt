@@ -32,6 +32,10 @@
                 Separator                       No          -
                 Text                            No          -
                     TextWrapped                 No          -
+                ~Plot
+                    PlotLines                   No          -
+                    PlotHistogram               No          -
+                    ProgressBar                 No          -
                 Button                          Yes         -
                 ~Input
                     Checkbox                    Yes         -

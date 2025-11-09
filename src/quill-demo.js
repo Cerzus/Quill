@@ -141,7 +141,8 @@ function quill_show_demo() {
             show_tree_text(),
             show_tree_dropdowns(),
             show_tree_tabs(),
-            show_tree_data_types(true),
+            show_tree_plotting(true),
+            show_tree_data_types(),
             show_tree_multi_component_elements(),
         ]);
 
@@ -281,6 +282,127 @@ function quill_show_demo() {
                     ]),
                     Q.Separator(),
                 ]),
+            ]);
+        }
+
+        function show_tree_plotting(expanded) {
+            const arr = [0.6, 0.1, 1.0, 0.5, 0.92, 0.1, 0.2];
+
+            let animate = true;
+            const values = new Array(90).fill(0);
+            let values_offset = 0;
+            let phase = 0;
+
+            let progress = 0;
+            let progress_dir = 1;
+
+            requestAnimationFrame(function moi() {
+                if (animate) {
+                    values[values_offset] = Math.cos(phase);
+                    values_offset = (values_offset + 1) % values.length;
+                    phase += 0.1 * values_offset;
+                    plot_lines_2.set_values_offset(values_offset);
+                    // Plots can display overlay texts
+                    // (in this example, we will display an average value)
+                    const average = values.reduce((acc, cur) => acc + cur, 0) / values.length;
+                    plot_lines_2.set_overlay_text(`avg ${average.toFixed(6)}`);
+
+                    progress += (progress_dir * 0.4 * 1) / 60;
+                    if (progress >= +1.1) {
+                        progress = +1.1;
+                        progress_dir *= -1.0;
+                    }
+                    if (progress <= -0.1) {
+                        progress = -0.1;
+                        progress_dir *= -1.0;
+                    }
+                    progress_bar_1.set_fraction(progress);
+
+                    const progress_saturated = Math.min(Math.max(0, progress), 1);
+                    const buf = `${Math.floor(progress_saturated * 1753)}/${1753}`;
+                    progress_bar_2.set_fraction(progress).set_overlay_text(buf);
+                }
+                requestAnimationFrame(moi);
+            });
+
+            let func_type = "Sin";
+            let display_count = 70;
+            // Use functions to generate output
+            // FIXME: This is rather awkward because current plot API only pass in indices.
+            // We probably want an API passing floats and user provide sample rate/count.
+            const functions = {
+                Sin: (i) => Math.sin(i * 0.1),
+                Saw: (i) => (i & 1 ? 1 : -1),
+            };
+            let func = functions[func_type];
+
+            return Q.Tree("Plotting", { expanded }, [
+                Q.Checkbox("Animate", { checked: animate }, (checked) => (animate = checked)),
+                Q.Row([Q.PlotLines({ values_getter: (i) => arr[i], values_count: arr.length }), Q.Text("Frame Times")]),
+                Q.Row([
+                    Q.PlotHistogram({
+                        values_getter: (i) => arr[i],
+                        values_count: arr.length,
+                        scale_min: 0,
+                        scale_max: 1,
+                        height: 80,
+                    }),
+                    Q.Text("Histogram"),
+                ]),
+
+                Q.Row([
+                    (plot_lines_2 = Q.PlotLines({
+                        values_getter: (i) => values[i],
+                        values_count: values.length,
+                        overlay_text: `avg ${(0).toFixed(6)}`,
+                        scale_min: -1,
+                        scale_max: 1,
+                        height: 80,
+                    })),
+                    Q.Text("Lines"),
+                ]),
+                Q.Separator(),
+                Q.Row([
+                    Q.Dropdown(
+                        "Function",
+                        { selected: func_type },
+                        (selected) => {
+                            func_type = selected;
+                            func = functions[func_type];
+                            plot_lines_1.set_values_getter(func);
+                            plot_histogram_1.set_values_getter(func);
+                        },
+                        [Q.DropdownOptions(["Sin", "Saw"])]
+                    ),
+                    Q.SliderInteger("Sample count", { min: 2, max: 400, value: display_count }, (value) => {
+                        display_count = value;
+                        plot_lines_1.set_values_count(display_count);
+                        plot_histogram_1.set_values_count(display_count);
+                    }),
+                ]),
+                Q.Row([
+                    (plot_lines_1 = Q.PlotLines({
+                        values_getter: func,
+                        values_count: display_count,
+                        scale_min: -1,
+                        scale_max: 1,
+                        height: 80,
+                    })),
+                    Q.Text("Lines"),
+                ]),
+                Q.Row([
+                    (plot_histogram_1 = Q.PlotHistogram({
+                        values_getter: func,
+                        values_count: display_count,
+                        scale_min: -1,
+                        scale_max: 1,
+                        height: 80,
+                    })),
+                    Q.Text("Histogram"),
+                ]),
+                Q.Separator(),
+                Q.Row([(progress_bar_1 = Q.ProgressBar({ fraction: progress })), Q.Text("Progress Bar")]),
+                Q.Row([(progress_bar_2 = Q.ProgressBar({ fraction: progress, overlay_text: "0/1753" }))]),
             ]);
         }
 

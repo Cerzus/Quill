@@ -30,27 +30,39 @@ const QuillConfig = {
         proportional: "'Open Sans', Arial, Helvetica, sans-serif",
         monospace: "Consolas, 'Courier New', Courier, monospace",
     },
-    colors: {
-        background: new QuillColor(40, 40, 40),
-        panel_title_bar_bg: new QuillColor(20, 20, 20),
-        panel_content_bg: new QuillColor(30, 30, 30),
-        menu_bg: new QuillColor(50, 50, 50),
-        item_bg: new QuillColor(50, 50, 50),
-        item_hovered_bg: new QuillColor(70, 70, 70),
-        item_disabled_bg: new QuillColor(40, 40, 40),
-        input_border: new QuillColor(0, 138, 110),
-        line: new QuillColor(70, 70, 70),
-        text: new QuillColor(150, 150, 150),
-        item_hovered: new QuillColor(220, 220, 220),
-        input: new QuillColor(0, 190, 255),
-        input_disabled: new QuillColor(100, 100, 100),
-        input_hovered: new QuillColor(128, 223, 255),
-        scrollbar_thumb: new QuillColor(30, 30, 30),
-        scrollbar_track: new QuillColor(50, 50, 50),
-        panel_border: new QuillColor(72, 61, 139),
-        table_border: new QuillColor(80, 80, 80),
-        table_row_bg: new QuillColor(20, 20, 20),
-    },
+    colors: new Proxy(
+        {
+            background: new QuillColor(40, 40, 40),
+            panel_title_bar_bg: new QuillColor(20, 20, 20),
+            panel_content_bg: new QuillColor(30, 30, 30),
+            menu_bg: new QuillColor(50, 50, 50),
+            item_bg: new QuillColor(50, 50, 50),
+            item_hovered_bg: new QuillColor(70, 70, 70),
+            item_disabled_bg: new QuillColor(40, 40, 40),
+            input_border: new QuillColor(0, 138, 110),
+            line: new QuillColor(70, 70, 70),
+            text: new QuillColor(150, 150, 150),
+            item_hovered: new QuillColor(220, 220, 220),
+            input: new QuillColor(0, 190, 255),
+            input_disabled: new QuillColor(100, 100, 100),
+            input_hovered: new QuillColor(128, 223, 255),
+            scrollbar_thumb: new QuillColor(30, 30, 30),
+            scrollbar_track: new QuillColor(50, 50, 50),
+            panel_border: new QuillColor(72, 61, 139),
+            table_border: new QuillColor(80, 80, 80),
+            table_row_bg: new QuillColor(20, 20, 20),
+            plot: new QuillColor(204, 204, 0),
+        },
+        {
+            set: function (target, property, value) {
+                target[property] = value;
+                if (property === "plot") {
+                    console.log("Plot color changed. Redraw plots somehow.");
+                }
+                return true;
+            },
+        }
+    ),
     sizes: {
         font: 13,
         panel_padding: 2,

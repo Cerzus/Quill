@@ -49,8 +49,8 @@
         }
         + output {
             color: var(--quill-input-disabled-color);
-            text-shadow: 1px 1px var(--quill-item-disabled-bg-color), -1px 1px var(--quill-item-disabled-bg-color),
-                -1px -1px var(--quill-item-disabled-bg-color), 1px -1px var(--quill-item-disabled-bg-color);
+            text-shadow: 1px 0 var(--quill-item-disabled-bg-color), -1px 0 var(--quill-item-disabled-bg-color),
+                0 -1px var(--quill-item-disabled-bg-color), 0 1px var(--quill-item-disabled-bg-color);
         }
     }
     input.quill-input[type="radio"]:disabled:checked {
@@ -537,8 +537,8 @@
                 }
                 + output {
                     color: var(--quill-input-color);
-                    text-shadow: 1px 1px var(--quill-item-bg-color), -1px 1px var(--quill-item-bg-color),
-                        -1px -1px var(--quill-item-bg-color), 1px -1px var(--quill-item-bg-color);
+                    text-shadow: 1px 0 var(--quill-item-bg-color), -1px 0 var(--quill-item-bg-color),
+                        0 -1px var(--quill-item-bg-color), 0 1px var(--quill-item-bg-color);
                 }
                 &:hover,
                 &:focus {
@@ -546,8 +546,8 @@
                         background: var(--quill-input-hovered-color);
                     }
                     + output {
-                        text-shadow: 1px 1px var(--quill-item-hovered-bg-color), -1px 1px var(--quill-item-hovered-bg-color),
-                            -1px -1px var(--quill-item-hovered-bg-color), 1px -1px var(--quill-item-hovered-bg-color);
+                        text-shadow: 1px 0 var(--quill-item-hovered-bg-color), -1px 0 var(--quill-item-hovered-bg-color),
+                            0 -1px var(--quill-item-hovered-bg-color), 0 1px var(--quill-item-hovered-bg-color);
                         color: var(--quill-input-hovered-color);
                     }
                 }
@@ -777,5 +777,27 @@
             font-family: var(--quill-monospace-font);
             font-size: var(--quill-font-size);
         }
+    }
+
+    .quill-plot {
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--quill-item-border-radius-size);
+    }
+    .quill-plot > canvas {
+        background: var(--quill-item-bg-color);
+    }
+    .quill-plot > div {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: var(--quill-monospace-font);
+        color: var(--quill-plot-color);
+        text-shadow: 1px 0 var(--quill-item-bg-color), -1px 0 var(--quill-item-bg-color), 0 1px var(--quill-item-bg-color),
+            0 -1px var(--quill-item-bg-color);
+    }
+    .quill-progress-bar > div {
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
 }

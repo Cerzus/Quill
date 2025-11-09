@@ -2,7 +2,7 @@
 - ALWAYS: Do not use !important in CSS
 - ALWAYS: Add more settings to config
 - Add tests
-- Get rid of fake private methods (methods starting with "_")
+- Get rid of fake private methods (methods starting with "_") (take a look at QuillPlot for inspiration)
 - Panel: highlight topmost ("active") panel
 - Panel: Improve size and position functionality
 - MenuBar: Disable/enable MenuItems
@@ -14,3 +14,5 @@
 - Focus Panel on middle mouse button down; and therefore also close menus etc.
 - Make a choice between top/left and x/y
 - Sanitize inputs
+- Plots/canvases etc.: Make "dirty" and only update once (and only when visible)
+- Only allow setters to be chainable?
