@@ -61,7 +61,6 @@ class QuillTab extends QuillElement {
         super(`<fieldset class="quill-tab" data-name="${name}"></fieldset>`, [QuillWrapper, QuillNodeElement], ...args);
         this.#name = name;
         this.add_children(this._get_arg_children());
-        // TODO: validate disabled
         this.set_disabled(!!this._get_arg_config().disabled);
     }
 
@@ -70,8 +69,7 @@ class QuillTab extends QuillElement {
     get_name = () => this.#name;
 
     set_disabled(disabled) {
-        // TODO: validate disabled
-        Util.disable_html_element(this.get_element(), disabled);
+        Util.disable_html_element(this.get_element(), !!disabled);
         return this;
     }
 

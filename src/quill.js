@@ -707,7 +707,6 @@
                 this.#create_footer_row()
             );
             this.get_element().append(document_fragment);
-            // TODO: validate disabled
             this.set_disabled(!!this._get_arg_config().disabled);
         }
 
@@ -719,8 +718,7 @@
         }
 
         set_disabled(disabled) {
-            // TODO: validate disabled
-            this.#dynamic_rows.set_disabled(disabled);
+            this.#dynamic_rows.set_disabled(!!disabled);
             return this;
         }
 

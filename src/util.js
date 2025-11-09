@@ -99,8 +99,7 @@ class Util {
 
     static disable_html_element(html_element, disable) {
         // TODO: validate html_element
-        // TODO: validate disable
-        if (disable) html_element.setAttribute("disabled", "");
+        if (!!disable) html_element.setAttribute("disabled", "");
         else html_element.removeAttribute("disabled");
     }
 }

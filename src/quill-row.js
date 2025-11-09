@@ -5,15 +5,13 @@ class QuillRow extends QuillNodeElement {
         // TODO: validate args
         super(`<fieldset class="quill-row"></fieldset>`, [QuillWrapper, QuillNodeElement], ...args);
         this.add_children(this._get_arg_children());
-        // TODO: validate disabled
         this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
 
     set_disabled(disabled) {
-        // TODO: validate disabled
-        Util.disable_html_element(this.get_element(), disabled);
+        Util.disable_html_element(this.get_element(), !!disabled);
         return this;
     }
 

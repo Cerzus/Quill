@@ -28,7 +28,6 @@ class QuillDynamicRows extends QuillNodeElement {
         new ResizeObserver(() => this.refresh()).observe(this.get_element());
 
         this.get_element().addEventListener("scroll", () => this.#update_row_elements(false));
-        // TODO: validate disabled
         this.set_disabled(!!this._get_arg_config().disabled);
     }
 
@@ -59,8 +58,7 @@ class QuillDynamicRows extends QuillNodeElement {
     }
 
     set_disabled(disabled) {
-        // TODO: validate disabled
-        Util.disable_html_element(this.get_element().querySelector(".quill-dynamic-rows-offset"), disabled);
+        Util.disable_html_element(this.get_element().querySelector(".quill-dynamic-rows-offset"), !!disabled);
         return this;
     }
 

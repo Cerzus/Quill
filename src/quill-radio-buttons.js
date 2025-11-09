@@ -46,15 +46,13 @@ class QuillRadioButton extends QuillWrappableElement {
             [],
             ...args
         );
-        // TODO: validate disabled
         this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
 
     set_disabled(disabled) {
-        // TODO: validate disabled
-        Util.disable_html_element(this.get_element().querySelector("input"), disabled);
+        Util.disable_html_element(this.get_element().querySelector("input"), !!disabled);
         return this;
     }
 }

@@ -27,7 +27,6 @@ class QuillInput extends QuillLeafElement {
                 this._get_arg_callback()(this.get_value(), this, e);
             });
         }
-        // TODO: validate disabled
         this.set_disabled(!!this._get_arg_config().disabled);
     }
 
@@ -45,8 +44,7 @@ class QuillInput extends QuillLeafElement {
     }
 
     set_disabled(disabled) {
-        // TODO: validate disabled
-        Util.disable_html_element(this.get_input_element(), disabled);
+        Util.disable_html_element(this._get_input_element(), !!disabled);
         return this;
     }
 
@@ -72,6 +70,7 @@ class QuillInputMultiComponent extends QuillLeafElement {
         this.get_element().append(label ?? "");
         // TODO: validate value
         this.set_value(config.value);
+        this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
@@ -87,9 +86,8 @@ class QuillInputMultiComponent extends QuillLeafElement {
     }
 
     set_disabled(disabled) {
-        // TODO: validate disabled
         for (let i = 0; i < this.#inputs.length; i++) {
-            this.#inputs[i].set_disabled(disabled);
+            this.#inputs[i].set_disabled(!!disabled);
         }
         return this;
     }

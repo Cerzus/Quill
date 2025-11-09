@@ -24,7 +24,6 @@ class QuillTree extends QuillNodeElement {
         });
         // TODO: validate expanded
         this.#set_expanded(!!this._get_arg_config().expanded);
-        // TODO: validate disabled
         this.set_disabled(!!this._get_arg_config().disabled);
     }
 
@@ -35,8 +34,7 @@ class QuillTree extends QuillNodeElement {
     collapse = () => this.#set_expanded(false);
 
     set_disabled(disabled) {
-        // TODO: validate disabled
-        Util.disable_html_element(this.get_element().querySelector(".quill-tree-body"), disabled);
+        Util.disable_html_element(this.get_element().querySelector(".quill-tree-body"), !!disabled);
         return this;
     }
 
