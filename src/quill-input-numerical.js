@@ -164,8 +164,7 @@ class QuillDrag extends QuillInputNumerical {
     static #x;
     static #value;
 
-    // TODO: Make private somehow
-    static init() {
+    static #init() {
         if (QuillDrag.#initialized) return;
         QuillDrag.#initialized = true;
         window.addEventListener("mousemove", (e) => {
@@ -184,6 +183,7 @@ class QuillDrag extends QuillInputNumerical {
 
     constructor(...args) {
         // TODO: validate args
+        QuillDrag.#init();
         super(
             `<div class="quill-drag">
                 <input class="quill-input" type="number">

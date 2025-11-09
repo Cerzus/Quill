@@ -172,9 +172,6 @@
             if (!prevent_menu_from_being_hidden) hide_active_menu_bar();
         });
 
-        QuillMenuItem.init();
-        QuillDrag.init();
-
         Object.freeze(Quill);
     };
 
@@ -360,8 +357,7 @@
 
         #checkbox = null;
 
-        // TODO: Make private somehow
-        static init() {
+        static #init() {
             if (QuillMenuItem.#initialized) return;
             QuillMenuItem.#initialized = true;
             window.addEventListener("keydown", (e) => {
@@ -375,6 +371,7 @@
         constructor(title, ...args) {
             // TODO: validate title
             // TODO: validate args
+            QuillMenuItem.#init();
             super(
                 `<label class="quill-menu-item">
                     <div></div>
