@@ -2,7 +2,9 @@
 
 class QuillTabs extends QuillNodeElement {
     #header_element;
+
     constructor(...args) {
+        // TODO: validate args
         super(
             `<div class="quill-tabs">
                 <div class="quill-tabs-header"></div>
@@ -22,21 +24,28 @@ class QuillTabs extends QuillNodeElement {
         this.add_children(this._get_arg_children());
     }
 
-    // Private methods
+    // Protected methods
 
     _add_child(child) {
+        // TODO: validate child
         const name = child.get_name();
         const header_tab = Util.element_from_html(`<div class="quill-header-tab" data-name="${name}">${name}</div>`);
         this.#header_element.append(header_tab);
         this.get_element().querySelector(".quill-tabs-body").append(child.get_element());
         if (this.get_children().length === 0) this.#activate_child(child);
     }
+
     #activate_child(child) {
+        // TODO: validate child
         const header_tab = this.#header_element.querySelector(`[data-name=${child.get_name()}]`);
         header_tab.classList.add("active");
         child.get_element().classList.add("active");
     }
+
+    // Private methods
+
     #deactivate_child(child) {
+        // TODO: validate child
         const header_tab = this.#header_element.querySelector(`[data-name=${child.get_name()}]`);
         header_tab.classList.remove("active");
         child.get_element().classList.remove("active");
@@ -47,25 +56,32 @@ class QuillTab extends QuillElement {
     #name;
 
     constructor(name, ...args) {
+        // TODO: validate name
+        // TODO: validate args
         super(`<fieldset class="quill-tab" data-name="${name}"></fieldset>`, [QuillWrapper, QuillNodeElement], ...args);
         this.#name = name;
         this.add_children(this._get_arg_children());
+        // TODO: validate disabled
         this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
 
     get_name = () => this.#name;
+
     set_disabled(disabled) {
+        // TODO: validate disabled
         Util.disable_html_element(this.get_element(), disabled);
         return this;
     }
 
-    // Private methods
+    // Protected methods
 
     _add_child(child) {
+        // TODO: validate child
         this.get_element().append(child.get_element());
     }
+
     _remove() {
         // TODO: remove tab from parent Tabs
     }

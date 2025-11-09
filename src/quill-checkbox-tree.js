@@ -5,6 +5,8 @@ class QuillCheckboxTree extends QuillNodeElement {
     #number_of_events_to_ignore = 0;
 
     constructor(label, ...args) {
+        // TODO: validate label
+        // TODO: validate args
         super(
             `<fieldset class="quill-checkbox-tree">
                 <div class="quill-checkbox-tree-body quill-indent"></div>
@@ -16,22 +18,30 @@ class QuillCheckboxTree extends QuillNodeElement {
         this.#checkbox = new QuillCheckbox(label);
         this.get_element().prepend(this.#checkbox.get_element());
         this.add_children(this._get_arg_children());
+        // TODO: validate disabled
         this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
 
     set_disabled(disabled) {
+        // TODO: validate disabled
         Util.disable_html_element(this.get_element(), disabled);
         return this;
     }
-    // Private methods
+
+    // Protected methods
 
     _add_child(child) {
+        // TODO: validate child
         this.get_element().querySelector(".quill-checkbox-tree-body").append(child.get_element());
         this.#set_status_based_on_children([child, ...this.get_children()]);
     }
+
+    // Private methods
+
     #on_change(e) {
+        // TODO: validate e
         if (this.#number_of_events_to_ignore > 0) {
             this.#number_of_events_to_ignore--;
             return;
@@ -52,7 +62,9 @@ class QuillCheckboxTree extends QuillNodeElement {
             this.#set_status_based_on_children(this.get_children());
         }
     }
+
     #set_status_based_on_children(children) {
+        // TODO: validate children
         const tally = { checked: false, unchecked: false };
         (function tally_children_checked_status(children) {
             for (const child of children) {

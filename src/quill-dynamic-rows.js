@@ -9,6 +9,9 @@ class QuillDynamicRows extends QuillNodeElement {
     #unbounded_first_index;
 
     constructor(number_of_rows, create_callback, ...args) {
+        // TODO: validate number_of_rows
+        // TODO: validate create_callback
+        // TODO: validate args
         Util.warning(!isNaN(number_of_rows));
         super(
             `<div class="quill-dynamic-rows">
@@ -25,20 +28,25 @@ class QuillDynamicRows extends QuillNodeElement {
         new ResizeObserver(() => this.refresh()).observe(this.get_element());
 
         this.get_element().addEventListener("scroll", () => this.#update_row_elements(false));
+        // TODO: validate disabled
         this.set_disabled(!!this._get_arg_config().disabled);
     }
 
     // Public methods
 
     update() {
+        // TODO: validate callback
         for (const row of this.#rows) this._get_arg_callback()(row.index, row.row);
         return this;
     }
+
     set_number_of_rows(number_of_rows) {
+        // TODO: validate number_of_rows
         if (number_of_rows === this.#number_of_rows) return;
         this.#number_of_rows = number_of_rows;
         this.refresh();
     }
+
     refresh() {
         const rows_element = this.get_element().querySelector(".quill-dynamic-rows-list");
         const offset_element = this.get_element().querySelector(".quill-dynamic-rows-offset");
@@ -49,7 +57,9 @@ class QuillDynamicRows extends QuillNodeElement {
         rows_element.style.height = `${this.#row_height * this.#number_of_rows}px`;
         this.#update_row_elements(true);
     }
+
     set_disabled(disabled) {
+        // TODO: validate disabled
         Util.disable_html_element(this.get_element().querySelector(".quill-dynamic-rows-offset"), disabled);
         return this;
     }
@@ -57,12 +67,15 @@ class QuillDynamicRows extends QuillNodeElement {
     // Private methods
 
     #create_row(index) {
+        // TODO: validate index
         return new QuillRow(
             { css: { height: index === null ? "auto" : `${this.#row_height}px` } },
             this.#create_callback(index)
         );
     }
+
     #update_row_elements(refresh) {
+        // TODO: validate refresh
         if (this.#row_height <= 0) return;
 
         const element = this.get_element();

@@ -2,6 +2,7 @@
 
 (function (Quill) {
     Quill.init = (root_element) => {
+        // TODO: validate root_element
         if (!Util.error(root_element instanceof Element)) return;
 
         // Add all public-facing properties
@@ -184,11 +185,14 @@
         #closed = true;
 
         constructor(name, ...args) {
+            // TODO: validate name
+            // TODO: validate args
             super(name, false, start_moving_panel, start_resizing_panel, ...args);
 
             const element = this.get_element();
 
             this.#create_id(name);
+            // TODO: validate closed
             this.#closed = !!this._get_arg_config().closed;
             Util.add_mouse_down_event_listener(element, () => show_panel_on_top(this));
 
@@ -201,6 +205,11 @@
                 quill_panels_order.push(this.#id);
             } else {
                 const config = stored_panels_config_at_init[stored_index];
+                // TODO: validate x
+                // TODO: validate y
+                // TODO: validate width
+                // TODO: validate height
+                // TODO: validate is_open
                 this.set_position({ top: config.y, left: config.x });
                 this.set_size({ width: config.width, height: config.height });
                 set_panel_z_index(this, stored_index);
@@ -214,7 +223,9 @@
         // Public methods
 
         get_id = () => this.#id;
+
         is_open = () => !(this.can_close() && this.#closed);
+
         is_closed = () => this.#closed;
 
         open() {
@@ -222,6 +233,7 @@
             store_panels_config();
             return this;
         }
+
         close() {
             this.#close();
             store_panels_config();
@@ -237,13 +249,16 @@
                 show_panel_on_top(this);
             }
         }
+
         #close() {
             if (this.can_close()) {
                 this.#closed = true;
                 this.get_element().style.display = "none";
             }
         }
+
         #create_id(string = "") {
+            // TODO: validate string
             for (let i = 0; ; i++) {
                 const id = string
                     .split("")
@@ -258,6 +273,8 @@
 
     class QuillModal extends QuillBasePanel {
         constructor(name, ...args) {
+            // TODO: validate name
+            // TODO: validate args
             super(name, true, start_moving_panel, start_resizing_panel, ...args);
 
             const element = this.get_element();
@@ -286,6 +303,10 @@
 
     class QuillPopup extends QuillBasePanel {
         constructor(name, left, top, ...args) {
+            // TODO: validate name
+            // TODO: validate left
+            // TODO: validate top
+            // TODO: validate args
             const foo = Util.config_callback_and_children_from_arguments(...args);
             foo.config.has_title_bar = false;
             foo.config.has_menu_bar = false;
@@ -318,13 +339,15 @@
 
     class MenuBar extends QuillMenuBar {
         constructor(...args) {
+            // TODO: validate args
             super(`<div class="quill-menu-bar"></div>`, [QuillMenu, QuillMenuItem, QuillSeparator], ...args);
             this.add_children(this._get_arg_children());
         }
 
-        // Private methods
+        // Protected methods
 
         _add_child(child) {
+            // TODO: validate child
             this.get_element().append(child.get_element());
         }
     }
@@ -334,6 +357,7 @@
     class QuillMenuItem extends QuillElement {
         static #initialized = false;
         static #ctrl_keys = {};
+
         #checkbox = null;
 
         // TODO: Make private somehow
@@ -349,6 +373,8 @@
         }
 
         constructor(title, ...args) {
+            // TODO: validate title
+            // TODO: validate args
             super(
                 `<label class="quill-menu-item">
                     <div></div>
@@ -361,16 +387,20 @@
             );
 
             const config = this._get_arg_config();
+            // TODO: validate checkable
+            // TODO: validate checked
             if (!!config.checkable) {
                 this.#checkbox = new QuillCheckbox({ checked: !!config.checked }, (_, __, e) => this.#notify_user(e));
                 this.get_element().querySelector(":nth-child(1)").append(this.#checkbox.get_element());
             }
 
             const element = this.get_element();
+            // TODO: validate ctrl_key
             if (config.ctrl_key) {
                 QuillMenuItem.#ctrl_keys[config.ctrl_key.toLowerCase()] = (e) => {
                     if (!this.get_panel().is_open()) return;
                     this.set_checked(!this.is_checked());
+                    // TODO: validate callback
                     this._get_arg_callback()(this, e);
                 };
                 element.querySelector(":nth-child(3)").innerHTML = `Ctrl+${config.ctrl_key.toUpperCase()}`;
@@ -383,8 +413,11 @@
         // Public methods
 
         is_checkable = () => this.#checkbox !== null;
+
         is_checked = () => this.is_checkable() && this.#checkbox.is_checked();
+
         set_checked(checked) {
+            // TODO: validate checked
             this.#checkbox?.set_checked(checked);
             return this;
         }
@@ -392,9 +425,11 @@
         // Private methods
 
         #notify_user(e) {
+            // TODO: validate e
             this._get_arg_callback()(this, e);
             hide_active_menu_bar();
         }
+
         #show_parent_menu_if_menu_bar_active() {
             if (active_menu_bar !== get_top_most_menu(this).get_parent()) return;
             hide_active_menu();
@@ -412,6 +447,8 @@
         #menu_element;
 
         constructor(title, ...args) {
+            // TODO: validate title
+            // TODO: validate args
             super(
                 `<label class="quill-menu-item">
                     <div></div>
@@ -436,16 +473,22 @@
         }
 
         show = () => this.#show();
+
         hide = () => this.#hide();
 
-        // Private methods
+        // Protected methods
 
         _add_child(child) {
+            // TODO: validate child
             this.#menu_element.append(child.get_element());
         }
+
         _remove() {
             this.#menu_element.remove();
         }
+
+        // Private methods
+
         #toggle_parent_menu_bar_active_state() {
             this.#prevent_from_being_hidden();
             const parent = this.get_parent();
@@ -458,15 +501,18 @@
                 this.#show_if_menu_bar_active();
             }
         }
+
         #show_if_menu_bar_active() {
             if (active_menu_bar !== get_top_most_menu(this).get_parent()) return;
             hide_active_menu();
             this.#show();
             active_menu = this;
         }
+
         #prevent_from_being_hidden() {
             prevent_menu_from_being_hidden = true;
         }
+
         #show() {
             const element = this.get_element();
             const parent = this.get_parent();
@@ -481,6 +527,7 @@
             }
             return this;
         }
+
         #hide() {
             this.get_element().classList.remove("active");
             this.#menu_element.classList.remove("active");
@@ -489,7 +536,9 @@
             }
             return this;
         }
+
         #set_position(callback) {
+            // TODO: validate callback
             const content_element_rect = quill_config.content_element.getBoundingClientRect();
             const element_rect = this.get_element().getBoundingClientRect();
             const position = {
@@ -506,6 +555,8 @@
 
     class QuillInputBytes extends QuillInput {
         constructor(size, ...args) {
+            // TODO: validate size
+            // TODO: validate args
             Util.assert(size === 1 || size === 2);
 
             const html = `<input class="quill-input" type="text" size="${size * 2}" maxlength="${size * 2}" />`;
@@ -514,12 +565,15 @@
             const mask = (0x100 << ((size - 1) * 8)) - 1;
 
             function sanitize_value(value) {
+                // TODO: validate value
                 return (value & mask).toString(16).padStart(size * 2, 0);
             }
             function value_to_signed(value) {
+                // TODO: validate value
                 return value > mask >> 1 ? value - mask - 1 : value;
             }
             function ascii_to_value(ascii) {
+                // TODO: validate ascii
                 return parseInt(
                     ascii
                         .split("")
@@ -529,6 +583,7 @@
                 );
             }
             function value_to_ascii(value) {
+                // TODO: validate value
                 return String.fromCharCode(
                     ...value
                         .toString(16)
@@ -543,6 +598,7 @@
 
             this.get_input_element().addEventListener("click", () => {
                 const update_popup = (value) => {
+                    // TODO: validate value
                     const children = popup.get_children();
                     children[0].set_value(value);
                     children[1].set_value(value);
@@ -551,6 +607,7 @@
                     children[4].set_value(value_to_ascii(value));
                 };
                 const update_and_dispatch = (value) => {
+                    // TODO: validate value
                     update_popup(value);
                     this.set_value(value);
                     const input_element = this.get_input_element();
@@ -593,14 +650,22 @@
         #dynamic_rows;
 
         constructor(start_address, data_size, read_callback, ...args) {
+            // TODO: validate start_address
+            // TODO: validate data_size
+            // TODO: validate read_callback
+            // TODO: validate args
             super(`<div class="quill-hex-editor"></div>`, [], ...args);
 
             const config = this._get_arg_config();
+            // TODO: validate number_of_columns
             this.#number_of_columns = Object.hasOwn(config, "number_of_columns")
                 ? Math.min(Math.max(0, ~~config.number_of_columns), 16)
                 : 16;
+            // TODO: validate show_ascii
             this.#show_ascii = Object.hasOwn(config, "show_ascii") ? !!config.show_ascii : true;
+            // TODO: validate grey_out_zeroes
             this.#set_grey_out_zeroes(Object.hasOwn(config, "grey_out_zeroes") ? !!config.grey_out_zeroes : true);
+            // TODO: validate uppercase_hex
             this.#uppercase_hex = Object.hasOwn(config, "uppercase_hex") ? !!config.uppercase_hex : false;
 
             this.#start_address = start_address;
@@ -624,6 +689,7 @@
                     const child_ascii = input.closest(".quill-row").querySelector(".quill-hex-editor-ascii").children[index];
                     child_ascii.dataset.value = child_ascii.firstChild.nodeValue = this.#to_ascii(value);
                 }
+                // TODO: validate callback
                 this._get_arg_callback()(+input.dataset.address, value);
                 focus_next(e);
             };
@@ -641,6 +707,7 @@
                 this.#create_footer_row()
             );
             this.get_element().append(document_fragment);
+            // TODO: validate disabled
             this.set_disabled(!!this._get_arg_config().disabled);
         }
 
@@ -650,7 +717,9 @@
             this.#dynamic_rows.update();
             return this;
         }
+
         set_disabled(disabled) {
+            // TODO: validate disabled
             this.#dynamic_rows.set_disabled(disabled);
             return this;
         }
@@ -658,21 +727,28 @@
         // Private methods
 
         #set_number_of_columns(number_of_columns) {
+            // TODO: validate number_of_columns
             this.#number_of_columns = Math.min(Math.max(0, ~~number_of_columns), 16);
             this.get_element().firstChild.replaceWith(this.#add_event_listeners(this.#create_header_row()));
             this.#dynamic_rows.set_number_of_rows(this.#get_number_of_rows());
         }
+
         #set_show_ascii(show_ascii) {
+            // TODO: validate show_ascii
             this.#show_ascii = !!show_ascii;
             this.#dynamic_rows.refresh();
             return this;
         }
+
         #set_grey_out_zeroes(grey_out_zeroes) {
+            // TODO: validate grey_out_zeroes
             this.#grey_out_zeroes = !!grey_out_zeroes;
             if (this.#grey_out_zeroes) this.get_element().classList.add("quill-grey-out-zeroes");
             else this.get_element().classList.remove("quill-grey-out-zeroes");
         }
+
         #set_uppercase_hex(uppercase_hex) {
+            // TODO: validate uppercase_hex
             this.#uppercase_hex = !!uppercase_hex;
             const element = this.get_element();
             element.firstChild.remove();
@@ -682,9 +758,11 @@
             this.#dynamic_rows.refresh();
             return this;
         }
+
         #get_number_of_rows() {
             return Math.ceil((this.#end_address - this.#start_address) / this.#number_of_columns);
         }
+
         #create_header_row() {
             return new QuillRow({ css: { paddingBottom: "5px" } }, [
                 new QuillNodeElement(
@@ -700,7 +778,9 @@
                 ),
             ]).get_element();
         }
+
         #add_event_listeners(element) {
+            // TODO: validate element
             element.addEventListener("mouseover", (e) => {
                 if (e.target.classList.contains("quill-hex-editor-byte")) {
                     this.#set_hovered_column(Array.from(e.target.parentNode.children).indexOf(e.target));
@@ -710,6 +790,7 @@
             element.addEventListener("mouseleave", () => this.#set_hovered_column(-1));
             return element;
         }
+
         #create_footer_row() {
             return new QuillRow([
                 new QuillButton("Options", (button) => {
@@ -734,20 +815,31 @@
                 new QuillButton("", { css: { width: "100px" } }),
             ]).get_element();
         }
+
         #to_hex(value, number_of_characters) {
+            // TODO: validate value
+            // TODO: validate number_of_characters
             const hex = value.toString(16).padStart(number_of_characters, 0);
             return this.#uppercase_hex ? hex.toUpperCase() : hex;
         }
+
         #to_ascii(value) {
+            // TODO: validate value
             return String.fromCharCode(value >= 32 && value < 127 ? value : 46).replaceAll(/\s/g, "\xa0");
         }
+
         #format_address(address, length = this.#max_addr_length) {
+            // TODO: validate address
+            // TODO: validate length
             return "0x" + this.#to_hex(address, length);
         }
+
         #set_hovered_column(n) {
             this.get_element().setAttribute("data-hovered-column", n);
         }
+
         #address_and_data_from_index(index) {
+            // TODO: validate index
             const address = index * this.#number_of_columns + this.#start_address;
             return {
                 address,
@@ -756,7 +848,10 @@
                     .map((_, i) => (address + i < this.#end_address ? this.#read_callback(address + i) : -1)),
             };
         }
+
         #update_row_element(index, row) {
+            // TODO: validate index
+            // TODO: validate row
             const { data } = this.#address_and_data_from_index(index);
             const children_data = row.get_element().querySelector(".quill-hex-editor-data").children;
             const children_ascii = this.#show_ascii
@@ -775,7 +870,9 @@
                 }
             }
         }
+
         #create_row_element(index) {
+            // TODO: validate index
             const { address, data } = this.#address_and_data_from_index(index);
             const children = [
                 new QuillNodeElement(`<div class="quill-hex-editor-address">${this.#format_address(address)}</div>`),
@@ -789,7 +886,10 @@
             }
             return children;
         }
+
         #create_row_data_html(address, data) {
+            // TODO: validate address
+            // TODO: validate data
             return data
                 .map((x, i) => {
                     if (x < 0) {
@@ -808,7 +908,9 @@
                 })
                 .join("");
         }
+
         #create_row_ascii_html(data) {
+            // TODO: validate data
             return data
                 .map((x) => {
                     if (x < 0) {
@@ -827,58 +929,86 @@
     function get_font_names() {
         return Object.keys(quill_config.fonts);
     }
+
     function get_style_font(property) {
+        // TODO: validate property
         return quill_config.fonts[property];
     }
+
     function set_style_font(property, value) {
+        // TODO: validate property
+        // TODO: validate value
         const msg = `Unknown style font "${property}"`;
         if (!Util.warning(Object.hasOwn(quill_config.fonts, property), msg)) return;
         quill_config.fonts[property] = value;
         apply_font_to_root_element(property, value);
     }
+
     function get_color_names() {
         return Object.keys(quill_config.colors);
     }
+
     function get_style_color(property) {
+        // TODO: validate property
         return quill_config.colors[property];
     }
+
     function set_style_color(property, value) {
+        // TODO: validate property
+        // TODO: validate value
         const msg = `Unknown style color "${property}"`;
         if (!Util.warning(Object.hasOwn(quill_config.colors, property), msg)) return;
         const color = QuillColor.from_hex(value);
         quill_config.colors[property] = color;
         apply_color_to_root_element(property, color);
     }
+
     function get_size_names() {
         return Object.keys(quill_config.sizes);
     }
+
     function get_style_size(property) {
+        // TODO: validate property
         return quill_config.sizes[property];
     }
+
     function set_style_size(property, value) {
+        // TODO: validate property
+        // TODO: validate value
         const msg = `Unknown style size "${property}"`;
         if (!Util.warning(Object.hasOwn(quill_config.sizes, property), msg)) return;
         apply_size_to_root_element(property, (quill_config.sizes[property] = value));
     }
+
     function get_flag_names() {
         return Object.keys(quill_config.flags);
     }
+
     function get_style_flag(property) {
+        // TODO: validate property
         return quill_config.flags[property].get();
     }
+
     function get_style_flag_options(property) {
+        // TODO: validate property
         return quill_config.flags[property].get_options();
     }
+
     function set_style_flag(property, value) {
+        // TODO: validate property
+        // TODO: validate value
         const msg = `Unknown style flag "${property}"`;
         if (!Util.warning(Object.hasOwn(quill_config.flags, property), msg)) return;
         apply_flag_to_root_element(property, quill_config.flags[property].set(value));
     }
+
     function get_panels() {
         // TODO: copy properly?
         return { ...quill_panels };
     }
+
     function open_file_dialog(...args) {
+        // TODO: validate args
         const { config, callback } = Util.config_and_callback_from_arguments(...args);
         const input = document.createElement("input");
         input.type = "file";
@@ -891,15 +1021,26 @@
     // Helper functions
 
     function apply_font_to_root_element(property, font) {
+        // TODO: validate property
+        // TODO: validate font
         Util.add_style_variable_to_element(quill_config.root_element, property, "-font", font);
     }
+
     function apply_color_to_root_element(property, color) {
+        // TODO: validate property
+        // TODO: validate color
         Util.add_style_variable_to_element(quill_config.root_element, property, "-color", color.to_css());
     }
+
     function apply_size_to_root_element(property, size) {
+        // TODO: validate property
+        // TODO: validate size
         Util.add_style_variable_to_element(quill_config.root_element, property, "-size", `${size}px`);
     }
+
     function apply_flag_to_root_element(property, flag) {
+        // TODO: validate property
+        // TODO: validate flag
         Util.add_style_variable_to_element(quill_config.root_element, property, "", flag.get_value());
     }
 
@@ -907,19 +1048,25 @@
         if (active_popup !== null) active_popup.close();
         active_popup = null;
     }
+
     function hide_active_menu_bar() {
         hide_active_menu();
         active_menu_bar = null;
     }
+
     function hide_active_menu() {
         if (active_menu !== null) get_top_most_menu(active_menu).hide();
         active_menu = null;
     }
+
     function get_top_most_menu(quill_element) {
+        // TODO: validate quill_element
         const parent = quill_element.get_parent();
         return parent instanceof QuillMenu ? get_top_most_menu(parent) : quill_element;
     }
+
     function show_panel_on_top(panel) {
+        // TODO: validate panel
         quill_panels_order.push(quill_panels_order.splice(quill_panels_order.indexOf(panel.get_id()), 1)[0]);
         // Remove any id's of Panels not currently known (Panels created dynamically after page load)
         for (let i = quill_panels_order.length - 1; i >= 0; i--) {
@@ -930,25 +1077,36 @@
         }
         store_panels_config();
     }
+
     function set_panel_z_index(panel, z_index) {
+        // TODO: validate panel
+        // TODO: validate z_index
         panel.get_element().style.zIndex = z_index;
     }
+
     function start_moving_panel(panel, e) {
+        // TODO: validate panel
+        // TODO: validate e
         if (e.target.classList.contains("quill-close-button")) return;
         if (moving === null && resizing === null) {
             const position = panel.get_position();
             moving = { panel, top: position.top - e.screenY, left: position.left - e.screenX };
         }
     }
+
     function finish_moving_panel() {
         if (moving !== null) store_panels_config();
         moving = null;
     }
+
     function finish_resizing_panel() {
         if (resizing !== null) store_panels_config();
         resizing = null;
     }
+
     function start_resizing_panel(panel, e) {
+        // TODO: validate panel
+        // TODO: validate e
         if (resizing === null && moving === null) {
             const position = panel.get_position();
             const size = panel.get_size();
@@ -967,6 +1125,7 @@
             e.preventDefault();
         }
     }
+
     function store_panels_config() {
         const panels_config = quill_panels_order
             .filter((id) => quill_panels[id])
@@ -979,6 +1138,7 @@
             });
         localStorage.setItem("quill_panels", JSON.stringify(panels_config));
     }
+
     function load_panels_config() {
         return JSON.parse(localStorage.getItem("quill_panels") ?? "[]");
     }

@@ -2,6 +2,7 @@
 
 class Util {
     static element_from_html(html) {
+        // TODO: validate html
         const template = document.createElement("template");
         template.innerHTML = html.trim();
         return template.content.firstChild;
@@ -23,6 +24,7 @@ class Util {
     }
 
     static config_and_callback_from_arguments(...args) {
+        // TODO: validate args
         const result = { config: {}, callback: () => {} };
         let i = 0;
         if (args[i] instanceof Object && !(args[i] instanceof Function)) result.config = args[i++];
@@ -31,6 +33,7 @@ class Util {
     }
 
     static config_callback_and_children_from_arguments(...args) {
+        // TODO: validate args
         const result = { config: {}, callback: () => {}, children: [] };
         let i = 0;
         if (
@@ -46,6 +49,7 @@ class Util {
     }
 
     static label_config_callback_and_children_from_arguments(...args) {
+        // TODO: validate args
         const result = { label: "", config: {}, callback: () => {}, children: [] };
         let i = 0;
         if (typeof args[i] === "string" || typeof args[i] === "number") result.label = args[i++];
@@ -62,26 +66,40 @@ class Util {
     }
 
     static add_mouse_down_event_listener(element, callback) {
+        // TODO: validate element
+        // TODO: validate callback
         element.addEventListener("mousedown", (e) => e.button === 0 && callback(e));
     }
 
     static add_mouse_up_event_listener(element, callback) {
+        // TODO: validate element
+        // TODO: validate callback
         element.addEventListener("mouseup", (e) => e.button === 0 && callback(e));
     }
 
     static add_click_event_listener(element, callback) {
+        // TODO: validate element
+        // TODO: validate callback
         element.addEventListener("click", (e) => e.button === 0 && callback(e));
     }
 
     static fill_array(length, callback) {
+        // TODO: validate length
+        // TODO: validate callback
         return new Array(length).fill().map((_, i) => callback(i));
     }
 
     static add_style_variable_to_element(element, property, suffix, value) {
+        // TODO: validate element
+        // TODO: validate property
+        // TODO: validate suffix
+        // TODO: validate value
         element.style.setProperty(`--quill-${property.replaceAll("_", "-")}${suffix}`, value);
     }
 
     static disable_html_element(html_element, disable) {
+        // TODO: validate html_element
+        // TODO: validate disable
         if (disable) html_element.setAttribute("disabled", "");
         else html_element.removeAttribute("disabled");
     }

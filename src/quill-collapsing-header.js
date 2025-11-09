@@ -5,11 +5,13 @@ class QuillCollapsingHeader extends QuillTree {
     #on_close_callback;
 
     constructor(...args) {
+        // TODO: validate args
         super(...args);
         const element = this.get_element();
         element.classList.remove("quill-tree");
         element.classList.add("quill-collapsing-header");
 
+        // TODO: validate closeable
         this.#closeable = !!this._get_arg_config().closeable;
         if (this.#closeable) {
             const close_button = new QuillButton("&times;", { class: "quill-close-button" }, (_, e) => {
@@ -23,6 +25,7 @@ class QuillCollapsingHeader extends QuillTree {
     // Public methods
 
     on_close(callback) {
+        // TODO: validate callback
         this.#on_close_callback = callback;
         return this;
     }

@@ -13,6 +13,11 @@ class QuillBasePanel extends QuillElement {
     #panel_element;
 
     constructor(name, is_modal, start_moving_panel, start_resizing_panel, ...args) {
+        // TODO: validate name
+        // TODO: validate is_modal
+        // TODO: validate start_moving_panel
+        // TODO: validate start_resizing_panel
+        // TODO: validate args
         const html = `
             <div class="quill-panel">
                 <div class="quill-panel-title-bar"><div>${name}</div></div>
@@ -41,12 +46,19 @@ class QuillBasePanel extends QuillElement {
         this.#name = name;
 
         const config = this._get_arg_config();
+        // TODO: validate has_title_bar
         this.set_has_title_bar(Object.hasOwn(config, "has_title_bar") ? config.has_title_bar : true);
+        // TODO: validate has_menu_bar
         this.set_has_menu_bar(Object.hasOwn(config, "has_menu_bar") ? config.has_menu_bar : true);
+        // TODO: validate can_move
         this.set_can_move(Object.hasOwn(config, "can_move") ? config.can_move : true);
+        // TODO: validate can_grow
         this.set_can_grow(Object.hasOwn(config, "can_grow") ? config.can_grow : true);
+        // TODO: validate can_shrink
         this.set_can_shrink(Object.hasOwn(config, "can_shrink") ? config.can_shrink : true);
+        // TODO: validate can_resize
         this.set_can_resize(Object.hasOwn(config, "can_resize") ? config.can_resize : true);
+        // TODO: validate can_close
         this.set_can_close(Object.hasOwn(config, "can_close") ? config.can_close : true);
 
         this.#panel_element = is_modal ? element.querySelector("div") : element;
@@ -64,41 +76,62 @@ class QuillBasePanel extends QuillElement {
     // Public methods
 
     get_name = () => this.#name;
+
     has_title_bar = () => this.#has_title_bar;
+
     has_menu_bar = () => this.#has_menu_bar;
+
     can_move = () => this.#can_move;
+
     can_grow = () => this.#can_grow;
+
     can_shrink = () => this.#can_shrink;
+
     can_resize = () => this.#can_resize;
+
     can_close = () => this.#can_close;
+
     on_close(callback) {
+        // TODO: validate callback
         this.#on_close_callback = callback;
         return this;
     }
+
     set_has_title_bar(has_title_bar) {
+        // TODO: validate has_title_bar
         const display = (this.#has_title_bar = !!has_title_bar) ? "" : "none";
         this.get_element().querySelector(".quill-panel-title-bar").style.display = display;
     }
+
     set_has_menu_bar(has_menu_bar) {
+        // TODO: validate has_menu_bar
         const display = (this.#has_menu_bar = !!has_menu_bar) ? "" : "none";
         this.get_element().querySelector(".quill-panel-menu-bar-container").style.display = display;
     }
+
     set_can_move(can_move) {
+        // TODO: validate can_move
         this.#can_move = !!can_move;
         const cursor = (this.#can_move = !!can_move) ? "" : "initial";
         this.get_element().querySelector(".quill-panel-title-bar").style.cursor = cursor;
     }
+
     set_can_grow(can_grow) {
+        // TODO: validate can_grow
         const max_size = (this.#can_grow = !!can_grow) && this.#can_resize ? "" : "fit-content";
         this.get_element().style.maxWidth = max_size;
         this.get_element().style.maxHeight = max_size;
     }
+
     set_can_shrink(can_shrink) {
+        // TODO: validate can_shrink
         const min_size = (this.#can_shrink = !!can_shrink) && this.#can_resize ? "" : "fit-content";
         this.get_element().style.minWidth = min_size;
         this.get_element().style.minHeight = min_size;
     }
+
     set_can_resize(can_resize) {
+        // TODO: validate can_resize
         const display = (this.#can_resize = !!can_resize) ? "" : "none";
         this.get_element().querySelector(".quill-panel-resizer").style.display = display;
         const max_size = this.#can_grow && this.#can_resize ? "" : "fit-content";
@@ -108,10 +141,13 @@ class QuillBasePanel extends QuillElement {
         this.get_element().style.minWidth = min_size;
         this.get_element().style.minHeight = min_size;
     }
+
     set_can_close(can_close) {
+        // TODO: validate can_close
         const display = (this.#can_close = !!can_close) ? "" : "none";
         this.get_element().querySelector(".quill-close-button").style.display = display;
     }
+
     get_position() {
         const display = this.#panel_element.style.display;
         // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
@@ -120,6 +156,7 @@ class QuillBasePanel extends QuillElement {
         this.#panel_element.style.display = display;
         return position;
     }
+
     get_size() {
         const display = this.#panel_element.style.display;
         // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
@@ -128,18 +165,23 @@ class QuillBasePanel extends QuillElement {
         this.#panel_element.style.display = display;
         return size;
     }
+
     set_position(position) {
+        // TODO: validate position
         this.#panel_element.style.top = `${position.top}px`;
         this.#panel_element.style.left = `${position.left}px`;
     }
+
     set_size(size) {
+        // TODO: validate size
         this.#panel_element.style.width = `${size.width}px`;
         this.#panel_element.style.height = `${size.height}px`;
     }
 
-    // Private methods
+    // Protected methods
 
     _add_child(child) {
+        // TODO: validate child
         if (child instanceof QuillMenuBar) {
             this.get_element().querySelector(".quill-panel-menu-bar-container").append(child.get_element());
         } else {

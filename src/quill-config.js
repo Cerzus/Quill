@@ -6,26 +6,36 @@ class QuillConfigFlag {
     #is_true_or_false;
 
     constructor(options) {
+        // TODO: validate options
         this.#is_true_or_false = options instanceof Array;
         this.#options = Object.freeze({ ...(this.#is_true_or_false ? options.slice(0, 2) : options) });
         this.#selected = this.get_options()[0];
     }
 
+    // Public methods
+
     get_options = () => (this.#is_true_or_false ? [false, true] : Object.keys(this.#options));
+
     set(selected) {
+        // TODO: validate selected
         if (!Util.warning(this.get_options().includes(selected), this.get_options(), selected)) return this;
         this.#selected = selected;
         return this;
     }
+
     get = () => this.#selected;
+
     get_value(selected = this.#selected) {
+        // TODO: validate selected
         if (!Util.warning(this.get_options().includes(selected), this.get_options(), selected)) return;
         return this.#options[this.#is_true_or_false ? (+selected).toString() : selected];
     }
 }
 
 const QuillConfig = {
-    element: null,
+    root_element: null,
+    content_element: null,
+    element: null, // TODO: remove?
     fonts: {
         proportional: "'Open Sans', Arial, Helvetica, sans-serif",
         monospace: "Consolas, 'Courier New', Courier, monospace",
@@ -68,17 +78,17 @@ const QuillConfig = {
         panel_padding: 2,
         panel_gap: 2,
         panel_border: 2,
-        panel_border_radius: 3,
+        panel_border_radius: 0,
         panel_shadow: 0,
         menu_padding: 0,
         menu_gap: 2,
         menu_border: 2,
-        menu_border_radius: 3,
+        menu_border_radius: 0,
         menu_shadow: 0,
         item_padding: 0,
         item_gap: 2,
         item_inner_gap: 2,
-        item_border_radius: 3,
+        item_border_radius: 0,
         input_border: 0,
         table_primary_border: 2,
         table_secondary_border: 1,
@@ -90,8 +100,8 @@ const QuillConfig = {
         panel_title_bar_text_align: new QuillConfigFlag({ left: "left", center: "center", right: "right" }),
         input_text_align: new QuillConfigFlag({ left: "left", center: "center", right: "right" }),
         fieldset_legend_text_align: new QuillConfigFlag({ left: "left", center: "center", right: "right" }),
-        labels_left: new QuillConfigFlag(["row", "row-reverse"]).set(true),
-        justify_labels: new QuillConfigFlag(["fit-content", "100%"]).set(true),
+        labels_left: new QuillConfigFlag(["row", "row-reverse"]).set(false),
+        justify_labels: new QuillConfigFlag(["fit-content", "100%"]).set(false),
         table_borders_outer_h: new QuillConfigFlag(["none", "solid"]),
         table_borders_outer_v: new QuillConfigFlag(["none", "solid"]),
         table_borders_inner_h: new QuillConfigFlag(["none", "solid"]),

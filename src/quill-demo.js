@@ -166,7 +166,38 @@ function quill_show_demo() {
                         })
                     )
                 ),
+                // // Use AlignTextToFramePadding() to align text baseline to the baseline of framed widgets elements
+                // // (otherwise a Text+SameLine+Button sequence will have the text a little too high by default!)
+                // // See 'Demo.Layout.Text Baseline Alignment' for details.
+                // Q.AlignTextToFramePadding();
+                // Q.Text("Hold to repeat:");
+                // Q.SameLine();
+                // const counter = STATIC(UNIQUE("counter#26102dc6"), 0);
+                // const spacing = Q.GetStyle().ItemInnerSpacing.x;
+                // Q.PushButtonRepeat(true);
+                // if (Q.ArrowButton("##left", Q.Dir.Left)) {
+                //     counter.value--;
+                // }
+                // Q.SameLine(0.0, spacing);
+                // if (Q.ArrowButton("##right", Q.Dir.Right)) {
+                //     counter.value++;
+                // }
+                // Q.PopButtonRepeat();
+                // Q.SameLine();
+                // Q.Text(`${counter.value}`);
+                // Q.Text("Hover over me");
+                // if (Q.IsItemHovered()) Q.SetTooltip("I am a tooltip");
+                // Q.SameLine();
+                // Q.Text("- or me");
+                // if (Q.IsItemHovered()) {
+                //     Q.BeginTooltip();
+                //     Q.Text("I am a fancy tooltip");
+                //     const arr = STATIC(UNIQUE("arr#0025cbfb"), [0.6, 0.1, 1.0, 0.5, 0.92, 0.1, 0.2]);
+                //     Q.PlotLines("Curve", arr.value, Q.ARRAYSIZE(arr.value));
+                //     Q.EndTooltip();
+                // }
                 Q.Separator(),
+                // Q.LabelText("label", "Value"),
                 Q.Row([
                     Q.Dropdown("Dropdown", Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF"])),
                     Q.InfoTooltip(
