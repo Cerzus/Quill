@@ -23,8 +23,8 @@ class QuillDropdown extends QuillInput {
     _add_child(options) {
         // TODO: validate child
         const element = options.get_element();
-        if (element.hasAttribute("label")) this.get_input_element().append(element);
-        else for (const option of element.querySelectorAll("option")) this.get_input_element().append(option);
+        if (element.hasAttribute("label")) this._get_input_element().append(element);
+        else for (const option of element.querySelectorAll("option")) this._get_input_element().append(option);
     }
 }
 

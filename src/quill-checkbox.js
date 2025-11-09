@@ -14,12 +14,12 @@ class QuillCheckbox extends QuillInput {
 
     // Public methods
 
-    get_value = () => this.get_input_element().checked;
+    get_value = () => this._get_input_element().checked;
 
     set_value(value) {
         // TODO: validate value
-        this.get_input_element().indeterminate = false;
-        this.get_input_element().checked = !!value;
+        this._get_input_element().indeterminate = false;
+        this._get_input_element().checked = !!value;
         return this;
     }
 
@@ -27,11 +27,11 @@ class QuillCheckbox extends QuillInput {
 
     set_checked = this.set_value;
 
-    is_indeterminate = () => this.get_input_element().indeterminate;
+    is_indeterminate = () => this._get_input_element().indeterminate;
 
     set_indeterminate() {
-        this.get_input_element().checked = false;
-        this.get_input_element().indeterminate = true;
+        this._get_input_element().checked = false;
+        this._get_input_element().indeterminate = true;
         return this;
     }
 }

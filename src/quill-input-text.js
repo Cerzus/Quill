@@ -9,11 +9,11 @@ class QuillInputText extends QuillInput {
         // TODO: validate value
         if (Object.hasOwn(config, "value")) this.set_value(config.value);
         // TODO: validate placeholder
-        if (Object.hasOwn(config, "placeholder")) this.get_input_element().placeholder = config.placeholder;
+        if (Object.hasOwn(config, "placeholder")) this._get_input_element().placeholder = config.placeholder;
         // TODO: validate length
         if (Object.hasOwn(config, "length")) {
-            this.get_input_element().size = config.length;
-            this.get_input_element().maxLength = config.length;
+            this._get_input_element().size = config.length;
+            this._get_input_element().maxLength = config.length;
         }
     }
 }
@@ -32,8 +32,8 @@ class QuillInputBase extends QuillInput {
         const length = Math.min(Math.max(1, ~~config.length ?? max_length), max_length);
         // TODO: validate value
         this.set_value(config.value ?? 0);
-        this.get_input_element().size = length;
-        this.get_input_element().maxLength = length;
+        this._get_input_element().size = length;
+        this._get_input_element().maxLength = length;
         function sanitize_value(x) {
             const integer = (typeof x === "number" ? x : parseInt(x, this.#base)) >>> 0;
             const str = integer.toString(base);

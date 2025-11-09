@@ -45,7 +45,7 @@ class QuillCheckboxTree extends QuillNodeElement {
             return;
         }
         // TODO: Take Wrapper element into account when traversing up or down
-        if (e.target === this.#checkbox.get_input_element()) {
+        if (e.target === this.#checkbox._get_input_element()) {
             for (const child of this.get_children()) {
                 const checkbox = child instanceof QuillCheckboxTree ? child.#checkbox : child;
                 if (checkbox.is_checked() === this.#checkbox.is_checked()) continue;
@@ -54,7 +54,7 @@ class QuillCheckboxTree extends QuillNodeElement {
                     const parent = tree.get_parent();
                     if (parent instanceof QuillCheckboxTree) increase_number_of_events_to_ignore(parent);
                 })(this);
-                checkbox.get_input_element().click();
+                checkbox._get_input_element().click();
             }
         } else {
             this.#set_status_based_on_children(this.get_children());

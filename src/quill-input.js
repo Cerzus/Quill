@@ -48,7 +48,9 @@ class QuillInput extends QuillLeafElement {
         return this;
     }
 
-    get_input_element = () => this.#input_element; // TODO: Keep public? No
+    // Protected methods
+
+    _get_input_element = () => this.#input_element;
 }
 
 class QuillInputMultiComponent extends QuillLeafElement {

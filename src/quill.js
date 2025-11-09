@@ -596,7 +596,7 @@
             const input_u = size === 1 ? Quill.InputU8 : Quill.InputU16;
             const input_s = size === 1 ? Quill.InputS8 : Quill.InputS16;
 
-            this.get_input_element().addEventListener("click", () => {
+            this._get_input_element().addEventListener("click", () => {
                 const update_popup = (value) => {
                     // TODO: validate value
                     const children = popup.get_children();
@@ -610,7 +610,7 @@
                     // TODO: validate value
                     update_popup(value);
                     this.set_value(value);
-                    const input_element = this.get_input_element();
+                    const input_element = this._get_input_element();
                     input_element.dispatchEvent(new Event("input", { bubbles: true }));
                     input_element.dispatchEvent(new Event("change", { bubbles: true }));
                 };
@@ -624,7 +624,7 @@
 
                 update_popup(this.get_value());
 
-                const first_input = popup.get_children()[0].get_input_element();
+                const first_input = popup.get_children()[0]._get_input_element();
                 first_input.focus();
                 first_input.select();
             });

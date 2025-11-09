@@ -34,11 +34,11 @@ class QuillInputNumerical extends QuillInput {
     // Private methods
 
     // TODO: validate min
-    #set_min = (min) => (this.get_input_element().min = this.#min = this.#sanitize_value(min));
+    #set_min = (min) => (this._get_input_element().min = this.#min = this.#sanitize_value(min));
     // TODO: validate max
-    #set_max = (max) => (this.get_input_element().max = this.#max = this.#sanitize_value(max));
+    #set_max = (max) => (this._get_input_element().max = this.#max = this.#sanitize_value(max));
     // TODO: validate step
-    #set_step = (step) => (this.get_input_element().step = this.#step = this.#sanitize_value(step));
+    #set_step = (step) => (this._get_input_element().step = this.#step = this.#sanitize_value(step));
 
     // TODO: validate min
     #apply_min = (value) => (this.#min === null ? value : Math.max(value, this.#min));
@@ -99,7 +99,7 @@ class QuillSlider extends QuillInputNumerical {
             ...args
         );
         // TODO: validate reverse
-        if (this._get_arg_config().reverse) this.get_input_element().style.direction = "rtl";
+        if (this._get_arg_config().reverse) this._get_input_element().style.direction = "rtl";
     }
 
     // Public methods
@@ -194,7 +194,7 @@ class QuillDrag extends QuillInputNumerical {
         );
 
         Util.add_mouse_down_event_listener(this.get_element().querySelector("output"), (e) => {
-            if (this.get_input_element().closest("[disabled]") === null) QuillDrag.#start_dragging(this, e);
+            if (this._get_input_element().closest("[disabled]") === null) QuillDrag.#start_dragging(this, e);
         });
     }
 
