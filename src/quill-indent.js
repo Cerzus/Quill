@@ -2,8 +2,7 @@
 
 class QuillIndent extends QuillNodeElement {
     constructor(...args) {
-        // TODO: validate args
-        super(`<fieldset class="quill-indent"></fieldset>`, [QuillWrapper, QuillNodeElement], ...args);
+        super(`<fieldset class="quill-indent"></fieldset>`, [QuillWrapper, QuillNodeElement], null, ...args);
         this.add_children(this._get_arg_children());
         this.set_disabled(!!this._get_arg_config().disabled);
     }
@@ -13,12 +12,5 @@ class QuillIndent extends QuillNodeElement {
     set_disabled(disabled) {
         Util.disable_html_element(this.get_element(), !!disabled);
         return this;
-    }
-
-    // Protected methods
-
-    _add_child(child) {
-        // TODO: validate child
-        this.get_element().append(child.get_element());
     }
 }

@@ -14,10 +14,8 @@ class QuillBasePanel extends QuillElement {
 
     constructor(name, is_modal, start_moving_panel, start_resizing_panel, ...args) {
         // TODO: validate name
-        // TODO: validate is_modal
         // TODO: validate start_moving_panel
         // TODO: validate start_resizing_panel
-        // TODO: validate args
         const html = `
             <div class="quill-panel">
                 <div class="quill-panel-title-bar"><div>${name}</div></div>
@@ -29,9 +27,11 @@ class QuillBasePanel extends QuillElement {
                     <div></div><div></div><div></div>
                 </div>
             </div>`;
+        const is_modal_boolean = !!is_modal;
         super(
-            is_modal ? `<div class="quill-modal-overlay">${html}</div>` : html,
+            is_modal_boolean ? `<div class="quill-modal-overlay">${html}</div>` : html,
             [QuillWrapper, QuillNodeElement, QuillMenuBar],
+            (child) => this.#add_child(child),
             ...args
         );
 
@@ -46,22 +46,15 @@ class QuillBasePanel extends QuillElement {
         this.#name = name;
 
         const config = this._get_arg_config();
-        // TODO: validate has_title_bar
-        this.set_has_title_bar(Object.hasOwn(config, "has_title_bar") ? config.has_title_bar : true);
-        // TODO: validate has_menu_bar
-        this.set_has_menu_bar(Object.hasOwn(config, "has_menu_bar") ? config.has_menu_bar : true);
-        // TODO: validate can_move
-        this.set_can_move(Object.hasOwn(config, "can_move") ? config.can_move : true);
-        // TODO: validate can_grow
-        this.set_can_grow(Object.hasOwn(config, "can_grow") ? config.can_grow : true);
-        // TODO: validate can_shrink
-        this.set_can_shrink(Object.hasOwn(config, "can_shrink") ? config.can_shrink : true);
-        // TODO: validate can_resize
-        this.set_can_resize(Object.hasOwn(config, "can_resize") ? config.can_resize : true);
-        // TODO: validate can_close
-        this.set_can_close(Object.hasOwn(config, "can_close") ? config.can_close : true);
+        this.set_has_title_bar(Object.hasOwn(config, "has_title_bar") ? !!config.has_title_bar : true);
+        this.set_has_menu_bar(Object.hasOwn(config, "has_menu_bar") ? !!config.has_menu_bar : true);
+        this.set_can_move(Object.hasOwn(config, "can_move") ? !!config.can_move : true);
+        this.set_can_grow(Object.hasOwn(config, "can_grow") ? !!config.can_grow : true);
+        this.set_can_shrink(Object.hasOwn(config, "can_shrink") ? !!config.can_shrink : true);
+        this.set_can_resize(Object.hasOwn(config, "can_resize") ? !!config.can_resize : true);
+        this.set_can_close(Object.hasOwn(config, "can_close") ? !!config.can_close : true);
 
-        this.#panel_element = is_modal ? element.querySelector("div") : element;
+        this.#panel_element = is_modal_boolean ? element.querySelector("div") : element;
 
         Util.add_mouse_down_event_listener(element.querySelector(".quill-panel-title-bar"), (e) => {
             if (this.#can_move) start_moving_panel(this, e);
@@ -98,40 +91,34 @@ class QuillBasePanel extends QuillElement {
     }
 
     set_has_title_bar(has_title_bar) {
-        // TODO: validate has_title_bar
         const display = (this.#has_title_bar = !!has_title_bar) ? "" : "none";
         this.get_element().querySelector(".quill-panel-title-bar").style.display = display;
     }
 
     set_has_menu_bar(has_menu_bar) {
-        // TODO: validate has_menu_bar
         const display = (this.#has_menu_bar = !!has_menu_bar) ? "" : "none";
         this.get_element().querySelector(".quill-panel-menu-bar-container").style.display = display;
     }
 
     set_can_move(can_move) {
-        // TODO: validate can_move
         this.#can_move = !!can_move;
         const cursor = (this.#can_move = !!can_move) ? "" : "initial";
         this.get_element().querySelector(".quill-panel-title-bar").style.cursor = cursor;
     }
 
     set_can_grow(can_grow) {
-        // TODO: validate can_grow
         const max_size = (this.#can_grow = !!can_grow) && this.#can_resize ? "" : "fit-content";
         this.get_element().style.maxWidth = max_size;
         this.get_element().style.maxHeight = max_size;
     }
 
     set_can_shrink(can_shrink) {
-        // TODO: validate can_shrink
         const min_size = (this.#can_shrink = !!can_shrink) && this.#can_resize ? "" : "fit-content";
         this.get_element().style.minWidth = min_size;
         this.get_element().style.minHeight = min_size;
     }
 
     set_can_resize(can_resize) {
-        // TODO: validate can_resize
         const display = (this.#can_resize = !!can_resize) ? "" : "none";
         this.get_element().querySelector(".quill-panel-resizer").style.display = display;
         const max_size = this.#can_grow && this.#can_resize ? "" : "fit-content";
@@ -143,7 +130,6 @@ class QuillBasePanel extends QuillElement {
     }
 
     set_can_close(can_close) {
-        // TODO: validate can_close
         const display = (this.#can_close = !!can_close) ? "" : "none";
         this.get_element().querySelector(".quill-close-button").style.display = display;
     }
@@ -178,9 +164,9 @@ class QuillBasePanel extends QuillElement {
         this.#panel_element.style.height = `${size.height}px`;
     }
 
-    // Protected methods
+    // Private methods
 
-    _add_child(child) {
+    #add_child(child) {
         // TODO: validate child
         if (child instanceof QuillMenuBar) {
             this.get_element().querySelector(".quill-panel-menu-bar-container").append(child.get_element());

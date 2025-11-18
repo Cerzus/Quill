@@ -2,10 +2,7 @@
 
 class QuillButton extends QuillLeafElement {
     constructor(text, ...args) {
-        // TODO: validate text
-        // TODO: validate args
-        super(`<button class="quill-button">${text}</button>`, [], ...args);
-        // TODO: validate callback
+        super(`<button class="quill-button">${Util.html_string_from_object(text)}</button>`, [], null, ...args);
         Util.add_click_event_listener(this.get_element(), (e) => this._get_arg_callback()(this, e));
         this.set_disabled(!!this._get_arg_config().disabled);
     }

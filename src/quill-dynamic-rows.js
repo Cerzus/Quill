@@ -7,11 +7,12 @@ class QuillDynamicRows extends QuillNodeElement {
     #rows = [];
     #extra_rows = 4;
     #unbounded_first_index;
+    #rows_element;
+    #offset_element;
 
     constructor(number_of_rows, create_callback, ...args) {
         // TODO: validate number_of_rows
         // TODO: validate create_callback
-        // TODO: validate args
         Util.warning(!isNaN(number_of_rows));
         super(
             `<div class="quill-dynamic-rows">
@@ -20,10 +21,14 @@ class QuillDynamicRows extends QuillNodeElement {
                 </div>
             </div>`,
             [],
+            null,
             ...args
         );
         this.#number_of_rows = number_of_rows;
         this.#create_callback = create_callback;
+
+        this.#rows_element = this.get_element().querySelector(".quill-dynamic-rows-list");
+        this.#offset_element = this.get_element().querySelector(".quill-dynamic-rows-offset");
 
         new ResizeObserver(() => this.refresh()).observe(this.get_element());
 
@@ -34,7 +39,6 @@ class QuillDynamicRows extends QuillNodeElement {
     // Public methods
 
     update() {
-        // TODO: validate callback
         for (const row of this.#rows) this._get_arg_callback()(row.index, row.row);
         return this;
     }
@@ -47,18 +51,16 @@ class QuillDynamicRows extends QuillNodeElement {
     }
 
     refresh() {
-        const rows_element = this.get_element().querySelector(".quill-dynamic-rows-list");
-        const offset_element = this.get_element().querySelector(".quill-dynamic-rows-offset");
         const example_row_element = this.#create_row(null).get_element();
-        offset_element.append(example_row_element);
+        this.#offset_element.append(example_row_element);
         this.#row_height = Math.ceil(example_row_element.offsetHeight);
         example_row_element.remove();
-        rows_element.style.height = `${this.#row_height * this.#number_of_rows}px`;
+        this.#rows_element.style.height = `${this.#row_height * this.#number_of_rows}px`;
         this.#update_row_elements(true);
     }
 
     set_disabled(disabled) {
-        Util.disable_html_element(this.get_element().querySelector(".quill-dynamic-rows-offset"), !!disabled);
+        Util.disable_html_element(this.#offset_element, !!disabled);
         return this;
     }
 
@@ -73,11 +75,11 @@ class QuillDynamicRows extends QuillNodeElement {
     }
 
     #update_row_elements(refresh) {
-        // TODO: validate refresh
+        const refresh_boolean = !!refresh;
+
         if (this.#row_height <= 0) return;
 
         const element = this.get_element();
-        const offset_element = this.get_element().querySelector(".quill-dynamic-rows-offset");
         const padding_top = parseFloat(getComputedStyle(element).paddingTop);
         const top = element.scrollTop - padding_top;
         const bottom = top + element.offsetHeight;
@@ -87,15 +89,15 @@ class QuillDynamicRows extends QuillNodeElement {
         const last_index = Math.min(this.#number_of_rows - 1, unbounded_last_index);
         const difference = unbounded_first_index - this.#unbounded_first_index;
 
-        offset_element.style.transform = `translateY(${first_index * this.#row_height}px)`;
+        this.#offset_element.style.transform = `translateY(${first_index * this.#row_height}px)`;
         this.#unbounded_first_index = unbounded_first_index;
 
-        if (refresh || Math.abs(difference) >= this.#rows.length) {
+        if (refresh_boolean || Math.abs(difference) >= this.#rows.length) {
             this.#rows = [];
             for (let i = first_index; i <= last_index; i++) {
                 this.#rows.push({ index: i, row: this.#create_row(i) });
             }
-            offset_element.replaceChildren(...this.#rows.map((x) => x.row.get_element()));
+            this.#offset_element.replaceChildren(...this.#rows.map((x) => x.row.get_element()));
             return;
         }
 
@@ -112,7 +114,7 @@ class QuillDynamicRows extends QuillNodeElement {
                 document_fragment.append(row.get_element());
                 this.#rows.push({ index: i, row });
             }
-            offset_element.append(document_fragment);
+            this.#offset_element.append(document_fragment);
         } else if (difference < 0) {
             while (this.#rows.length > 0 && this.#rows[this.#rows.length - 1].index > last_index) {
                 this.#rows.pop().row.get_element().remove();
@@ -124,7 +126,7 @@ class QuillDynamicRows extends QuillNodeElement {
                 document_fragment.prepend(row.get_element());
                 this.#rows.unshift({ index: i, row });
             }
-            offset_element.prepend(document_fragment);
+            this.#offset_element.prepend(document_fragment);
         }
     }
 }

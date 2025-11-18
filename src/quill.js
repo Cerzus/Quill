@@ -183,13 +183,11 @@
 
         constructor(name, ...args) {
             // TODO: validate name
-            // TODO: validate args
             super(name, false, start_moving_panel, start_resizing_panel, ...args);
 
             const element = this.get_element();
 
             this.#create_id(name);
-            // TODO: validate closed
             this.#closed = !!this._get_arg_config().closed;
             Util.add_mouse_down_event_listener(element, () => show_panel_on_top(this));
 
@@ -206,7 +204,6 @@
                 // TODO: validate y
                 // TODO: validate width
                 // TODO: validate height
-                // TODO: validate is_open
                 this.set_position({ top: config.y, left: config.x });
                 this.set_size({ width: config.width, height: config.height });
                 set_panel_z_index(this, stored_index);
@@ -271,7 +268,6 @@
     class QuillModal extends QuillBasePanel {
         constructor(name, ...args) {
             // TODO: validate name
-            // TODO: validate args
             super(name, true, start_moving_panel, start_resizing_panel, ...args);
 
             const element = this.get_element();
@@ -303,7 +299,6 @@
             // TODO: validate name
             // TODO: validate left
             // TODO: validate top
-            // TODO: validate args
             const foo = Util.config_callback_and_children_from_arguments(...args);
             foo.config.has_title_bar = false;
             foo.config.has_menu_bar = false;
@@ -336,16 +331,8 @@
 
     class MenuBar extends QuillMenuBar {
         constructor(...args) {
-            // TODO: validate args
-            super(`<div class="quill-menu-bar"></div>`, [QuillMenu, QuillMenuItem, QuillSeparator], ...args);
+            super(`<div class="quill-menu-bar"></div>`, [QuillMenu, QuillMenuItem, QuillSeparator], null, ...args);
             this.add_children(this._get_arg_children());
-        }
-
-        // Protected methods
-
-        _add_child(child) {
-            // TODO: validate child
-            this.get_element().append(child.get_element());
         }
     }
 
@@ -369,17 +356,16 @@
         }
 
         constructor(title, ...args) {
-            // TODO: validate title
-            // TODO: validate args
             QuillMenuItem.#init();
             super(
                 `<label class="quill-menu-item">
                     <div></div>
-                    <div>${title}</div>
+                    <div>${Util.html_string_from_object(title)}</div>
                     <div></div>
                     <div></div>
                 </label>`,
                 [],
+                null,
                 ...args
             );
 
@@ -397,7 +383,6 @@
                 QuillMenuItem.#ctrl_keys[config.ctrl_key.toLowerCase()] = (e) => {
                     if (!this.get_panel().is_open()) return;
                     this.set_checked(!this.is_checked());
-                    // TODO: validate callback
                     this._get_arg_callback()(this, e);
                 };
                 element.querySelector(":nth-child(3)").innerHTML = `Ctrl+${config.ctrl_key.toUpperCase()}`;
@@ -414,8 +399,7 @@
         is_checked = () => this.is_checkable() && this.#checkbox.is_checked();
 
         set_checked(checked) {
-            // TODO: validate checked
-            this.#checkbox?.set_checked(checked);
+            if (this.#checkbox) this.#checkbox.set_checked(!!checked);
             return this;
         }
 
@@ -444,16 +428,15 @@
         #menu_element;
 
         constructor(title, ...args) {
-            // TODO: validate title
-            // TODO: validate args
             super(
                 `<label class="quill-menu-item">
                     <div></div>
-                    <div>${title}</div>
+                    <div>${Util.html_string_from_object(title)}</div>
                     <div></div>
                     <div></div>
                 </label>`,
                 [QuillMenu, QuillMenuItem, QuillSeparator],
+                (child) => this.#add_child(child),
                 ...args
             );
 
@@ -473,18 +456,16 @@
 
         hide = () => this.#hide();
 
-        // Protected methods
-
-        _add_child(child) {
-            // TODO: validate child
-            this.#menu_element.append(child.get_element());
-        }
-
-        _remove() {
+        remove() {
             this.#menu_element.remove();
+            super.remove();
         }
 
         // Private methods
+
+        #add_child(child) {
+            this.#menu_element.append(child.get_element());
+        }
 
         #toggle_parent_menu_bar_active_state() {
             this.#prevent_from_being_hidden();
@@ -553,11 +534,10 @@
     class QuillInputBytes extends QuillInput {
         constructor(size, ...args) {
             // TODO: validate size
-            // TODO: validate args
             Util.assert(size === 1 || size === 2);
 
             const html = `<input class="quill-input" type="text" size="${size * 2}" maxlength="${size * 2}" />`;
-            super(html, "change", sanitize_value, [], ...args);
+            super(html, "change", sanitize_value, [], null, ...args);
 
             const mask = (0x100 << ((size - 1) * 8)) - 1;
 
@@ -565,10 +545,12 @@
                 // TODO: validate value
                 return (value & mask).toString(16).padStart(size * 2, 0);
             }
+
             function value_to_signed(value) {
                 // TODO: validate value
                 return value > mask >> 1 ? value - mask - 1 : value;
             }
+
             function ascii_to_value(ascii) {
                 // TODO: validate ascii
                 return parseInt(
@@ -579,6 +561,7 @@
                     16
                 );
             }
+
             function value_to_ascii(value) {
                 // TODO: validate value
                 return String.fromCharCode(
@@ -650,19 +633,16 @@
             // TODO: validate start_address
             // TODO: validate data_size
             // TODO: validate read_callback
-            // TODO: validate args
-            super(`<div class="quill-hex-editor"></div>`, [], ...args);
+            super(`<div class="quill-hex-editor"></div>`, [], null, ...args);
 
             const config = this._get_arg_config();
             // TODO: validate number_of_columns
             this.#number_of_columns = Object.hasOwn(config, "number_of_columns")
                 ? Math.min(Math.max(0, ~~config.number_of_columns), 16)
                 : 16;
-            // TODO: validate show_ascii
+
             this.#show_ascii = Object.hasOwn(config, "show_ascii") ? !!config.show_ascii : true;
-            // TODO: validate grey_out_zeroes
             this.#set_grey_out_zeroes(Object.hasOwn(config, "grey_out_zeroes") ? !!config.grey_out_zeroes : true);
-            // TODO: validate uppercase_hex
             this.#uppercase_hex = Object.hasOwn(config, "uppercase_hex") ? !!config.uppercase_hex : false;
 
             this.#start_address = start_address;
@@ -686,7 +666,6 @@
                     const child_ascii = input.closest(".quill-row").querySelector(".quill-hex-editor-ascii").children[index];
                     child_ascii.dataset.value = child_ascii.firstChild.nodeValue = this.#to_ascii(value);
                 }
-                // TODO: validate callback
                 this._get_arg_callback()(+input.dataset.address, value);
                 focus_next(e);
             };
@@ -729,21 +708,18 @@
         }
 
         #set_show_ascii(show_ascii) {
-            // TODO: validate show_ascii
             this.#show_ascii = !!show_ascii;
             this.#dynamic_rows.refresh();
             return this;
         }
 
         #set_grey_out_zeroes(grey_out_zeroes) {
-            // TODO: validate grey_out_zeroes
             this.#grey_out_zeroes = !!grey_out_zeroes;
             if (this.#grey_out_zeroes) this.get_element().classList.add("quill-grey-out-zeroes");
             else this.get_element().classList.remove("quill-grey-out-zeroes");
         }
 
         #set_uppercase_hex(uppercase_hex) {
-            // TODO: validate uppercase_hex
             this.#uppercase_hex = !!uppercase_hex;
             const element = this.get_element();
             element.firstChild.remove();

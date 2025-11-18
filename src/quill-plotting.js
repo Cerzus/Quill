@@ -6,8 +6,7 @@ class QuillPlot extends QuillLeafElement {
     constructor(protected_props, extra_class, ...args) {
         // TODO: validate protected_props
         // TODO: validate extra_class
-        // TODO: validate args
-        super(`<div class="quill-plot"><canvas></canvas><div></div></div>`, [], ...args);
+        super(`<div class="quill-plot"><canvas></canvas><div></div></div>`, [], null, ...args);
         this.get_element().classList.add(extra_class);
 
         const canvas = this.get_element().querySelector("canvas");
@@ -80,7 +79,6 @@ class QuillPlotLines extends QuillPlot {
     #scale_max;
 
     constructor(...args) {
-        // TODO: validate args
         const protected_props = {};
         super(protected_props, "quill-plot-lines", ...args);
         this.#protected = protected_props;
@@ -97,8 +95,7 @@ class QuillPlotLines extends QuillPlot {
         this.#scale_min = Object.hasOwn(config, "scale_min") ? +config.scale_min : null;
         // TODO: validate scale_max
         this.#scale_max = Object.hasOwn(config, "scale_max") ? +config.scale_max : null;
-        // TODO: validate overlay_text
-        this.set_overlay_text(config.overlay_text ?? null);
+        if (Object.hasOwn(config, "overlay_text")) this.set_overlay_text(String(config.overlay_text));
 
         new ResizeObserver(() => this.update()).observe(this.#protected.canvas);
     }
@@ -169,14 +166,13 @@ class QuillPlotHistogram extends QuillPlot {
     #scale_max;
 
     constructor(...args) {
-        // TODO: validate args
         const protected_props = {};
         super(protected_props, "quill-plot-histogram", ...args);
         this.#protected = protected_props;
 
         const config = this._get_arg_config();
 
-        // TODO: validate values_gette
+        // TODO: validate values_getter
         this.#values_getter = config.values_getter;
         // TODO: validate values_count
         this.#values_count = config.values_count;
@@ -186,8 +182,7 @@ class QuillPlotHistogram extends QuillPlot {
         this.#scale_min = Object.hasOwn(config, "scale_min") ? +config.scale_min : null;
         // TODO: validate scale_max
         this.#scale_max = Object.hasOwn(config, "scale_max") ? +config.scale_max : null;
-        // TODO: validate overlay_text
-        this.set_overlay_text(config.overlay_text ?? null);
+        if (Object.hasOwn(config, "overlay_text")) this.set_overlay_text(String(config.overlay_text));
 
         new ResizeObserver(() => this.update()).observe(this.#protected.canvas);
     }
@@ -257,7 +252,6 @@ class QuillProgressBar extends QuillPlot {
     #overlay_text;
 
     constructor(...args) {
-        // TODO: validate args
         const protected_props = {};
         super(protected_props, "quill-progress-bar", ...args);
         this.#protected = protected_props;
@@ -267,8 +261,7 @@ class QuillProgressBar extends QuillPlot {
         // TODO: validate fraction
         this.#fraction = Object.hasOwn(config, "fraction") ? +config.fraction : 0.5;
         this.get_element().querySelector("div").innerHTML = Math.round(this.#fraction * 100) + "%";
-        // TODO: validate overlay_text
-        if (Object.hasOwn(config, "overlay_text")) this.set_overlay_text(config.overlay_text);
+        if (Object.hasOwn(config, "overlay_text")) this.set_overlay_text(String(config.overlay_text));
 
         new ResizeObserver(() => this.update()).observe(this.#protected.canvas);
     }

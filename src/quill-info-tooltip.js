@@ -2,8 +2,6 @@
 
 class QuillInfoTooltip extends QuillLeafElement {
     constructor(text, ...args) {
-        // TODO: validate text
-        // TODO: validate args
-        super(`<div title="${text.replaceAll(`"`, `&quot;`)}" class="quill-info-tooltip"></div>`, [], ...args);
+        super(`<div title="${Util.html_string_from_object(text)}" class="quill-info-tooltip"></div>`, [], null, ...args);
     }
 }

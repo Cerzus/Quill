@@ -2,11 +2,10 @@
 
 class QuillFieldset extends QuillNodeElement {
     constructor(legend, ...args) {
-        // TODO: validate legend
-        // TODO: validate args
         super(
-            `<fieldset class="quill-fieldset"><legend>${legend}</legend></fieldset>`,
+            `<fieldset class="quill-fieldset"><legend>${Util.html_string_from_object(legend)}</legend></fieldset>`,
             [QuillWrapper, QuillNodeElement],
+            null,
             ...args
         );
         this.add_children(this._get_arg_children());
@@ -18,12 +17,5 @@ class QuillFieldset extends QuillNodeElement {
     set_disabled(disabled) {
         Util.disable_html_element(this.get_element(), !!disabled);
         return this;
-    }
-
-    // Potected methods
-
-    _add_child(child) {
-        // TODO: validate child
-        this.get_element().append(child.get_element());
     }
 }

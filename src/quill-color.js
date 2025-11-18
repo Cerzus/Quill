@@ -4,10 +4,10 @@ class QuillColor {
     #rgb;
 
     constructor(r, g, b) {
-        // TODO: validate r
-        // TODO: validate g
-        // TODO: validate b
-        this.#rgb = new Uint8ClampedArray([r, g, b]);
+        Util.error_if_not_number(r);
+        Util.error_if_not_number(g);
+        Util.error_if_not_number(b);
+        this.#rgb = new Uint8ClampedArray([+r, +g, +b]);
     }
 
     // Public methods

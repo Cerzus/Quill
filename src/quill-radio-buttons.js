@@ -4,9 +4,8 @@ class QuillRadioButtons extends QuillInput {
     #name;
 
     constructor(...args) {
-        // TODO: validate args
         const html = `<fieldset class="quill-radio-buttons"></fieldset>`;
-        super(html, "change", null, [QuillWrapper, QuillRadioButton], ...args);
+        super(html, "change", null, [QuillWrapper, QuillRadioButton], (child) => this.#add_child(child), ...args);
         this.#name = Math.random();
         this.add_children(this._get_arg_children());
         this.get_element().querySelector(`input`).checked = true;
@@ -25,10 +24,10 @@ class QuillRadioButtons extends QuillInput {
         return this;
     }
 
-    // Protected methods
+    // Private methods
 
-    _add_child(child) {
-        // TODO: validate child
+    #add_child(child) {
+        // TODO: validate name
         child.get_element().querySelector("input").name = this.#name;
         this.get_element().querySelector(".quill-radio-buttons").append(child.get_element());
     }
@@ -38,12 +37,12 @@ class QuillRadioButton extends QuillWrappableElement {
     constructor(label, value, ...args) {
         // TODO: validate label
         // TODO: validate value
-        // TODO: validate args
         super(
             `<label class="quill-label">
                 <input class="quill-input" type="radio" value="${value}" />${label ?? ""}
             </label>`,
             [],
+            null,
             ...args
         );
         this.set_disabled(!!this._get_arg_config().disabled);

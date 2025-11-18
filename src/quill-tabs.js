@@ -4,13 +4,13 @@ class QuillTabs extends QuillNodeElement {
     #header_element;
 
     constructor(...args) {
-        // TODO: validate args
         super(
             `<div class="quill-tabs">
                 <div class="quill-tabs-header"></div>
                 <div class="quill-tabs-body"></div>
             </div>`,
             [QuillTab],
+            (child) => this.#add_child(child),
             ...args
         );
         this.#header_element = this.get_element().querySelector(".quill-tabs-header");
@@ -24,9 +24,9 @@ class QuillTabs extends QuillNodeElement {
         this.add_children(this._get_arg_children());
     }
 
-    // Protected methods
+    // Private methods
 
-    _add_child(child) {
+    #add_child(child) {
         // TODO: validate child
         const name = child.get_name();
         const header_tab = Util.element_from_html(`<div class="quill-header-tab" data-name="${name}">${name}</div>`);
@@ -42,8 +42,6 @@ class QuillTabs extends QuillNodeElement {
         child.get_element().classList.add("active");
     }
 
-    // Private methods
-
     #deactivate_child(child) {
         // TODO: validate child
         const header_tab = this.#header_element.querySelector(`[data-name=${child.get_name()}]`);
@@ -57,8 +55,12 @@ class QuillTab extends QuillElement {
 
     constructor(name, ...args) {
         // TODO: validate name
-        // TODO: validate args
-        super(`<fieldset class="quill-tab" data-name="${name}"></fieldset>`, [QuillWrapper, QuillNodeElement], ...args);
+        super(
+            `<fieldset class="quill-tab" data-name="${name}"></fieldset>`,
+            [QuillWrapper, QuillNodeElement],
+            null,
+            ...args
+        );
         this.#name = name;
         this.add_children(this._get_arg_children());
         this.set_disabled(!!this._get_arg_config().disabled);
@@ -73,14 +75,8 @@ class QuillTab extends QuillElement {
         return this;
     }
 
-    // Protected methods
-
-    _add_child(child) {
-        // TODO: validate child
-        this.get_element().append(child.get_element());
-    }
-
-    _remove() {
+    remove() {
         // TODO: remove tab from parent Tabs
+        super.remove();
     }
 }

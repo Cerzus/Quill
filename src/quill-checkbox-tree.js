@@ -5,17 +5,16 @@ class QuillCheckboxTree extends QuillNodeElement {
     #number_of_events_to_ignore = 0;
 
     constructor(label, ...args) {
-        // TODO: validate label
-        // TODO: validate args
         super(
             `<fieldset class="quill-checkbox-tree">
                 <div class="quill-checkbox-tree-body quill-indent"></div>
             </fieldset>`,
             [QuillWrapper, QuillCheckboxTree, QuillCheckbox],
+            (child) => this.#add_child(child),
             ...args
         );
         this.get_element().addEventListener("change", (e) => this.#on_change(e));
-        this.#checkbox = new QuillCheckbox(label);
+        this.#checkbox = new QuillCheckbox(Util.html_string_from_object(label));
         this.get_element().prepend(this.#checkbox.get_element());
         this.add_children(this._get_arg_children());
         this.set_disabled(!!this._get_arg_config().disabled);
@@ -28,15 +27,12 @@ class QuillCheckboxTree extends QuillNodeElement {
         return this;
     }
 
-    // Protected methods
+    // Private methods
 
-    _add_child(child) {
-        // TODO: validate child
+    #add_child(child) {
         this.get_element().querySelector(".quill-checkbox-tree-body").append(child.get_element());
         this.#set_status_based_on_children([child, ...this.get_children()]);
     }
-
-    // Private methods
 
     #on_change(e) {
         // TODO: validate e

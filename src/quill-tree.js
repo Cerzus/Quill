@@ -4,17 +4,16 @@ class QuillTree extends QuillNodeElement {
     #expanded = false;
 
     constructor(header, ...args) {
-        // TODO: validate header
-        // TODO: validate args
         super(
             `<div class="quill-tree">
                 <div class="quill-tree-header">
                     <div class="quill-arrow-right"></div>
-                    <div>${header}</div>
+                    <div>${Util.html_string_from_object(header)}</div>
                 </div>
                 <fieldset class="quill-tree-body quill-indent"></fieldset>
             </div>`,
             [QuillWrapper, QuillNodeElement],
+            (child) => this.#add_child(child),
             ...args
         );
         this.add_children(this._get_arg_children());
@@ -22,7 +21,6 @@ class QuillTree extends QuillNodeElement {
             if (e.target.classList.contains("quill-close-button")) return;
             this.#set_expanded(!this.#expanded);
         });
-        // TODO: validate expanded
         this.#set_expanded(!!this._get_arg_config().expanded);
         this.set_disabled(!!this._get_arg_config().disabled);
     }
@@ -38,18 +36,14 @@ class QuillTree extends QuillNodeElement {
         return this;
     }
 
-    // Protected methods
+    // Private methods
 
-    _add_child(child) {
-        // TODO: validate child
+    #add_child(child) {
         this.get_element().querySelector(".quill-tree-body").append(child.get_element());
     }
 
-    // Private methods
-
     #set_expanded(expanded) {
-        // TODO: validate expanded
-        this.get_element().classList[(this.#expanded = expanded) ? "add" : "remove"]("expanded");
+        this.get_element().classList[(this.#expanded = !!expanded) ? "add" : "remove"]("expanded");
         return this;
     }
 }

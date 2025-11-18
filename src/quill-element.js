@@ -4,27 +4,29 @@
 class QuillElement {
     #element;
     #allowed_children = [];
+    #add_child_callback;
     #parent = null;
     #children = [];
     #arg_config;
     #arg_callback;
     #arg_children;
 
-    constructor(html, allowed_children, ...args) {
+    constructor(html, allowed_children, add_child_callback, ...args) {
         // TODO: validate html
-        // TODO: validate allowed_children
-        // TODO: validate args
         this.#element = Util.element_from_html(html);
 
+        // TODO: validate allowed_children
         if (allowed_children instanceof Array) this.#allowed_children = allowed_children;
+
+        // TODO: validate add_child_callback
+        this.#add_child_callback = add_child_callback ?? ((child) => this.#element.append(child.get_element()));
 
         const named_args = Util.config_callback_and_children_from_arguments(...args);
         this.#arg_config = Object.freeze(named_args.config);
         this.#arg_callback = Object.freeze(named_args.callback);
         this.#arg_children = Object.freeze(named_args.children);
 
-        // TODO: validate hidden
-        if (this.#arg_config.hidden) this.hide();
+        if (!!this.#arg_config.hidden) this.hide();
 
         // TODO: validate class
         if (this.#arg_config.class) this.#element.classList.add(this.#arg_config.class);
@@ -60,7 +62,7 @@ class QuillElement {
         if (!Util.warning(this.#allowed_children.length > 0, msg, children[0])) return;
         for (const child of children) {
             if (!this.#is_child_allowed(child)) return;
-            this._add_child(child);
+            this.#add_child_callback(child);
             if (child instanceof QuillElement) {
                 this.#children.push(child);
                 child.#parent = this;
@@ -71,15 +73,14 @@ class QuillElement {
 
     get_page_x = () => window.pageXOffset + this.#element.getBoundingClientRect().left;
 
-    get_page_x_right = () => this.get_page_x() + this.#element.offsetWidth;
-
     get_page_y = () => window.pageYOffset + this.#element.getBoundingClientRect().top;
+
+    get_page_x_right = () => this.get_page_x() + this.#element.offsetWidth;
 
     get_page_y_bottom = () => this.get_page_y() + this.#element.offsetHeight;
 
     remove() {
         this.#element.remove();
-        this._remove();
         for (const child of this.#children.slice()) child.remove();
         if (this.#parent) this.#parent.#children.splice(this.#parent.#children.indexOf(this), 1);
     }
@@ -139,10 +140,6 @@ class QuillElement {
     _get_arg_callback = () => this.#arg_callback;
 
     _get_arg_children = () => this.#arg_children;
-
-    _add_child() {
-        Util.assert(false, `TODO: Implement '_add_child(child)' in ${this.constructor.name}`);
-    }
 
     _remove() {} // Implement in extending classes that create extra DOM elements outside #element.
 

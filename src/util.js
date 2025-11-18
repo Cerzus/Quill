@@ -1,11 +1,39 @@
 "use strict";
 
 class Util {
+    static is_plain_object(obj) {
+        return obj != null && (Object.getPrototypeOf(obj) === Object.prototype || Object.getPrototypeOf(obj) === null);
+    }
+
+    static is_function(obj) {
+        return typeof obj === "function";
+    }
+
     static element_from_html(html) {
         // TODO: validate html
         const template = document.createElement("template");
         template.innerHTML = html.trim();
         return template.content.firstChild;
+    }
+
+    static error_if_not_number(obj) {
+        try {
+            +obj;
+        } catch {
+            return this.assert(false, `Expected number, found ${typeof obj}`);
+        }
+        return this.assert(!Number.isNaN(+obj), `Expected number, found ${obj}`);
+    }
+
+    static #html_symbols = {
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+        "\n": "<br>",
+    };
+    static html_string_from_object(obj) {
+        return String(obj).replace(/[<>"'\n]/g, (string) => Util.#html_symbols[string]);
     }
 
     static assert(condition, message = "Assertion failed") {
@@ -24,43 +52,38 @@ class Util {
     }
 
     static config_and_callback_from_arguments(...args) {
-        // TODO: validate args
         const result = { config: {}, callback: () => {} };
         let i = 0;
-        if (args[i] instanceof Object && !(args[i] instanceof Function)) result.config = args[i++];
-        if (args[i] instanceof Function) result.callback = args[i++];
+        if (Util.is_plain_object(args[i])) result.config = args[i++];
+        if (Util.is_function(args[i])) result.callback = args[i++];
         return result;
     }
 
     static config_callback_and_children_from_arguments(...args) {
-        // TODO: validate args
         const result = { config: {}, callback: () => {}, children: [] };
         let i = 0;
-        if (
-            args[i] instanceof Object &&
-            !(args[i] instanceof Function || args[i] instanceof Array || args[i] instanceof QuillElement)
-        ) {
-            result.config = args[i++];
+        if (Util.is_plain_object(args[i])) result.config = args[i++];
+        if (Util.is_function(args[i])) result.callback = args[i++];
+        if (args[i] instanceof QuillElement) result.children = args[i++];
+        if (Object.prototype.toString.call(args[i]) === "[object Array]") {
+            for (const obj of args[i]) Util.assert(obj instanceof QuillElement);
+            result.children = args[i++];
         }
-        if (args[i] instanceof Function) result.callback = args[i++];
-        if (args[i] instanceof Array || args[i] instanceof QuillElement) result.children = args[i++];
         result.count = i;
         return result;
     }
 
     static label_config_callback_and_children_from_arguments(...args) {
-        // TODO: validate args
         const result = { label: "", config: {}, callback: () => {}, children: [] };
         let i = 0;
         if (typeof args[i] === "string" || typeof args[i] === "number") result.label = args[i++];
-        if (
-            args[i] instanceof Object &&
-            !(args[i] instanceof Function || args[i] instanceof Array || args[i] instanceof QuillElement)
-        ) {
-            result.config = args[i++];
+        if (Util.is_plain_object(args[i])) result.config = args[i++];
+        if (Util.is_function(args[i])) result.callback = args[i++];
+        if (args[i] instanceof QuillElement) result.children = args[i++];
+        if (Object.prototype.toString.call(args[i]) === "[object Array]") {
+            for (const obj of args[i]) Util.assert(obj instanceof QuillElement);
+            result.children = args[i++];
         }
-        if (args[i] instanceof Function) result.callback = args[i++];
-        if (args[i] instanceof Array || args[i] instanceof QuillElement) result.children = args[i++];
         result.count = i;
         return result;
     }

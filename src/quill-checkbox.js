@@ -2,13 +2,10 @@
 
 class QuillCheckbox extends QuillInput {
     constructor(...args) {
-        // TODO: validate args
         const html = `<div class="quill-checkbox-wrapper"><input class="quill-input" type="checkbox" /></div>`;
-        super(html, "change", null, [], ...args);
+        super(html, "change", null, [], null, ...args);
         const config = this._get_arg_config();
-        // TODO: validate value
         this.set_value(!!config.value);
-        // TODO: validate checked
         this.set_checked(!!config.checked);
     }
 
@@ -17,7 +14,6 @@ class QuillCheckbox extends QuillInput {
     get_value = () => this._get_input_element().checked;
 
     set_value(value) {
-        // TODO: validate value
         this._get_input_element().indeterminate = false;
         this._get_input_element().checked = !!value;
         return this;

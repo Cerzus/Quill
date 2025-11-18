@@ -5,7 +5,6 @@ class QuillCollapsingHeader extends QuillTree {
     #on_close_callback;
 
     constructor(...args) {
-        // TODO: validate args
         super(...args);
         const element = this.get_element();
         element.classList.remove("quill-tree");

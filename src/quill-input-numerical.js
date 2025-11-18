@@ -10,8 +10,7 @@ class QuillInputNumerical extends QuillInput {
         // TODO: validate html
         // TODO: validate event_type
         // TODO: validate sanitize_value
-        // TODO: validate args
-        super(html, event_type, sanitize_value, [], ...args);
+        super(html, event_type, sanitize_value, [], null, ...args);
         this.#sanitize_value = sanitize_value ?? ((value) => value);
         const config = this._get_arg_config();
         // TODO: validate min
@@ -54,21 +53,18 @@ class QuillInputNumerical extends QuillInput {
 
 class QuillInputNumber extends QuillInputNumerical {
     constructor(...args) {
-        // TODO: validate args
         super(`<input class="quill-input" type="number" />`, "change", ...args);
     }
 }
 
 class QuillInputFloat extends QuillInputNumber {
     constructor(...args) {
-        // TODO: validate args
         super(null, ...args);
     }
 }
 
 class QuillInputInteger extends QuillInputNumber {
     constructor(...args) {
-        // TODO: validate args
         super((value) => ~~value, ...args);
     }
 }
@@ -77,7 +73,6 @@ class QuillInputI extends QuillInputInteger {
     constructor(min, max, ...args) {
         // TODO: validate min
         // TODO: validate max
-        // TODO: validate args
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
         // TODO: validate min
         config.min = min;
@@ -89,7 +84,6 @@ class QuillInputI extends QuillInputInteger {
 
 class QuillSlider extends QuillInputNumerical {
     constructor(...args) {
-        // TODO: validate args
         super(
             `<div class="quill-slider">
                 <input class="quill-input" type="range">
@@ -98,8 +92,7 @@ class QuillSlider extends QuillInputNumerical {
             "input",
             ...args
         );
-        // TODO: validate reverse
-        if (this._get_arg_config().reverse) this._get_input_element().style.direction = "rtl";
+        if (!!this._get_arg_config().reverse) this._get_input_element().style.direction = "rtl";
     }
 
     // Public methods
@@ -108,9 +101,9 @@ class QuillSlider extends QuillInputNumerical {
         // TODO: validate value
         const config = this._get_arg_config();
         super.set_value(value);
-        // TODO: validate prefix
-        // TODO: validate suffix
-        const output = (config.prefix ?? "") + this.get_value() + (config.suffix ?? "");
+        const prefix = Util.html_string_from_object(Object.hasOwn(config, "prefix") ? config.prefix : "");
+        const suffix = Util.html_string_from_object(Object.hasOwn(config, "suffix") ? config.suffix : "");
+        const output = prefix + this.get_value() + suffix;
         this.get_element().querySelector("output").value = output;
         return this;
     }
@@ -118,7 +111,6 @@ class QuillSlider extends QuillInputNumerical {
 
 class QuillSliderFloat extends QuillSlider {
     constructor(...args) {
-        // TODO: validate args
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
         // TODO: validate min
         if (!Object.hasOwn(config, "min")) config.min = 0;
@@ -132,7 +124,6 @@ class QuillSliderFloat extends QuillSlider {
 
 class QuillSliderInteger extends QuillSlider {
     constructor(...args) {
-        // TODO: validate args
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
         // TODO: validate min
         if (!Object.hasOwn(config, "min")) config.min = 0;
@@ -148,7 +139,6 @@ class QuillSliderI extends QuillSliderInteger {
     constructor(min, max, ...args) {
         // TODO: validate min
         // TODO: validate max
-        // TODO: validate args
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
         // TODO: validate min
         config.min = min;
@@ -182,7 +172,6 @@ class QuillDrag extends QuillInputNumerical {
     }
 
     constructor(...args) {
-        // TODO: validate args
         QuillDrag.#init();
         super(
             `<div class="quill-drag">
@@ -203,9 +192,10 @@ class QuillDrag extends QuillInputNumerical {
     set_value(value) {
         // TODO: validate value
         super.set_value(value);
-        // TODO: validate prefix
-        // TODO: validate suffix
-        const output = (this._get_arg_config().prefix ?? "") + this.get_value() + (this._get_arg_config().suffix ?? "");
+        const config = this._get_arg_config();
+        const prefix = Util.html_string_from_object(Object.hasOwn(config, "prefix") ? config.prefix : "");
+        const suffix = Util.html_string_from_object(Object.hasOwn(config, "suffix") ? config.suffix : "");
+        const output = prefix + this.get_value() + suffix;
         this.get_element().querySelector("output").value = output;
         return this;
     }
@@ -223,7 +213,6 @@ class QuillDrag extends QuillInputNumerical {
 
 class QuillDragFloat extends QuillDrag {
     constructor(...args) {
-        // TODO: validate args
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
         // TODO: validate step
         if (!Object.hasOwn(config, "step")) config.step = 0.01;
@@ -233,7 +222,6 @@ class QuillDragFloat extends QuillDrag {
 
 class QuillDragInteger extends QuillDrag {
     constructor(...args) {
-        // TODO: validate args
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
         // TODO: validate step
         if (!Object.hasOwn(config, "step")) config.step = 1;
@@ -245,7 +233,6 @@ class QuillDragI extends QuillDragInteger {
     constructor(min, max, ...args) {
         // TODO: validate min
         // TODO: validate max
-        // TODO: validate args
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
         // TODO: validate min
         config.min = min;

@@ -2,9 +2,8 @@
 
 class QuillInputText extends QuillInput {
     constructor(...args) {
-        // TODO: validate args
         const html = `<input class="quill-input" type="text" />`;
-        super(html, "change", null, [], ...args);
+        super(html, "change", null, [], null, ...args);
         const config = this._get_arg_config();
         // TODO: validate value
         if (Object.hasOwn(config, "value")) this.set_value(config.value);
@@ -23,8 +22,7 @@ class QuillInputBase extends QuillInput {
 
     constructor(base, ...args) {
         // TODO: validate base
-        // TODO: validate args
-        super(`<input class="quill-input" type="text" />`, "change", sanitize_value, [], ...args);
+        super(`<input class="quill-input" type="text" />`, "change", sanitize_value, [], null, ...args);
         this.#base = Math.max(2, ~~base);
         const config = this._get_arg_config();
         const max_length = Math.ceil(Math.log(2147483647) / Math.log(this.#base));
