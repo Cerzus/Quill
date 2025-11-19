@@ -175,7 +175,7 @@ class QuillDrag extends QuillInputNumerical {
         QuillDrag.#init();
         super(
             `<div class="quill-drag">
-                <input class="quill-input" type="number">
+                <input class="quill-input" type="range">
                 <output></output>
             </div>`,
             null,

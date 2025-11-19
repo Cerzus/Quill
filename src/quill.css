@@ -1,3 +1,8 @@
+@font-face {
+    font-family: DroidSans;
+    src: url("../fonts/DroidSans.ttf");
+}
+
 .quill,
 .quill :not(script) {
     scrollbar-color: var(--quill-scrollbar-thumb-color) var(--quill-scrollbar-track-color);
@@ -5,7 +10,7 @@
     margin: 0;
     white-space: nowrap;
     box-sizing: border-box;
-    scrollbar-width: thin;
+    scrollbar-width: var(--quill-scrollbar-width);
     user-select: none;
 }
 .quill,
@@ -21,10 +26,7 @@
         font-family: var(--quill-proportional-font);
         color: var(--quill-text-color);
         font-size: var(--quill-font-size);
-        line-height: 1.2em;
         opacity: 1;
-        /* background-color: rgba(255, 255, 255, 0.1);
-        color: rgba(0, 0, 0); */
         &:focus {
             outline: none;
         }
@@ -41,6 +43,7 @@
     .quill-text[muted] {
         color: var(--quill-input-disabled-color);
         background: var(--quill-item-disabled-bg-color);
+        box-shadow: none;
         &::placeholder {
             color: transparent;
         }
@@ -53,8 +56,7 @@
                 0 -1px var(--quill-item-disabled-bg-color), 0 1px var(--quill-item-disabled-bg-color);
         }
     }
-    input.quill-input[type="radio"]:disabled:checked {
-        border: 3px solid var(--quill-item-disabled-bg-color);
+    input.quill-input[type="radio"]:disabled:checked::after {
         background: var(--quill-input-disabled-color);
     }
     input.quill-input[type="checkbox"]:disabled::after {
@@ -79,9 +81,9 @@
     }
 
     .quill-panel {
-        border-radius: var(--quill-panel-border-radius-size);
-        box-shadow: 0 0 var(--quill-panel-shadow-size) black;
-        border: var(--quill-panel-border-size) solid var(--quill-panel-border-color);
+        border-radius: var(--quill-panel-rounding-size);
+        box-shadow: 0 calc(1.5 * var(--quill-shadow-size)) calc(3 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
+        border: var(--quill-panel-border-size) solid rgb(from var(--quill-border-color) r g b / 0.5);
         position: absolute;
         flex-direction: column;
         overflow: hidden;
@@ -89,9 +91,8 @@
 
     .quill-panel-title-bar {
         background: var(--quill-panel-title-bar-bg-color);
-        padding: var(--quill-panel-padding-size);
+        padding: var(--quill-title-bar-padding-size) calc(0.25em + var(--quill-title-bar-padding-size));
         gap: var(--quill-panel-gap-size);
-        font-weight: bold;
         cursor: move;
         align-items: center;
         > :nth-child(1) {
@@ -99,14 +100,34 @@
             display: initial;
             overflow: hidden;
             flex-grow: 1;
-            font-size: calc(var(--quill-font-size) * 1.2);
         }
-        > .quill-close-button {
-            padding: 0 0.1em;
-            font-size: 1.5em;
-            line-height: 0.75em;
-            cursor: initial;
+    }
+
+    .quill-button.quill-close-button,
+    .quill-button.quill-close-button:not(:disabled) {
+        box-shadow: none;
+        padding: 0;
+        cursor: initial;
+        background: transparent;
+        border-radius: 0;
+        overflow: hidden;
+        position: relative;
+        width: 1em;
+        height: 1em;
+        &::after {
+            font-size: 2em;
+            content: "\00d7";
+            font-family: none;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+        &:hover,
+        &:focus {
             background: transparent;
+        }
+        &:not(:disabled) {
+            box-shadow: none;
         }
     }
 
@@ -151,7 +172,7 @@
     }
 
     .quill-menu-item {
-        border-radius: var(--quill-item-border-radius-size);
+        border-radius: var(--quill-item-rounding-size);
         gap: var(--quill-item-inner-gap-size);
         position: relative;
         display: grid;
@@ -161,21 +182,35 @@
         &:hover,
         &.active {
             background: var(--quill-item-hovered-bg-color);
-        }
-        &:hover {
-            color: var(--quill-item-hovered-color);
+            > :nth-child(2) {
+                color: var(--quill-item-hovered-color);
+            }
+            .quill-arrow-right {
+                border-color: var(--quill-item-hovered-color);
+            }
         }
         > * {
-            padding: var(--quill-item-padding-size);
+            padding: var(--quill-menu-item-padding-size) calc(0.25em + var(--quill-menu-item-padding-size));
             align-items: center;
         }
         > :nth-child(3) {
-            opacity: 0.75;
+            opacity: 0.5;
+        }
+        input.quill-input[type="checkbox"] {
+            margin: calc(-1 * var(--quill-menu-item-padding-size)) 0;
+            &:not(:disabled) {
+                box-shadow: none;
+                background: transparent;
+                &::hover,
+                &::focus {
+                    background: transparent;
+                }
+            }
         }
     }
 
     :not(.quill-menu-bar) > .quill-menu-item > :nth-child(2) {
-        padding: var(--quill-item-padding-size);
+        padding: var(--quill-menu-item-padding-size);
     }
 
     .quill-menu-bar {
@@ -199,9 +234,9 @@
     .quill-menu {
         padding: var(--quill-menu-padding-size);
         background: var(--quill-menu-bg-color);
-        border-radius: var(--quill-menu-border-radius-size);
-        box-shadow: 0 0 var(--quill-menu-shadow-size) black;
-        border: var(--quill-menu-border-size) solid var(--quill-panel-border-color);
+        border-radius: var(--quill-menu-rounding-size);
+        box-shadow: 0 calc(1 * var(--quill-shadow-size)) calc(2 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
+        border: var(--quill-menu-border-size) solid rgb(from var(--quill-border-color) r g b / 0.5);
         position: absolute;
         z-index: 9999;
         display: none;
@@ -222,12 +257,17 @@
     }
 
     .quill-separator {
-        border: var(--quill-line-size) solid var(--quill-line-color);
+        border: var(--quill-separator-size) solid rgb(from var(--quill-separator-color) r g b / 0.5);
         border-right-width: 0;
         border-bottom-width: 0;
         .quill-menu & {
             grid-column: 1/5;
         }
+    }
+
+    .quill-spacing {
+        width: var(--quill-font-size);
+        height: var(--quill-font-size);
     }
 
     .quill-row {
@@ -253,25 +293,34 @@
     .quill-tree,
     .quill-collapsing-header {
         flex-direction: column;
+        border-radius: var(--quill-item-rounding-size);
     }
 
     .quill-tree-header {
-        border-radius: var(--quill-item-border-radius-size);
-        padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
-        font-weight: bold;
+        border-radius: var(--quill-item-rounding-size);
         align-items: center;
         gap: 0.2em;
-        &:hover {
-            background: var(--quill-item-hovered-bg-color);
-            color: var(--quill-item-hovered-color);
-        }
+        padding: 0 calc(0.25em + var(--quill-item-padding-size));
         > :nth-child(2) {
             overflow: hidden;
             flex-grow: 1;
         }
+        &:hover {
+            background: var(--quill-header-hovered-color);
+            > div {
+                color: var(--quill-item-hovered-color);
+            }
+            .quill-arrow-right {
+                border-color: var(--quill-item-hovered-color);
+            }
+        }
         .quill-collapsing-header > & {
-            background: var(--quill-item-bg-color);
-            font-weight: bold;
+            box-shadow: 0 calc(0.5 * var(--quill-shadow-size)) calc(1 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
+            background: var(--quill-header-color);
+            padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
+            &:hover {
+                background: var(--quill-header-hovered-color);
+            }
         }
     }
 
@@ -293,7 +342,7 @@
     .quill-table,
     .quill-table-header-row,
     .quill-table-header-cell {
-        border: var(--quill-table-primary-border-size) none var(--quill-table-border-color);
+        border: var(--quill-table-border-strong-size) none var(--quill-table-border-strong-color);
     }
     .quill-table {
         border-collapse: collapse;
@@ -304,7 +353,7 @@
         height: fit-content;
         .quill-table-row,
         .quill-table-cell {
-            border: var(--quill-table-secondary-border-size) none var(--quill-table-border-color);
+            border: var(--quill-table-border-light-size) none var(--quill-table-border-light-color);
         }
         .quill-table-header-row:not(:last-child),
         .quill-table-row:not(:last-child) {
@@ -322,26 +371,29 @@
             padding: calc(var(--quill-item-gap-size) / 2) calc(var(--quill-item-inner-gap-size) / 2);
         }
         .quill-table-header-cell {
-            background: var(--quill-item-bg-color);
+            background: var(--quill-table-header-bg-color);
             &:hover {
-                background: var(--quill-item-hovered-bg-color);
+                background: var(--quill-header-hovered-color);
                 color: var(--quill-item-hovered-color);
             }
         }
     }
 
     .quill-button {
-        background: var(--quill-item-bg-color);
+        background: var(--quill-button-color);
         padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
-        border: none;
-        border-radius: var(--quill-item-border-radius-size);
+        border: var(--quill-input-border-size) solid rgb(from var(--quill-border-color) r g b / 0.5);
+        border-radius: var(--quill-input-rounding-size);
         display: inline-block;
         width: fit-content;
+        font-size: 0.9em;
         &:not(:disabled) {
+            color: var(--quill-input-color);
+            box-shadow: 0 calc(0.5 * var(--quill-shadow-size)) calc(1 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
             &:hover,
             &:focus {
-                background: var(--quill-item-hovered-bg-color);
-                color: var(--quill-item-hovered-color);
+                background: var(--quill-button-hovered-color);
+                color: var(--quill-input-hovered-color);
             }
         }
     }
@@ -353,9 +405,7 @@
             user-select: none;
             font-size: 1.2em;
             align-self: center;
-        }
-        &:not(:hover):before {
-            opacity: 0.5;
+            color: var(--quill-text-disabled-color);
         }
     }
 
@@ -364,17 +414,13 @@
     }
 
     .quill-fieldset {
-        border: var(--quill-line-size) solid var(--quill-line-color);
-        border-radius: var(--quill-item-border-radius-size);
-        padding: var(--quill-panel-padding-size);
+        padding-top: var(--quill-panel-padding-size);
+        background: var(--quill-panel-content-bg-color);
         gap: var(--quill-item-gap-size);
         flex-direction: column;
-        overflow: hidden;
         height: fit-content;
-        width: fit-content;
         > legend {
             text-align: var(--quill-fieldset-legend-text-align);
-            font-weight: bold;
             font-size: calc(var(--quill-font-size) * 1.1);
         }
     }
@@ -386,13 +432,25 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        &:hover {
+        &:hover:has(input:enabled),
+        &:hover:has(select:enabled) {
             color: var(--quill-item-hovered-color);
+        }
+        &:not(:has(input:enabled)):not(:has(select:enabled)) {
+            color: var(--quill-text-disabled-color);
         }
     }
 
     .quill-multi-component-input {
         gap: var(--quill-item-inner-gap-size);
+        > .quill-label {
+            > :nth-child(2) {
+                flex: 0 0 0;
+            }
+        }
+        input {
+            width: 100%;
+        }
     }
 
     select.quill-select,
@@ -400,22 +458,24 @@
     input.quill-input {
         background: var(--quill-item-bg-color);
         font-family: var(--quill-monospace-font);
-        border-radius: var(--quill-item-border-radius-size);
+        border-radius: var(--quill-input-rounding-size);
         color: var(--quill-input-color);
-        border: var(--quill-input-border-size) solid var(--quill-input-border-color);
-        accent-color: var(--quill-input-color);
+        border: var(--quill-input-border-size) solid rgb(from var(--quill-border-color) r g b / 0.5);
         text-align: var(--quill-input-text-align);
         outline: none;
         font-size: 0.9em;
         height: 1.2em;
         box-sizing: content-box;
+        box-shadow: 0 calc(0.5 * var(--quill-shadow-size)) calc(1 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
         &:not(:disabled) {
             &:hover,
             &:focus {
-                accent-color: var(--quill-input-hovered-color);
                 color: var(--quill-input-hovered-color);
                 background: var(--quill-item-hovered-bg-color);
             }
+        }
+        &::placeholder {
+            color: var(--quill-text-disabled-color);
         }
     }
 
@@ -444,26 +504,21 @@
         flex-direction: column;
     }
 
-    .quill-checkbox-wrapper {
-        border: var(--quill-input-border-size) solid var(--quill-input-border-color);
-    }
-
     .quill-input[type="checkbox"] {
         border-radius: 0;
         height: calc(1.2em + 2 * var(--quill-item-padding-size));
         width: calc(1.2em + 2 * var(--quill-item-padding-size));
         appearance: none;
-        position: relative;
         &::after {
-            border: 0 solid var(--quill-input-color);
+            border: 0 solid var(--quill-checkmark-color);
             content: "";
             display: block;
         }
         &:checked::after {
-            border-width: 0 0.2em 0.2em 0;
+            border-width: 0 0.25em 0.25em 0;
             width: 25%;
             height: 50%;
-            margin: 0.05em 0.35em;
+            margin: 10% auto;
             transform: rotate(45deg);
             -webkit-transform: rotate(45deg);
         }
@@ -479,7 +534,7 @@
         &:hover,
         &:focus {
             &::after {
-                border-color: var(--quill-input-hovered-color);
+                border-color: var(--quill-checkmark-hovered-color);
             }
         }
     }
@@ -502,14 +557,13 @@
 
     .quill-slider {
         position: relative;
-        overflow: hidden;
         input {
             padding: var(--quill-item-padding-size);
             flex-grow: 1;
             appearance: none;
             -webkit-appearance: none;
             &::-webkit-slider-thumb {
-                border-radius: var(--quill-item-border-radius-size);
+                border-radius: var(--quill-grab-rounding-size);
                 appearance: none;
                 -webkit-appearance: none;
                 width: 1.2em;
@@ -517,7 +571,7 @@
                 outline: none;
             }
             + output {
-                border-radius: var(--quill-item-border-radius-size);
+                border-radius: var(--quill-input-rounding-size);
                 font-family: var(--quill-monospace-font);
                 padding: 0 1px;
                 position: absolute;
@@ -533,7 +587,7 @@
             &:not(:disabled) {
                 &::-webkit-slider-thumb {
                     cursor: pointer;
-                    background: var(--quill-input-color);
+                    background: var(--quill-slidergrab-color);
                 }
                 + output {
                     color: var(--quill-input-color);
@@ -543,7 +597,7 @@
                 &:hover,
                 &:focus {
                     &::-webkit-slider-thumb {
-                        background: var(--quill-input-hovered-color);
+                        background: var(--quill-slidergrab-hovered-color);
                     }
                     + output {
                         text-shadow: 1px 0 var(--quill-item-hovered-bg-color), -1px 0 var(--quill-item-hovered-bg-color),
@@ -557,12 +611,15 @@
 
     .quill-drag {
         position: relative;
-        overflow: hidden;
         input {
+            padding: var(--quill-item-padding-size);
+            flex-grow: 1;
+            appearance: none;
+            -webkit-appearance: none;
             + output {
-                border-radius: var(--quill-item-border-radius-size);
+                border-radius: var(--quill-input-rounding-size);
                 font-family: var(--quill-monospace-font);
-                border: var(--quill-input-border-size) solid var(--quill-input-border-color);
+                border: var(--quill-input-border-size) solid rgb(from var(--quill-border-color) r g b / 0.5);
                 position: absolute;
                 top: 0;
                 right: 0;
@@ -576,13 +633,9 @@
                 + output {
                     background: var(--quill-item-bg-color);
                     color: var(--quill-input-color);
-                    &:hover,
-                    &:focus {
-                        color: var(--quill-input-hovered-color);
-                        background: var(--quill-item-hovered-bg-color);
-                    }
                 }
-                &:hover {
+                &:hover,
+                &:focus {
                     + output {
                         color: var(--quill-input-hovered-color);
                         background: var(--quill-item-hovered-bg-color);
@@ -595,24 +648,34 @@
     .quill-radio-buttons {
         display: flex;
         border: none;
+        gap: var(--quill-item-gap-size);
+        > label {
+            width: auto;
+        }
     }
 
     input.quill-input[type="radio"] {
-        padding: var(--quill-item-padding-size);
+        height: calc(1.2em + 2 * var(--quill-item-padding-size));
+        width: calc(1.2em + 2 * var(--quill-item-padding-size));
         appearance: none;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        width: 1.2em;
-        height: 1.2em;
+        &::after {
+            content: "";
+            display: block;
+            width: 1.2em;
+            height: 1.2em;
+            margin: var(--quill-item-padding-size);
+            border-radius: 100%;
+        }
         border-radius: 100%;
-        box-sizing: border-box;
         &:not(:disabled):checked {
-            border: 0.25em solid var(--quill-item-bg-color);
-            background: var(--quill-input-color);
+            &::after {
+                background: var(--quill-checkmark-color);
+            }
             &:hover,
             &:focus {
-                border-color: var(--quill-item-hovered-bg-color);
-                background: var(--quill-input-hovered-color);
+                &::after {
+                    background: var(--quill-checkmark-hovered-color);
+                }
             }
         }
     }
@@ -641,23 +704,35 @@
     .quill-tabs {
         flex-direction: column;
         .quill-tabs-header {
-            border-bottom: var(--quill-line-size) solid var(--quill-item-hovered-bg-color);
+            border-bottom: var(--quill-tab-bar-border-size) solid var(--quill-tab-selected-color);
             gap: var(--quill-item-inner-gap-size);
             > div {
-                background: var(--quill-item-bg-color);
+                border: var(--quill-tab-border-size) solid rgb(from var(--quill-border-color) r g b / 0.5);
+                border-bottom: none;
+                box-shadow: 0 calc(0.5 * var(--quill-shadow-size)) calc(1 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
+                background: var(--quill-tab-color);
                 padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
-                border-top-left-radius: var(--quill-item-border-radius-size);
-                border-top-right-radius: var(--quill-item-border-radius-size);
+                border-top-left-radius: var(--quill-tab-rounding-size);
+                border-top-right-radius: var(--quill-tab-rounding-size);
                 overflow: hidden;
+                padding-bottom: var(--quill-item-padding-size);
             }
-            > div:hover,
             > div.active {
-                background: var(--quill-item-hovered-bg-color);
+                background: var(--quill-tab-selected-color);
+            }
+            > div:hover {
+                background: var(--quill-tab-hovered-color);
+            }
+            > div.active,
+            > div:hover {
+                box-shadow: 0 calc(1 * var(--quill-shadow-size)) calc(2 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
                 color: var(--quill-item-hovered-color);
             }
         }
         .quill-tabs-body {
-            padding-top: var(--quill-panel-padding-size);
+            padding: var(--quill-panel-padding-size);
+            box-shadow: 0 calc(1 * var(--quill-shadow-size)) calc(2 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
+            background: var(--quill-panel-content-bg-color);
         }
         .quill-tab {
             gap: var(--quill-panel-gap-size);
@@ -693,7 +768,6 @@
     }
 
     .quill-hex-editor {
-        border: var(--quill-line-size) solid var(--quill-line-color);
         flex-grow: 1;
         flex-direction: column;
         width: fit-content;
@@ -706,7 +780,7 @@
             .quill-dynamic-rows-list
             .quill-hex-editor-ascii
             > .quill-hex-editor-byte[data-value="."]:not(:hover) {
-            color: rgb(60, 60, 60);
+            color: var(--quill-input-disabled-color);
         }
 
         /* TODO: Is there a nicer way to do this? */
@@ -726,7 +800,7 @@
         &[data-hovered-column="13"] .quill-hex-editor-byte:nth-child(14),
         &[data-hovered-column="14"] .quill-hex-editor-byte:nth-child(15),
         &[data-hovered-column="15"] .quill-hex-editor-byte:nth-child(16) {
-            background: rgb(255 255 255 / 0.25);
+            background: rgb(from var(--quill-item-hovered-bg-color) r g b / 0.5);
         }
 
         .quill-dynamic-rows {
@@ -735,7 +809,7 @@
                 color: var(--quill-input-hovered-color);
             }
             .quill-row:hover > div {
-                background: rgb(255 255 255 / 0.25);
+                background: rgb(from var(--quill-item-hovered-bg-color) r g b / 0.5);
             }
         }
 
@@ -766,6 +840,7 @@
                 outline: none;
                 border: none;
                 background: transparent;
+                width: 3ch;
                 &[data-address]:disabled {
                     color: var(--quill-input-disabled-color);
                 }
@@ -773,18 +848,21 @@
         }
 
         .quill-hex-editor-byte,
-        .quill-hex-editor-ascii > * {
+        .quill-hex-editor-ascii > div {
             font-family: var(--quill-monospace-font);
             font-size: var(--quill-font-size);
+        }
+
+        .quill-hex-editor-ascii > div {
+            width: 1ch;
         }
     }
 
     .quill-plot {
         position: relative;
         overflow: hidden;
-        border-radius: var(--quill-item-border-radius-size);
-    }
-    .quill-plot > canvas {
+        border-radius: var(--quill-input-rounding-size);
+        box-shadow: 0 calc(0.5 * var(--quill-shadow-size)) calc(1 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
         background: var(--quill-item-bg-color);
     }
     .quill-plot > div {

@@ -1,9 +1,9 @@
 "use strict";
 
 (function (Quill) {
-    Quill.init = (root_element) => {
+    Quill.init = (root_element_arg) => {
         // TODO: validate root_element
-        if (!Util.error(root_element instanceof Element)) return;
+        if (!Util.error(root_element_arg instanceof Element)) return;
 
         // Add all public-facing properties
 
@@ -102,18 +102,19 @@
         Quill.get_style_flag = get_style_flag;
         Quill.get_style_flag_options = get_style_flag_options;
         Quill.set_style_flag = set_style_flag;
+        Quill.set_style_config = set_style_config;
         Quill.get_panels = get_panels;
         Quill.open_file_dialog = open_file_dialog;
         Quill.fill_array = Util.fill_array;
         Quill.show_demo = quill_show_demo;
 
-        const content_element = Util.element_from_html(`<div class="quill-content"></div>`);
+        root_element = root_element_arg;
+        content_element = Util.element_from_html(`<div class="quill-content"></div>`);
 
         root_element.classList.add("quill");
         root_element.append(content_element);
 
-        quill_config.root_element = root_element;
-        quill_config.content_element = content_element;
+        set_style_config(quill_config.presets.quill_dark);
 
         Object.entries(quill_config.fonts).forEach((entry) => apply_font_to_root_element(...entry));
         Object.entries(quill_config.colors).forEach((entry) => apply_color_to_root_element(...entry));
@@ -211,7 +212,7 @@
             }
             if (this.#closed) this.#close();
 
-            quill_config.content_element.append(element);
+            content_element.append(element);
         }
 
         // Public methods
@@ -276,12 +277,12 @@
             const height = 200;
             this.set_size({ width, height });
             this.set_position({
-                top: (quill_config.content_element.offsetHeight - height) / 2,
-                left: (quill_config.content_element.offsetWidth - width) / 2,
+                top: (content_element.offsetHeight - height) / 2,
+                left: (content_element.offsetWidth - width) / 2,
             });
             element.style.zIndex = 1000;
 
-            quill_config.content_element.append(element);
+            content_element.append(element);
         }
 
         // Public methods
@@ -314,7 +315,7 @@
             this.set_position({ top, left });
             element.style.zIndex = 10000;
 
-            quill_config.content_element.append(element);
+            content_element.append(element);
 
             active_popup = this;
         }
@@ -448,7 +449,7 @@
             element.addEventListener("mouseenter", () => this.#show_if_menu_bar_active());
 
             this.add_children(this._get_arg_children());
-            quill_config.content_element.append(this.#menu_element);
+            content_element.append(this.#menu_element);
             element.querySelector(":nth-child(4)").append(Util.element_from_html(`<div class="quill-arrow-right"></div>`));
         }
 
@@ -517,7 +518,7 @@
 
         #set_position(callback) {
             // TODO: validate callback
-            const content_element_rect = quill_config.content_element.getBoundingClientRect();
+            const content_element_rect = content_element.getBoundingClientRect();
             const element_rect = this.get_element().getBoundingClientRect();
             const position = {
                 left: element_rect.left - content_element_rect.left,
@@ -735,7 +736,7 @@
         }
 
         #create_header_row() {
-            return new QuillRow({ css: { paddingBottom: "5px" } }, [
+            return new QuillRow({ css: { padding: "0 var(--quill-item-padding-size)", paddingBottom: "5px" } }, [
                 new QuillNodeElement(
                     `<div class="quill-hex-editor-address"
                           style="width: ${this.#format_address(this.#end_address - 1).length}ch;">
@@ -845,8 +846,11 @@
         #create_row_element(index) {
             // TODO: validate index
             const { address, data } = this.#address_and_data_from_index(index);
+            const width = this.#format_address(this.#end_address - 1).length;
             const children = [
-                new QuillNodeElement(`<div class="quill-hex-editor-address">${this.#format_address(address)}</div>`),
+                new QuillNodeElement(
+                    `<div class="quill-hex-editor-address" style="width: ${width}ch;">${this.#format_address(address)}</div>`
+                ),
                 new QuillNodeElement(
                     `<div class="quill-hex-editor-data">${this.#create_row_data_html(address, data)}</div>`
                 ),
@@ -973,6 +977,21 @@
         apply_flag_to_root_element(property, quill_config.flags[property].set(value));
     }
 
+    function set_style_config(config) {
+        for (const font of Object.entries(config.fonts)) {
+            set_style_font(...font);
+        }
+        for (const color of Object.entries(config.colors)) {
+            set_style_color(...color);
+        }
+        for (const size of Object.entries(config.sizes)) {
+            set_style_size(...size);
+        }
+        for (const flag of Object.entries(config.flags)) {
+            set_style_flag(...flag);
+        }
+    }
+
     function get_panels() {
         // TODO: copy properly?
         return { ...quill_panels };
@@ -994,25 +1013,25 @@
     function apply_font_to_root_element(property, font) {
         // TODO: validate property
         // TODO: validate font
-        Util.add_style_variable_to_element(quill_config.root_element, property, "-font", font);
+        Util.add_style_variable_to_element(root_element, property, "-font", font);
     }
 
     function apply_color_to_root_element(property, color) {
         // TODO: validate property
         // TODO: validate color
-        Util.add_style_variable_to_element(quill_config.root_element, property, "-color", color.to_css());
+        Util.add_style_variable_to_element(root_element, property, "-color", color.to_css());
     }
 
     function apply_size_to_root_element(property, size) {
         // TODO: validate property
         // TODO: validate size
-        Util.add_style_variable_to_element(quill_config.root_element, property, "-size", `${size}px`);
+        Util.add_style_variable_to_element(root_element, property, "-size", `${size}px`);
     }
 
     function apply_flag_to_root_element(property, flag) {
         // TODO: validate property
         // TODO: validate flag
-        Util.add_style_variable_to_element(quill_config.root_element, property, "", flag.get_value());
+        Util.add_style_variable_to_element(root_element, property, "", flag.get_value());
     }
 
     function close_popup() {
@@ -1118,6 +1137,8 @@
     const quill_config = QuillConfig;
     const quill_panels_order = stored_panels_config_at_init.map((panel) => panel.id);
     const quill_panels = {};
+    let root_element;
+    let content_element;
     let moving = null;
     let resizing = null;
     let active_popup = null;

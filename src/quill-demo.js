@@ -6,60 +6,55 @@ function get_style_editor() {
     const Q = Quill;
 
     return Q.Wrapper([
+        Q.Dropdown("Select preset", (selected) => Q.set_style_config(QuillConfig.presets[selected]), [
+            Q.DropdownOptions({ quill_dark: "Quill dark", quill_light: "Quill light", imgui: "ImGui" }),
+        ]),
         Q.Separator(),
         Q.Tabs([
             Q.Tab("Fonts", [
-                Q.Fieldset("Main", [
-                    ...Q.get_font_names().map((property) =>
-                        Q.InputText(
-                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { value: Q.get_style_font(property) },
-                            (value) => Q.set_style_font(property, value)
-                        )
-                    ),
-                ]),
+                ...Q.get_font_names().map((property) =>
+                    Q.InputText(
+                        (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                        { value: Q.get_style_font(property) },
+                        (value) => Q.set_style_font(property, value)
+                    )
+                ),
             ]),
             Q.Tab("Colors", [
-                Q.Fieldset("Main", [
-                    ...Q.get_color_names().map((property) =>
-                        Q.ColorPicker(
-                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { value: Q.get_style_color(property).to_hex() },
-                            (value) => Q.set_style_color(property, value)
-                        )
-                    ),
-                ]),
+                ...Q.get_color_names().map((property) =>
+                    Q.ColorPicker(
+                        (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                        { value: Q.get_style_color(property).to_hex() },
+                        (value) => Q.set_style_color(property, value)
+                    )
+                ),
             ]),
             Q.Tab("Sizes", [
-                Q.Fieldset("Main", [
-                    ...Q.get_size_names().map((property) =>
-                        Q.SliderInteger(
-                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                            { min: 0, max: 20, value: Q.get_style_size(property) },
-                            (value) => Q.set_style_size(property, value)
-                        )
-                    ),
-                ]),
+                ...Q.get_size_names().map((property) =>
+                    Q.SliderInteger(
+                        (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                        { min: 0, max: 20, value: Q.get_style_size(property) },
+                        (value) => Q.set_style_size(property, value)
+                    )
+                ),
             ]),
             Q.Tab("Flags", [
-                Q.Fieldset("Main", [
-                    ...Q.get_flag_names().map((property) => {
-                        if (Q.get_style_flag_options(property).length === 2) {
-                            return Q.Checkbox(
-                                (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                                { checked: Q.get_style_flag(property) },
-                                (checked) => Q.set_style_flag(property, checked)
-                            );
-                        } else {
-                            return Q.Dropdown(
-                                (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                                { selected: Q.get_style_flag(property) },
-                                (selected) => Q.set_style_flag(property, selected),
-                                Q.DropdownOptions(Q.get_style_flag_options(property))
-                            );
-                        }
-                    }),
-                ]),
+                ...Q.get_flag_names().map((property) => {
+                    if (Q.get_style_flag_options(property)[0] === false && Q.get_style_flag_options(property)[1] === true) {
+                        return Q.Checkbox(
+                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                            { checked: Q.get_style_flag(property) },
+                            (checked) => Q.set_style_flag(property, checked)
+                        );
+                    } else {
+                        return Q.Dropdown(
+                            (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
+                            { selected: Q.get_style_flag(property) },
+                            (selected) => Q.set_style_flag(property, selected),
+                            Q.DropdownOptions(Q.get_style_flag_options(property))
+                        );
+                    }
+                }),
             ]),
         ]),
     ]);
@@ -158,10 +153,10 @@ function quill_show_demo() {
                     Q.fill_array(7, (i) =>
                         Q.Button("Click", {
                             colors: {
-                                text: Q.Color(i * 10, 0, 60 - i * 10),
-                                item_bg: Q.Color(i * 30, 0, 180 - i * 30),
-                                item_hovered_bg: Q.Color(i * 30, 100, 180 - i * 30),
-                                item_hovered: Q.Color(i * 30, 255, 180 - i * 30),
+                                input: Q.Color(i * 10, 0, 60 - i * 10),
+                                input_hovered: Q.Color(i * 30, 255, 180 - i * 30),
+                                button: Q.Color(i * 30, 60, 240 - i * 40),
+                                button_hovered: Q.Color(i * 30, 120, 240 - i * 40),
                             },
                         })
                     )
@@ -285,15 +280,15 @@ function quill_show_demo() {
                         (selected) => console.log(selected),
                         [Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH"])]
                     ),
-                    Q.InfoTooltip("Dropdown without a label"),
+                    Q.InfoTooltip("Without a label"),
                 ]),
-                Q.Dropdown("Dropdown with values", { selected: "Option 3" }, (selected) => console.log(selected), [
+                Q.Dropdown("With values", { selected: "Option 3" }, (selected) => console.log(selected), [
                     Q.DropdownOptions([...Q.fill_array(5, (i) => `Option ${i + 1}`)]),
                 ]),
-                Q.Dropdown("Dropdown with keys and values", (selected) => console.log(selected), [
+                Q.Dropdown("With keys and values", (selected) => console.log(selected), [
                     Q.DropdownOptions({ alice: "aaa", 123: "bbb", cool: "ccc" }),
                 ]).set_selected("cool"),
-                Q.Dropdown("Dropdown with option groups", (selected) => console.log(selected), [
+                Q.Dropdown("With option groups", (selected) => console.log(selected), [
                     Q.DropdownOptions("Group 1", { alice: "aaa", 123: "bbb", cool: "ccc" }),
                     Q.DropdownOptions(
                         "Group 2",
@@ -380,7 +375,6 @@ function quill_show_demo() {
                     }),
                     Q.Text("Histogram"),
                 ]),
-
                 Q.Row([
                     (plot_lines_2 = Q.PlotLines({
                         values_getter: (i) => values[i],
@@ -513,22 +507,22 @@ function quill_show_demo() {
             return Q.Tree("Multi-component elements", { expanded }, [
                 (float_inputs[0] = Q.InputFloat2("input float2", { value: vec4f }, update_float_inputs)),
                 (integer_inputs[0] = Q.InputInteger2("input int2", { value: vec4i }, update_integer_inputs)),
-                (float_inputs[1] = Q.InputFloat3("input float3", { value: vec4f }, update_float_inputs)),
-                (integer_inputs[1] = Q.InputInteger3("input int3", { value: vec4i }, update_integer_inputs)),
-                (float_inputs[2] = Q.InputFloat4("input float4", { value: vec4f }, update_float_inputs)),
-                (integer_inputs[2] = Q.InputInteger4("input int4", { value: vec4i }, update_integer_inputs)),
-                Q.Spacing(),
                 (float_inputs[3] = Q.DragFloat2("drag float2", config_float, update_float_inputs)),
                 (integer_inputs[3] = Q.DragInteger2("drag int2", config_integer, update_integer_inputs)),
-                (float_inputs[4] = Q.DragFloat3("drag float3", config_float, update_float_inputs)),
-                (integer_inputs[4] = Q.DragInteger3("drag int3", config_integer, update_integer_inputs)),
-                (float_inputs[5] = Q.DragFloat4("drag float4", config_float, update_float_inputs)),
-                (integer_inputs[5] = Q.DragInteger4("drag int4", config_integer, update_integer_inputs)),
-                Q.Spacing(),
                 (float_inputs[6] = Q.SliderFloat2("slider float2", config_float, update_float_inputs)),
                 (integer_inputs[6] = Q.SliderInteger2("slider int2", config_integer, update_integer_inputs)),
+                Q.Spacing(),
+                (float_inputs[1] = Q.InputFloat3("input float3", { value: vec4f }, update_float_inputs)),
+                (integer_inputs[1] = Q.InputInteger3("input int3", { value: vec4i }, update_integer_inputs)),
+                (float_inputs[4] = Q.DragFloat3("drag float3", config_float, update_float_inputs)),
+                (integer_inputs[4] = Q.DragInteger3("drag int3", config_integer, update_integer_inputs)),
                 (float_inputs[7] = Q.SliderFloat3("slider float3", config_float, update_float_inputs)),
                 (integer_inputs[7] = Q.SliderInteger3("slider int3", config_integer, update_integer_inputs)),
+                Q.Spacing(),
+                (float_inputs[2] = Q.InputFloat4("input float4", { value: vec4f }, update_float_inputs)),
+                (integer_inputs[2] = Q.InputInteger4("input int4", { value: vec4i }, update_integer_inputs)),
+                (float_inputs[5] = Q.DragFloat4("drag float4", config_float, update_float_inputs)),
+                (integer_inputs[5] = Q.DragInteger4("drag int4", config_integer, update_integer_inputs)),
                 (float_inputs[8] = Q.SliderFloat4("slider float4", config_float, update_float_inputs)),
                 (integer_inputs[8] = Q.SliderInteger4("slider int4", config_integer, update_integer_inputs)),
             ]);

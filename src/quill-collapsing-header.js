@@ -13,7 +13,7 @@ class QuillCollapsingHeader extends QuillTree {
         // TODO: validate closeable
         this.#closeable = !!this._get_arg_config().closeable;
         if (this.#closeable) {
-            const close_button = new QuillButton("&times;", { class: "quill-close-button" }, (_, e) => {
+            const close_button = new QuillButton("", { class: "quill-close-button" }, (_, e) => {
                 this.hide();
                 this.#on_close_callback?.(this, e);
             });

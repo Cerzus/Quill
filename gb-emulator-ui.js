@@ -186,6 +186,7 @@ function create_game_boy_ui() {
                 input_word("cpu_pc", "PC"),
                 input_byte("cpu_ir", "IR"),
             ]),
+            Q.Spacing(),
             Q.Fieldset("Flags", [
                 ...Object.entries({
                     z_flag: "Zero",
@@ -194,6 +195,7 @@ function create_game_boy_ui() {
                     c_flag: "Carry",
                 }).map((flag) => checkbox(`cpu_${flag[0]}`, flag[1])),
             ]),
+            Q.Spacing(),
             Q.Fieldset("Interrupts", [
                 ...["halt", "ime"].map((flag) => checkbox(`cpu_${flag}`, flag.toUpperCase())),
                 Q.Separator(),
@@ -226,17 +228,20 @@ function create_game_boy_ui() {
                 checkbox("ppu_show_obj", "Show sprites"),
                 dropdown("ppu_obj_size", "Sprite size", { 0: "8&times;8", 1: "8&times;16" }),
             ]),
+            Q.Spacing(),
             Q.Fieldset("Positioning", [
                 input_u8("ppu_scx", "Scroll X"),
                 input_u8("ppu_scy", "Scroll Y"),
                 input_u8("ppu_wx", "Window X"),
                 input_u8("ppu_wy", "Window Y"),
             ]),
+            Q.Spacing(),
             Q.Fieldset("Tiles", [
                 dropdown("ppu_bg_map", "BG map", { 0: "$9c00", 1: "$9800" }),
                 dropdown("ppu_win_map", "Window map", { 0: "$9c00", 1: "$9800" }),
                 dropdown("ppu_bg_win_data", "BG/Window data", { 0: "$8000", 1: "$8800" }),
             ]),
+            Q.Spacing(),
             Q.Fieldset("Status", [
                 dropdown("ppu_mode", "Mode", {
                     0: "H-blank (0)",
@@ -250,12 +255,13 @@ function create_game_boy_ui() {
                 checkbox("ppu_mode_2_int", "Mode 2 int."),
                 checkbox("ppu_lyc_int", "LYC intr."),
             ]),
-            Q.Table([
-                Q.TableRow(Q.TableCell(input_integer("ppu_dot", "Dot", { min: 0, max: 455, disabled: true }))),
-                Q.TableRow(Q.TableCell(input_integer("ppu_scanline", "Line", { min: 0, max: 154, disabled: true }))),
-                Q.TableRow(Q.TableCell(input_u8("ppu_lyc", "LYC"))),
-                Q.TableRow(Q.TableCell(input_integer("ppu_frame", "Frame no.", { min: 0, max: 99999999, disabled: true }))),
-                Q.TableRow(Q.TableCell(checkbox("ppu_stat_int_signal", "STAT int. signal", { disabled: true }))),
+            Q.Spacing(),
+            Q.Fieldset("[do something about this]", [
+                input_integer("ppu_dot", "Dot", { min: 0, max: 455, disabled: true }),
+                input_integer("ppu_scanline", "Line", { min: 0, max: 154, disabled: true }),
+                input_u8("ppu_lyc", "LYC"),
+                input_integer("ppu_frame", "Frame no.", { min: 0, max: 99999999, disabled: true }),
+                checkbox("ppu_stat_int_signal", "STAT int. signal", { disabled: true }),
             ]),
         ]),
     ]);
@@ -268,6 +274,7 @@ function create_game_boy_ui() {
                 input_integer("apu_volume_right", "Volume right", { min: 0, max: 7 }),
                 input_integer("apu_frame_sequencer_step", "Sequencer step", { min: 0, max: 7 }),
             ]),
+            Q.Spacing(),
             Q.Fieldset("Channel 1 - Pulse", [
                 checkbox("apu_ch1_enabled", "Enabled"),
                 checkbox("apu_ch1_dac_enabled", "DAC", { disabled: true }),
@@ -297,6 +304,7 @@ function create_game_boy_ui() {
                     input_integer("apu_ch1_sweep_frequency_period", "Freq. period", { min: 0, max: 2047 }),
                 ]),
             ]),
+            Q.Spacing(),
             Q.Fieldset("Channel 2 - Pulse", [
                 checkbox("apu_ch2_enabled", "Enabled"),
                 checkbox("apu_ch2_dac_enabled", "DAC", { disabled: true }),
@@ -318,6 +326,7 @@ function create_game_boy_ui() {
                     input_integer("apu_ch2_envelope_volume", "Volume", { min: 0, max: 15 }),
                 ]),
             ]),
+            Q.Spacing(),
             Q.Fieldset("Channel 3 - Wave", [
                 checkbox("apu_ch3_enabled", "Enabled"),
                 checkbox("apu_ch3_dac_enabled", "DAC", { disabled: true }),
@@ -338,6 +347,7 @@ function create_game_boy_ui() {
                     3: "25% (3)",
                 }),
             ]),
+            Q.Spacing(),
             Q.Fieldset("Channel 4 - Noise", [
                 checkbox("apu_ch4_enabled", "Enabled"),
                 checkbox("apu_ch4_dac_enabled", "DAC", { disabled: true }),

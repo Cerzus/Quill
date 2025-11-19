@@ -37,7 +37,7 @@ class QuillBasePanel extends QuillElement {
 
         const element = this.get_element();
 
-        const close_button = new QuillButton("&times;", { class: "quill-close-button" }, (_, e) => {
+        const close_button = new QuillButton("", { class: "quill-close-button" }, (_, e) => {
             this.close();
             this.#on_close_callback?.(this, e);
         });
