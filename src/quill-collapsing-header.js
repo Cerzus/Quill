@@ -9,6 +9,7 @@ class QuillCollapsingHeader extends QuillTree {
         const element = this.get_element();
         element.classList.remove("quill-tree");
         element.classList.add("quill-collapsing-header");
+        element.children[1].classList.remove("quill-indent");
 
         // TODO: validate closeable
         this.#closeable = !!this._get_arg_config().closeable;
