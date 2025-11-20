@@ -6,10 +6,11 @@ function get_style_editor() {
     const Q = Quill;
 
     return Q.Wrapper([
+        Q.SeparatorText("General"),
         Q.Dropdown("Select preset", (selected) => Q.set_style_config(QuillConfig.presets[selected]), [
             Q.DropdownOptions({ quill_dark: "Quill dark", quill_light: "Quill light", imgui: "ImGui" }),
         ]),
-        Q.Separator(),
+        Q.SeparatorText("Details"),
         Q.Tabs([
             Q.Tab("Fonts", [
                 ...Q.get_font_names().map((property) =>
@@ -137,12 +138,14 @@ function quill_show_demo() {
             show_tree_dropdowns(),
             show_tree_tabs(),
             show_tree_plotting(true),
+            show_tree_progress_bars(true),
             show_tree_data_types(),
             show_tree_multi_component_elements(),
         ]);
 
         function show_tree_basic(expanded) {
             return Q.Tree("Basic", { expanded }, [
+                Q.SeparatorText("General"),
                 Q.Row([
                     Q.Button("Button", () => (text.is_hidden() ? text.show() : text.hide())),
                     (text = Q.Text("Thanks for clicking me!")).hide(),
@@ -191,8 +194,8 @@ function quill_show_demo() {
                 //     Q.PlotLines("Curve", arr.value, Q.ARRAYSIZE(arr.value));
                 //     Q.EndTooltip();
                 // }
-                Q.Separator(),
                 // Q.LabelText("label", "Value"),
+                Q.SeparatorText("Inputs"),
                 Q.Row([
                     Q.Dropdown("Dropdown", Q.DropdownOptions(["AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF"])),
                     Q.InfoTooltip(
@@ -319,9 +322,6 @@ function quill_show_demo() {
             let values_offset = 0;
             let phase = 0;
 
-            let progress = 0;
-            let progress_dir = 1;
-
             requestAnimationFrame(function moi() {
                 if (animate) {
                     values[values_offset] = Math.cos(phase);
@@ -332,21 +332,6 @@ function quill_show_demo() {
                     // (in this example, we will display an average value)
                     const average = values.reduce((acc, cur) => acc + cur, 0) / values.length;
                     plot_lines_2.set_overlay_text(`avg ${average.toFixed(6)}`);
-
-                    progress += (progress_dir * 0.4 * 1) / 60;
-                    if (progress >= +1.1) {
-                        progress = +1.1;
-                        progress_dir *= -1.0;
-                    }
-                    if (progress <= -0.1) {
-                        progress = -0.1;
-                        progress_dir *= -1.0;
-                    }
-                    progress_bar_1.set_fraction(progress);
-
-                    const progress_saturated = Math.min(Math.max(0, progress), 1);
-                    const buf = `${Math.floor(progress_saturated * 1753)}/${1753}`;
-                    progress_bar_2.set_fraction(progress).set_overlay_text(buf);
                 }
                 requestAnimationFrame(moi);
             });
@@ -386,7 +371,7 @@ function quill_show_demo() {
                     })),
                     Q.Text("Lines"),
                 ]),
-                Q.Separator(),
+                Q.SeparatorText("Functions"),
                 Q.Row([
                     Q.Dropdown(
                         "Function",
@@ -425,7 +410,32 @@ function quill_show_demo() {
                     })),
                     Q.Text("Histogram"),
                 ]),
-                Q.Separator(),
+            ]);
+        }
+
+        function show_tree_progress_bars(expanded) {
+            let progress = 0;
+            let progress_dir = 1;
+
+            requestAnimationFrame(function moi() {
+                progress += (progress_dir * 0.4 * 1) / 60;
+                if (progress >= +1.1) {
+                    progress = +1.1;
+                    progress_dir *= -1.0;
+                }
+                if (progress <= -0.1) {
+                    progress = -0.1;
+                    progress_dir *= -1.0;
+                }
+                progress_bar_1.set_fraction(progress);
+
+                const progress_saturated = Math.min(Math.max(0, progress), 1);
+                const buf = `${Math.floor(progress_saturated * 1753)}/${1753}`;
+                progress_bar_2.set_fraction(progress).set_overlay_text(buf);
+                requestAnimationFrame(moi);
+            });
+
+            return Q.Tree("Progress Bars", { expanded }, [
                 Q.Row([(progress_bar_1 = Q.ProgressBar({ fraction: progress })), Q.Text("Progress Bar")]),
                 Q.Row([(progress_bar_2 = Q.ProgressBar({ fraction: progress, overlay_text: "0/1753" }))]),
             ]);
@@ -445,53 +455,39 @@ function quill_show_demo() {
             const update_u16_inputs = (value) => u16_inputs.forEach((x) => x.set_value(value));
             const update_s32_inputs = (value) => s32_inputs.forEach((x) => x.set_value(value));
             return Q.Tree("Data types", { expanded }, [
-                Q.Tree("Inputs (decimal)", { expanded: true }, [
-                    (s8_inputs[0] = Q.InputS8("InputS8", { value: values_s[0] }, update_s8_inputs)),
-                    (u8_inputs[0] = Q.InputU8("InputU8", { value: values_u[0] }, update_u8_inputs)),
-                    (s16_inputs[0] = Q.InputS16("InputS16", { value: values_s[1] }, update_s16_inputs)),
-                    (u16_inputs[0] = Q.InputU16("InputU16", { value: values_u[1] }, update_u16_inputs)),
-                    (s32_inputs[0] = Q.InputS32("InputS32", { value: values_s[2] }, update_s32_inputs)),
-                ]),
-                Q.Tree("Inputs (hexadecimal)", { expanded: true }, [
-                    (s8_inputs[1] = Q.InputHex("InputHex (s8)", { value: values_s[0], length: 2 }, update_s8_inputs)),
-                    (u8_inputs[1] = Q.InputHex("InputHex (u8)", { value: values_u[0], length: 2 }, update_u8_inputs)),
-                    (s16_inputs[1] = Q.InputHex("InputHex (s16)", { value: values_s[1], length: 4 }, update_s16_inputs)),
-                    (u16_inputs[1] = Q.InputHex("InputHex (u16)", { value: values_u[1], length: 4 }, update_u16_inputs)),
-                    (s32_inputs[1] = Q.InputHex("InputHex (s32)", { value: values_s[2], length: 8 }, update_s32_inputs)),
-                ]),
-                Q.Tree("Inputs (binary)", { expanded: true }, [
-                    (s8_inputs[2] = Q.InputBin("InputBin (s8)", { value: values_s[0], length: 8 }, update_s8_inputs)),
-                    (u8_inputs[2] = Q.InputBin("InputBin (u8)", { value: values_u[0], length: 8 }, update_u8_inputs)),
-                    (s16_inputs[2] = Q.InputBin("InputBin (s16)", { value: values_s[1], length: 16 }, update_s16_inputs)),
-                    (u16_inputs[2] = Q.InputBin("InputBin (u16)", { value: values_u[1], length: 16 }, update_u16_inputs)),
-                    (s32_inputs[2] = Q.InputBin("InputBin (s32)", { value: values_s[2], length: 32 }, update_s32_inputs)),
-                ]),
-                Q.Tree("Sliders", { expanded: true }, [
-                    (s8_inputs[3] = Q.SliderS8("SliderS8", { value: values_s[0] }, update_s8_inputs)),
-                    (u8_inputs[3] = Q.SliderU8("SliderU8", { value: values_u[0] }, update_u8_inputs)),
-                    (s16_inputs[3] = Q.SliderS16("SliderS16", { value: values_s[1] }, update_s16_inputs)),
-                    (u16_inputs[3] = Q.SliderU16("SliderU16", { value: values_u[1] }, update_u16_inputs)),
-                ]),
-                Q.Tree("Sliders (reverse)", { expanded: true }, [
-                    (s8_inputs[4] = Q.SliderS8("SliderS8 reverse", { value: values_s[0], reverse: true }, update_s8_inputs)),
-                    (u8_inputs[4] = Q.SliderU8("SliderU8 reverse", { value: values_u[0], reverse: true }, update_u8_inputs)),
-                    (s16_inputs[4] = Q.SliderS16(
-                        "SliderS16 reverse",
-                        { value: values_s[1], reverse: true },
-                        update_s16_inputs
-                    )),
-                    (u16_inputs[4] = Q.SliderU16(
-                        "SliderU16 reverse",
-                        { value: values_u[1], reverse: true },
-                        update_u16_inputs
-                    )),
-                ]),
-                Q.Tree("Drags", { expanded: true }, [
-                    (s8_inputs[5] = Q.DragS8("DragS8", { value: values_s[0] }, update_s8_inputs)),
-                    (u8_inputs[5] = Q.DragU8("DragU8", { value: values_u[0], suffix: " ms" }, update_u8_inputs)),
-                    (s16_inputs[5] = Q.DragS16("DragS16", { value: values_s[1] }, update_s16_inputs)),
-                    (u16_inputs[5] = Q.DragU16("DragU16", { value: values_u[1], suffix: " ms" }, update_u16_inputs)),
-                ]),
+                Q.SeparatorText("Inputs (decimal)"),
+                (s8_inputs[0] = Q.InputS8("InputS8", { value: values_s[0] }, update_s8_inputs)),
+                (u8_inputs[0] = Q.InputU8("InputU8", { value: values_u[0] }, update_u8_inputs)),
+                (s16_inputs[0] = Q.InputS16("InputS16", { value: values_s[1] }, update_s16_inputs)),
+                (u16_inputs[0] = Q.InputU16("InputU16", { value: values_u[1] }, update_u16_inputs)),
+                (s32_inputs[0] = Q.InputS32("InputS32", { value: values_s[2] }, update_s32_inputs)),
+                Q.SeparatorText("Inputs (hexadecimal)"),
+                (s8_inputs[1] = Q.InputHex("InputHex (s8)", { value: values_s[0], length: 2 }, update_s8_inputs)),
+                (u8_inputs[1] = Q.InputHex("InputHex (u8)", { value: values_u[0], length: 2 }, update_u8_inputs)),
+                (s16_inputs[1] = Q.InputHex("InputHex (s16)", { value: values_s[1], length: 4 }, update_s16_inputs)),
+                (u16_inputs[1] = Q.InputHex("InputHex (u16)", { value: values_u[1], length: 4 }, update_u16_inputs)),
+                (s32_inputs[1] = Q.InputHex("InputHex (s32)", { value: values_s[2], length: 8 }, update_s32_inputs)),
+                Q.SeparatorText("Inputs (binary)"),
+                (s8_inputs[2] = Q.InputBin("InputBin (s8)", { value: values_s[0], length: 8 }, update_s8_inputs)),
+                (u8_inputs[2] = Q.InputBin("InputBin (u8)", { value: values_u[0], length: 8 }, update_u8_inputs)),
+                (s16_inputs[2] = Q.InputBin("InputBin (s16)", { value: values_s[1], length: 16 }, update_s16_inputs)),
+                (u16_inputs[2] = Q.InputBin("InputBin (u16)", { value: values_u[1], length: 16 }, update_u16_inputs)),
+                (s32_inputs[2] = Q.InputBin("InputBin (s32)", { value: values_s[2], length: 32 }, update_s32_inputs)),
+                Q.SeparatorText("Sliders"),
+                (s8_inputs[3] = Q.SliderS8("SliderS8", { value: values_s[0] }, update_s8_inputs)),
+                (u8_inputs[3] = Q.SliderU8("SliderU8", { value: values_u[0] }, update_u8_inputs)),
+                (s16_inputs[3] = Q.SliderS16("SliderS16", { value: values_s[1] }, update_s16_inputs)),
+                (u16_inputs[3] = Q.SliderU16("SliderU16", { value: values_u[1] }, update_u16_inputs)),
+                Q.SeparatorText("Sliders (reverse)"),
+                (s8_inputs[4] = Q.SliderS8("SliderS8 reverse", { value: values_s[0], reverse: true }, update_s8_inputs)),
+                (u8_inputs[4] = Q.SliderU8("SliderU8 reverse", { value: values_u[0], reverse: true }, update_u8_inputs)),
+                (s16_inputs[4] = Q.SliderS16("SliderS16 reverse", { value: values_s[1], reverse: true }, update_s16_inputs)),
+                (u16_inputs[4] = Q.SliderU16("SliderU16 reverse", { value: values_u[1], reverse: true }, update_u16_inputs)),
+                Q.SeparatorText("Drags"),
+                (s8_inputs[5] = Q.DragS8("DragS8", { value: values_s[0] }, update_s8_inputs)),
+                (u8_inputs[5] = Q.DragU8("DragU8", { value: values_u[0], suffix: " ms" }, update_u8_inputs)),
+                (s16_inputs[5] = Q.DragS16("DragS16", { value: values_s[1] }, update_s16_inputs)),
+                (u16_inputs[5] = Q.DragU16("DragU16", { value: values_u[1], suffix: " ms" }, update_u16_inputs)),
             ]);
         }
 
@@ -505,20 +501,21 @@ function quill_show_demo() {
             const update_float_inputs = (value) => float_inputs.forEach((x) => x.set_value(value));
             const update_integer_inputs = (value) => integer_inputs.forEach((x) => x.set_value(value));
             return Q.Tree("Multi-component elements", { expanded }, [
+                Q.SeparatorText("2-wide"),
                 (float_inputs[0] = Q.InputFloat2("input float2", { value: vec4f }, update_float_inputs)),
                 (integer_inputs[0] = Q.InputInteger2("input int2", { value: vec4i }, update_integer_inputs)),
                 (float_inputs[3] = Q.DragFloat2("drag float2", config_float, update_float_inputs)),
                 (integer_inputs[3] = Q.DragInteger2("drag int2", config_integer, update_integer_inputs)),
                 (float_inputs[6] = Q.SliderFloat2("slider float2", config_float, update_float_inputs)),
                 (integer_inputs[6] = Q.SliderInteger2("slider int2", config_integer, update_integer_inputs)),
-                Q.Spacing(),
+                Q.SeparatorText("3-wide"),
                 (float_inputs[1] = Q.InputFloat3("input float3", { value: vec4f }, update_float_inputs)),
                 (integer_inputs[1] = Q.InputInteger3("input int3", { value: vec4i }, update_integer_inputs)),
                 (float_inputs[4] = Q.DragFloat3("drag float3", config_float, update_float_inputs)),
                 (integer_inputs[4] = Q.DragInteger3("drag int3", config_integer, update_integer_inputs)),
                 (float_inputs[7] = Q.SliderFloat3("slider float3", config_float, update_float_inputs)),
                 (integer_inputs[7] = Q.SliderInteger3("slider int3", config_integer, update_integer_inputs)),
-                Q.Spacing(),
+                Q.SeparatorText("4-wide"),
                 (float_inputs[2] = Q.InputFloat4("input float4", { value: vec4f }, update_float_inputs)),
                 (integer_inputs[2] = Q.InputInteger4("input int4", { value: vec4i }, update_integer_inputs)),
                 (float_inputs[5] = Q.DragFloat4("drag float4", config_float, update_float_inputs)),

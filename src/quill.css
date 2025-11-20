@@ -265,6 +265,15 @@
         }
     }
 
+    .quill-separator-text {
+        border-top: var(--quill-separator-text-border-size) solid rgb(from var(--quill-separator-color) r g b / 0.5);
+        padding: 0 var(--quill-separator-text-padding-size);
+        > legend {
+            padding: 3px 8px;
+            text-align: var(--quill-separator-text-align);
+        }
+    }
+
     .quill-spacing {
         width: var(--quill-font-size);
         height: var(--quill-font-size);
@@ -325,6 +334,7 @@
     }
 
     .quill-tree-body {
+        flex-direction: column;
         &:not(:empty) {
             gap: var(--quill-panel-gap-size);
             margin-top: var(--quill-panel-gap-size);

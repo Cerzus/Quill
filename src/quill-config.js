@@ -130,6 +130,8 @@ const QuillConfig = {
         tab_bar_border: 1,
         tab_rounding: 5,
 
+        separator_text_border: 3,
+        separator_text_padding: 20,
         shadow: 0,
     },
     flags: {
@@ -145,6 +147,7 @@ const QuillConfig = {
         table_borders_inner_v: new QuillConfigFlag(["none", "solid"]),
         table_row_bg: new QuillConfigFlag(["transparent", "var(--quill-table-row-bg-color)"]),
         scrollbar_width: new QuillConfigFlag({ Normal: "auto", Thin: "thin" }),
+        separator_text_align: new QuillConfigFlag({ Left: "left", Center: "center", Right: "right" }),
     },
 
     presets: {
@@ -239,6 +242,9 @@ const QuillConfig = {
                     tab_bar_border: 5,
                     tab_rounding: 10,
 
+                    separator_text_border: 3,
+                    separator_text_padding: 20,
+
                     shadow: 3,
                 },
                 flags: {
@@ -254,6 +260,7 @@ const QuillConfig = {
                     table_borders_inner_v: false,
                     table_row_bg: false,
                     scrollbar_width: "Thin",
+                    separator_text_align: "Left",
                 },
             });
             return {
@@ -375,6 +382,9 @@ const QuillConfig = {
                 tab_bar_border: 1,
                 tab_rounding: 5,
 
+                separator_text_border: 3,
+                separator_text_padding: 20,
+
                 shadow: 0,
             },
             flags: {
@@ -390,6 +400,7 @@ const QuillConfig = {
                 table_borders_inner_v: false,
                 table_row_bg: false,
                 scrollbar_width: "Normal",
+                separator_text_align: "Left",
             },
         },
     },
