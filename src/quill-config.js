@@ -110,7 +110,7 @@ const QuillConfig = {
     sizes: {
         font: null,
 
-        panel_padding: null,
+        panel_padding: new Array(2),
         title_bar_padding: null,
         menu_padding: null,
         menu_item_padding: null,
@@ -224,11 +224,11 @@ const QuillConfig = {
                 sizes: {
                     font: 15,
 
-                    panel_padding: 15,
-                    title_bar_padding: 10,
-                    menu_padding: 5,
-                    menu_item_padding: 5,
-                    item_padding: 2,
+                    panel_padding: [15, 15],
+                    title_bar_padding: [10, 10],
+                    menu_padding: [5, 5],
+                    menu_item_padding: [5, 5],
+                    item_padding: [2, 2],
                     panel_gap: 5,
                     menu_gap: 2,
                     item_gap: 5,
@@ -253,7 +253,7 @@ const QuillConfig = {
                     tab_rounding: 10,
 
                     separator_text_border: 3,
-                    separator_text_padding: 20,
+                    separator_text_padding: [20, 3],
 
                     shadow: 3,
                 },
@@ -365,11 +365,11 @@ const QuillConfig = {
             sizes: {
                 font: 14,
 
-                panel_padding: 8,
-                title_bar_padding: 3,
-                menu_padding: 0,
-                menu_item_padding: 3,
-                item_padding: 3,
+                panel_padding: [8, 8],
+                title_bar_padding: [3, 3],
+                menu_padding: [0, 0],
+                menu_item_padding: [3, 3],
+                item_padding: [3, 3],
                 panel_gap: 4,
                 menu_gap: 4,
                 item_gap: 4,
@@ -394,7 +394,7 @@ const QuillConfig = {
                 tab_rounding: 5,
 
                 separator_text_border: 3,
-                separator_text_padding: 20,
+                separator_text_padding: [20, 3],
 
                 shadow: 0,
             },

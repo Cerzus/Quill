@@ -32,7 +32,7 @@ function get_style_editor() {
             ]),
             Q.Tab("Sizes", [
                 ...Q.get_size_names().map((property) =>
-                    Q.SliderInteger(
+                    (Q.get_style_size(property) instanceof Array ? Q.SliderInteger2 : Q.SliderInteger)(
                         (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
                         { min: 0, max: 20, value: Q.get_style_size(property) },
                         (value) => Q.set_style_size(property, value)

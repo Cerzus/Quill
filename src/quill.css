@@ -91,7 +91,7 @@
 
     .quill-panel-title-bar {
         background: var(--quill-panel-title-bar-bg-color);
-        padding: var(--quill-title-bar-padding-size) calc(0.25em + var(--quill-title-bar-padding-size));
+        padding: var(--quill-title-bar-padding-size-y) calc(0.25em + var(--quill-title-bar-padding-size-x));
         gap: var(--quill-panel-gap-size);
         cursor: move;
         align-items: center;
@@ -190,14 +190,14 @@
             }
         }
         > * {
-            padding: var(--quill-menu-item-padding-size) calc(0.25em + var(--quill-menu-item-padding-size));
+            padding: var(--quill-menu-item-padding-size-y) calc(0.25em + var(--quill-menu-item-padding-size-x));
             align-items: center;
         }
         > :nth-child(3) {
             opacity: 0.5;
         }
         input.quill-input[type="checkbox"] {
-            margin: calc(-1 * var(--quill-menu-item-padding-size)) 0;
+            margin: calc(-1 * var(--quill-menu-item-padding-size-y)) 0;
             &:not(:disabled) {
                 box-shadow: none;
                 background: transparent;
@@ -267,9 +267,9 @@
 
     .quill-separator-text {
         border-top: var(--quill-separator-text-border-size) solid rgb(from var(--quill-separator-color) r g b / 0.5);
-        padding: 0 var(--quill-separator-text-padding-size);
+        padding: 0 var(--quill-separator-text-padding-size-x);
         > legend {
-            padding: 3px 8px;
+            padding: var(--quill-separator-text-padding-size-y) 8px;
             text-align: var(--quill-separator-text-align);
         }
     }
@@ -310,7 +310,7 @@
         border-radius: var(--quill-item-rounding-size);
         align-items: center;
         gap: 0.2em;
-        padding: 0 calc(0.25em + var(--quill-item-padding-size));
+        padding: 0 calc(0.25em + var(--quill-item-padding-size-x));
         > :nth-child(2) {
             overflow: hidden;
             flex-grow: 1;
@@ -327,7 +327,7 @@
         .quill-collapsing-header > & {
             box-shadow: 0 calc(0.5 * var(--quill-shadow-size)) calc(1 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
             background: var(--quill-header-color);
-            padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
+            padding: var(--quill-item-padding-size-y) calc(0.25em + var(--quill-item-padding-size-x));
             &:hover {
                 background: var(--quill-header-hovered-color);
             }
@@ -394,7 +394,7 @@
 
     .quill-button {
         background: var(--quill-button-color);
-        padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
+        padding: var(--quill-item-padding-size-y) calc(0.25em + var(--quill-item-padding-size-x));
         border: var(--quill-input-border-size) solid rgb(from var(--quill-border-color) r g b / 0.5);
         border-radius: var(--quill-input-rounding-size);
         display: inline-block;
@@ -427,7 +427,7 @@
     }
 
     .quill-fieldset {
-        padding-top: var(--quill-panel-padding-size);
+        padding-top: var(--quill-panel-padding-size-y);
         background: var(--quill-panel-content-bg-color);
         gap: var(--quill-item-gap-size);
         flex-direction: column;
@@ -519,8 +519,8 @@
 
     .quill-input[type="checkbox"] {
         border-radius: 0;
-        height: calc(1.2em + 2 * var(--quill-item-padding-size));
-        width: calc(1.2em + 2 * var(--quill-item-padding-size));
+        height: calc(1.2em + 2 * var(--quill-item-padding-size-y));
+        width: calc(1.2em + 2 * var(--quill-item-padding-size-x));
         appearance: none;
         &::after {
             border: 0 solid var(--quill-checkmark-color);
@@ -553,11 +553,11 @@
     }
 
     input.quill-input[type="text"] {
-        padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
+        padding: var(--quill-item-padding-size-y) calc(0.25em + var(--quill-item-padding-size-x));
     }
 
     input.quill-input[type="number"] {
-        padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
+        padding: var(--quill-item-padding-size-y) calc(0.25em + var(--quill-item-padding-size-x));
         -moz-appearance: textfield;
         appearance: textfield;
         margin: 0;
@@ -668,8 +668,8 @@
     }
 
     input.quill-input[type="radio"] {
-        height: calc(1.2em + 2 * var(--quill-item-padding-size));
-        width: calc(1.2em + 2 * var(--quill-item-padding-size));
+        height: calc(1.2em + 2 * var(--quill-item-padding-size-y));
+        width: calc(1.2em + 2 * var(--quill-item-padding-size-x));
         appearance: none;
         &::after {
             content: "";
@@ -724,11 +724,11 @@
                 border-bottom: none;
                 box-shadow: 0 calc(0.5 * var(--quill-shadow-size)) calc(1 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
                 background: var(--quill-tab-color);
-                padding: var(--quill-item-padding-size) calc(0.25em + var(--quill-item-padding-size));
+                padding: var(--quill-item-padding-size-y) calc(0.25em + var(--quill-item-padding-size-x));
                 border-top-left-radius: var(--quill-tab-rounding-size);
                 border-top-right-radius: var(--quill-tab-rounding-size);
                 overflow: hidden;
-                padding-bottom: var(--quill-item-padding-size);
+                padding-bottom: var(--quill-item-padding-size-y);
             }
             > div.active {
                 background: var(--quill-tab-selected-color);

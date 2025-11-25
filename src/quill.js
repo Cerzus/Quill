@@ -1019,7 +1019,13 @@
     function apply_size_to_root_element(property, size) {
         // TODO: validate property
         // TODO: validate size
-        Util.add_style_variable_to_element(root_element, property, "-size", `${size}px`);
+        if (size instanceof Array) {
+            Util.add_style_variable_to_element(root_element, property, "-size", `${size[1]}px ${size[0]}px`);
+            Util.add_style_variable_to_element(root_element, property, "-size-x", `${size[0]}px`);
+            Util.add_style_variable_to_element(root_element, property, "-size-y", `${size[1]}px`);
+        } else {
+            Util.add_style_variable_to_element(root_element, property, "-size", `${size}px`);
+        }
     }
 
     function apply_flag_to_root_element(property, flag) {

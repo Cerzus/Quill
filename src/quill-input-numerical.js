@@ -112,26 +112,28 @@ class QuillSlider extends QuillInputNumerical {
 class QuillSliderFloat extends QuillSlider {
     constructor(...args) {
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
+        const extra_config = { ...config };
         // TODO: validate min
-        if (!Object.hasOwn(config, "min")) config.min = 0;
+        if (!Object.hasOwn(extra_config, "min")) extra_config.min = 0;
         // TODO: validate max
-        if (!Object.hasOwn(config, "max")) config.max = 1;
+        if (!Object.hasOwn(extra_config, "max")) extra_config.max = 1;
         // TODO: validate step
-        if (!Object.hasOwn(config, "step")) config.step = 0.01;
-        super(null, label, config, callback, children, ...args.slice(count));
+        if (!Object.hasOwn(extra_config, "step")) extra_config.step = 0.01;
+        super(null, label, Object.freeze(extra_config), callback, children, ...args.slice(count));
     }
 }
 
 class QuillSliderInteger extends QuillSlider {
     constructor(...args) {
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
+        const extra_config = { ...config };
         // TODO: validate min
-        if (!Object.hasOwn(config, "min")) config.min = 0;
+        if (!Object.hasOwn(extra_config, "min")) extra_config.min = 0;
         // TODO: validate max
-        if (!Object.hasOwn(config, "max")) config.max = 100;
+        if (!Object.hasOwn(extra_config, "max")) extra_config.max = 100;
         // TODO: validate step
-        if (!Object.hasOwn(config, "step")) config.step = 1;
-        super((value) => ~~value, label, config, callback, children, ...args.slice(count));
+        if (!Object.hasOwn(extra_config, "step")) extra_config.step = 1;
+        super((value) => ~~value, label, Object.freeze(extra_config), callback, children, ...args.slice(count));
     }
 }
 
@@ -214,18 +216,20 @@ class QuillDrag extends QuillInputNumerical {
 class QuillDragFloat extends QuillDrag {
     constructor(...args) {
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
+        const extra_config = { ...config };
         // TODO: validate step
-        if (!Object.hasOwn(config, "step")) config.step = 0.01;
-        super(null, label, config, callback, children, ...args.slice(count));
+        if (!Object.hasOwn(extra_config, "step")) extra_config.step = 0.01;
+        super(null, label, Object.freeze(extra_config), callback, children, ...args.slice(count));
     }
 }
 
 class QuillDragInteger extends QuillDrag {
     constructor(...args) {
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
+        const extra_config = { ...config };
         // TODO: validate step
-        if (!Object.hasOwn(config, "step")) config.step = 1;
-        super((value) => ~~value, label, config, callback, children, ...args.slice(count));
+        if (!Object.hasOwn(extra_config, "step")) extra_config.step = 1;
+        super((value) => ~~value, label, Object.freeze(extra_config), callback, children, ...args.slice(count));
     }
 }
 
