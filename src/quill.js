@@ -115,7 +115,7 @@
         root_element.classList.add("quill");
         root_element.append(content_element);
 
-        set_style_config(quill_config.presets.quill_dark);
+        set_style_config(quill_config.presets.imgui);
 
         Object.entries(quill_config.fonts).forEach((entry) => apply_font_to_root_element(...entry));
         Object.entries(quill_config.colors).forEach((entry) => apply_color_to_root_element(...entry));
@@ -916,8 +916,8 @@
         // TODO: validate value
         const msg = `Unknown style font "${property}"`;
         if (!Util.warning(Object.hasOwn(quill_config.fonts, property), msg)) return;
-        quill_config.fonts[property] = value;
         apply_font_to_root_element(property, value);
+        quill_config.fonts[property] = value;
     }
 
     function get_color_names() {
@@ -935,8 +935,8 @@
         const msg = `Unknown style color "${property}"`;
         if (!Util.warning(Object.hasOwn(quill_config.colors, property), msg)) return;
         const color = QuillColor.from_hex(value);
-        quill_config.colors[property] = color;
         apply_color_to_root_element(property, color);
+        quill_config.colors[property] = color;
     }
 
     function get_size_names() {
@@ -953,7 +953,8 @@
         // TODO: validate value
         const msg = `Unknown style size "${property}"`;
         if (!Util.warning(Object.hasOwn(quill_config.sizes, property), msg)) return;
-        apply_size_to_root_element(property, (quill_config.sizes[property] = value));
+        apply_size_to_root_element(property, value);
+        quill_config.sizes[property] = value;
     }
 
     function get_flag_names() {

@@ -33,8 +33,11 @@ class QuillPlot extends QuillLeafElement {
         gl.compileShader(vertex_shader);
 
         const frag_code = `
+            precision mediump float;
+            uniform vec3 color;
+
             void main(void) {
-                gl_FragColor = vec4(0.8, 0.8, 0.0, 1.0);
+                gl_FragColor = vec4(color, 1.0);
             }`;
         const fragment_shader = gl.createShader(gl.FRAGMENT_SHADER);
         gl.shaderSource(fragment_shader, frag_code);
@@ -50,20 +53,25 @@ class QuillPlot extends QuillLeafElement {
 
         protected_props.canvas = canvas;
         protected_props.context = gl;
+
+        QuillConfig.plots.push(this);
     }
 
-    update(canvas, gl, vertices) {
+    update(canvas, gl, vertices, type) {
         gl.viewport(0, 0, canvas.width, canvas.height);
 
         const vertex_buffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-        gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-        const coord = gl.getAttribLocation(this.#shader_program, "coordinates");
-        gl.vertexAttribPointer(coord, 2, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(coord);
+        const coordinates_location = gl.getAttribLocation(this.#shader_program, "coordinates");
+        gl.vertexAttribPointer(coordinates_location, 2, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(coordinates_location);
+
+        const color_location = gl.getUniformLocation(this.#shader_program, "color");
+        const rgb = window.getComputedStyle(this.get_element()).getPropertyValue(`--quill-plot-${type}-color`);
+        const rgb2 = rgb.substring(4, rgb.length - 1);
+        gl.uniform3f(color_location, ...rgb2.split(" ").map((x) => x / 255));
 
         gl.clear(gl.COLOR_BUFFER_BIT);
     }
@@ -150,7 +158,7 @@ class QuillPlotLines extends QuillPlot {
         }
 
         const gl = this.#protected.context;
-        super.update(canvas, gl, vertices);
+        super.update(canvas, gl, vertices, "lines");
         gl.lineWidth(1.0);
         gl.drawArrays(gl.LINE_STRIP, 0, vertices.length / 2);
     }
@@ -240,7 +248,7 @@ class QuillPlotHistogram extends QuillPlot {
         }
 
         const gl = this.#protected.context;
-        super.update(canvas, gl, vertices);
+        super.update(canvas, gl, vertices, "histogram");
         gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 2);
     }
 }
@@ -290,7 +298,7 @@ class QuillProgressBar extends QuillPlot {
         const vertices = [-1, -1, x, -1, -1, +1, x, +1];
 
         const gl = this.#protected.context;
-        super.update(this.#protected.canvas, gl, vertices);
+        super.update(this.#protected.canvas, gl, vertices, "histogram");
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 2);
     }
 }

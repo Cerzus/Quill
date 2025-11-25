@@ -34,105 +34,113 @@ class QuillConfigFlag {
 
 const QuillConfig = {
     fonts: {
-        proportional: "DroidSans",
-        monospace: "DroidSans",
+        proportional: null,
+        monospace: null,
     },
     colors: new Proxy(
         {
-            background: new QuillColor(0, 0, 0),
+            background: null,
 
-            text: new QuillColor(255, 255, 255),
-            text_disabled: new QuillColor(128, 128, 128),
+            text: null,
+            text_disabled: null,
 
-            item_hovered: new QuillColor(255, 255, 255),
-            input: new QuillColor(255, 255, 255),
-            input_disabled: new QuillColor(255, 255, 255),
-            input_hovered: new QuillColor(255, 255, 255),
+            item_hovered: null,
+            input: null,
+            input_disabled: null,
+            input_hovered: null,
 
-            panel_content_bg: new QuillColor(14, 14, 14),
+            panel_content_bg: null,
 
-            border: new QuillColor(110, 110, 128),
+            border: null,
 
-            item_bg: new QuillColor(29, 47, 73),
-            item_hovered_bg: new QuillColor(53, 69, 109),
-            item_disabled_bg: new QuillColor(204, 204, 204),
+            item_bg: null,
+            item_hovered_bg: null,
+            item_disabled_bg: null,
 
-            panel_title_bar_bg: new QuillColor(10, 10, 10),
+            panel_title_bar_bg: null,
 
-            menu_bg: new QuillColor(36, 36, 36),
+            menu_bg: null,
 
-            scrollbar_thumb: new QuillColor(79, 79, 79),
-            scrollbar_track: new QuillColor(0, 0, 0),
+            scrollbar_thumb: null,
+            scrollbar_track: null,
 
-            checkmark: new QuillColor(66, 150, 250),
-            checkmark_hovered: new QuillColor(66, 150, 250),
+            checkmark: null,
+            checkmark_hovered: null,
 
-            slidergrab: new QuillColor(61, 133, 224),
-            slidergrab_hovered: new QuillColor(61, 133, 224),
+            slidergrab: null,
+            slidergrab_hovered: null,
 
-            button: new QuillColor(35, 69, 109),
-            button_hovered: new QuillColor(66, 150, 250),
+            button: null,
+            button_hovered: null,
 
-            header: new QuillColor(31, 57, 88),
-            header_hovered: new QuillColor(56, 123, 203),
+            header: null,
+            header_hovered: null,
 
-            separator: new QuillColor(110, 110, 128),
+            separator: null,
 
-            tab: new QuillColor(42, 79, 130),
-            tab_selected: new QuillColor(51, 105, 173),
-            tab_hovered: new QuillColor(56, 123, 204),
+            tab: null,
+            tab_selected: null,
+            tab_hovered: null,
 
-            plot: new QuillColor(102, 102, 205),
+            plot_lines: null,
+            plot_histogram: null,
 
-            table_header_bg: new QuillColor(48, 48, 51),
-            table_border_strong: new QuillColor(79, 79, 89),
-            table_border_light: new QuillColor(59, 59, 64),
-            table_row_bg: new QuillColor(29, 29, 29),
+            table_header_bg: null,
+            table_border_strong: null,
+            table_border_light: null,
+            table_row_bg: null,
         },
         {
             set: function (target, property, value) {
                 target[property] = value;
-                if (property === "plot") {
-                    console.log("Plot color changed. Redraw plots somehow.");
+
+                // TODO: only update when the color hasn't been overridden
+                if (property === "plot_lines") {
+                    QuillConfig.plots.filter((x) => x instanceof QuillPlotLines).forEach((x) => x.update());
+                } else if (property === "plot_histogram") {
+                    QuillConfig.plots
+                        .filter((x) => x instanceof QuillPlotHistogram || x instanceof QuillProgressBar)
+                        .forEach((x) => x.update());
                 }
+
                 return true;
             },
         }
     ),
     sizes: {
-        font: 14,
+        font: null,
 
-        panel_padding: 8,
-        title_bar_padding: 3,
-        menu_padding: 0,
-        menu_item_padding: 3,
-        item_padding: 3,
-        panel_gap: 4,
-        menu_gap: 4,
-        item_gap: 4,
-        item_inner_gap: 4,
-        indentation: 21,
+        panel_padding: null,
+        title_bar_padding: null,
+        menu_padding: null,
+        menu_item_padding: null,
+        item_padding: null,
+        panel_gap: null,
+        menu_gap: null,
+        item_gap: null,
+        item_inner_gap: null,
+        indentation: null,
 
-        panel_border: 1,
-        menu_border: 1,
-        input_border: 0,
-        separator: 1,
-        table_border_strong: 1,
-        table_border_light: 1,
+        panel_border: null,
+        menu_border: null,
+        input_border: null,
+        separator: null,
+        table_border_strong: null,
+        table_border_light: null,
 
-        panel_rounding: 0,
-        menu_rounding: 0,
-        item_rounding: 0,
-        input_rounding: 0,
-        grab_rounding: 0,
+        panel_rounding: null,
+        menu_rounding: null,
+        item_rounding: null,
+        input_rounding: null,
+        grab_rounding: null,
 
-        tab_border: 0,
-        tab_bar_border: 1,
-        tab_rounding: 5,
+        tab_border: null,
+        tab_bar_border: null,
+        tab_rounding: null,
 
-        separator_text_border: 3,
-        separator_text_padding: 20,
-        shadow: 0,
+        separator_text_border: null,
+        separator_text_padding: null,
+        shadow: null,
     },
     flags: {
         wrap_text: new QuillConfigFlag(["nowrap", "wrap"]),
@@ -150,6 +158,7 @@ const QuillConfig = {
         separator_text_align: new QuillConfigFlag({ Left: "left", Center: "center", Right: "right" }),
     },
 
+    plots: [],
     presets: {
         ...(() => {
             const get_quill_style = (colors) => ({
@@ -203,7 +212,8 @@ const QuillConfig = {
                         tab_selected: colors.shades[2],
                         tab_hovered: colors.shades[2],
 
-                        plot: new QuillColor(102, 102, 205).to_hex(),
+                        plot_lines: colors.accent,
+                        plot_histogram: colors.accent,
 
                         table_header_bg: colors.shades[3],
                         table_border_strong: colors.shades[0],
@@ -344,7 +354,8 @@ const QuillConfig = {
                 tab_selected: new QuillColor(51, 105, 173).to_hex(),
                 tab_hovered: new QuillColor(56, 123, 204).to_hex(),
 
-                plot: new QuillColor(102, 102, 205).to_hex(),
+                plot_lines: new QuillColor(151, 156, 156).to_hex(),
+                plot_histogram: new QuillColor(230, 179, 0).to_hex(),
 
                 table_header_bg: new QuillColor(48, 48, 51).to_hex(),
                 table_border_strong: new QuillColor(79, 79, 89).to_hex(),

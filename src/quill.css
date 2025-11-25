@@ -883,7 +883,7 @@
         left: 50%;
         transform: translateX(-50%);
         font-family: var(--quill-monospace-font);
-        color: var(--quill-plot-color);
+        color: var(--quill-text-color);
         text-shadow: 1px 0 var(--quill-item-bg-color), -1px 0 var(--quill-item-bg-color), 0 1px var(--quill-item-bg-color),
             0 -1px var(--quill-item-bg-color);
     }
