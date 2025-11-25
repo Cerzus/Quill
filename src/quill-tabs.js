@@ -77,6 +77,6 @@ class QuillTab extends QuillElement {
 
     remove() {
         // TODO: remove tab from parent Tabs
-        super.remove();
+        return super.remove();
     }
 }

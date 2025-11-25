@@ -93,29 +93,34 @@ class QuillBasePanel extends QuillElement {
     set_has_title_bar(has_title_bar) {
         const display = (this.#has_title_bar = !!has_title_bar) ? "" : "none";
         this.get_element().querySelector(".quill-panel-title-bar").style.display = display;
+        return this;
     }
 
     set_has_menu_bar(has_menu_bar) {
         const display = (this.#has_menu_bar = !!has_menu_bar) ? "" : "none";
         this.get_element().querySelector(".quill-panel-menu-bar-container").style.display = display;
+        return this;
     }
 
     set_can_move(can_move) {
         this.#can_move = !!can_move;
         const cursor = (this.#can_move = !!can_move) ? "" : "initial";
         this.get_element().querySelector(".quill-panel-title-bar").style.cursor = cursor;
+        return this;
     }
 
     set_can_grow(can_grow) {
         const max_size = (this.#can_grow = !!can_grow) && this.#can_resize ? "" : "fit-content";
         this.get_element().style.maxWidth = max_size;
         this.get_element().style.maxHeight = max_size;
+        return this;
     }
 
     set_can_shrink(can_shrink) {
         const min_size = (this.#can_shrink = !!can_shrink) && this.#can_resize ? "" : "fit-content";
         this.get_element().style.minWidth = min_size;
         this.get_element().style.minHeight = min_size;
+        return this;
     }
 
     set_can_resize(can_resize) {
@@ -127,11 +132,13 @@ class QuillBasePanel extends QuillElement {
         const min_size = this.#can_shrink && this.#can_resize ? "" : "fit-content";
         this.get_element().style.minWidth = min_size;
         this.get_element().style.minHeight = min_size;
+        return this;
     }
 
     set_can_close(can_close) {
         const display = (this.#can_close = !!can_close) ? "" : "none";
         this.get_element().querySelector(".quill-close-button").style.display = display;
+        return this;
     }
 
     get_position() {
@@ -156,12 +163,14 @@ class QuillBasePanel extends QuillElement {
         // TODO: validate position
         this.#panel_element.style.top = `${position.top}px`;
         this.#panel_element.style.left = `${position.left}px`;
+        return this;
     }
 
     set_size(size) {
         // TODO: validate size
         this.#panel_element.style.width = `${size.width}px`;
         this.#panel_element.style.height = `${size.height}px`;
+        return this;
     }
 
     // Private methods

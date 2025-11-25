@@ -83,6 +83,7 @@ class QuillElement {
         this.#element.remove();
         for (const child of this.#children.slice()) child.remove();
         if (this.#parent) this.#parent.#children.splice(this.#parent.#children.indexOf(this), 1);
+        return this;
     }
 
     show() {

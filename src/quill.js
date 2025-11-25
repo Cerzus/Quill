@@ -288,10 +288,7 @@
 
         // Public methods
 
-        close() {
-            this.remove();
-            return this;
-        }
+        close = () => this.remove();
     }
 
     /* Quill.Popup */
@@ -323,10 +320,7 @@
 
         // Public methods
 
-        close() {
-            this.remove();
-            return this;
-        }
+        close = () => this.remove();
     }
 
     /* Quill.MenuBar */
@@ -460,7 +454,7 @@
 
         remove() {
             this.#menu_element.remove();
-            super.remove();
+            return super.remove();
         }
 
         // Private methods
@@ -712,7 +706,6 @@
         #set_show_ascii(show_ascii) {
             this.#show_ascii = !!show_ascii;
             this.#dynamic_rows.refresh();
-            return this;
         }
 
         #set_grey_out_zeroes(grey_out_zeroes) {
@@ -729,7 +722,6 @@
             element.lastChild.remove();
             element.append(this.#create_footer_row());
             this.#dynamic_rows.refresh();
-            return this;
         }
 
         #get_number_of_rows() {

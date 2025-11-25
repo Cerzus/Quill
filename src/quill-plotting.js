@@ -161,6 +161,8 @@ class QuillPlotLines extends QuillPlot {
         super.update(canvas, gl, vertices, "lines");
         gl.lineWidth(1.0);
         gl.drawArrays(gl.LINE_STRIP, 0, vertices.length / 2);
+
+        return this;
     }
 }
 
@@ -250,6 +252,8 @@ class QuillPlotHistogram extends QuillPlot {
         const gl = this.#protected.context;
         super.update(canvas, gl, vertices, "histogram");
         gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 2);
+
+        return this;
     }
 }
 
@@ -300,5 +304,7 @@ class QuillProgressBar extends QuillPlot {
         const gl = this.#protected.context;
         super.update(this.#protected.canvas, gl, vertices, "histogram");
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 2);
+
+        return this;
     }
 }

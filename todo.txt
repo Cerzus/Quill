@@ -1,6 +1,7 @@
 - ALWAYS: Address TODO's
 - ALWAYS: Do not use !important in CSS
 - ALWAYS: Add more settings to config
+- ALWAYS: Allow all non-getter methods to be chainable
 - Add tests
 - Get rid of fake private methods (methods starting with "_") (take a look at QuillPlot for inspiration)
 - Panel: highlight topmost ("active") panel
@@ -16,7 +17,6 @@
 - Sanitize API inputs
 - Sanitize end-user inputs
 - Plots/canvases etc.: Make "dirty" and only update once (and only when visible)
-- Only allow setters to be chainable?
 - Drag input: keep focused/hovered while dragging
 - Multi-component inputs and radio buttons (also multi-component basically): disable label hovering
 - Config flags and dropdowns: same key/value order 

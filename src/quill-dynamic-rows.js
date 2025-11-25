@@ -45,9 +45,10 @@ class QuillDynamicRows extends QuillNodeElement {
 
     set_number_of_rows(number_of_rows) {
         // TODO: validate number_of_rows
-        if (number_of_rows === this.#number_of_rows) return;
+        if (number_of_rows === this.#number_of_rows) return this;
         this.#number_of_rows = number_of_rows;
         this.refresh();
+        return this;
     }
 
     refresh() {
@@ -57,6 +58,7 @@ class QuillDynamicRows extends QuillNodeElement {
         example_row_element.remove();
         this.#rows_element.style.height = `${this.#row_height * this.#number_of_rows}px`;
         this.#update_row_elements(true);
+        return this;
     }
 
     set_disabled(disabled) {
