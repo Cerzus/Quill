@@ -69,11 +69,18 @@ class QuillPlot extends QuillLeafElement {
         gl.enableVertexAttribArray(coordinates_location);
 
         const color_location = gl.getUniformLocation(this.#shader_program, "color");
-        const rgb = window.getComputedStyle(this.get_element()).getPropertyValue(`--quill-plot-${type}-color`);
+        const rgb = window
+            .getComputedStyle(this.get_element().parentNode ? this.get_element() : document.body)
+            .getPropertyValue(`--quill-plot-${type}-color`);
         const rgb2 = rgb.substring(4, rgb.length - 1);
         gl.uniform3f(color_location, ...rgb2.split(" ").map((x) => x / 255));
 
         gl.clear(gl.COLOR_BUFFER_BIT);
+    }
+
+    remove() {
+        QuillConfig.plots.splice(QuillConfig.plots.indexOf(this), 1);
+        return super.remove();
     }
 }
 
