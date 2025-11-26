@@ -222,7 +222,7 @@ const QuillConfig = {
                     };
                 })(),
                 sizes: {
-                    font: 15,
+                    font: 14,
 
                     panel_padding: [15, 15],
                     title_bar_padding: [10, 10],
@@ -243,10 +243,10 @@ const QuillConfig = {
                     table_border_light: 1,
 
                     panel_rounding: 15,
-                    menu_rounding: 10,
-                    item_rounding: 10,
-                    input_rounding: 10,
-                    grab_rounding: 10,
+                    menu_rounding: 20,
+                    item_rounding: 20,
+                    input_rounding: 20,
+                    grab_rounding: 20,
 
                     tab_border: 0,
                     tab_bar_border: 5,
@@ -363,7 +363,7 @@ const QuillConfig = {
                 table_row_bg: new QuillColor(29, 29, 29).to_hex(),
             },
             sizes: {
-                font: 14,
+                font: 13,
 
                 panel_padding: [8, 8],
                 title_bar_padding: [3, 3],

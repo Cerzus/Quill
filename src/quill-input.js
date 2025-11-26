@@ -8,9 +8,9 @@ class QuillInput extends QuillLeafElement {
         // TODO: validate sanitize_value
         // TODO: validate allowed_children
         const { label, config, callback, children, count } = Util.label_config_callback_and_children_from_arguments(...args);
-        const wrapper_element = label || label === 0 ? "label" : "div";
+        const wrapper_element = (label || label === 0) && html.indexOf("quill-radio-buttons") < 0 ? "label" : "div";
         super(
-            `<${wrapper_element} class="quill-label">${html}${label ?? ""}</${wrapper_element}>`,
+            `<${wrapper_element} class="quill-label"><div>${html}</div><div>${label ?? ""}</div></${wrapper_element}>`,
             allowed_children,
             add_child_callback,
             config,
@@ -60,15 +60,14 @@ class QuillInputMultiComponent extends QuillLeafElement {
         // TODO: validate which
         // TODO: validate n
         const { label, config, callback, count } = Util.label_config_callback_and_children_from_arguments(...args);
-        const wrapper_element = label || label === 0 || label === "" ? "label" : "div";
-        const html = `<${wrapper_element} class="quill-label"><div class="quill-multi-component-input"></div></${wrapper_element}>`;
+        const html = `<div class="quill-label"><div><div class="quill-multi-component-input"></div></div></div>`;
         super(html, [], null, config, callback, ...args.slice(count));
         for (let i = 0; i < n; i++) {
             const input = new which(config, (...args) => callback(this.get_value(), this, ...args.slice(2)));
             this.get_element().querySelector(".quill-multi-component-input").append(input.get_element());
             this.#inputs.push(input);
         }
-        this.get_element().append(label ?? "");
+        this.get_element().append(Util.element_from_html(`<div>${label ?? ""}</div>`));
         // TODO: validate value
         this.set_value(config.value);
         this.set_disabled(!!this._get_arg_config().disabled);

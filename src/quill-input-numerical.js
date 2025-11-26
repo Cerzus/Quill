@@ -153,24 +153,32 @@ class QuillSliderI extends QuillSliderInteger {
 class QuillDrag extends QuillInputNumerical {
     static #initialized = false;
     static #drag_element = null;
-    static #x;
-    static #value;
+    static #start_x;
+    static #start_value;
+    static #previous_value = null;
 
     static #init() {
         if (QuillDrag.#initialized) return;
         QuillDrag.#initialized = true;
-        window.addEventListener("mousemove", (e) => {
+        const update = (e) => {
             const element = QuillDrag.#drag_element;
             if (element === null) return;
-            const previous_value = element.get_value();
             // TODO: validate step
-            const value = QuillDrag.#value + (e.screenX - QuillDrag.#x) * element._get_arg_config().step;
+            const value = QuillDrag.#start_value + (e.screenX - QuillDrag.#start_x) * element._get_arg_config().step;
             element.set_value(value);
             const sanitized_value = element.get_value();
             // TODO: validate callback
-            if (sanitized_value !== previous_value) element._get_arg_callback()(sanitized_value, element, e);
+            if (sanitized_value !== QuillDrag.#previous_value) {
+                QuillDrag.#previous_value = sanitized_value;
+                element._get_arg_callback()(sanitized_value, element, e);
+            }
+        };
+        window.addEventListener("mousemove", update);
+        window.addEventListener("mouseup", (e) => {
+            update(e);
+            QuillDrag.#drag_element = null;
+            QuillDrag.#previous_value = null;
         });
-        window.addEventListener("mouseup", () => (QuillDrag.#drag_element = null));
     }
 
     constructor(...args) {
@@ -184,7 +192,7 @@ class QuillDrag extends QuillInputNumerical {
             ...args
         );
 
-        Util.add_mouse_down_event_listener(this.get_element().querySelector("output"), (e) => {
+        Util.add_mouse_down_event_listener(this.get_element(), (e) => {
             if (this._get_input_element().closest("[disabled]") === null) QuillDrag.#start_dragging(this, e);
         });
     }
@@ -208,8 +216,8 @@ class QuillDrag extends QuillInputNumerical {
         // TODO: validate drag_element
         // TODO: validate e
         QuillDrag.#drag_element = drag_element;
-        QuillDrag.#x = e.screenX;
-        QuillDrag.#value = +drag_element.get_value();
+        QuillDrag.#start_x = e.screenX;
+        QuillDrag.#start_value = +drag_element.get_value();
     }
 }
 

@@ -9,7 +9,7 @@ function get_style_editor() {
         Q.SeparatorText("General"),
         Q.Dropdown("Select preset", (selected) => Q.set_style_config(QuillConfig.presets[selected]), [
             Q.DropdownOptions({ quill_dark: "Quill dark", quill_light: "Quill light", imgui: "ImGui" }),
-        ]),
+        ]).set_selected("imgui"),
         Q.SeparatorText("Details"),
         Q.Tabs([
             Q.Tab("Fonts", [
