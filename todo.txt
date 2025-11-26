@@ -13,7 +13,6 @@
 - Test Row element with different kinds of child elements
 - Test "add_children" methods
 - Focus Panel on middle mouse button down; and therefore also close menus etc.
-- Make a choice between top/left and x/y
 - Sanitize API inputs
 - Sanitize end-user inputs
 - Plots/canvases etc.: Make "dirty" and only update once (and only when visible)

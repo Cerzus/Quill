@@ -145,7 +145,7 @@ class QuillBasePanel extends QuillElement {
         const display = this.#panel_element.style.display;
         // Hidden panels return 0 for offsets, so when necessary we temporarily unhide the panel
         this.#panel_element.style.display = "";
-        const position = { top: this.#panel_element.offsetTop, left: this.#panel_element.offsetLeft };
+        const position = { x: this.#panel_element.offsetLeft, y: this.#panel_element.offsetTop };
         this.#panel_element.style.display = display;
         return position;
     }
@@ -161,8 +161,8 @@ class QuillBasePanel extends QuillElement {
 
     set_position(position) {
         // TODO: validate position
-        this.#panel_element.style.top = `${position.top}px`;
-        this.#panel_element.style.left = `${position.left}px`;
+        this.#panel_element.style.left = `${position.x}px`;
+        this.#panel_element.style.top = `${position.y}px`;
         return this;
     }
 

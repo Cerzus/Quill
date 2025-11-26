@@ -128,9 +128,9 @@
                 const size = moving.panel.get_size();
                 const content_width = content_element.offsetWidth;
                 const content_height = content_element.offsetHeight;
-                const top = Math.max(0, Math.min(moving.top + e.screenY, content_height - size.height));
-                const left = Math.max(0, Math.min(moving.left + e.screenX, content_width - size.width));
-                moving.panel.set_position({ top, left });
+                const x = Math.max(0, Math.min(moving.x + e.screenX, content_width - size.width));
+                const y = Math.max(0, Math.min(moving.y + e.screenY, content_height - size.height));
+                moving.panel.set_position({ x, y });
                 e.preventDefault();
             }
 
@@ -143,19 +143,19 @@
                 const height = content_element.offsetHeight;
 
                 if (resizing.resizer_x === 0) {
-                    const left = Math.min(resizing.left + e.screenX, position.left + size.width - MIN_WIDTH);
-                    position.left = Math.max(0, left);
-                    size.width = Math.max(MIN_WIDTH, resizing.width - e.screenX + Math.min(left, 0));
+                    const x = Math.min(resizing.x + e.screenX, position.x + size.width - MIN_WIDTH);
+                    position.x = Math.max(0, x);
+                    size.width = Math.max(MIN_WIDTH, resizing.width - e.screenX + Math.min(x, 0));
                 } else if (resizing.resizer_x === 2) {
-                    size.width = Math.min(Math.max(MIN_WIDTH, resizing.width + e.screenX), width - position.left);
+                    size.width = Math.min(Math.max(MIN_WIDTH, resizing.width + e.screenX), width - position.x);
                 }
 
                 if (resizing.resizer_y === 0) {
-                    const top = Math.min(resizing.top + e.screenY, position.top + size.height - MIN_HEIGHT);
-                    position.top = Math.max(0, top);
-                    size.height = Math.max(MIN_HEIGHT, resizing.height - e.screenY + Math.min(top, 0));
+                    const y = Math.min(resizing.y + e.screenY, position.y + size.height - MIN_HEIGHT);
+                    position.y = Math.max(0, y);
+                    size.height = Math.max(MIN_HEIGHT, resizing.height - e.screenY + Math.min(y, 0));
                 } else if (resizing.resizer_y === 2) {
-                    size.height = Math.min(Math.max(MIN_HEIGHT, resizing.height + e.screenY), height - position.top);
+                    size.height = Math.min(Math.max(MIN_HEIGHT, resizing.height + e.screenY), height - position.y);
                 }
 
                 resizing.panel.set_position(position);
@@ -197,7 +197,7 @@
             const stored_index = quill_panels_order.indexOf(this.#id);
             if (stored_index < 0) {
                 const new_index = quill_panels_order.length;
-                this.set_position({ top: new_index * 25, left: new_index * 25 });
+                this.set_position({ x: new_index * 25, y: new_index * 25 });
                 this.set_size({ width: 300, height: 200 });
                 set_panel_z_index(this, new_index);
                 quill_panels_order.push(this.#id);
@@ -207,7 +207,7 @@
                 // TODO: validate y
                 // TODO: validate width
                 // TODO: validate height
-                this.set_position({ top: config.y, left: config.x });
+                this.set_position({ x: config.x, y: config.y });
                 this.set_size({ width: config.width, height: config.height });
                 set_panel_z_index(this, stored_index);
                 this.#closed = !config.is_open;
@@ -279,8 +279,8 @@
             const height = 200;
             this.set_size({ width, height });
             this.set_position({
-                top: (content_element.offsetHeight - height) / 2,
-                left: (content_element.offsetWidth - width) / 2,
+                x: (content_element.offsetWidth - width) / 2,
+                y: (content_element.offsetHeight - height) / 2,
             });
             element.style.zIndex = 1000;
 
@@ -295,10 +295,10 @@
     /* Quill.Popup */
 
     class QuillPopup extends QuillBasePanel {
-        constructor(name, left, top, ...args) {
+        constructor(name, x, y, ...args) {
             // TODO: validate name
-            // TODO: validate left
-            // TODO: validate top
+            // TODO: validate x
+            // TODO: validate y
             const foo = Util.config_callback_and_children_from_arguments(...args);
             foo.config.has_title_bar = false;
             foo.config.has_menu_bar = false;
@@ -311,7 +311,7 @@
             const element = this.get_element();
             element.classList.add("quill-popup");
 
-            this.set_position({ top, left });
+            this.set_position({ x, y });
             element.style.zIndex = 10000;
 
             content_element.append(element);
@@ -494,11 +494,11 @@
             element.classList.add("active");
             this.#menu_element.classList.add("active");
             if (parent instanceof QuillMenuBar) {
-                this.#set_position((position) => (position.top += element.offsetHeight));
+                this.#set_position((position) => (position.y += element.offsetHeight));
             } else {
                 this.#menu_element.style.zIndex = +getComputedStyle(parent.#menu_element).zIndex + 1;
                 parent.#show?.();
-                this.#set_position((position) => (position.left += element.offsetWidth));
+                this.#set_position((position) => (position.x += element.offsetWidth));
             }
             return this;
         }
@@ -517,12 +517,12 @@
             const content_element_rect = content_element.getBoundingClientRect();
             const element_rect = this.get_element().getBoundingClientRect();
             const position = {
-                left: element_rect.left - content_element_rect.left,
-                top: element_rect.top - content_element_rect.top,
+                x: element_rect.left - content_element_rect.left,
+                y: element_rect.top - content_element_rect.top,
             };
             callback(position);
-            this.#menu_element.style.top = `${position.top}px`;
-            this.#menu_element.style.left = `${position.left}px`;
+            this.#menu_element.style.left = `${position.x}px`;
+            this.#menu_element.style.top = `${position.y}px`;
         }
     }
 
@@ -1086,7 +1086,7 @@
         if (e.target.classList.contains("quill-close-button")) return;
         if (moving === null && resizing === null) {
             const position = panel.get_position();
-            moving = { panel, top: position.top - e.screenY, left: position.left - e.screenX };
+            moving = { panel, x: position.x - e.screenX, y: position.y - e.screenY };
         }
     }
 
@@ -1111,8 +1111,8 @@
             const resizer_y = ~~(index / 3);
             resizing = {
                 panel,
-                top: position.top - e.screenY,
-                left: position.left - e.screenX,
+                x: position.x - e.screenX,
+                y: position.y - e.screenY,
                 width: size.width + (1 - resizer_x) * e.screenX,
                 height: size.height + (1 - resizer_y) * e.screenY,
                 resizer_x,
@@ -1130,7 +1130,7 @@
                 const position = panel.get_position();
                 const size = panel.get_size();
                 const open = panel.is_open();
-                return { id, x: position.left, y: position.top, width: size.width, height: size.height, is_open: open };
+                return { id, x: position.x, y: position.y, width: size.width, height: size.height, is_open: open };
             });
         localStorage.setItem("quill_panels", JSON.stringify(panels_config));
     }
