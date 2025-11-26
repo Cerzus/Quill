@@ -16,6 +16,8 @@ class QuillConfigFlag {
 
     get_options = () => (this.#is_true_or_false ? [false, true] : Object.keys(this.#options));
 
+    get_values = () => ({ ...this.#options });
+
     set(selected) {
         // TODO: validate selected
         if (!Util.warning(this.get_options().includes(selected), this.get_options(), selected)) return this;
@@ -144,9 +146,9 @@ const QuillConfig = {
     },
     flags: {
         wrap_text: new QuillConfigFlag(["nowrap", "wrap"]),
-        panel_title_bar_text_align: new QuillConfigFlag({ Left: "left", Center: "center", Right: "right" }),
-        input_text_align: new QuillConfigFlag({ Left: "left", Center: "center", Right: "right" }),
-        fieldset_legend_text_align: new QuillConfigFlag({ Left: "left", Center: "center", Right: "right" }),
+        panel_title_bar_text_align: new QuillConfigFlag({ left: "Left", center: "Center", right: "Right" }),
+        input_text_align: new QuillConfigFlag({ left: "Left", center: "Center", right: "Right" }),
+        fieldset_legend_text_align: new QuillConfigFlag({ left: "Left", center: "Center", right: "Right" }),
         labels_left: new QuillConfigFlag(["row", "row-reverse"]),
         justify_labels: new QuillConfigFlag(["fit-content", "100%"]),
         table_borders_outer_h: new QuillConfigFlag(["none", "solid"]),
@@ -154,8 +156,8 @@ const QuillConfig = {
         table_borders_inner_h: new QuillConfigFlag(["none", "solid"]),
         table_borders_inner_v: new QuillConfigFlag(["none", "solid"]),
         table_row_bg: new QuillConfigFlag(["transparent", "var(--quill-table-row-bg-color)"]),
-        scrollbar_width: new QuillConfigFlag({ Normal: "auto", Thin: "thin" }),
-        separator_text_align: new QuillConfigFlag({ Left: "left", Center: "center", Right: "right" }),
+        scrollbar_width: new QuillConfigFlag({ auto: "Normal", thin: "Thin" }),
+        separator_text_align: new QuillConfigFlag({ left: "Left", center: "Center", right: "Right" }),
     },
 
     plots: [],
@@ -259,9 +261,9 @@ const QuillConfig = {
                 },
                 flags: {
                     wrap_text: false,
-                    panel_title_bar_text_align: "Left",
-                    input_text_align: "Left",
-                    fieldset_legend_text_align: "Left",
+                    panel_title_bar_text_align: "left",
+                    input_text_align: "left",
+                    fieldset_legend_text_align: "left",
                     labels_left: false,
                     justify_labels: false,
                     table_borders_outer_h: false,
@@ -269,8 +271,8 @@ const QuillConfig = {
                     table_borders_inner_h: false,
                     table_borders_inner_v: false,
                     table_row_bg: false,
-                    scrollbar_width: "Thin",
-                    separator_text_align: "Left",
+                    scrollbar_width: "thin",
+                    separator_text_align: "left",
                 },
             });
             return {
@@ -400,9 +402,9 @@ const QuillConfig = {
             },
             flags: {
                 wrap_text: false,
-                panel_title_bar_text_align: "Left",
-                input_text_align: "Left",
-                fieldset_legend_text_align: "Left",
+                panel_title_bar_text_align: "left",
+                input_text_align: "left",
+                fieldset_legend_text_align: "left",
                 labels_left: false,
                 justify_labels: false,
                 table_borders_outer_h: false,
@@ -410,8 +412,8 @@ const QuillConfig = {
                 table_borders_inner_h: false,
                 table_borders_inner_v: false,
                 table_row_bg: false,
-                scrollbar_width: "Normal",
-                separator_text_align: "Left",
+                scrollbar_width: "auto",
+                separator_text_align: "left",
             },
         },
     },

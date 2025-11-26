@@ -102,6 +102,7 @@
         Quill.get_flag_names = get_flag_names;
         Quill.get_style_flag = get_style_flag;
         Quill.get_style_flag_options = get_style_flag_options;
+        Quill.get_style_flag_values = get_style_flag_values;
         Quill.set_style_flag = set_style_flag;
         Quill.set_style_config = set_style_config;
         Quill.get_panels = get_panels;
@@ -961,6 +962,11 @@
     function get_style_flag_options(property) {
         // TODO: validate property
         return quill_config.flags[property].get_options();
+    }
+
+    function get_style_flag_values(property) {
+        // TODO: validate property
+        return quill_config.flags[property].get_values();
     }
 
     function set_style_flag(property, value) {

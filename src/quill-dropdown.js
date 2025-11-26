@@ -35,6 +35,7 @@ class QuillDropdown extends QuillInput {
 
 class QuillDropdownOptions extends QuillWrappableElement {
     constructor(...args) {
+        // TODO: validate args[0] and args[1]
         const label = typeof args[0] === "string" || typeof args[0] === "number" ? new String(args[0]) : null;
         const options = label instanceof String ? args[1] : args[0];
         super(

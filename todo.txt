@@ -17,6 +17,5 @@
 - Sanitize API inputs
 - Sanitize end-user inputs
 - Plots/canvases etc.: Make "dirty" and only update once (and only when visible)
-- Config flags and dropdowns: same key/value order 
 - Align inputs and labels
 - Add Child element for scrolling content

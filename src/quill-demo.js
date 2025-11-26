@@ -52,7 +52,7 @@ function get_style_editor() {
                             (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
                             { selected: Q.get_style_flag(property) },
                             (selected) => Q.set_style_flag(property, selected),
-                            Q.DropdownOptions(Q.get_style_flag_options(property))
+                            Q.DropdownOptions(Q.get_style_flag_values(property))
                         );
                     }
                 }),
