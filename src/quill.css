@@ -3,6 +3,10 @@
     src: url("../fonts/DroidSans.ttf");
 }
 
+.quill {
+    height: 100vh;
+}
+
 .quill,
 .quill :not(script) {
     scrollbar-color: var(--quill-scrollbar-thumb-color) var(--quill-scrollbar-track-color);
@@ -55,6 +59,9 @@
             text-shadow: 1px 0 var(--quill-item-disabled-bg-color), -1px 0 var(--quill-item-disabled-bg-color),
                 0 -1px var(--quill-item-disabled-bg-color), 0 1px var(--quill-item-disabled-bg-color);
         }
+    }
+    .quill-button:disabled {
+        color: var(--quill-text-disabled-color);
     }
     input.quill-input[type="radio"]:disabled:checked::after {
         background: var(--quill-input-disabled-color);
@@ -448,12 +455,17 @@
     .quill-fieldset {
         padding-top: var(--quill-panel-padding-size-y);
         background: var(--quill-panel-content-bg-color);
+        border: var(--quill-separator-text-border-size) solid rgb(from var(--quill-border-color) r g b / 0.5);
         gap: var(--quill-item-gap-size);
         flex-direction: column;
         height: fit-content;
+        border: var(--quill-separator-text-border-size) solid rgb(from var(--quill-separator-color) r g b / 0.5);
+        padding: var(--quill-panel-padding-size);
         > legend {
+            padding: var(--quill-separator-text-padding-size-y) 8px;
             text-align: var(--quill-fieldset-legend-text-align);
-            font-size: calc(var(--quill-font-size) * 1.1);
+            margin: 0 calc(var(--quill-separator-text-padding-size-x) - var(--quill-panel-padding-size-x));
+            /* font-size: calc(var(--quill-font-size) * 1.1); */
         }
     }
 
@@ -902,10 +914,13 @@
         overflow: hidden;
         border-radius: var(--quill-input-rounding-size);
         box-shadow: 0 calc(0.5 * var(--quill-shadow-size)) calc(1 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
-        background: var(--quill-item-bg-color);
+        > canvas {
+            background: var(--quill-item-bg-color);
+        }
     }
     .quill-plot > div {
         position: absolute;
+        pointer-events: none;
         left: 50%;
         transform: translateX(-50%);
         font-family: var(--quill-monospace-font);

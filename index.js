@@ -12,6 +12,4 @@ document.addEventListener("DOMContentLoaded", () => {
             checked ? demo.open() : demo.close()
         )),
     ]);
-
-    create_game_boy_ui();
 });
