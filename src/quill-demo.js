@@ -183,17 +183,7 @@ function quill_show_demo() {
                 // Q.PopButtonRepeat();
                 // Q.SameLine();
                 // Q.Text(`${counter.value}`);
-                // Q.Text("Hover over me");
-                // if (Q.IsItemHovered()) Q.SetTooltip("I am a tooltip");
-                // Q.SameLine();
-                // Q.Text("- or me");
-                // if (Q.IsItemHovered()) {
-                //     Q.BeginTooltip();
-                //     Q.Text("I am a fancy tooltip");
-                //     const arr = STATIC(UNIQUE("arr#0025cbfb"), [0.6, 0.1, 1.0, 0.5, 0.92, 0.1, 0.2]);
-                //     Q.PlotLines("Curve", arr.value, Q.ARRAYSIZE(arr.value));
-                //     Q.EndTooltip();
-                // }
+                Q.Button("Tooltip").set_tooltip("I am a tooltip"),
                 // Q.LabelText("label", "Value"),
                 Q.SeparatorText("Inputs"),
                 Q.Row([

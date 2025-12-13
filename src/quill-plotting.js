@@ -112,6 +112,10 @@ class QuillPlotLines extends QuillPlot {
         this.#scale_max = Object.hasOwn(config, "scale_max") ? +config.scale_max : null;
         if (Object.hasOwn(config, "overlay_text")) this.set_overlay_text(String(config.overlay_text));
 
+        this.set_tooltip();
+        this.get_element().addEventListener("mouseover", this.#update_tooltip.bind(this));
+        this.get_element().addEventListener("mousemove", this.#update_tooltip.bind(this));
+
         new ResizeObserver(() => this.update()).observe(this.#protected.canvas);
     }
 
@@ -171,6 +175,18 @@ class QuillPlotLines extends QuillPlot {
 
         return this;
     }
+
+    // Private methods
+
+    #update_tooltip(e) {
+        const index_left = ~~((this.#values_count * e.offsetX) / this.#protected.canvas.offsetWidth);
+        const value_left =
+            Math.round(this.#values_getter((index_left + this.#values_offset) % this.#values_count) * 10000) / 10000;
+        const index_right = index_left + 1;
+        const value_right =
+            Math.round(this.#values_getter((index_right + this.#values_offset) % this.#values_count) * 10000) / 10000;
+        this.set_tooltip(`${index_left}: ${value_left}\n${index_right}: ${value_right}`);
+    }
 }
 
 class QuillPlotHistogram extends QuillPlot {
@@ -200,6 +216,10 @@ class QuillPlotHistogram extends QuillPlot {
         // TODO: validate scale_max
         this.#scale_max = Object.hasOwn(config, "scale_max") ? +config.scale_max : null;
         if (Object.hasOwn(config, "overlay_text")) this.set_overlay_text(String(config.overlay_text));
+
+        this.set_tooltip();
+        this.get_element().addEventListener("mouseover", this.#update_tooltip.bind(this));
+        this.get_element().addEventListener("mousemove", this.#update_tooltip.bind(this));
 
         new ResizeObserver(() => this.update()).observe(this.#protected.canvas);
     }
@@ -261,6 +281,14 @@ class QuillPlotHistogram extends QuillPlot {
         gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 2);
 
         return this;
+    }
+
+    // Private methods
+
+    #update_tooltip(e) {
+        const index = ~~((this.#values_count * e.offsetX) / this.#protected.canvas.offsetWidth);
+        const value = Math.round(this.#values_getter((index + this.#values_offset) % this.#values_count) * 10000) / 10000;
+        this.set_tooltip(`${index}: ${value}`);
     }
 }
 

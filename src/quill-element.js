@@ -2,6 +2,9 @@
 "use strict";
 
 class QuillElement {
+    static #initialized = false;
+    static #tooltip_element;
+
     #element;
     #allowed_children = [];
     #add_child_callback;
@@ -10,8 +13,23 @@ class QuillElement {
     #arg_config;
     #arg_callback;
     #arg_children;
+    #tooltip;
+
+    static #init() {
+        if (QuillElement.#initialized) return;
+        QuillElement.#initialized = true;
+
+        QuillElement.#tooltip_element = Util.element_from_html(`<div class="quill-tooltip"></div>`);
+        document.querySelector(".quill-content").append(QuillElement.#tooltip_element);
+
+        window.addEventListener("mousemove", (e) => {
+            QuillElement.#tooltip_element.style.left = `${e.clientX + 20}px`;
+            QuillElement.#tooltip_element.style.top = `${e.clientY - 10}px`;
+        });
+    }
 
     constructor(html, allowed_children, add_child_callback, ...args) {
+        QuillElement.#init();
         // TODO: validate html
         this.#element = Util.element_from_html(html);
 
@@ -131,6 +149,19 @@ class QuillElement {
         const msg = `Unknown style flag "${property}"`;
         if (!Util.warning(Object.hasOwn(QuillConfig.flags, property), msg)) return;
         Util.add_style_variable_to_element(this.#element, property, "", QuillConfig.flags[property].get_value(value));
+        return this;
+    }
+
+    set_tooltip(tooltip) {
+        if (typeof this.#tooltip === "undefined") {
+            this.#element.addEventListener("mouseenter", (e) => {
+                QuillElement.#tooltip_element.innerHTML = this.#tooltip;
+                QuillElement.#tooltip_element.style.display = "initial";
+            });
+            this.#element.addEventListener("mousemove", (e) => (QuillElement.#tooltip_element.innerHTML = this.#tooltip));
+            this.#element.addEventListener("mouseleave", (e) => (QuillElement.#tooltip_element.style.display = "none"));
+        }
+        this.#tooltip = Util.html_string_from_object(tooltip);
         return this;
     }
 

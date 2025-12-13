@@ -69,6 +69,18 @@
     .quill-content {
         position: relative;
         flex-grow: 1;
+        overflow: hidden;
+    }
+
+    .quill-tooltip {
+        border-radius: var(--quill-panel-rounding-size);
+        box-shadow: 0 calc(1 * var(--quill-shadow-size)) calc(2 * var(--quill-shadow-size)) rgba(0, 0, 0, 0.3);
+        border: var(--quill-panel-border-size) solid rgb(from var(--quill-border-color) r g b / 0.5);
+        background: var(--quill-panel-content-bg-color);
+        padding: var(--quill-panel-padding-size);
+        position: absolute;
+        z-index: 99999;
+        display: none;
     }
 
     .quill-modal-overlay {
