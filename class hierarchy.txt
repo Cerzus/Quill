@@ -23,6 +23,7 @@
             Table                               No          Wrapper, TableRow, TableHeaderRow
             Fieldset                            Yes         Wrapper, NodeElement
             Row                                 Yes         Wrapper, NodeElement??
+            Column                              Yes         Wrapper, NodeElement??
             Tabs                                No          Tab (no Wrapper, because we're adding two HTML elements for each tab. Which one to wrap around?)
             Indent                              Yes         Wrapper, NodeElement
             Tree                                Yes         Wrapper, NodeElement
