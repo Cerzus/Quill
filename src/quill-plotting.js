@@ -58,6 +58,8 @@ class QuillPlot extends QuillLeafElement {
     }
 
     update(canvas, gl, vertices, type) {
+        canvas.width = this.get_element().offsetWidth;
+
         gl.viewport(0, 0, canvas.width, canvas.height);
 
         const vertex_buffer = gl.createBuffer();
@@ -70,7 +72,7 @@ class QuillPlot extends QuillLeafElement {
 
         const color_location = gl.getUniformLocation(this.#shader_program, "color");
         const rgb = window
-            .getComputedStyle(this.get_element().parentNode ? this.get_element() : document.body)
+            .getComputedStyle(document.body.contains(this.get_element()) ? this.get_element() : document.body)
             .getPropertyValue(`--quill-plot-${type}-color`);
         const rgb2 = rgb.substring(4, rgb.length - 1);
         gl.uniform3f(color_location, ...rgb2.split(" ").map((x) => x / 255));
