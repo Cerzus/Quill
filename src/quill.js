@@ -348,8 +348,8 @@
             QuillMenuItem.#initialized = true;
             window.addEventListener("keydown", (e) => {
                 if (e.ctrlKey && QuillMenuItem.#ctrl_keys[e.key]) {
-                    QuillMenuItem.#ctrl_keys[e.key](e);
                     e.preventDefault();
+                    QuillMenuItem.#ctrl_keys[e.key](e);
                 }
             });
         }
