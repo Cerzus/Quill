@@ -226,7 +226,7 @@ const QuillConfig = {
                 sizes: {
                     font: 14,
 
-                    panel_padding: [15, 15],
+                    panel_padding: [10, 10],
                     title_bar_padding: [10, 10],
                     menu_padding: [5, 5],
                     menu_item_padding: [5, 5],
