@@ -94,7 +94,7 @@ function quill_show_demo() {
 
     Q.Panel("Style editor", { closed: true }, get_style_editor());
 
-    return (demo_panel = Q.Panel("Quill Demo", { closed: true }, [
+    return (demo_panel = Q.Panel("Quill Demo", { closed: false }, [
         show_collapsing_header_configuration(),
         show_collapsing_header_window_options(),
         show_collapsing_header_elements(true),
@@ -137,8 +137,8 @@ function quill_show_demo() {
             show_tree_text(),
             show_tree_dropdowns(),
             show_tree_tabs(),
-            show_tree_plotting(true),
-            show_tree_progress_bars(true),
+            show_tree_plotting(),
+            show_tree_progress_bars(),
             show_tree_data_types(),
             show_tree_multi_component_elements(),
         ]);
@@ -712,7 +712,7 @@ function quill_show_demo() {
         return Q.MenuBar([
             Q.Menu("File", {}, () => {}, [
                 Q.Menu("File", [Q.MenuItem("Load..."), Q.Separator(), (recent = Q.Menu("Recent"))]),
-                Q.MenuItem("Load...", { ctrl_key: "L" }, () =>
+                Q.MenuItem("Load...", { ctrl_key: "o" }, () =>
                     Q.open_file_dialog({ multiple: true }, (files) => {
                         console.log("Load", files);
                         recent.get_children().forEach((child) => child.remove());
