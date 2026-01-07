@@ -66,7 +66,7 @@ class Util {
         if (Util.is_function(args[i])) result.callback = args[i++];
         if (args[i] instanceof QuillElement) result.children = args[i++];
         if (Object.prototype.toString.call(args[i]) === "[object Array]") {
-            for (const obj of args[i]) Util.assert(obj instanceof QuillElement);
+            for (const obj of args[i]) Util.assert(obj instanceof QuillElement, `QuillElement expected, but ${obj} found.`);
             result.children = args[i++];
         }
         result.count = i;
