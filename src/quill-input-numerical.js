@@ -12,6 +12,7 @@ class QuillInputNumerical extends QuillInput {
         // TODO: validate sanitize_value
         super(html, event_type, sanitize_value, [], null, ...args);
         this.#sanitize_value = sanitize_value ?? ((value) => value);
+        this._get_input_element().step = 1;
         const config = this._get_arg_config();
         // TODO: validate min
         if (Object.hasOwn(config, "min")) this.#set_min(config.min);
