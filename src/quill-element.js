@@ -77,9 +77,9 @@ class QuillElement {
         // TODO: validate children
         if (children[0] instanceof Array) return this.add_children(...children[0]);
         const msg = `No children allowed for ${this.constructor.name}. Found:`;
-        if (!Util.warning(this.#allowed_children.length > 0, msg, children[0])) return;
+        if (!Util.warning(this.#allowed_children.length > 0, msg, children[0])) return this;
         for (const child of children) {
-            if (!this.#is_child_allowed(child)) return;
+            if (!this.#is_child_allowed(child)) return this;
             this.#add_child_callback(child);
             if (child instanceof QuillElement) {
                 this.#children.push(child);
