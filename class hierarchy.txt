@@ -4,6 +4,7 @@
     MenuBar                                     No          Menu, MenuItem, Separator (no Wrapper yet, because we use recursion to reach an ancestor)
     Menu                                        No          Menu, MenuItem, Separator (no Wrapper yet, because we use recursion to reach an ancestor)
     MenuItem                                    No          -
+    TogglePanelMenuItem                         No          -
     Tab                                         Yes         Wrapper, NodeElement
     Panel                                       No          Wrapper, NodeElement, MenuBar
         Modal                                   No          Wrapper, NodeElement, MenuBar

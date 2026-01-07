@@ -20,6 +20,7 @@
         Quill.MenuBar = (...args) => new MenuBar(...args);
         Quill.Menu = (...args) => new QuillMenu(...args);
         Quill.MenuItem = (...args) => new QuillMenuItem(...args);
+        Quill.TogglePanelMenuItem = (...args) => new QuillTogglePanelMenuItem(...args);
         Quill.FixedCanvas = (...args) => new QuillFixedCanvas(...args);
         Quill.Table = (...args) => new QuillTable(...args);
         Quill.TableHeaderRow = (...args) => new QuillTableHeaderRow(...args);
@@ -417,6 +418,25 @@
                 parent.show();
                 active_menu = parent;
             }
+        }
+    }
+
+    /* Quill.TogglePanelMenuItem */
+
+    class QuillTogglePanelMenuItem extends QuillMenuItem {
+        constructor(panel, ...args) {
+            const named_args = Util.config_callback_and_children_from_arguments(...args);
+            const arg_config = Object.freeze(named_args.config);
+            const arg_callback = Object.freeze(named_args.callback);
+            const arg_children = Object.freeze(named_args.children);
+
+            const config = { ...arg_config, checkable: true, checked: panel.is_open() };
+            panel.on_close(() => this.set_checked(false)); // TODO: do not overwrite possible other function.
+
+            super(panel.get_name(), config, (element, ...args) => {
+                element.is_checked() ? panel.open() : panel.close();
+                arg_callback(element, ...args), arg_children;
+            });
         }
     }
 

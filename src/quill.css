@@ -3,10 +3,6 @@
     src: url("../fonts/DroidSans.ttf");
 }
 
-.quill {
-    height: 100vh;
-}
-
 .quill,
 .quill :not(script) {
     scrollbar-color: var(--quill-scrollbar-thumb-color) var(--quill-scrollbar-track-color);
@@ -298,8 +294,13 @@
         height: var(--quill-font-size);
     }
 
-    .quill-row {
+    .quill-row,
+    .quill-column {
         gap: var(--quill-panel-gap-size);
+    }
+
+    .quill-column {
+        flex-direction: column;
     }
 
     .quill-arrow-right {
