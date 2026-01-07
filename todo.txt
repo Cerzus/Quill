@@ -18,3 +18,6 @@
 - Plots/canvases etc.: Make "dirty" and only update once (and only when visible)
 - Align inputs and labels
 - Add Child element for scrolling content
+- Logarithmic sliders and drags
+- Regular input for sliders and drags
+- Set output for sliders when no value has been set by the user
