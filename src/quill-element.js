@@ -101,6 +101,7 @@ class QuillElement {
         // TODO: validate type
         // TODO: validate callback
         this.#element.addEventListener(type, (e) => callback(e, this));
+        return this;
     }
 
     remove() {
