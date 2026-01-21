@@ -13,4 +13,10 @@ class QuillButton extends QuillLeafElement {
         Util.disable_html_element(this.get_element(), !!disabled);
         return this;
     }
+
+    set_text(text) {
+        // TODO: validate text
+        this.get_element().innerHTML = Util.html_string_from_object(text);
+        return this;
+    }
 }
