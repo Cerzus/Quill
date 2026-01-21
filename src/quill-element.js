@@ -100,7 +100,7 @@ class QuillElement {
     on_event(type, callback) {
         // TODO: validate type
         // TODO: validate callback
-        this.#element.addEventListener(type, (e) => callback(e, this));
+        this.#element.addEventListener(type, (e) => callback(this, e));
         return this;
     }
 
