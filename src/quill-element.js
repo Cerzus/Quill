@@ -97,6 +97,12 @@ class QuillElement {
 
     get_page_y_bottom = () => this.get_page_y() + this.#element.offsetHeight;
 
+    on_event(type, callback) {
+        // TODO: validate type
+        // TODO: validate callback
+        this.#element.addEventListener(type, (e) => callback(e, this));
+    }
+
     remove() {
         this.#element.remove();
         for (const child of this.#children.slice()) child.remove();
