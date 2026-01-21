@@ -294,13 +294,20 @@
         height: var(--quill-font-size);
     }
 
-    .quill-row,
-    .quill-column {
+    .quill-layout {
         gap: var(--quill-panel-gap-size);
+    }
+
+    .quill-row {
+        flex-direction: row;
     }
 
     .quill-column {
         flex-direction: column;
+    }
+
+    .quill-grid {
+        display: grid;
     }
 
     .quill-arrow-right {

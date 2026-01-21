@@ -33,6 +33,7 @@
         Quill.Button = (...args) => new QuillButton(...args);
         Quill.Row = (...args) => new QuillRow(...args);
         Quill.Column = (...args) => new QuillColumn(...args);
+        Quill.Grid = (...args) => new QuillGrid(...args);
         Quill.Fieldset = (...args) => new QuillFieldset(...args);
         Quill.CheckboxTree = (...args) => new QuillCheckboxTree(...args);
         Quill.Checkbox = (...args) => new QuillCheckbox(...args);
