@@ -58,8 +58,6 @@ class QuillPlot extends QuillLeafElement {
     }
 
     update(canvas, gl, vertices, type) {
-        canvas.width = this.get_element().offsetWidth;
-
         gl.viewport(0, 0, canvas.width, canvas.height);
 
         const vertex_buffer = gl.createBuffer();
