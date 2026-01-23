@@ -93,6 +93,8 @@
         Quill.Wrapper = (...args) => new QuillWrapper(...args);
         Quill.HexEditor = (...args) => new QuillHexEditor(...args);
 
+        Quill.color_from_u32_abgr = QuillColor.from_u32_abgr;
+        Quill.color_from_u32_rgba = QuillColor.from_u32_rgba;
         Quill.get_color_names = get_color_names;
         Quill.get_style_color = get_style_color;
         Quill.set_style_color = set_style_color;
