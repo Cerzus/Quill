@@ -25,8 +25,8 @@ function get_style_editor() {
                 ...Q.get_color_names().map((property) =>
                     Q.ColorPicker(
                         (property.charAt(0).toUpperCase() + property.slice(1)).replaceAll("_", " "),
-                        { value: Q.get_style_color(property).to_hex() },
-                        (value) => Q.set_style_color(property, value)
+                        { value: Q.get_style_color(property) },
+                        (value) => Q.set_style_color(property, value.to_hex())
                     )
                 ),
             ]),
