@@ -4,7 +4,9 @@ class QuillFixedCanvas extends QuillNodeElement {
     #canvas;
     #context;
 
-    constructor(...args) {
+    constructor(context_type, context_attributes, ...args) {
+        // TODO: validate context_type
+        // TODO: validate context_attributes
         super(`<div class="quill-fixed-canvas"></div>`, [], null, ...args);
 
         const canvas = document.createElement("canvas");
@@ -21,7 +23,7 @@ class QuillFixedCanvas extends QuillNodeElement {
         if (max_scale) canvas.style.maxWidth = `${max_scale * canvas.width}px`;
         this.get_element().append(canvas);
 
-        const context = canvas.getContext("2d");
+        const context = canvas.getContext(context_type, context_attributes);
 
         this.#canvas = canvas;
         this.#context = context;
@@ -34,9 +36,11 @@ class QuillFixedCanvas extends QuillNodeElement {
     get_context = () => this.#context;
 
     clear(style) {
-        // TODO: validate style
-        this.#context.fillStyle = style;
-        this.#context.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
+        if (this.#context instanceof CanvasRenderingContext2D) {
+            // TODO: validate style
+            this.#context.fillStyle = style;
+            this.#context.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
+        }
         return this;
     }
 }
