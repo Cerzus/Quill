@@ -52,8 +52,11 @@
         }
         + output {
             color: var(--quill-input-disabled-color);
-            text-shadow: 1px 0 var(--quill-item-disabled-bg-color), -1px 0 var(--quill-item-disabled-bg-color),
-                0 -1px var(--quill-item-disabled-bg-color), 0 1px var(--quill-item-disabled-bg-color);
+            text-shadow:
+                1px 0 var(--quill-item-disabled-bg-color),
+                -1px 0 var(--quill-item-disabled-bg-color),
+                0 -1px var(--quill-item-disabled-bg-color),
+                0 1px var(--quill-item-disabled-bg-color);
         }
     }
     .quill-button:disabled {
@@ -265,6 +268,8 @@
     .quill-fixed-canvas {
         flex-grow: 1;
         justify-content: center;
+        align-items: center;
+        height: 0;
         > canvas {
             object-fit: contain;
             height: 100%;
@@ -647,8 +652,11 @@
                 }
                 + output {
                     color: var(--quill-input-color);
-                    text-shadow: 1px 0 var(--quill-item-bg-color), -1px 0 var(--quill-item-bg-color),
-                        0 -1px var(--quill-item-bg-color), 0 1px var(--quill-item-bg-color);
+                    text-shadow:
+                        1px 0 var(--quill-item-bg-color),
+                        -1px 0 var(--quill-item-bg-color),
+                        0 -1px var(--quill-item-bg-color),
+                        0 1px var(--quill-item-bg-color);
                 }
                 &:hover,
                 &:focus {
@@ -656,8 +664,11 @@
                         background: var(--quill-slidergrab-hovered-color);
                     }
                     + output {
-                        text-shadow: 1px 0 var(--quill-item-hovered-bg-color), -1px 0 var(--quill-item-hovered-bg-color),
-                            0 -1px var(--quill-item-hovered-bg-color), 0 1px var(--quill-item-hovered-bg-color);
+                        text-shadow:
+                            1px 0 var(--quill-item-hovered-bg-color),
+                            -1px 0 var(--quill-item-hovered-bg-color),
+                            0 -1px var(--quill-item-hovered-bg-color),
+                            0 1px var(--quill-item-hovered-bg-color);
                         color: var(--quill-input-hovered-color);
                     }
                 }
@@ -933,7 +944,10 @@
         transform: translateX(-50%);
         font-family: var(--quill-monospace-font);
         color: var(--quill-text-color);
-        text-shadow: 1px 0 var(--quill-item-bg-color), -1px 0 var(--quill-item-bg-color), 0 1px var(--quill-item-bg-color),
+        text-shadow:
+            1px 0 var(--quill-item-bg-color),
+            -1px 0 var(--quill-item-bg-color),
+            0 1px var(--quill-item-bg-color),
             0 -1px var(--quill-item-bg-color);
     }
     .quill-progress-bar > div {
