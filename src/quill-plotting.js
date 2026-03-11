@@ -1,6 +1,7 @@
 "use strict";
 
 class QuillPlot extends QuillLeafElement {
+    #gl;
     #shader_program;
 
     constructor(protected_props, extra_class, ...args) {
@@ -20,7 +21,7 @@ class QuillPlot extends QuillLeafElement {
         // if (max_scale) canvas.style.maxWidth = `${max_scale * canvas.width}px`;
         this.get_element().append(canvas);
 
-        const gl = canvas.getContext("webgl");
+        const gl = (this.#gl = canvas.getContext("webgl"));
 
         const vert_code = `
             attribute vec2 coordinates;
@@ -79,6 +80,7 @@ class QuillPlot extends QuillLeafElement {
     }
 
     remove() {
+        this.#gl.getExtension("WEBGL_lose_context").loseContext();
         QuillConfig.plots.splice(QuillConfig.plots.indexOf(this), 1);
         return super.remove();
     }
