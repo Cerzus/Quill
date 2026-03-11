@@ -95,6 +95,8 @@ class QuillPlotLines extends QuillPlot {
     #scale_min;
     #scale_max;
 
+    #resize_observer;
+
     constructor(...args) {
         const protected_props = {};
         super(protected_props, "quill-plot-lines", ...args);
@@ -118,7 +120,8 @@ class QuillPlotLines extends QuillPlot {
         this.get_element().addEventListener("mouseover", this.#update_tooltip.bind(this));
         this.get_element().addEventListener("mousemove", this.#update_tooltip.bind(this));
 
-        new ResizeObserver(() => this.update()).observe(this.#protected.canvas);
+        this.#resize_observer = new ResizeObserver(() => this.update());
+        this.#resize_observer.observe(this.#protected.canvas);
     }
 
     // Public methods
@@ -178,6 +181,11 @@ class QuillPlotLines extends QuillPlot {
         return this;
     }
 
+    remove() {
+        this.#resize_observer.disconnect();
+        super.remove();
+    }
+
     // Private methods
 
     #update_tooltip(e) {
@@ -199,6 +207,8 @@ class QuillPlotHistogram extends QuillPlot {
     #values_offset;
     #scale_min;
     #scale_max;
+
+    #resize_observer;
 
     constructor(...args) {
         const protected_props = {};
@@ -223,7 +233,8 @@ class QuillPlotHistogram extends QuillPlot {
         this.get_element().addEventListener("mouseover", this.#update_tooltip.bind(this));
         this.get_element().addEventListener("mousemove", this.#update_tooltip.bind(this));
 
-        new ResizeObserver(() => this.update()).observe(this.#protected.canvas);
+        this.#resize_observer = new ResizeObserver(() => this.update());
+        this.#resize_observer.observe(this.#protected.canvas);
     }
 
     // Public methods
@@ -285,6 +296,11 @@ class QuillPlotHistogram extends QuillPlot {
         return this;
     }
 
+    remove() {
+        this.#resize_observer.disconnect();
+        super.remove();
+    }
+
     // Private methods
 
     #update_tooltip(e) {
@@ -300,6 +316,8 @@ class QuillProgressBar extends QuillPlot {
     #fraction;
     #overlay_text;
 
+    #resize_observer;
+
     constructor(...args) {
         const protected_props = {};
         super(protected_props, "quill-progress-bar", ...args);
@@ -312,7 +330,8 @@ class QuillProgressBar extends QuillPlot {
         this.get_element().querySelector("div").innerHTML = Math.round(this.#fraction * 100) + "%";
         if (Object.hasOwn(config, "overlay_text")) this.set_overlay_text(String(config.overlay_text));
 
-        new ResizeObserver(() => this.update()).observe(this.#protected.canvas);
+        this.#resize_observer = new ResizeObserver(() => this.update());
+        this.#resize_observer.observe(this.#protected.canvas);
     }
 
     // Public methods
@@ -343,5 +362,10 @@ class QuillProgressBar extends QuillPlot {
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertices.length / 2);
 
         return this;
+    }
+
+    remove() {
+        this.#resize_observer.disconnect();
+        super.remove();
     }
 }
