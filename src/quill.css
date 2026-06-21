@@ -22,7 +22,7 @@
 .quill {
     background: var(--quill-background-color);
 
-    * {
+    *[class^="quill"] {
         font-family: var(--quill-proportional-font);
         color: var(--quill-text-color);
         font-size: var(--quill-font-size);
@@ -587,13 +587,10 @@
             transform: rotate(45deg);
         }
         &:indeterminate::after {
-            position: absolute;
-            top: 50%;
-            left: 20%;
             margin: 0 auto;
-            border-top-width: 0.2em;
+            border-top-width: 0.25em;
             width: 60%;
-            transform: translateY(-50%);
+            transform: translateY(45%);
         }
         &:hover,
         &:focus {
