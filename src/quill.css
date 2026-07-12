@@ -821,9 +821,10 @@
         min-height: 9.6em;
         .quill-dynamic-rows-list {
             flex-direction: column;
-            .quill-row {
+            width: 100%;
+            /* .quill-row {
                 width: fit-content;
-            }
+            } */
         }
         .quill-dynamic-rows-offset {
             flex-direction: column;
