@@ -14,6 +14,8 @@ class QuillFieldset extends QuillNodeElement {
 
     // Public methods
 
+    disable = () => this.set_disabled(true);
+    enable = () => this.set_disabled(false);
     set_disabled(disabled) {
         Util.disable_html_element(this.get_element(), !!disabled);
         return this;

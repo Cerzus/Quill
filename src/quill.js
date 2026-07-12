@@ -438,7 +438,7 @@
 
             super(panel.get_name(), config, (element, ...args) => {
                 element.is_checked() ? panel.open() : panel.close();
-                arg_callback(element, ...args), arg_children;
+                (arg_callback(element, ...args), arg_children);
             });
         }
     }
@@ -714,6 +714,8 @@
             return this;
         }
 
+        disable = () => this.set_disabled(true);
+        enable = () => this.set_disabled(false);
         set_disabled(disabled) {
             this.#dynamic_rows.set_disabled(!!disabled);
             return this;

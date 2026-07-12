@@ -61,6 +61,8 @@ class QuillDynamicRows extends QuillNodeElement {
         return this;
     }
 
+    disable = () => this.set_disabled(true);
+    enable = () => this.set_disabled(false);
     set_disabled(disabled) {
         Util.disable_html_element(this.#offset_element, !!disabled);
         return this;

@@ -31,6 +31,8 @@ class QuillTree extends QuillNodeElement {
 
     collapse = () => this.#set_expanded(false);
 
+    disable = () => this.set_disabled(true);
+    enable = () => this.set_disabled(false);
     set_disabled(disabled) {
         Util.disable_html_element(this.get_element().querySelector(".quill-tree-body"), !!disabled);
         return this;

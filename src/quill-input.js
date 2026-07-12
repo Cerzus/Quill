@@ -43,6 +43,8 @@ class QuillInput extends QuillLeafElement {
         return this;
     }
 
+    disable = () => this.set_disabled(true);
+    enable = () => this.set_disabled(false);
     set_disabled(disabled) {
         Util.disable_html_element(this._get_input_element(), !!disabled);
         return this;
@@ -85,6 +87,8 @@ class QuillInputMultiComponent extends QuillLeafElement {
         return this;
     }
 
+    disable = () => this.set_disabled(true);
+    enable = () => this.set_disabled(false);
     set_disabled(disabled) {
         for (let i = 0; i < this.#inputs.length; i++) {
             this.#inputs[i].set_disabled(!!disabled);
