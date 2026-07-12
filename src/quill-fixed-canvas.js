@@ -25,7 +25,10 @@ class QuillFixedCanvas extends QuillNodeElement {
             canvas.style.maxWidth = `${max_scale * canvas.width}px`;
             canvas.style.maxHeight = `${max_scale * canvas.height}px`;
         }
-        this.get_element().append(canvas);
+        const element = this.get_element();
+        element.style.minWidth = canvas.style.minWidth;
+        element.style.minHeight = canvas.style.minHeight;
+        element.append(canvas);
 
         const context = canvas.getContext(context_type, context_attributes);
 
