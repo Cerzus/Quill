@@ -823,7 +823,7 @@
         #format_address(address, length = this.#max_addr_length) {
             // TODO: validate address
             // TODO: validate length
-            return "0x" + this.#to_hex(address, length);
+            return this.#to_hex(address, length);
         }
 
         #set_hovered_column(n) {
