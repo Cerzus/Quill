@@ -61,6 +61,13 @@ class QuillDynamicRows extends QuillNodeElement {
         return this;
     }
 
+    scroll_to(index) {
+        this.get_element().scroll({
+            top: (index + 0.5) * this.#row_height - this.get_element().offsetHeight / 2,
+            behavior: "smooth",
+        });
+    }
+
     disable = () => this.set_disabled(true);
     enable = () => this.set_disabled(false);
     set_disabled(disabled) {
